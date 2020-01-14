@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			
+			.mui-row {
+				padding: 8px;
+			}
+			
+			.mui-row.topNav {
+				padding: 0px;
+			}
+			
+			.mui-row.topNav p a {
+				padding: 3px;
+			}
+			
+			.mui-row.topNav p span {
+				font-size: 12px;
+			}
+			/* 灰色*/
+			
+			.spn {
+				color: gray;
+			}
+			/*关联状态*/
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+			.imgs{
+				/*border: 1px solid #0070C0;*/
+				/*border-radius: 10px;*/
+				margin-top: 5px;
+				text-align: center;
+				overflow: hidden;
+				padding:5px 5px 0px 5px;
+			}
+			.imgs .content-image{
+				width: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 70px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header"></h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit" style="display: none;"></a>		
+			<div class="mui-row  navBar nodeTopNav" style="display: none;">
+				<p class="mui-col-xs-12" id="bBackBtn">
+					<a class="mui-icon mui-icon-paperclip"  id="bBackIcon"></a>
+					<span>收回单据</span>
+				</p>
+			</div>
+		</header>
+		<div class="mui-content mainBody nodeBody" style="padding-top: 70px !important;">
+			<div class="mui-input-group" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;display: none;">
+				<div class="mui-row" style="display:;">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">标识:</span>
+					<span class="mui-col-xs-9" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">fbill_no:</span>
+					<span class="mui-col-xs-9" id="fbill_no">ROOT</span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">bill_task:</span>
+					<span class="mui-col-xs-9" id="bill_task"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人:</span>
+					<span class="mui-col-xs-9" id="bill_user"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单单位:</span>
+					<span class="mui-col-xs-9" id="bill_com"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单时间:</span>
+					<span class="mui-col-xs-9" id="bill_date"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" id="find" style="padding:5px 18px 5px 18px;margin:5px 0;position: relative;">
+				<div class="mui-row" >
+					<span class="mui-col-xs-3" style="color:#ACACB4;">终端名称:</span>
+					<span class="mui-col-xs-9" id="bill_name" style="font-size:14px;"></span>
+					<span class="mui-col-xs-9" id="bill_oppo" style="font-size:14px;display: none;"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">终端地址:</span>
+					<span class="mui-col-xs-9" id="bill_context"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">联系人:</span>
+					<span class="mui-col-xs-9" id="bill_bno"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">电话:</span>
+					<span class="mui-col-xs-9" id="bill_bid"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" id="find" style="padding:5px 18px 5px 18px;margin:5px 0;position: relative;">
+				<div class="mui-row" >
+					<span class="mui-col-xs-3" style="color:#ACACB4;">抵达时间:</span>
+					<span class="mui-col-xs-9" id="bill_bdate"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">离店时间:</span>
+					<span class="mui-col-xs-9" id="bill_edate"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" id="aboutFlow" style="padding:5px 18px 5px 25px;margin:5px 0;position: relative;">
+				<div class="mui-row" style="margin: 0;padding:0;background:;min-height:20px;overflow:hidden">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">当前地址:</span>
+					<span class="mui-col-xs-9" id="bill_title" style="font-size:;"></span>
+				</div>
+				<div class="mui-row" style="margin: 0;padding:0;background:;height: 20px;">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">经纬度:</span>
+					<span class="mui-col-xs-9" style="">
+						<span id="bill_ipaddr"></span> , <span id="bill_gpsaddr"></span>
+					</span>
+				</div>
+				<div class="mui-row" style="margin: 0;padding:0;background:;height: 20px;">
+					<div class="mui-col-xs-12 mui-row" style="margin:0;padding:0;">
+						<span class="mui-col-xs-3" style="color:#ACACB4;">更新地址:</span>
+						<span class="mui-col-xs-8" id="bill_flag"></span>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row" style="display:;margin:0;padding:0;">
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="bill_nflag">
+						<span class="mui-col-xs-6" style="color:#ACACB4;">经营状况：</span>
+						<span class="mui-col-xs-6" id="bill_nflag"></span>
+					</div>
+					
+				</div>
+			</div>
+			
+			<div id="part1" style="display: none;border-top:1px solid #efeff4;">
+				<div class="mui-input-group groupInfo">
+					<div style="color: #20B2AA;border-bottom:1px dashed #efeff4;">基础信息1</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6  mui-row lastItem" data-id="bill_bflow">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">渠道类型：</span>
+							<span class="mui-col-xs-6" id="bill_bflow"></span>
+						</div>
+						<div class="mui-col-xs-6 mui-row lastItem" data-id="bill_wflow">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">终端类型：</span>
+							<span class="mui-col-xs-6" id="bill_wflow"></span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6  mui-row lastItem" data-id="linkvd_corrlevel">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">终端类别：</span>
+							<span class="mui-col-xs-6" id="linkvd_corrlevel"></span>
+						</div>
+						<div class="mui-col-xs-6  mui-row lastItem" data-id="col_cooperation">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">合作状态：</span>
+							<span class="mui-col-xs-6" id="col_cooperation"></span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6  mui-row lastItem" data-id="node_qty">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">该店销量：</span>
+							<span class="mui-col-xs-3" id="node_qty"></span>
+							<span class="mui-col-xs-3" style="color:#ACACB4;font-size:10px;">(箱/月)</span>
+						</div>
+						<div class="mui-col-xs-6 mui-row lastItem" data-id="bill_doppo">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">投入情况：</span>
+							<span class="mui-col-xs-6" id="bill_doppo"></span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6  mui-row lastItem" data-id="linkvd_desk_flag">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">燕京桌椅：</span>
+							<span class="mui-col-xs-6" id="linkvd_desk_flag"></span>
+						</div>
+						<div class="mui-col-xs-6 mui-row lastItem" data-id="node_nqty">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">桌椅数量：</span>
+							<span class="mui-col-xs-4" id="node_nqty"></span>
+							<span class="mui-col-xs-2" style="color:#ACACB4;font-size:10px;">(套)</span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6  mui-row lastItem" data-id="node_amt">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">经销商库存：</span>
+							<span class="mui-col-xs-6" id="node_amt"></span>
+						</div>
+						<div class="mui-col-xs-6  mui-row lastItem" data-id="col_elsewhere">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">是否窜货：</span>
+							<span class="mui-col-xs-6" id="col_elsewhere"></span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;">
+						<div class="mui-col-xs-6  mui-row lastItem" data-id="col_low_price">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">是否低价：</span>
+							<span class="mui-col-xs-6" id="col_low_price"></span>
+						</div>
+						<div class="mui-col-xs-6  mui-row lastItem" data-id="col_promotion">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">促销执行：</span>
+							<span class="mui-col-xs-6" id="col_promotion"></span>
+						</div>
+					</div>
+				</div>
+				<div class="mui-input-group groupInfo">
+					<div style="color: #20B2AA;border-bottom:1px dashed #efeff4;">铺货检查</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6 mui-row" data-id="col_common">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">普通燕京：</span>
+							<span class="mui-col-xs-6" id="col_common"></span>
+						</div>
+						<div class="mui-col-xs-6 mui-row" data-id="col_high_grade">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">中高档燕京：</span>
+							<span class="mui-col-xs-6" id="col_high_grade"></span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6 mui-row" data-id="col_compete_product">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">竞品：</span>
+							<span class="mui-col-xs-6" id="col_compete_product"></span>
+						</div>
+						<div class="mui-col-xs-6 mui-row" data-id="col_tinned">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">听装铺货：</span>
+							<span class="mui-col-xs-6" id="col_tinned"></span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;">
+						<div class="mui-col-xs-6 mui-row lastItem" data-id="col_monopoly">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">专销：</span>
+							<span class="mui-col-xs-6" id="col_monopoly"></span>
+						</div>
+					</div>
+				</div>
+				<div class="mui-input-group groupInfo">
+					<div style="color: #20B2AA;border-bottom:1px dashed #efeff4;">生动化检查</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6 mui-row" data-id="col_pop">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">pop：</span>
+							<span class="mui-col-xs-6" id="col_pop"></span>
+						</div>
+						<div class="mui-col-xs-6 mui-row" data-id="col_goods_shelves">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">货架酒：</span>
+							<span class="mui-col-xs-6" id="col_goods_shelves"></span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6 mui-row" data-id="col_heap_box">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">堆箱：</span>
+							<span class="mui-col-xs-6" id="col_heap_box"></span>
+						</div>
+						<div class="mui-col-xs-6 mui-row" data-id="col_freezer_show">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">展示柜：</span>
+							<span class="mui-col-xs-6" id="col_freezer_show"></span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;">
+						<div class="mui-col-xs-6 mui-row lastItem" style="display:;margin:0;padding:0" data-id="node_rate">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">展柜数量：</span>
+							<span class="mui-col-xs-4" id="node_rate"></span>
+							<span class="mui-col-xs-2" style="color:#ACACB4;font-size:10px;">(个)</span>
+						</div>
+					</div>
+				</div>	
+				<div class="mui-input-group groupInfo">
+					<div style="color: #20B2AA;border-bottom:1px dashed #efeff4;">产品价格检查</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6 mui-row" data-id="col_self_yesno">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">有无本品：</span>
+							<span class="mui-col-xs-6" id="col_self_yesno"></span>
+						</div>
+						<div class="mui-col-xs-6 mui-row" data-id="bill_coppo">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">本品经销商：</span>
+							<span class="mui-col-xs-6" id="bill_coppo"></span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;padding:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-12 mui-row" data-id="bill_spec">
+							<span class="mui-col-xs-3" style="color:#ACACB4;">本品目录：</span>
+							<span class="mui-col-xs-9" id="bill_spec"></span>
+						</div>
+					</div>
+					<div class="mui-row" style="border-bottom:1px solid #efeff4;display: none;" data-id="linkbd_price_saleqs">
+						<span class="mui-col-xs-3" style="color:#ACACB4;">该店清爽价：</span>
+						<span class="mui-col-xs-7" id="linkbd_price_saleqs"></span>
+						<span class="mui-col-xs-2" style="color:#ACACB4;font-size:10px;">(元/瓶)</span>
+					</div>
+					<div class="mui-row" style="display:;margin:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6 mui-row lastItem" style="display:;margin:0;padding:0" data-id="node_price">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">进货价：</span>
+							<span class="mui-col-xs-3" id="node_price"></span>
+							<span class="mui-col-xs-3" style="color:#ACACB4;font-size:10px;">(元/件)</span>
+						</div>
+						<div class="mui-col-xs-6 mui-row lastItem" style="display:;margin:0;padding:0" data-id="node_nprice">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">零售价：</span>
+							<span class="mui-col-xs-3" id="node_nprice"></span>
+							<span class="mui-col-xs-3" style="color:#ACACB4;font-size:10px;">(元/件)</span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6 mui-row lastItem" style="display:;margin:0;padding:0" data-id="node_namt">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">终端库存：</span>
+							<span class="mui-col-xs-4" id="node_namt"></span>
+							<span class="mui-col-xs-2" style="color:#ACACB4;font-size:10px;">(件)</span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-6 mui-row lastItem" style="display:;margin:0;padding:0" data-id="col_compete_yesno">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">有无竞品：</span>
+							<span class="mui-col-xs-6" id="col_compete_yesno"></span>
+						</div>
+						<div class="mui-col-xs-6 mui-row lastItem" style="display:;margin:0;padding:0" data-id="bill_nuser">
+							<span class="mui-col-xs-6" style="color:#ACACB4;">竞品经销商：</span>
+							<span class="mui-col-xs-6" id="bill_nuser"></span>
+						</div>
+					</div>
+					<div class="mui-row" style="display:;margin:0;border-bottom:0px solid #efeff4;">
+						<div class="mui-col-xs-12 mui-row lastItem" style="display:;margin:0;padding:0" data-id="bill_nspec">
+							<span class="mui-col-xs-3" style="color:#ACACB4;">竞品目录：</span>
+							<span class="mui-col-xs-9" id="bill_nspec"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;" data-id="bill_remark">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">拜访总结：</span>
+					<span class="mui-col-xs-9" id="bill_remark"></span>
+				</div>
+				<div class="mui-row" style="">
+					<span class="" style="color:#ACACB4;">照片：</span>
+					<div id="photobox" class="mui-row " style="margin-top: 10px;">
+					</div>
+	
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人：</span>
+					<span class="mui-col-xs-8" id="bill_userName"></span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var queryparmas;
+		mui.plusReady(function() {
+			
+			// 重写返回事件
+			var oldBack = mui.back;
+			mui.back = function() {
+				var webview = plus.webview.getWebviewById('vdsa402_plist.html');
+				webview.show();
+			}
+			var  normalData = {
+				h : {
+					bill_no 	:"",	// 唯一标识					
+					fbill_no 	:"",	// 终端101代码	
+					bill_user 	:"",	// 制单人
+					bill_com 	:"",	// 制单单位				
+					bill_date 	:"",	// 制单时间
+					//
+					bill_name	: "",	// 终端名称
+					bill_context: "",	// 终端312地址
+					bill_bno	: "",	// 联系人
+					bill_bid 	: "",	// 电话
+					bill_oppo	: "", 	// 终端312代码
+					bill_coppo	: "",	// 燕京经销商
+					//
+					bill_title	: "",	// 制单地址
+					bill_ipaddr	: "",	// 制单地经度
+					bill_gpsaddr: "",	// 制单地纬度
+					bill_spec	: "",	// 燕京产品
+					bill_nspec	: "",	// 竞品产品
+					bill_nuser	: "",	// 竞品经销商
+					bill_flag	: "",	// 是否更新终端地址
+					bill_nflag	: "",	// 经营状况
+					bill_bflow	: "",	// 终端类型
+					bill_wflow	: "",	// 终端属性
+					bill_doppo	: "",	// 投入情况
+					bill_remark	: "",
+					bill_bdate : "",
+					bill_edate : "",
+					node_qty	: 0,	// 该店销量
+					node_nqty	: 0,	// 该店销量
+					node_rate	: 0,	// 展柜数量
+					node_price:"",
+			    	node_nprice:"",
+			    	node_namt:"",
+			    	node_amt:"",
+				},
+				v : {},
+				c : {}
+			}
+			var textjson = {
+				h:{
+					linkbd_price_saleqs	: 0,	// 该店清爽售价
+			    	linkvd_corrlevel : "",  	// 终端级别 
+			    	linkvd_desk_flag : "",		// 燕京桌椅
+			    	col_cooperation:"",
+			    	col_common:"",
+			    	col_high_grade:"",
+			    	col_compete_product:"",
+			    	col_monopoly:"",
+			    	col_tinned:"",
+			    	col_pop:"",
+			    	col_goods_shelves:"",
+			    	col_heap_box:"",
+			    	col_freezer_show:"",
+			    	col_self_yesno:"",
+			    	col_compete_yesno:"",
+			    	col_elsewhere:"",
+			    	col_low_price:"",
+			    	col_promotion:"",
+				},
+				c:{},
+				v:{}
+			}
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			var teamBillCom = self.teamBillCom;
+			var teamBillComName = self.teamBillComName;
+			var userbillNo = self.userbillNo;
+			var userName = self.userName;
+			var loginCom = self.loginCom;
+			var loginComName = self.loginComName;
+			
+			if(self.detailInfo) {
+				detailInfo = self.detailInfo;
+			}
+			if(self.rqsData) {
+				detailInfo = self.rqsData;
+				detailInfo.bill_task = "S";
+				detailInfo.bill_text = JSON.parse(detailInfo.bill_text);
+			}
+			billstate(detailInfo.bill_task);
+		
+			var date = new Date();
+			var commit = document.getElementById("commit");
+			var bill_date = vlUtils.dateToString(date);
+			var rqsData = null; //提交的数据
+			var inputData = null; // 表单里的数据
+
+			// 获取当前用户详情信息
+			queryparmas = {
+				name: 'vdsa402',
+				bill_com: loginCom,
+				// bill_user: userbillNo,
+				bill_task:"L,S,Y",
+				currentPage: 1,
+				pageSize: 1,
+				paramText: "",
+				bill_no: detailInfo["指令"]
+			}
+			rqsDataAjax(queryparmas,'Find/Ddata/find', pendingData, '../login.html',true);
+			// 点击编辑
+			document.getElementById("toEdit").addEventListener("tap", function() {
+				var billUser = document.getElementById("toEdit").getAttribute("billUser");
+				var privileges = vlUtils.getStorage("newPrivileges");
+
+				if(billUser == userbillNo || privileges == "ROOT") {
+					mui.openWindow({
+						url: 'vdsa402_edit.html',
+						id: "vdsa402_edit.html",
+						createNew: true,
+						extras: {
+							teamBillCom: teamBillCom,
+							teamBillComName: teamBillComName,
+							userbillNo: userbillNo,
+							loginCom: loginCom,
+							loginComName: loginComName,
+							detailInfo: detailInfo,
+							hadSave: true
+						}
+					})
+				} else {
+					mui.alert("仅制单人或管理员有此权限！");
+				}
+			});
+			// 编辑结束
+			//*****************************************************
+			function pendingData(data,type){
+//				console.log(JSON.stringify(data))
+				if(data.data.length != 0) {
+					setValue(data.data[0],normalData,true,true,textjson); 
+					// 地址处理
+					var addrStr = data.data[0].bill_context;
+					var addrObj = data.data[0].bill_context;
+					if(typeof(addrStr) == "string" && addrStr.slice(0,2)=="[{"){
+						addrObj = JSON.parse(data.data[0].bill_context);
+						addrStr = addrObj[0].linkbd_linkprov +" "+ addrObj[0].linkbd_linkstreet +" "+ addrObj[0].linkvd_corraddr;
+						document.getElementById("bill_context").innerHTML = addrStr;
+						document.getElementById("bill_context").setAttribute("data-addr",JSON.stringify(data.data[0].bill_context));
+					}else if(typeof(addrStr) == "object"){
+						addrStr = addrObj[0].linkbd_linkprov +" "+ addrObj[0].linkbd_linkstreet +" "+ addrObj[0].linkvd_corraddr;
+						document.getElementById("bill_context").innerHTML = addrStr;
+						document.getElementById("bill_context").setAttribute("data-addr",JSON.stringify(data.data[0].bill_context));
+					}
+					// 表头
+					document.getElementById("header").innerHTML = data.data[0].bill_name;
+					document.getElementById("bill_userName").innerHTML = userName;
+					// 【经营状况】
+					var bnflag2 = data.data[0].bill_nflag
+					var aaa = {
+					    h : {
+					    	bill_nuser	: "",	// 竞品经销商
+					    	node_qty	: 0,	// 该店销量
+					    	node_nqty	: 0,	// 桌椅数量
+					    	//
+					    	node_rate	: 0,	// 展柜数量
+					    	bill_bflow	: "",	// 终端类型
+					    	bill_wflow	: "",	// 终端属性
+					    	bill_doppo	: "",	// 投入情况
+					    	linkbd_price_saleqs	: 0,	// 该店清爽售价
+					    	linkvd_corrlevel : "",  	// 终端级别 
+					    	linkvd_desk_flag : "",		// 燕京桌椅
+					    	// 
+					    	bill_spec 	: "",	// 燕京产品
+					    	bill_nspec 	: "",	// 竞品产品
+						},
+						v : {},
+						c : {}
+					}
+				    if(bnflag2 != "营业"){
+				    	for(var c in aaa.h){
+							jQuery("#part1").css("display","none");
+//							jQuery("#part2").css("display","none");
+						}
+				    }else{
+				    	for(var c in aaa.h){
+							jQuery("#part1").css("display","block");
+//							jQuery("#part2").css("display","block");
+						}
+				    	if(data.data[0].bill_spec.indexOf("清爽") == 0){
+				    		jQuery("div[data-id=linkbd_price_saleqs]").css("display","block");
+				    	}else{
+				    		jQuery("div[data-id=linkbd_price_saleqs]").css("display","none");
+				    	}
+				    }
+					
+					// 查询图片
+					var queryImgparmas = {
+						name		: 'msvr',
+						bill_com	: loginCom,
+						bill_user	: userbillNo,
+						bill_task	:"VR_find_vdvc801_01",
+						currentPage	: 1,
+						pageSize	: 100,
+						paramText	: "",
+						bill_no		: data.data[0].bill_no
+					}
+					rqsDataAjax(queryImgparmas,'/Find/Ddata/activity', downloadImg, '../login.html',true);
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					mui.toast("未查询到数据~")
+				}
+				plus.nativeUI.closeWaiting();
+			}
+			function downloadImg(data,type){
+				if(data.data.length != 0) {
+					var contList = document.getElementById("photobox");
+					for(var i = 0; i < data.data.length; i++) {
+						var newdataArr = {};
+						for(var k in data.data[i]) {
+							newdataArr[k.slice(0, 2)] = data.data[i][k];
+						}
+						var li = document.createElement("div");
+						li.setAttribute("data-row",JSON.stringify(newdataArr));
+						li.setAttribute("class", "imgs mui-col-xs-4");
+						li.style.marginBottom = "3px";
+						li.style.height = "auto";
+						li.style.background = "#fff";
+						var txt = "";
+						txt += '<img id="'+newdataArr["图片"]+'" src="../../images/icon/house.png" style="height:auto;width:100px;"/>'
+						li.innerHTML = txt;
+						contList.appendChild(li);
+//						vlUtils.downloadicon(newdataArr["图片"], newdataArr["图片"]);
+						downloadImgs(newdataArr["图片"], newdataArr["图片"]);
+					}
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					mui.toast("未查询到数据~")
+				}
+			}
+			function billstate(task){
+				if(task == "S") {
+					jQuery("#bBackIcon").removeClass("unclickable");
+					document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn)
+//					document.getElementById("bill_task").innerHTML = "待审核";
+					document.getElementById("toEdit").style.display="none";
+				}
+				if(task == "Y") {
+					jQuery("#bBackIcon").removeClass("unclickable");
+					document.getElementById("bBackBtn").addEventListener("tap",bBackBtn)
+//					document.getElementById("bill_task").innerHTML = "已审核";
+					document.getElementById("toEdit").style.display="none";
+				}
+				if(task == "L"){
+					jQuery("#bBackIcon").addClass("unclickable");
+					document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn)
+//					document.getElementById("bill_task").innerHTML = "待送审";
+					document.getElementById("toEdit").style.display="block";
+				}
+			}
+			function bBackBtn(){ 
+				var date = new Date();
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				params.bill_com	 = loginCom;
+				params.fbill_no	 = detailInfo.fbill_no;
+				params.bill_no 	 = detailInfo.bill_no;
+				params.bill_user = userbillNo;
+				params.bill_date = vlUtils.dateToString(date);
+				params.bill_task = "b_back";
+				//
+				CRUDajax(params,'../login.html',reloadnode)
+			}
+			function reloadnode(){
+				detailInfo.bill_task = "L";
+				jQuery("#bBackIcon").addClass("unclickable");
+				document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn);
+				document.getElementById("toEdit").style.display="block";
+			}
+			function downloadImgs(strNo,imgId) {// 创建下载任务保存小图片 
+				var filename=strNo+".png";
+				var relativePath = "_downloads/Vlbfile/" + filename;
+		        plus.io.resolveLocalFileSystemURL(relativePath, function(entry) {
+		            var sd_path = plus.io.convertLocalFileSystemURL(relativePath);
+					document.getElementById(imgId).setAttribute("src", sd_path); 
+		            //如果文件存在,则直接设置本地图片
+		        }, function(e) {
+		            //如果文件不存在,联网下载图片
+	            	var urls = systemURL + "File/APP?billName="+strNo+"&filePostfix=.jpg"
+					var dtask = plus.downloader.createDownload(urls, {filename:"_downloads/Vlbfile/"}, function ( d, status ) {
+						// 下载完成
+						if ( status == 200 ) { 
+							var sd_path = plus.io.convertLocalFileSystemURL(d.filename);
+							document.getElementById(imgId).setAttribute("src", sd_path);
+						} 
+					});
+		   			dtask.start(); 
+		        });
+		        //
+			}
+		}); // plusReady
+	</script>
+
+</html>

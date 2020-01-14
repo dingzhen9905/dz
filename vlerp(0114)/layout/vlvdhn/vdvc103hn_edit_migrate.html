@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:80px;line-height: 100px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" style="line-height:40px;color:white;"></a>
+			<h1 class="mui-title" id="header" style="color:white;background-color:;"></h1>
+		</header>
+		<div class="mui-content" style="padding-top:;margin-top:43px;color: #8f8f94;">
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<h5 class="mui-col-xs-8 spn">变更前：</h5>
+				</div>
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn" >上级部门名称：</span>
+					<span class="mui-col-xs-8 spn" id="oldDeptName"></span>
+				</div>
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn" >上级部门代码：</span>
+					<span class="mui-col-xs-8 spn" id="oldDeptCode"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<h5 class="mui-col-xs-9 spn">变更后：</h5>
+					<button type="buttton" class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-3" id="btn" style="height: 24px;padding:0;margin:0;">选择 &gt;</button>
+				</div>
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn" >上级部门名称：</span>
+					<span class="mui-col-xs-8 spn" style="color: #000;" id="newDeptName"></span>
+				</div>
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn" >上级部门代码：</span>
+					<span class="mui-col-xs-8 spn" style="color: #000;" id="newDeptCode"></span>
+				</div>
+			</div>
+			<div class="mui-row" style="background: #ffffff;"> 
+				<button type="buttton" class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-12" id="saveBtn" style="text-align: center;margin-right:;border:none;" >确&nbsp; &nbsp; &nbsp;定</button>	
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		
+
+	<script type="text/javascript">
+		mui.init({});
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var fbill_no = "";
+		var detailInfo = "";
+		var deptname = "";
+		var oNewDeptCode = document.getElementById("newDeptCode"),
+			oNewDeptName = document.getElementById("newDeptName"),
+			oOldDeptCode = document.getElementById("oldDeptCode"),
+			oOldDeptName = document.getElementById("oldDeptName");
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录人的代码
+			loginComName 	= self.loginComName;	// 5.登录人的名称
+			userbillNo 		= self.userbillNo;		// 6.登录单位代码
+			userName 		= self.userName;		// 7.登录单位名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			// 其他
+			deptname 		= self.deptname;
+			detailInfo 		= self.detailInfo;
+			
+			document.getElementById("header").innerHTML = detailInfo.bill_name; 
+			//
+			oOldDeptCode.innerHTML = fbill_no; 
+			oNewDeptCode.innerHTML = fbill_no;  
+			var setDeptName = (fbill_no == "ROOT") ? detailInfo.bill_comName : teamBillComName;
+			oOldDeptName.innerHTML = setDeptName; 
+			oNewDeptName.innerHTML = setDeptName;  
+			
+			window.addEventListener('103findselectedDept', ecSelectDeptBack, false);
+			document.getElementById("btn").addEventListener("tap", eSelectDept, false);
+			document.getElementById("saveBtn").addEventListener("tap", saveBtn, false); 
+		}); // plusReady
+		function eSelectDept(e){
+			mui.openWindow({
+				url:"../vlvdvc/vdvc103_find.html",
+				id :"vdvc103hn_find",
+				createNew: true,
+				extras:{
+					teamBillComName : teamBillComName,
+		            teamBillCom:teamBillCom,
+		            userbillNo:userbillNo,
+		            loginCom:loginCom,
+		            loginComName:loginComName,
+					deptname :deptname,
+					choice:"single",
+					fromPage :"vdvc103hn_edit01.html"
+				}
+			})
+		}
+		function ecSelectDeptBack(event){
+			var _detail = event.detail,
+				deptName = _detail.deptName,
+				deptCode = _detail.deptCode,
+				hasSelected = (deptName != "");
+			// 如果什么都不选,上级代码设为ROOT,上级单位名称设为登录单位
+			oNewDeptName.innerHTML = hasSelected ? deptName : loginComName;
+			oNewDeptCode.innerHTML = hasSelected ? deptCode : "ROOT"; 
+		}
+		function saveBtn(){
+			var  newDeptCode = oNewDeptCode.innerHTML;
+			var  newDeptName = oNewDeptName.innerHTML;
+			var changeData = [
+				{
+					fbill_no:detailInfo.fbill_no,
+					bill_text:""
+				},
+				{
+					fbill_no:newDeptCode,
+					bill_text:""
+				}
+			];
+			detailInfo.bill_task = "d_save";
+			detailInfo.bill_date = VlDate.get(new Date(), "_ymdhms");
+			if(typeof(detailInfo.cc_user) != "string"){
+				detailInfo.cc_user = JSON.stringify(detailInfo.cc_user);
+			}
+			
+			detailInfo.bill_text = JSON.stringify(changeData); 
+			console.log(JSON.stringify(detailInfo))
+			VlAjax.post({"port":"sendTask"}, detailInfo, sCBsave);
+		}
+		function sCBsave(data){
+			mui.toast(data.message)
+			mui("#saveBtn").button('reset');
+		}
+	</script>
+
+</html>

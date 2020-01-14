@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>chat</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/common/mui.css">
+		<link rel="stylesheet" type="text/css" href="css/fonts/iconfont.css" />
+		<style>
+			ul.mui-table-view:after,.mui-table-view:before{}
+			.mui-content{background: none !important;}
+			ul,li  {background: #fff; }
+			.mui-ellipsis{padding-right:50px;}
+			.hide{display: none;}
+			h5{color: #000000;}
+			.mui-media-body .mui-icon-chat{padding-right: 8px;font-size:18px;color: #6C6C6C;}
+			/*tipbox*/
+			.vl-list-search-tip{padding:100px;height:300px;text-align: center;}
+			.vl-list-search-tip .icon {color:#C8C7CC;font-size:100px;}
+			.vl-list-search-result{color:#000 !important;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;}
+			.vl-list-search-icon{color:#0062cc;height:100px;line-height: 100px;font-size: 100px;}
+		</style>
+	</head>
+
+	<body>
+		<div class="vl-list-tipbox" style="position: relative;">
+			<div id="showHint" class="vl-list-search-tip hide" style="">
+				<span class="icon mui-icon mui-icon-chat" style=""></span>
+				<p class="vl-list-search-result">暂无新的消息</p>
+				<p ></p>
+			</div>
+			<div id="searching" class="vl-list-search-tip" style="">
+				<p class="mui-icon mui-icon-search vl-list-search-icon"></p>
+				<p>正在搜索中......</p>
+			</div>
+			<div id="showError" class="vl-list-search-tip hide" style="">
+				<span class="icon iconfont icon-kulian" style=""></span>
+				<p class="vl-list-search-result">出错啦~</p>
+				<p >请稍后再试</p>
+			</div>
+		</div>
+		<div class="mui-content mui-scroll-wrapper" id="refreshContainer">
+			<div class="mui-scroll">
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed"></ul>
+			</div>
+		</div>
+		<script type="text/template" id="listTmpl">
+			<li class="mui-table-view-cell mui-media">
+				<a class="mui-navigate-right">
+					<div class="data-row hide"><%=rowdata%></div>
+					<span class="mui-badge mui-badge-danger"><%=liRightT%></span>
+					<img class="mui-media-object mui-pull-left hide" src="images/icon/default.png">
+					<div class="mui-media-body">
+						<h5><span class="mui-icon mui-icon-chat"></span><%=liTitle%></h5>
+						<p class="mui-ellipsis"></p>
+					</div>
+				</a>
+			</li>
+		</script>
+	</body>
+
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+	<script src="js/md5.js"></script>
+	<script src="js/arttmpl.js"></script>
+	<script type="text/javascript" src="js/vlindex.js"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: "#refreshContainer",
+				down: {
+					auto: false, //可选,默认false.首次加载自动下拉刷新一次
+					style: 'circle',
+					color: '#2BD009',
+					callback: pulldownRefresh
+				},
+				up: {
+					auto: false ,//可选,默认false.首次加载自动上拉加载一次
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		var teamBillCom,teamBillComName,
+			userbillNo,userName,userRole,
+			loginCom,loginComName,
+			privileges,
+			queryparmas,pager,
+			pageSize = 10;
+		mui.plusReady(function() {
+			
+			plus.screen.lockOrientation("portrait-primary");  // 禁止横屏显示
+			//
+			var oldBack = mui.back;
+			mui.back = function(){
+			  	plus.runtime.quit();
+			  	return;
+			}
+			if(plus.runtime.appid !== "vlerpfc"){
+				getNewestInfo();
+				findDept();
+			}else{
+				document.getElementById("showHint").style.display = "block";
+				document.getElementById("searching").style.display = "none";
+			}
+			
+			mui("#contList").on("tap", "li", function(e){
+				var li = jQuery(this),
+					dataRow = JSON.parse(li.find('.data-row').eq(0).html()),
+					pageId = 'notice-node.html';
+					// console.log(JSON.stringify(dataRow));
+				VlPage.beforeOpen(pageId)
+				mui.openWindow({
+					url : pageId,
+					id : pageId,
+					extras : {
+						teamBillCom : teamBillCom,
+						userbillNo : userbillNo,
+						dataRow : dataRow,
+					}
+				})
+			})
+			window.addEventListener('refreshList', function(event){ ecRefreshList(event)})
+		}); // mui.plusReady
+	function getNewestInfo() {
+		teamBillCom 	= VlStore.pGet("newTeamBillCom");
+		teamBillComName = VlStore.pGet("newTeamBillComName");
+		userbillNo 		= VlStore.pGet("userbillNo");
+		userName 		= VlStore.pGet("userName");
+		loginCom 		= VlStore.pGet("newLoginCom");
+		loginComName	= VlStore.pGet("newLoginComName");
+		privileges 		= VlStore.pGet("newPrivileges");
+		userRole 		= VlStore.pGet("newUserRole");
+		billcoppo 		= VlStore.pGet("newBillcoppo");   
+	}
+	//下拉刷新
+	function pulldownRefresh() {
+		document.getElementById("contList").innerHTML = "";
+		document.getElementById("showHint").style.display = "none";
+		document.getElementById("searching").style.display = "block";
+		//
+		queryparmas.currentPage = 1;
+		plus.nativeUI.showWaiting("正在查询数据..."); 
+		
+		VlAjax.post({
+			"port":"active",
+			"headers":"json",
+			"outPath" : "layout/login.html",
+			"isFirst" : true,
+		}, queryparmas, sCBfindDept);
+		
+		mui('#refreshContainer').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+	}
+	
+	/*上拉加载具体业务实现 */
+	function pullupRefresh() {
+		if(queryparmas.currentPage < pager.totalPage) {
+			queryparmas.currentPage = queryparmas.currentPage + 1;
+			
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			
+			VlAjax.post({
+				"port":"active",
+				"headers":"json",
+				"outPath" : "layout/login.html",
+				"isFirst" : false,
+			}, queryparmas, sCBfindDept);
+			
+			mui('#refreshContainer').pullRefresh().endPullupToRefresh();
+		} else {
+			plus.nativeUI.toast("~没有更多了~", {
+				'verticalAlign': "middle"
+			});
+			mui('#refreshContainer').pullRefresh().endPullupToRefresh();
+			return;
+		}
+	}
+	function findDept() {
+		queryparmas = { // 默认全部004
+			name: 'msvr',
+			bill_task: "VR_vdvc901_query_01",
+			bill_com: VlStore.pGet("newTeamBillCom"),
+			bill_user:userbillNo,
+			// bill_com:"vdvc10100_20190810_3e7119a7",
+			// bill_user:"vdvc00100_20190812_9c9c7009",
+			bill_title:"",
+			currentPage: 1,
+			pageSize: pageSize,
+			paramText: ""
+		}
+		plus.nativeUI.showWaiting("正在查询数据..."); 
+		VlAjax.post({
+			"port" : "active",
+			"headers" : "json",
+			"outPath" : "layout/login.html",
+			"isFirst":true,
+		}, queryparmas, sCBfindDept);
+	}
+	function sCBfindDept(data,type){
+		// console.log("消息："+JSON.stringify(data));
+		pager = data.page;
+		var datas = data.data;
+		var dataLens = datas.length;
+		if((dataLens === 0) || (type && (dataLens === 1))) {
+			refreshTotalNotice (0);
+			// mui.toast("msg：未查询到数据~");
+			document.getElementById("contList").innerHTML = '';
+			document.getElementById("searching").style.display = "none";
+			document.getElementById("showHint").style.display = "block";
+		}else{
+			var html = renderList(datas, type);
+			jQuery("#contList").append(html);
+		}
+		plus.nativeUI.closeWaiting();
+	}
+	function renderList(arr, type){
+		var html = '';
+		for(var i = 0; i < arr.length; i++) {
+			var _rowd = dataAdapter(arr[i]);
+			if(type&&i==0){
+				jQuery("#contList").innerHTML = "";
+				refreshTotalNotice (_rowd['liRightT']);
+				document.getElementById("searching").style.display = "none";
+			}else{
+				var source = document.getElementById('listTmpl').innerHTML;
+				var render = template.compile(source);
+				html += render(_rowd);
+			}
+		}
+		return html;
+	}
+	function refreshTotalNotice (num){
+		mui.fire(plus.webview.currentWebview().parent(),'refreshNoticeNum',{"num" : num});
+	}
+	function dataAdapter(data, type){
+		var oData = {};
+		for(var k in data) {
+			oData[k.slice(0, 2)] = data[k];
+		}
+
+		return {
+			"rowdata" 	: JSON.stringify(oData),
+			"liTitle" 	: oData['标题'],
+			"liStatus" 	: oData['图片'],
+			"liRightT" 	: oData['数量'],
+			// "liImgSrc"  : VlAjax.getImgPath(oData["图片"])
+		}
+	}
+	function ecRefreshList(event){
+		document.getElementById("contList").innerHTML = "";
+		document.getElementById("showHint").style.display = "none";
+		document.getElementById("searching").style.display = "block";
+		//
+		queryparmas.currentPage = 1;
+		plus.nativeUI.showWaiting("正在查询数据..."); 
+		
+		VlAjax.post({
+			"port":"active",
+			"headers":"json",
+			"outPath" : "layout/login.html",
+			"isFirst" : true,
+		}, queryparmas, sCBfindDept);
+	}
+	
+	
+
+	</script>
+
+</html>

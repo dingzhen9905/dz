@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.mui-bar .mui-icon:active {
+				background: #0062cc!important;
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			
+			#searchName {
+				font-size: 12px;
+				margin: 2px 5px;
+				padding: 0;
+				height: 30px;
+				line-height: 30px;
+				border: 1px solid #007aff;
+				/*dedee2*/
+				border-radius: 3px;
+				text-align: center;
+				color: #007aff;
+			}
+			.mui-input-group:before,
+			.mui-input-group:after{
+				height:0px;
+			}
+			label{
+				font-size: 12px;
+				color: #6C6C6C;
+			}
+			input{
+				font-size: 12px;
+				padding-left:10px !important;
+			}
+			input[placeholder] {
+				padding-left:10px !important;
+				font-size: 12px;
+				line-height: 10px;
+				color: #000;
+			}
+		</style>
+	</head>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id='head' style="height: 140px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<div class="mui-title plistTitle" id="selectionDepartment">
+				<p id="TO"></p>
+				<h1 id="header"></h1>
+				<span style="position: relative;left:58px;top:-35px;color:white;font-size:12px;display:none;margin-left:20px;" id="moredept">▼</span>
+			</div>
+			<a class="mui-icon mui-pull-right" id="toEdit" style="font-size:16px;position:relative;bottom:-5px;right:5px;">审核</a>
+			<div class="mui-row" style="position:fixed;top:70px;left:0px;width:100%;height:auto;background:#fff; color: #000;">
+				<div class="mui-col-xs-9 mui-row" style="margin-bottom:6px;" id="topSelectBox">
+					<div class="mui-input-row mui-col-xs-12" style="margin-top:3px;">
+						<label>选择班组:</label>
+						<input id="bill_name" type="text" class="change requiredInput" readonly="readonly" placeholder="点击选择班组" style="border:1px solid #5da8fa;border-radius:10px;height:26px;margin-top:3px;">
+					</div>
+					<div class="mui-col-xs-12 mui-row">
+						<div class="mui-col-xs-6">
+							<div class="mui-input-row" style="margin:0;padding:0;">
+								<label style="margin:0;padding:5px;text-align: center;">核算年</label>
+								<input id="fiscal_y" type="text" class="change requiredInput" readonly="readonly" style="border:1px solid #5da8fa;border-radius:10px;height:26px;margin:0;padding:0;">
+							</div>
+						</div>
+						<div class="mui-col-xs-6">
+							<div class="mui-input-row" style="margin:0;padding:0;">
+								<label style="margin:0;padding:5px;text-align: center;">核算月</label>
+								<input id="fiscal_m" type="text" class="change requiredInput" readonly="readonly" style="border:1px solid #5da8fa;border-radius:10px;height:26px;margin:0;padding:0;">
+							</div>
+						</div>
+					</div>
+				</div>
+				<span class="mui-col-xs-2" id="search" style="margin:15px;">
+					<button class="mui-btn-primary mui-btn-outlined">刷新</button>
+				</span>
+			</div>
+			<div id="report02" class="mui-row" style="position:fixed;top:140px;width:100%;background:#20B2AA;padding:0;text-align: center;height: 30px;line-height: 30px;margin-left:0px;color:#fff;">
+				<span class="mui-col-xs-3" id="title3" style="text-align: left;padding-left: 10px;">姓名班次</span>
+				<span class="mui-col-xs-2" id="title4" style="text-align: center;">出勤天数</span>
+				<span class="mui-col-xs-4" id="title5" style="text-align: center;">请假/出差/加班</span>
+				<span class="mui-col-xs-3" id="title6" style="text-align: center;">迟到/早退</span>
+			</div>
+		</header>
+		<div class="mui-content" style="border: transparent;">
+
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdac402_m_list.html',
+				id: 'vdac402_m_list.html',
+				styles: {
+					top: '175px',
+					bottom: '0px',
+				}
+			}]
+		});
+		var searchName = '';
+		var searchCode = '';
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vdac402_m_list_subpage').pullRefresh().scrollTo(0,0,100)");
+		});
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom 	= self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo 		= self.userbillNo;
+			userName 		= self.userName;
+			loginCom 		= self.loginCom;
+			loginComName 	= self.loginComName;
+			privileges 		= vlUtils.getStorage("newPrivileges");
+			commonParams 	= self.commonParams;
+			fbill_no		= self.fbill_no;
+			var fromPage 	= self.fromPage;
+			var pageTitle   = self.pageTitle;
+			var fbillnoName = self.fbillnoName;
+			var dataInfo = self.dataInfo; //
+			
+			// 更改header的显示信息
+			document.getElementById("TO").innerHTML = pageTitle; //头部显示发货单位名
+			document.getElementById("header").innerHTML = fbillnoName; //头部显示发货单位名
+			var nowDate = new Date();
+			var nowY = nowDate.getFullYear();
+			var nowM = nowDate.getMonth();
+			document.getElementById("fiscal_y").value = nowY;
+			document.getElementById("fiscal_m").value = nowM+1;
+			// 点击查询按钮
+			document.getElementById("search").addEventListener("tap", function() {
+				var fy = jQuery("#fiscal_y").val();
+				var fm = jQuery("#fiscal_m").val();
+				var bname = jQuery("#bill_name").val();
+				if(vlUtils.isnull(fy) || vlUtils.isnull(bname) || vlUtils.isnull(fm)){
+					mui.toast("请先选择查询条件~");
+					return;
+				}
+				var fp = String(fy) + String(fm);
+				searchReport(bname,fp);
+				// 传值给子表
+				mui.fire(plus.webview.getWebviewById('vdac402_m_list.html'), 'changeReport', {
+					bname: bname,
+					fp: fp,
+					commonParams:"VR_query_vdac402_01"
+				});
+			});
+			//
+			// 4-4 输入框变化
+			function inputChange(){
+				var fy = jQuery("#fiscal_y").val();
+				var fm = jQuery("#fiscal_m").val();
+				var bname = jQuery("#bill_name").val();
+				var fp = String(fy) + String(fm);
+				if(!vlUtils.isnull(fy) && !vlUtils.isnull(bname) && !vlUtils.isnull(fm)){
+					searchReport(bname,fp);
+					// 传值给子表
+					mui.fire(plus.webview.getWebviewById('vdac402_m_list.html'), 'changeReport', {
+						bname: bname,
+						fp: fp,
+						commonParams:"VR_query_vdac402_01"
+					});
+				}
+			}
+			//
+			if(fromPage == "work") {
+				$$("#moredept").css("display","block");
+				if(dataInfo.length != 0) {
+					document.getElementById("header").innerHTML = dataInfo[0].title;
+					mui.fire(plus.webview.getWebviewById('vdac402_m_list.html'), "plist_in_list", {
+						fbill_no: dataInfo[0].bill_no,
+						fbillnoName:dataInfo[0].title
+					});
+					// 查询班组
+				} else {
+					document.getElementById("header").innerHTML = "";
+				}
+
+				document.getElementById("selectionDepartment").addEventListener("tap", function() {
+					if(dataInfo.length <= 1) {
+						mui.toast("没有更多的班组了!");
+						return;
+					}
+					if(dataInfo.length != 1) { 
+						var oldUserName = document.getElementById("header").innerHTML;
+						var oldUserCode = fbill_no;
+						mui.openWindow({
+							url: '../vlvdvc/vdvc103_VRfind.html',
+							id: "vdvc103_VRfind.html",
+							createNew: true,
+							extras: {
+								teamBillCom		: teamBillCom, 		// 1.管理单位代码	// 不变
+								teamBillComName	: teamBillComName, 	// 2.管理单位名称	// 不变
+								fbill_no		: fbill_no, 		// 3.fbill_no是		// 不变
+								loginCom		: loginCom, 		// 4.登录单位代码
+								loginComName	: loginComName, 	// 5.登录单位名称
+								userbillNo		: userbillNo, 		// 6.登录人的代码
+								userName		: userName, 		// 7.登录人的姓名
+								privileges		: privileges, 		// 8.当前的权限是
+								fromPage		: "vrsa402_plist.html", 	// 9.从哪个页面来
+								oldUserName 	: oldUserName,
+								oldUserCode 	: oldUserCode,
+								choice			: "single", 		// 单选
+								// choice		:"multiple", 		// 多选
+							}
+						})
+					}
+					
+				})
+
+			} else {
+				document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+				$$("#moredept").css("display","none");
+			}
+			// 按班组查询
+			document.getElementById("bill_name").addEventListener("tap",function(){
+				var deptparmas = {
+					name: 'msvr',
+					bill_task: "VR_find_vdhr401", 	// 查询的指令
+					bill_com: teamBillCom, 				// 当前单位
+					bill_user: userbillNo, // 当前登陆人
+					bill_dept: fbill_no,	// 查询
+					bill_name: document.getElementById("header").innerHTML,	// 查询
+					currentPage: 1,
+					pageSize: 100,
+					paramText: ""
+				};
+				rqsDataAjax(deptparmas, '/Find/Ddata/activity', deptData, '../login.html');
+			})
+			// 更换 表头
+			function deptData(data, type) {
+				//
+				if(data.data.length != 0) {
+					var reportArr = [];
+					// 获取数组
+					for(var i = 0; i < data.data.length; i++) {
+						reportArr[i] = {
+							"title": data.data[i]["标题班组"]
+						};
+					}
+//					reportArr[reportArr.length] = {"title": "其他"}
+					// 弹框
+					plus.nativeUI.actionSheet({
+						title: "切换班组",
+						cancel: "取消",
+						buttons: reportArr
+					}, function(e) {
+						//商品类型find赋值
+						if((e.index - 1) != -1){
+							document.getElementById("bill_name").value = reportArr[(e.index - 1)].title;
+							inputChange();
+						}
+					});
+				
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					plus.nativeUI.toast("没有查到相应的班组哟~",{"verticalAlign":"middle"});
+				}
+			} // deptData
+			// 核算年
+			document.getElementById("fiscal_y").addEventListener("tap",function(){
+				var fyArr = [];
+				// 获取数组
+				for(var i = (nowY-2); i < (nowY+3); i++) {
+					var nowYjson = {
+						"title": i
+					};
+					fyArr.push(nowYjson);
+				}
+				// 弹框
+				plus.nativeUI.actionSheet({
+					title: "切换核算年",
+					cancel: "取消",
+					buttons: fyArr
+				}, function(e) {
+					//商品类型find赋值
+					if((e.index - 1) != -1){
+						document.getElementById("fiscal_y").value = fyArr[(e.index - 1)].title;
+						inputChange();
+					}
+				});
+			});
+			document.getElementById("fiscal_m").addEventListener("tap",function(){
+				var d = new Date(nowY,(nowM+1),0);
+				var days = d.getDate();
+				var fmArr = [];
+				// 获取数组
+				for(var i = 1; i <= days; i++) {
+					var nowMjson = {
+						"title": i
+					};
+					fmArr.push(nowMjson);
+				}
+				// 弹框
+				plus.nativeUI.actionSheet({
+					title: "切换核算年",
+					cancel: "取消",
+					buttons: fmArr
+				}, function(e) {
+					//商品类型find赋值
+					if((e.index - 1) != -1){
+						document.getElementById("fiscal_m").value = fmArr[(e.index - 1)].title;
+						inputChange();
+					}
+				});
+			});
+			document.getElementById("toEdit").addEventListener("tap",function(){
+				var bname = jQuery("#bill_name").val();
+				if(vlUtils.isnull(bname)){
+					plus.nativeUI.toast("请先选择“班组”~",{"verticalAlign":"middle"})
+					return;
+				}
+				var fy = jQuery("#fiscal_y").val();
+				var fm = jQuery("#fiscal_m").val();
+				var fp = String(fy) + String(fm);
+				var d = new Date();
+				var clockinData = {
+					name		: "msvr",
+					bill_no		: getDataCode("vdac402"),
+					bill_task	: "VE_confirm_vdac402_1",		// 
+					bill_date 	: vlUtils.dateToString(d),	// 
+					bill_user 	: userbillNo,				// 用户代码
+					bill_com 	: teamBillCom,				// 单位代码
+					fiscal_period: fp,						// 核算年月
+					bill_name	: bname		 				//班组名称
+				}
+				// 保存
+				CRUDajax(clockinData,"../login.html",saveSuccess);
+			});
+			function searchReport(bname,fp){
+				var reportparmas = {
+					name: 'msvr',
+					bill_task: "VR_query_vdac402_01", 	// 查询的指令
+					bill_com: teamBillCom, 		// 当前单位
+					bill_user: userbillNo, 		// 当前登陆人
+					bill_name: bname,			// 查询
+					fiscal_period: fp,
+					currentPage: 1,
+					pageSize: 1,
+					paramText: ""
+				};
+				rqsDataAjax(reportparmas, '/Find/Ddata/activity', report02Data, '../login.html');
+			}
+			// 更换 表头
+			function report02Data(data, type) {
+				var newdataArr = {};
+				if(data.data.length != 0){
+					for(var k in data.data[0]) {
+						newdataArr[k.slice(0, 2)] = k.slice(2);
+					}
+					document.getElementById("title3").innerHTML = vlUtils.isnull(newdataArr["标题"])?document.getElementById("title3").innerHTML:newdataArr["标题"];
+					document.getElementById("title4").innerHTML = vlUtils.isnull(newdataArr["数量"])?document.getElementById("title4").innerHTML:newdataArr["数量"];
+					document.getElementById("title5").innerHTML = vlUtils.isnull(newdataArr["金额"])?document.getElementById("title5").innerHTML:newdataArr["金额"];
+					document.getElementById("title6").innerHTML = vlUtils.isnull(newdataArr["日期"])?document.getElementById("title6").innerHTML:newdataArr["日期"];
+				}else{
+					mui.toast("未查询到数据!")
+				}
+			} // reportData
+			function saveSuccess(){
+				plus.nativeUI.toast("提交成功~",{"verticalAlign":"middle"})
+			}
+		}); //plusReady
+	</script>
+
+</html>

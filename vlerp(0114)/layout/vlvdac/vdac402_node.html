@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>考勤日审</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			/*关联状态*/
+			.list_sts{
+				font-size: 12px;
+				line-height: 14px;
+				color:#f0ad4e;
+				border:1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+			.bottomLine{
+				border-bottom: 1px solid #8f8f94;
+				position:relative;
+				margin: 25px 50px;
+			}
+			.end{
+				position:absolute;
+				top:-8px;
+				left:32%;
+				background: #efeff4;
+				padding:0 10px;
+				z-index:111;
+				font-size: 10px;
+			}
+			button.clock{
+				box-shadow: rgba(255,255,255,0.25) 0px 1px 0px, inset rgba(255,255,255,0.25) 0px 1px 0px, inset rgba(0,0,0,0.25) 0px 0px 0px, inset rgba(255,255,255,0.03) 0px 20px 0px, inset rgba(0,0,0,0.15) 0px -20px 20px, inset rgba(255,255,255,0.05) 0px 20px 20px;
+			}
+			.choiceOne {
+				color:#007AFF;
+			}
+			#clerkList li:nth-of-type(odd){
+				background:#F0F0F0;
+			}
+			.mui-icon-bars:hover{
+				border-radius: 10px;
+				background:#C0C0C0;
+				color:#fff !important;
+			}
+			input[placeholder]{
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 75px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">日审管理</h1>
+		</header>
+		<!---->
+		<div class="mui-content mainBody nodeBody" style="padding-top: 80px !important;">
+			<div class="mui-input-group groupInfo" style="display:;" id="">
+				<div class="mui-row infoItem lastItem" style="color: #0070C0;">
+					<span class="mui-col-xs-4">当前考勤日期：</span>
+					<span id="" class="mui-col-xs-5">
+						<input type="date"  name="clockDate" id="clockDate" style="font-size:12px;color: #20B2AA;" />
+					</span>
+					<span class="mui-col-xs-3" id="" style="float:right;margin-top:3px;color:gray">* 点击可切换</span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo" style="display:;">
+				<div class="mui-row infoItem lastItem" style="color: #0070C0;">
+					<span class="mui-row mui-col-xs-9" id="clockArr">
+						<span class="mui-col-xs-4">当前考勤组：</span>
+						<span class="mui-col-xs-8" style="color: #20B2AA;text-align: center;" id="nowAttendGroup"></span>
+					</span>
+					<button class="mui-col-xs-3" id="schedule" style="float:right;margin-top:3px; display: none;">排班</button>
+				</div>
+			</div>
+			
+
+			<div id="postinfo" class="mui-input-group groupInfo" style="">
+				<!--<div style="color: gray;">今日出勤状况：</div>
+				<div class="mui-row infoItem" style="color: #0070C0;margin-bottom: 5px;">
+					<span class="mui-row mui-col-xs-9" id="shiftbox">
+						<span class="mui-col-xs-4">选择班次：</span>
+						<span class="mui-col-xs-8" style="color: #20B2AA;text-align: center;" id="shift"></span>
+					</span>
+					<button class="mui-col-xs-3" id="refresh" style="float:right;margin-top:3px;">刷新</button>
+				</div>-->
+				<div class="mui-row infoItem lastItem" style="color: #0070C0;margin-bottom: 5px;">
+					<span class="mui-row mui-col-xs-9" id="shiftbox">
+						<span style="color: gray;">今日出勤状况：</span>
+						<span class="mui-col-xs-8" style="color: #20B2AA;text-align: center;display: none;" id="shift"></span>
+					</span>
+					<button class="mui-col-xs-3" id="refresh" style="float:right;margin-top:3px;">刷新</button>
+				</div>
+				<div id="" class="mui-row" style="background:#ACACB4;color:#fff;text-align:center;font-size:12px;line-height: 14px;padding:3px;margin:0;">
+					<span class="mui-col-xs-2">员工</span>
+					<span class="mui-col-xs-2">班次</span>
+					<span class="mui-col-xs-2">预出勤</span>
+					<span class="mui-col-xs-2">实际出勤</span>
+					<span class="mui-col-xs-2">迟到早退</span>
+					<!--<span class="mui-col-xs-2">修改出勤</span>-->
+					<span class="mui-col-xs-2">修改</span>
+				</div>
+				<ul id="clerkList" style="padding:0;margin:0;list-style:none;text-align: center;background:#E3E3E3;margin-bottom:10px;">
+				</ul>
+				<div class="mui-row" style="background: #ffffff;display:;" id="auditbox" style=""> 
+					<button type="buttton" class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-12" id="audit" style="text-align: center;margin-right:;" >审&nbsp; &nbsp; &nbsp;核</button>	
+				</div>
+			</div>
+			<!---->
+			<div id="postinfo" class="mui-input-group groupInfo" style="">
+				<div style="color: #20B2AA;height: 25px;">申诉：</div>
+				<ul id="clerkAppealList" style="padding:0;margin:0;margin-bottom:15px;list-style:none;">
+					<!--<li style="margin:0;border-radius: 10px;margin-bottom:10px;background:#F0F0F0;">
+						<div class="mui-row" style="background:#E3E3E3;border-radius: 10px 10px 0 0;padding-left:10px;padding-right:10px;">
+							<span class="mui-col-xs-1 mui-icon mui-icon-contact" style="font-size: 16px;margin-top:2px;"></span>
+							<span class="mui-col-xs-3" style="color:#007AFF;height">邓伍生</span>
+							<span class="mui-col-xs-6">2018-07-06</span>
+							<span class="mui-col-xs-2 mui-pull-right" style="text-align: center;">审核</span>
+						</div>
+						<div class="mui-row" style="padding:5px 10px;line-height: 24px;">
+							<span class="mui-col-xs-10">今天忘了打卡了</span>
+							<button type="button" class="mui-pull-right mui-btn mui-btn-warning mui-btn-outlined mui-col-xs-2" style="padding:0;font-size:12px;">处理</button>
+						</div>
+					</li>
+					<li style="margin:0;border-radius: 10px;margin-bottom:10px;background:#F0F0F0;">
+						<div class="mui-row" style="background:#E3E3E3;border-radius: 10px 10px 0 0;padding-left:10px;padding-right:10px;">
+							<span class="mui-col-xs-1 mui-icon mui-icon-contact" style="font-size: 16px;margin-top:2px;"></span>
+							<span class="mui-col-xs-3" style="color:#007AFF;height">邓伍生</span>
+							<span class="mui-col-xs-6">2018-07-06</span>
+							<span class="mui-col-xs-2 mui-pull-right" style="text-align: center;">审核</span>
+						</div>
+						<div class="mui-row" style="padding:5px 10px;line-height: 24px;">
+							<span class="mui-col-xs-10">今天忘了打卡了</span>
+							<button type="button" class="mui-pull-right mui-btn mui-btn-warning mui-btn-outlined mui-col-xs-2" style="padding:0;font-size:12px;">处理</button>
+						</div>
+					</li>
+					<li style="margin:0;border-radius: 10px;margin-bottom:10px;background:#F0F0F0;">
+						<div class="mui-row" style="background:#E3E3E3;border-radius: 10px 10px 0 0;padding-left:10px;padding-right:10px;">
+							<span class="mui-col-xs-1 mui-icon mui-icon-contact" style="font-size: 16px;margin-top:2px;"></span>
+							<span class="mui-col-xs-3" style="color:#007AFF;height">邓伍生</span>
+							<span class="mui-col-xs-6">2018-07-06</span>
+							<span class="mui-col-xs-2 mui-pull-right" style="text-align: center;">审核</span>
+						</div>
+						<div class="mui-row" style="padding:5px 10px;line-height: 24px;">
+							<span class="mui-col-xs-10">今天忘了打卡了</span>
+							<button type="button" class="mui-pull-right mui-btn mui-btn-warning mui-btn-outlined mui-col-xs-2" style="padding:0;font-size:12px;">处理</button>
+						</div>
+					</li>-->
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var deptname;
+		var date = new Date();
+		var commit = document.getElementById("commit");
+		var bill_date = vlUtils.dateToString(date);
+		var rqsData = null; //提交的数据
+		var inputData = null; // 表单里的数据
+		var clerkSelfInfo ;
+		var potionArr = [];
+		var typeOptionArr = [];
+		mui.plusReady(function() {
+			plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+			// TODO  0. 重写返回事件
+			var oldBack = mui.back;
+		    mui.back = function(){
+		    	if(fromPage != "vdac402_list.html" && fromPage != "vdac402_edit.html"){
+		    		oldBack();
+		    		return;
+		    	}
+		    	var webview = plus.webview.getWebviewById("vdac402_plist.html");
+		    	webview.show();
+		    }
+		    
+			// TODO　１.页面上的字段
+			var h = {}
+			var v = {};
+			
+			// TODO 2. 接收传过来的参数===========================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			
+			// TODO 3. 基础设置/赋值 =============================
+			var user = JSON.parse(vlUtils.getStorage('user'));
+			document.getElementById("clockDate").value = vlUtils.dateToString(date).slice(0,-9); 
+			// 获取手机号
+			var usertel = user.usertel;
+			
+			// 下载图片
+			var imgid= vlUtils.uuid('img', 4, 10);
+		 	$$("#userImg").attr('id',imgid);	
+			// 查询考勤组
+			var clerkInfoParams = {
+				name: 'msvr',
+				bill_task: "VR_find_vdhr401", // 查询的指令
+				bill_com: teamBillCom, 	// 当前单位
+				bill_user: userbillNo,	// 当前登陆人
+//				bill_user: 'vdvc00100_20180612_H101H001',	// 当前登陆人
+				bill_bflow: "考勤组",		// 手机号
+				currentPage: 1,
+				pageSize: 100,
+				paramText: ""
+			};
+			rqsDataAjax(clerkInfoParams, '/Find/Ddata/activity', clerkInfo, '../login.html');
+			
+			
+			// TODO 4. 事件绑定==================================
+			// 选择考勤组
+			document.getElementById("clockArr").addEventListener("tap",function(){
+				if(potionArr.length == 0){
+					mui.toast("未查询到相关考勤组哦~")
+					return;
+				}
+				// 弹框
+				plus.nativeUI.actionSheet({
+					title: "选择考勤组",
+					cancel: "取消",
+					buttons: potionArr
+				}, function(e) {
+					//商品类型find赋值
+					if((e.index - 1) != -1){
+						document.getElementById("nowAttendGroup").innerHTML = potionArr[(e.index - 1)].title;
+						var nunit = document.getElementById("shift").innerHTML; 
+						var ndate1 = document.getElementById("clockDate").value + " 00:00:00";
+						query402(potionArr[(e.index - 1)].title,ndate1,nunit,"ALL");
+					}
+				});
+			});
+			// 排班
+			document.getElementById("schedule").addEventListener("tap",function(){
+				var newrowdata = {
+					bill_coppo:document.getElementById("nowAttendGroup").innerHTML,
+					bill_ndate:document.getElementById("clockDate").value + " 00:00:00"
+				}
+				mui.openWindow({
+					url:"vdac402_edit01.html",
+					id:"vdac402_edit01.html",
+					createNew: true,
+					extras: {
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码	// 不变
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变
+						fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+						loginCom 		: loginCom,			// 4.登录人的代码
+						loginComName 	: loginComName,		// 5.登录人的名称
+						userbillNo 		: userbillNo,		// 6.登录单位代码
+						userName 		: userName,			// 7.登录单位名称
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vdac402_node.html",			// 9.从哪个页面来
+						detailInfo		: newrowdata,
+						flagNew			: "Y",				// N为修改 ; Y为新增 
+					}
+				});
+			});
+			// 修改班次
+			document.getElementById("shiftbox").addEventListener("tap",function(){
+				var shiftArr = [
+					{"title":"早"},
+					{"title":"中"},
+					{"title":"夜"},
+					{"title":"白"}
+				];
+				// 弹框
+				plus.nativeUI.actionSheet({
+					title: "更改考勤状态",
+					cancel: "取消",
+					buttons: shiftArr
+				}, function(e) {
+					//商品类型find赋值
+					if((e.index - 1) != -1){
+						var nunit = shiftArr[(e.index - 1)].title;
+						document.getElementById("shift").innerHTML = nunit ; 
+						var coppo = document.getElementById("nowAttendGroup").innerHTML;
+						var ndate2 = document.getElementById("clockDate").value + " 00:00:00";
+						query402(coppo,ndate2,nunit,"ALL");
+					}
+				});
+			})
+			document.getElementById("refresh").addEventListener("tap",function(){
+				var nunit = document.getElementById("shift").innerHTML; 
+				var coppo = document.getElementById("nowAttendGroup").innerHTML;
+				var ndate2 = document.getElementById("clockDate").value + " 00:00:00";
+				query402(coppo,ndate2,nunit,"ALL");
+			});
+			// 修改其他信息
+			mui("#clerkList").on('tap', '.mui-icon-bars', function(e){
+				var e = this;
+				var li = e.parentNode; //firstChild
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow);
+				var num = jQuery(li).index();
+				var qtask = vlUtils.isnull(rowObj["内容"])?"":"Y";
+				mui.openWindow({
+					url:"vdac402_edit.html",
+					id:"vdac402_edit.html",
+					createNew: true,
+					extras: {
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码	// 不变
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变
+						fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+						loginCom 		: loginCom,			// 4.登录人的代码
+						loginComName 	: loginComName,		// 5.登录人的名称
+						userbillNo 		: userbillNo,		// 6.登录单位代码
+						userName 		: userName,			// 7.登录单位名称
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vdac402_node.html",			// 9.从哪个页面来
+						detailInfo		: rowObj,
+						flagNew			: "N",				// N为修改 ; Y为新增 
+						serialNum		: jQuery(li).index()
+					}
+				});
+			});
+			// 处理申诉
+			mui("#clerkAppealList").on('tap', '.mui-btn-warning', function(e){
+				var e = this;
+				var li = e.parentNode.parentNode; //firstChild
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow);
+				var sendparams = JSON.parse(JSON.stringify(sendTaskData));
+				var date = new Date();
+				sendparams.bill_task = "b_send";
+				sendparams.bill_no 	 = rowObj["指令"];
+				sendparams.bill_user = userbillNo;
+				sendparams.bill_com	 = teamBillCom;
+				sendparams.bill_date = vlUtils.dateToString(date);
+//				CRUDajax(sendparams,"../login.html",sendSuccess);
+			});
+			
+			//  审核
+			document.getElementById("audit").addEventListener("tap",function(){
+				var sendParam = {
+					bill_no		: getDataCode("vdhr401"),
+					bill_task	: "VE_confirm_vdac402",
+					bill_user	: userbillNo,
+//					bill_date	: vlUtils.dateToString(date),
+					bill_com	: teamBillCom,
+					bill_date	: document.getElementById("clockDate").value + " 00:00:00",
+					bill_name	: document.getElementById("nowAttendGroup").innerHTML
+				}
+				CRUDajax(sendParam,"../login.html",auditSuccess);
+			});
+			// 选择日期
+			jQuery("#clockDate").change(function(){
+				var nunit = document.getElementById("shift").innerHTML; 
+				var coppo = document.getElementById("nowAttendGroup").innerHTML;
+				var ndate2 = document.getElementById("clockDate").value + " 00:00:00";
+				query402(coppo,ndate2,nunit,"ALL");
+			})
+			// TODO 5. 监听自定义事件=============================
+			// TODO 6. 事件/方法=================================
+			function clerkInfo(data){
+				if(data.data.length != 0) {
+					for(var i = 0; i < data.data.length; i++) {
+						var newdataArr1 = {};
+						for(var k in data.data[i]) {
+							newdataArr1[k.slice(0, 2)] = data.data[i][k];
+						}
+						potionArr.push({"title":newdataArr1["标题"]});
+					}
+					document.getElementById("nowAttendGroup").innerHTML = potionArr[0].title;
+					var ndate0 = document.getElementById("clockDate").value + " 00:00:00";
+					var nunit = document.getElementById("shift").innerHTML; 
+					query402(potionArr[0].title,ndate0,nunit,"ALL");
+				}else{
+					document.getElementById("nowAttendGroup").innerHTML = "未查询到相关的考勤组~"
+				}
+				
+			}
+			function clerkSche(data){
+				if(data.data.length != 0) {
+					var litxt = ''
+					var clerkList = document.getElementById("clerkList");
+					for(var i = 0; i < data.data.length; i++) {
+						var newdataArr = {};
+						for(var k in data.data[i]) {
+							newdataArr[k.slice(0, 2)] = data.data[i][k];
+						}
+						var ycq = newdataArr["内容"].split(",")[0].split(":")[1];
+						var sjycq 	 = newdataArr["内容"].split(",")[1].split(":")[1];
+						var newycq    = "";
+						var cdzt = newdataArr["内容"].split(",")[2].split(":")[1];
+						var sjcdzt 	 = newdataArr["内容"].split(",")[3].split(":")[1];
+						var newcdzt    = "";
+						if(vlUtils.isnull(sjycq)&&ycq.length == 1){
+							newycq = ycq;
+						}else{
+							newycq = sjycq;
+						}
+						if(vlUtils.isnull(sjcdzt)){
+							newcdzt = cdzt;
+						}else{
+							newcdzt = sjcdzt;
+						}
+						litxt += '<li class="mui-row" style="padding: 3px;margin:0;" data-row=\'' + JSON.stringify(newdataArr) + '\'>';
+						litxt += '<span class="mui-col-xs-2 billwflow">'+newdataArr["参数"].split(",")[1].split(":")[1]+'</span>';
+						litxt += '<span class="mui-col-xs-2 billno" style="display:none;">'+newdataArr["图片"]+'</span>';
+						litxt += '<span class="mui-col-xs-2 billunit">'+newdataArr["指令"].split(",")[2].split(":")[1]+'</span>';
+						litxt += '<span class="mui-col-xs-2 billnunit">'+ycq+'</span>';
+						litxt += '<span class="mui-col-xs-2 billspec">'+newycq+'</span>';
+						litxt += '<span class="mui-col-xs-2 cidaozaotui">'+newcdzt+'</span>';
+//						if(newdataArr["指令"].split(",")[0].split(":")[1] != "Y"){
+//							litxt += '<button type="button" class="bjbtn1 mui-icon mui-icon-compose mui-pull-right mui-col-xs-2" style="position:relative;border:none;padding:0;background:;color: #0062CC;display:block;"></button>';
+//							document.getElementById("auditbox").style.display = "block";
+//						}else{
+//							litxt += '<button type="button" class="bjbtn mui-icon mui-icon-compose mui-pull-right mui-col-xs-2" style="position:relative;border:none;padding:0;background:;color: #0062CC;display:none;"></button>';
+//							litxt += '<span class="shspan mui-col-xs-2" style="border:1px solid #4cd964;border-radius:50%;color:#4cd964;display:block;padding:1px 5px;">已审</span>';
+//							document.getElementById("auditbox").style.display = "none";
+//						}
+						litxt += '<span class="mui-icon mui-icon-bars mui-pull-right mui-col-xs-2" style="padding:0;background:;color: #0062CC;"></span>';
+						litxt += '</li>';
+						clerkList.innerHTML = litxt;
+					}
+				}else{
+					document.getElementById("clerkList").innerHTML = '<li style="color:gray;">未查询到相关员工信息~</li>';
+				}
+				
+			}
+			function clerkAppeal(data){
+				if(data.data.length != 0) {
+					var liTxt = ''
+					var clerkAppealList = document.getElementById("clerkAppealList");
+					for(var i = 0; i < data.data.length; i++) {
+						var newdataArr = {};
+						for(var k in data.data[i]) {
+							newdataArr[k.slice(0, 2)] = data.data[i][k];
+						}
+						liTxt += '<li class="mui-row" style="margin:0;border-radius: 10px;margin-bottom:10px;background:#F0F0F0;" data-row=\'' + JSON.stringify(newdataArr) + '\'>';
+						liTxt += '<div class="mui-row" style="background:#E3E3E3;border-radius: 10px 10px 0 0;padding-left:10px;padding-right:10px;">';
+						liTxt += '<span class="mui-col-xs-1 mui-icon mui-icon-contact" style="font-size: 16px;margin-top:2px;"></span>';
+						liTxt += '<span class="mui-col-xs-3" style="color:#007AFF;height">'+newdataArr["参数"]+'</span>';
+						liTxt += '<span class="mui-col-xs-6">'+newdataArr["日期"]+'</span>';
+						liTxt += '<span class="mui-col-xs-2 mui-pull-right" style="text-align: center;"></span>';
+						liTxt += '</div>';
+						liTxt += '<div class="mui-row" style="padding:5px 10px;line-height: 24px;">';
+						liTxt += '<span class="mui-col-xs-10">'+newdataArr["标题"]+'</span>';
+						liTxt += '<button type="button" class="mui-pull-right mui-btn mui-btn-warning mui-btn-outlined mui-col-xs-2" style="padding:0;font-size:12px; display:none;">处理</button>';
+						liTxt += '</div>';
+						liTxt += '</li>';
+						clerkAppealList.innerHTML = liTxt;
+					}
+				}else{
+					document.getElementById("clerkAppealList").innerHTML = '<li style="color:gray;">未查询到相关的申诉信息~</li>';
+				}
+			}
+			function auditSuccess(){
+//				document.getElementById("auditbox").style.display = "none";
+//				for(var i = 0; i < jQuery("#clerkList li").length; i++){
+//					var txt = '<span class="mui-col-xs-2" style="border:1px solid #4cd964;border-radius:50%;color:#4cd964;">已审</span>';
+//					var lihtml = jQuery("#clerkList li").eq(i).html();
+//					lihtml += txt;
+//					jQuery("#clerkList li").eq(i).html(lihtml);
+//				}
+				var nunit = document.getElementById("shift").innerHTML; 
+				var coppo = document.getElementById("nowAttendGroup").innerHTML;
+				var ndate2 = document.getElementById("clockDate").value + " 00:00:00";
+				query402(coppo,ndate2,nunit,"ALL");
+			}
+			function updateSuccess(data){
+			}
+			function saveSuccess111(){
+			}
+			function sendSuccess(){
+				var nunit = document.getElementById("shift").innerHTML; 
+				var coppo = document.getElementById("nowAttendGroup").innerHTML;
+				var ndate2 = document.getElementById("clockDate").value + " 00:00:00";
+				query402(coppo,ndate2,nunit,"ALL");
+			}
+			function query402(coppo,ndate,nunit,txt){
+				// 将考勤组人员写入vdac402表中
+				var clerkData = {
+					bill_no 	: getDataCode("vdac402"),//标识
+					bill_task	: "VE_update_vdac402",
+					bill_com	: teamBillCom,
+					bill_user	: userbillNo,
+					bill_coppo	: coppo,//姓名\n
+					bill_nunit	: nunit,//班次
+					bill_text	: txt,//姓名\n
+					bill_date	: vlUtils.dateToString(date),//时间
+					bill_ndate	: ndate,//时间
+					fbill_no 	: "ROOT"
+				}
+				// 保存
+				CRUDajax(clerkData,"../login.html",updateSuccess);
+				// 3-1. 查询该考勤组考勤情况
+				var clerkScheParams = {
+					name		: 'msvr',
+					bill_task	: "VR_find_vdac402", // 查询的指令
+					bill_com	: teamBillCom, // 当前单位
+					bill_user	: userbillNo, // 当前登陆人
+					bill_coppo	: coppo,		// 考勤组
+					bill_ndate	: ndate,
+					currentPage	: 1,
+					pageSize	: 100,
+					paramText	: ""
+				};
+				rqsDataAjax(clerkScheParams, '/Find/Ddata/activity', clerkSche, '../login.html');
+				var clerkshensuParams = {
+					name		: 'msvr',
+					bill_task	: "VR_find_vdhr426", // 查询的指令
+					bill_com	: teamBillCom, // 当前单位
+					bill_user	: userbillNo, // 当前登陆人
+					bill_coppo	: coppo,		// 考勤组
+					bill_ndate	: ndate,
+					currentPage	: 1,
+					pageSize	: 100,
+					paramText	: ""
+				};
+				rqsDataAjax(clerkshensuParams, '/Find/Ddata/activity', clerkAppeal, '../login.html');
+			}
+		}); // plusReady
+	</script>
+
+</html>

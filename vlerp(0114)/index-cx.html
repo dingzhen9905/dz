@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>vlerp</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/common/mui.css">
+		<link rel="stylesheet" type="text/css" href="css/common/app.css"/>
+		<link rel="stylesheet" type="text/css" href="css/fonts/iconfont.css" />
+		<style> 
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.mui-bar-tab{
+		 		bottom:0;
+		 	}
+		 	/*#head{
+		 		display:block;
+		 	}*/
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:60px;">
+			<h1 id="title" class="mui-title" style="color:white;">我的桌面</h1>
+		</header>
+		<!--<div class="mui-scroll-wrapper" id="scroll">
+			<div class="mui-scroll">
+			</div>
+		</div>-->
+		<nav class="mui-bar mui-bar-tab">
+			<a id="defaultTab" class="mui-tab-item mui-active" href="tab-webview-subpage-work" id="work">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">我的桌面</span>
+			</a>
+			<a class="mui-tab-item" id="info">
+				<span class="icon iconfont icon-saomayonghuxiansuo-copy" style="font-size:50px;position:relative;top:6px;left:5px;color:#2187E7;"></span>
+				<span class="mui-tab-label" style="display: none;">+</span>
+			</a>
+			<a class="mui-tab-item" href="tab-webview-subpage-setting" id="seting">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">我的设置</span>
+			</a>
+		</nav>
+		
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+    <script type="text/javascript" src="js/writeJsonFile.js"></script>
+	<script src="js/md5.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/vl-websocket.js" ></script>
+	<script type="text/javascript" src="js/immersed.js" ></script>
+	<script type="text/javascript" charset="utf-8">
+			//mui初始化
+			
+//			mui.init({});
+			//**********************************
+						 //mui初始化
+			mui.init({
+				preloadPages:[
+				    {
+				      url:"tab-webview-subpage-work.html",
+				      id:"tab-webview-subpage-work",
+				      styles:{
+				      	top:"60px",
+				      	bottom:"50px",
+				      }
+				    },
+				    {
+				      url:"tab-webview-subpage-setting.html",
+				      id:"tab-webview-subpage-setting",
+				       styles:{
+				      	top:"60px",
+				      	bottom:"50px",
+				      }
+				    }
+				]
+			});
+			//**********************************
+			var subpages = ['tab-webview-subpage-work.html', 'tab-webview-subpage-setting.html'];
+			var subpage_style = {
+				top: '60px',
+				bottom: '51px'
+			};
+			
+			var aniShow = {};
+			
+			//创建子页面，首个选项卡页面显示，其它均隐藏；
+			mui.plusReady(function() {
+				plus.screen.lockOrientation("portrait-primary");  // 禁止横屏显示
+				mui.back = function() {
+					// 重写
+					plus.runtime.quit();
+					return;
+				}
+				// ***************/获取用户信息、更换标题/*****************
+				var usestro = !vlUtils.isnull(vlUtils.getStorage("user")); 
+			    var userNew = JSON.parse(vlUtils.getStorage("user")); 
+			    if(usestro){ 
+				    var bill_user 		= userNew.linkbd_username;	//用户名
+				    var userbillNo 		= userNew.bill_no;			//用户代码
+				    var userName 		= userNew.linkbd_username;
+				    var teamBillComName = userNew.com_bill_comName; // 用户公司
+				    var teamBillCom 	= userNew.com_billCom; 		// 用户公司代码
+				    var loginComName 	= userNew.com_bill_comName; // 用户公司代码
+				    var loginCom 		= userNew.com_billCom; 		// 用户公司代码
+				    var teamFBillName 	= userNew.com_fBillName; 	// 用户的部门
+				    var privileges 		= userNew.privileges;
+				    var userRole 		= userNew.bill_bflow;
+				    var billcoppo 		= userNew.bill_coppo;
+				    // 【聊天】
+//				    var useName = userNew.bill_no;
+//					var wsUrl = "ws://101.201.238.199:8080/vl8-web/im/"+userbillNo;
+//		    		var wsUrl = "ws://192.168.11.204:8808/vl8-web/im/"+useName;
+//		    		createWebSocket(wsUrl);
+				    // 得到数组
+				    var comArr 			= userNew.comArr;
+				    var comArr_id 		= userNew.comArr_id;
+				    var privilegesArr 	= userNew.privilegesArr;
+				    var userRoleArr 	= userNew.userRoleArr;
+				    var bcoppoArr 		= userNew.bcoppoArr;
+					
+				    // 更换标题
+				    var title = document.getElementById("title");
+					title.innerHTML = teamBillComName;
+
+					//本地存储
+					//把当前的公司名称和公司代码存储到本地
+					vlUtils.setStorage("newTeamBillCom",teamBillCom);
+					vlUtils.setStorage("newTeamBillComName",teamBillComName);
+					vlUtils.setStorage("userbillNo",userbillNo);
+					vlUtils.setStorage("userName",userName);
+					vlUtils.setStorage("newLoginCom",loginCom);
+					vlUtils.setStorage("newLoginComName",loginComName);
+					vlUtils.setStorage("newPrivileges",privileges);
+					vlUtils.setStorage("newUserRole",userRole);
+					vlUtils.setStorage("newBillcoppo",billcoppo);
+
+					// 若个人有多个单位，登录后切换单位
+					document.getElementById("title").addEventListener("tap",function(){
+						if(comArr.length<=1){
+							return;
+						}
+//						var actionbuttons = [{title:"单位1：微联"},{title:"单位2：燕京"}];
+						var actionbuttons = [];
+						for(var i = 0 ; i<=comArr.length-1; i++){
+							actionbuttons.push({"title":comArr[i]});
+						}
+						// 判断有几个公司
+						if(actionbuttons.length != 1){
+							plus.nativeUI.actionSheet( {title:"切换单位",cancel:"取消",buttons:actionbuttons}, function(e){
+								title.innerHTML = actionbuttons[(e.index-1)].title;
+								teamBillComName = actionbuttons[(e.index-1)].title;
+								teamBillCom 	= comArr_id[(e.index-1)];
+								privileges 		= privilegesArr[(e.index-1)];
+								userRole 		= userRoleArr[(e.index - 1)];
+								billcoppo 		= bcoppoArr[(e.index - 1)];
+								//把当前的公司名称和公司代码存储到本地
+								vlUtils.setStorage("newTeamBillCom",teamBillCom);
+								vlUtils.setStorage("newTeamBillComName",teamBillComName);
+								vlUtils.setStorage("newUserbillNo",userbillNo);
+								vlUtils.setStorage("newUserName",userName);
+								vlUtils.setStorage("newLoginCom",teamBillCom);
+								vlUtils.setStorage("newLoginComName",teamBillComName);	
+								vlUtils.setStorage("newPrivileges",privileges);
+								vlUtils.setStorage("newUserRole",userRole);
+								vlUtils.setStorage("newBillcoppo",billcoppo);
+								
+								var userInfo = JSON.parse(vlUtils.getStorage("user"));
+								userInfo.bill_coppo = vlUtils.getStorage("newBillcoppo");
+								userInfo.bill_bflow = vlUtils.getStorage("newUserRole");
+								vlUtils.setStorage("user", JSON.stringify(userInfo));
+
+								mui.fire(plus.webview.getWebviewById('tab-webview-subpage-work'), 'changeCom', {
+									nowcoppo: vlUtils.getStorage("newBillcoppo"),
+									nowUserRole: vlUtils.getStorage("newUserRole")
+								});
+							});
+						}
+					})
+				}
+			    
+				// ****************/更换标题结束/****************
+				var self = plus.webview.currentWebview();
+				for (var i = 0; i < 2; i++) {
+					var temp = {};
+					var sub = plus.webview.create(subpages[i], subpages[i], subpage_style);
+					if (i > 0) {
+						sub.hide();
+					}else{
+						temp[subpages[i]] = "true";
+						mui.extend(aniShow,temp);
+					}
+					self.append(sub);
+					// document.getElementById("scroll").append(self);
+					// ***********************88
+
+//					var detailPage = plus.webview.getWebviewById(subpages[i].slice(0,-5));
+//					mui.fire(detailPage,"delivery",{
+//						teamBillCom : teamBillCom ,
+//						teamBillComName : teamBillComName,
+//						userbillNo : userbillNo,
+//						loginCom : loginCom,
+//						loginComName : loginComName
+//					})
+				}
+				
+			});
+////		//当前激活选项
+				var activeTab = subpages[0];
+				var title = document.getElementById("title");
+				 //选项卡点击事件
+				mui('.mui-bar-tab').on('tap', 'a', function(e) {
+					title.innerHTML =this.querySelector(".mui-tab-label").innerHTML;
+					var teamBillCom = vlUtils.getStorage("newTeamBillCom");
+					var teamBillComName = vlUtils.getStorage("newTeamBillComName");
+					var userbillNo = vlUtils.getStorage("userbillNo");
+					var userName = vlUtils.getStorage("userName");
+					var loginCom = vlUtils.getStorage("newLoginCom");
+					var loginComName = vlUtils.getStorage("newLoginComName");
+					var privileges = vlUtils.getStorage("newPrivileges");
+					var userRole	 	= vlUtils.getStorage("newUserRole");
+					
+					//*******************
+					var usestro = !vlUtils.isnull(vlUtils.getStorage("user")); 
+		    		var userNew = JSON.parse(vlUtils.getStorage("user")); 
+		    		if(usestro){
+						if(title.innerHTML=="我的桌面"){
+							title.innerHTML=teamBillComName;
+						}
+						if(title.innerHTML=="+"){
+							title.innerHTML=teamBillComName;
+							mui.openWindow({
+								url: "layout/vlvdsa/vdsa214_edit.html",
+								id : "vdsa214_edit.html",
+								createNew : true,
+								extras:{
+								    	teamBillCom : teamBillCom,
+								    	teamBillComName: teamBillComName,
+								    	userbillNo : userbillNo,
+								    	loginCom : loginCom,
+								    	loginComName : loginComName,
+								    	fromPage:"work"
+							    }
+							})
+						} 
+						if(title.innerHTML=="我的设置"){
+							title.innerHTML=teamBillComName;
+						}
+		    		}
+					var targetTab = this.getAttribute('href');
+					if (targetTab == activeTab) {
+						return;
+					}
+					//显示目标选项卡
+//					//若为iOS平台或非首次显示，则直接显示
+					if(mui.os.ios||aniShow[targetTab]){
+						plus.webview.show(targetTab);
+					}else{
+						//否则，使用fade-in动画，且保存变量
+						var temp = {};
+						temp[targetTab] = "true";
+						mui.extend(aniShow,temp);
+						plus.webview.show(targetTab,"fade-in",300);
+						plus.webview.getWebviewById(targetTab).reload();
+					}
+					//隐藏当前;
+					plus.webview.hide(activeTab);
+					//更改当前活跃的选项卡
+					activeTab = targetTab;
+					if(activeTab == "tab-webview-subpage-setting" || 'tab-webview-subpage-work'){
+						plus.webview.getWebviewById(activeTab).reload();//0331
+					}
+				});
+				 //自定义事件，模拟点击“首页选项卡”
+				document.addEventListener('gohome', function() {
+					var defaultTab = document.getElementById("defaultTab");
+					//模拟首页点击
+					mui.trigger(defaultTab, 'tap');
+					//切换选项卡高亮
+					var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
+					if (defaultTab !== current) {
+						current.classList.remove('mui-active');
+						defaultTab.classList.add('mui-active');
+					}
+				});
+	</script>    
+</html>

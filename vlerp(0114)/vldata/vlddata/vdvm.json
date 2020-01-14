@@ -1,0 +1,21 @@
+[
+{"bill_no":"100101","bill_theme":"终端名称","bill_context":"东兴堂","bill_pic":" ","link_lnext":"vdvc312","busi_id":"vdvm"},
+{"bill_no":"100102","bill_theme":"拜访内容","bill_context":"常规拜访","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100103","bill_theme":"经营状况","bill_context":"正常","bill_pic":" ","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100104","bill_theme":"终端属性","bill_context":"专卖","bill_pic":" ","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100105","bill_theme":"一批厂编","bill_context":"010696","bill_pic":" ","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100106","bill_theme":"送货经销商","bill_context":"燕京","bill_pic":" ","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100107","bill_theme":"竞品经销商","bill_context":"雪花","bill_pic":" ","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100108","bill_theme":"投入类型","bill_context":"赠酒","bill_pic":" ","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100109","bill_theme":"是否有展柜","bill_context":"是","bill_pic":"vdoa012_b.png","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100110","bill_theme":"是否有桌椅","bill_context":"是","bill_pic":"vdoa012_b.png","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100111","bill_theme":"是否有堆头","bill_context":"是","bill_pic":"vdoa012_b.png","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100112","bill_theme":"是否有门头广告","bill_context":"是","bill_pic":"vdoa012_b.png","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100113","bill_theme":"是否销售清爽","bill_context":"是","bill_pic":" ","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100114","bill_theme":"清爽进店价格","bill_context":"3.5元/瓶","bill_pic":" ","link_lnext":" ","busi_id":"vdvm"},
+{"bill_no":"100115","bill_theme":"燕京","bill_context":"销售情况","bill_pic":" ","link_lnext":"vdvm15_new","busi_id":"vdvm"},
+{"bill_no":"100116","bill_theme":"青岛","bill_context":"销售情况","bill_pic":" ","link_lnext":"vdvm16_new","busi_id":"vdvm"},
+{"bill_no":"100117","bill_theme":"雪花","bill_context":"销售情况","bill_pic":" ","link_lnext":"vdvm17_new","busi_id":"vdvm"},
+{"bill_no":"100118","bill_theme":"哈啤/百威","bill_context":"销售情况","bill_pic":" ","link_lnext":"vdvm18_new","busi_id":"vdvm"},
+{"bill_no":"100119","bill_theme":"其他","bill_context":"销售情况","bill_pic":" ","link_lnext":"vdvm19_new","busi_id":"vdvm"}
+]

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.dtpicker.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			
+			.mui-row {
+				padding: 8px;
+				position: relative;
+			}
+			
+			input[placeholder] {
+				font-size: 12px;
+			}
+			/* 终端*/
+			/*三级联动样式*/
+			
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+			
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			
+			.ui-push {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+				display: none;
+			}
+			/* 灰色*/
+			
+			.gray {
+				color: gray;
+			}
+			
+			.hide {
+				display: none;
+			}
+			
+			.mui-input-row.lastInput:after {
+				/*display: none;*/
+				height: 0;
+			}
+			/*关联状态*/
+			
+			#title {
+				margin-top: 10px;
+			}
+			
+			.mui-radio input[type='radio'],
+			.mui-checkbox input[type='checkbox'] {
+				width: 24px;
+				height: 22px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head" style="height:80px;">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle">
+				<p id="title">添加奖项</p>
+
+			</div>
+			<a class=" mui-pull-right rightIcon" id="saveBtn" data-loading-text="保存中">保存</a>
+
+		</header>
+
+		<div class="mui-content" style="padding-top:90px;margin-top:0px;margin-bottom:0px;">
+
+			<form class="mui-input-group" id="pop1" style="padding-top: 20px;">
+
+				<div class="mui-input-row" style="display:none;">
+					<label>明细fbill_no：</label>
+					<input id="FDbill_no" type="text" class="mui-input-clear" placeholder="" readonly="readonly">
+				</div>
+				<div class="mui-input-row" style="display:none;">
+					<label>明细bill_no：</label>
+					<input id="Dbill_no" type="text" class="mui-input-clear" placeholder="" readonly="readonly">
+				</div>
+
+				<div class="mui-col-xs-4 mui-pull-left" style="padding:11px 0px 11px 15px;">奖项类型</div>
+				<div class=" mui-pull-left mui-radio mui-left mui-col-xs-4" id="linkbd_type_fixed" style="height:35px;line-height: 35px;">
+					<label>固定奖</label>
+					<input name="prizes" type="radio" class="prizes" id="guding" value="固定" disabled="disabled">
+				</div>
+				<div class=" mui-pull-left mui-radio mui-left mui-col-xs-4" id="linkbd_type_chance" style="height:35px;line-height: 35px;">
+					<label>概率奖</label>
+					<input name="prizes" type="radio" class="prizes" value="概率" id="gailv" checked="checked">
+				</div>
+
+				<div class="mui-input-row" id="fixedPrizeDIv" style="display:none;">
+					<label>奖项：</label>
+					<input id="linkvd_awards" type="text" class="" placeholder="例如：一等奖">
+				</div>
+
+				<div class="mui-input-row" id="chancePrizeDIv" style="display:;">
+					<div class="mui-col-xs-4 mui-pull-left" style="padding:11px 0px 11px 15px;">奖项</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-4" style="">
+						<label>返现</label>
+						<input name="awardSel" type="radio" class="awardSel" id="fixedPrize" value="返现" checked="checked">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-4">
+						<label>无奖</label>
+						<input name="awardSel" type="radio" class="awardSel" id="chancePrize" value="无奖">
+					</div>
+				</div>
+
+				<div class="mui-input-row">
+					<label>奖项说明：</label>
+					<input id="linkvd_awardic" type="text" class="mui-input-clear requiredInput " placeholder="例如：恭喜你中了一等奖">
+				</div>
+
+				<div class="mui-input-row mui-plus-visible">
+					<label>奖项概率：</label>
+					<input id="node_qty" type="number" class="mui-input-clear requiredInput " placeholder="例如：0.5（注：不能大于1）">
+				</div>
+				<div class="mui-input-row">
+					<label>奖项金额：</label>
+					<input id="node_price" type="number" class="mui-input-clear requiredInput " placeholder="例如：100">
+				</div>
+				<div class="mui-input-row" id="canshu" style="display: none;">
+					<label>中奖参数：</label>
+					<input id="bill_gpsaddr" type="number" class=" " placeholder="例如：1000">
+				</div>
+
+			</form>
+			<!--子表dom结束-->
+
+			<!-- 点击退出时底部弹出-->
+			<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+				<!-- 可选择菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="sureDelBtn">
+						<a>确认</a>
+					</li>
+				</ul>
+				<!-- 取消菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a href="#sheet1"><b>取消</b></a>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<!--选择时间插件-->
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/mui.dtpicker.js"></script>
+
+	<script>
+		var detailOnlyCode = "";
+		var date = new Date();
+		var bill_date = vlUtils.dateToString(date);
+		var rqsData = null; //提交的数据
+		var inputData = null; // 表单里的数据  
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var detailInfo = "";
+		var hadSend = false; // 用于判断是否送审
+		var flagsave = false; //
+		var detailData = null;
+		var billnoSave = ""; // 修改时的主表bill_no
+		var olddata; // 用于对比update
+		var reciveInfo = {}; // 用于取出提交信息
+		var linkName;
+		var linkCom; 
+		mui.init({});
+		var $$ = jQuery.noConflict();
+
+		mui.plusReady(function() {
+			//选择固定奖显示奖项的输入框
+			var fixedPrize = document.getElementById("fixedPrize"); //返现
+			var chancePrize = document.getElementById("chancePrize"); //无奖
+			var linkbd_type_fixed = document.getElementById("linkbd_type_fixed"); //固定
+			var linkbd_type_chance = document.getElementById("linkbd_type_chance"); //概率
+			chancePrize.addEventListener("tap", function(e) {
+
+				$$("#node_price").attr("value", "0");
+				$$("#node_price").attr("readonly", "readonly");
+
+			})
+			fixedPrize.addEventListener("tap", function(e) {
+				$$("#chancePrize").attr("placeholder", "例如：100");
+				//				$$("#chancePrize").attr("readonly","readonly");
+				$$("#node_price").attr("value", "");
+				$$("#node_price").attr("readonly", false);
+			})
+			linkbd_type_chance.addEventListener("tap", function(e) {
+				$$("#canshu").css("display", "none");
+				$$("#chancePrizeDIv").css("display", "block");
+				$$("#fixedPrizeDIv").css("display", "none");
+				$$("#node_qty").attr("placeholder", "0.5（注： 不能大于1）");
+				$$("#linkvd_awardic").attr("placeholder", "例如：现金1元");
+			})
+
+			linkbd_type_fixed.addEventListener("tap", function(e) {
+				return;
+				$$("#bill_gpsaddr").attr("placeholder", "例如：1000");
+				$$("#canshu").css("display", "block");
+				$$("#node_qty").attr("placeholder", "例如：100");
+				$$("#linkvd_awardic").attr("placeholder", "例如：恭喜你中了一等奖");
+
+				$$("#chancePrizeDIv").css("display", "none");
+				$$("#fixedPrizeDIv").css("display", "block");
+
+			})
+
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no = self.fbill_no; // 3.fbill_no是
+			loginCom = self.loginCom; // 4.登录单位代码
+			loginComName = self.loginComName; // 5.登录单位名称
+			userbillNo = self.userbillNo; // 6.登录人的代码
+			userName = self.userName; // 7.登录人的姓名
+			privileges = self.privileges; // 8.当前的权限是
+			fromPage = self.fromPage; // 9.从哪个页面来
+			detailInfo = self.detailInfo;
+			liLens = self.liLens;
+			rTotal = self.rTotal;
+			pFixnum = self.pFixnum;
+			billNo = self.billNo;
+			amt = self.amt;
+			// 其他
+			flagNew = self.flagNew; //N ：修改  Y ：新增
+
+			//	
+
+			document.getElementById("FDbill_no").value = billNo;
+			if(flagNew == "Y") { //  新增
+				detailOnlyCode = getDataCode("vdsa331");
+				var Dbill_no = document.getElementById("Dbill_no");
+				Dbill_no.value = detailOnlyCode;
+
+				liLens = parseInt(liLens + 1);
+			}
+
+			if(flagNew == "N") { // 修改 
+				detailData = detailInfo;
+
+				detailInfo = JSON.parse(detailInfo);
+				//				document.getElementById("number").value = detailInfo.bill_id;
+				document.getElementById("Dbill_no").value = detailInfo.bill_no;
+				document.getElementById("linkvd_awardic").value = detailInfo.bill_text[0]["linkvd_awardic"];
+				document.getElementById("node_qty").value = detailInfo.node_qty;
+				document.getElementById("node_price").value = detailInfo.node_price;
+
+				var link_next = detailInfo.link_next;
+				var bill_context = detailInfo.bill_context;
+				if(link_next == "概率") {
+					$$("#fixedPrizeDIv").css("display", "none");
+					$$("chancePrizeDIv").css("display", "block")
+					document.getElementById("gailv").checked = true;
+
+				}
+				if(link_next == "固定") {
+					$$("#canshu").css("display", "block");
+					$$("#fixedPrizeDIv").css("display", "block");
+					$$("#chancePrizeDIv").css("display", "none");
+					document.getElementById("guding").checked = true;
+					document.getElementById("linkvd_awards").value = detailInfo.bill_context
+					document.getElementById("bill_gpsaddr").value = detailInfo.bill_gpsaddr;
+
+				}
+				if(bill_context == "返现") {
+					document.getElementById("fixedPrize").checked = true;
+
+				}
+				if(bill_context == "无奖") {
+					document.getElementById("chancePrize").checked = true;
+
+					$$("#node_price").attr("value", "");
+					$$("#node_price").attr("readonly", false);
+
+				}
+
+			}
+
+			//保存
+			document.getElementById("saveBtn").addEventListener("tap", saveBtn);
+
+			function saveBtn() {
+				mui("#saveBtn").button('loading');
+				//				var verfiedResults = validateRequired();//验证是否为必填字段  
+				//				
+				//				if(verfiedResults == false){
+				//					mui("#saveBtn").button('reset');
+				//					return;
+				//				}
+				detailData = getInputValue(); //获取每一个输入框的的值的方法   
+				var dprice = detailData.node_price; //金额
+				var dqty = detailData.node_qty; //概率
+				var Cliamt = amt * dprice * dqty; //没个li所带概率奖的金额
+				var Fliamt = dprice * dqty; //每个li所带固定奖的金额
+				if(detailData.link_next == "固定") {
+					liprice = Fliamt;
+
+				}
+				if(detailData.link_next == "概率") {
+					liprice = Cliamt;
+				}
+
+				if(flagNew == "N") {
+					detailData = vlUtils.isUpdateObj(detailInfo, detailData);
+					detailData.bill_task = "d_save";
+					detailData.bill_no = detailInfo.bill_no;
+
+					//					return;
+					saveAjax(detailData);
+					var detailDatas = getInputValue()
+					mui.fire(plus.webview.getWebviewById('vdsa210_edit.html'), '210deditToedit', {
+						data: detailDatas,
+						flagNew: "N",
+						liprice: liprice
+
+					});
+
+				}
+				if(flagNew == "Y") {
+					mui.fire(plus.webview.getWebviewById('vdsa210_edit.html'), '210deditToedit', {
+						data: detailData,
+						flagNew: "Y",
+						liprice: liprice
+					});
+
+					saveAjax(detailData);
+				}
+				mui.back();
+
+			}
+
+			//验证必填
+			function validateRequired() {
+
+				var check = true;
+				// 检测第一部分必填字段是否填写
+				var blankInputLens = mui(".mui-input-clear.requiredInput").length;
+				for(var i = 0; i < blankInputLens; i++) {
+
+					if(!mui(".mui-input-clear.requiredInput")[i].value || mui(".mui-input-clear.requiredInput")[i].value.trim() == "") {
+						var label = mui(".mui-input-clear.requiredInput")[i].previousElementSibling;
+						mui.toast(label.innerText + "不允许为空");
+						mui("#saveBtn").button('reset');
+						check = false;
+						return check;
+					}
+				}
+
+				return check;
+			}
+
+			// 获取明细表的值
+			function getInputValue() {
+				// 奖项类型！！！
+				var Dbill_no = $$("#Dbill_no").val(); //奖项 
+				var linkvd_awardic = $$("#linkvd_awardic").val(); //奖项说明
+				var node_qty = $$("#node_qty").val(); //活动概率
+				var node_price = $$("#node_price").val(); //头奖金额
+				var bill_gpsaddr = $$("#bill_gpsaddr").val(); //中奖参数 
+
+				// 固定奖、概率奖
+				var len1 = mui(".prizes").length;
+				for(var i = 0; i < len1; i++) { // 判断是否选择
+					if(mui(".prizes")[i].checked) {
+
+						var link_next = mui(".prizes")[i].value;
+					}
+					if(mui(".prizes")[0].checked) {
+						var linkvd_awards = $$("#linkvd_awards").val(); //奖项 、输入
+					}
+					if(mui(".prizes")[1].checked) {
+						for(var j = 0; j < mui(".awardSel").length; j++) {
+							if(mui(".awardSel")[i].checked) {
+								//							
+								var linkvd_awards = mui(".awardSel")[i].value; //返现，无奖
+								if(mui(".awardSel")[0].checked) {
+									var linkvd_awardic = $$("#linkvd_awardic").val(); //奖项 说明
+								}
+								if(mui(".awardSel")[1].checked) {
+									var linkvd_awardic = $$("#linkvd_awardic").val(); //奖项 说明
+								}
+							}
+						}
+					}
+				}
+
+				// 其他
+				var bill_date = bill_date; // 时间
+				// 提交数据
+				var fromData = [{
+					linkvd_awardic: linkvd_awardic, //奖项说明
+				}]
+				var detailData = {
+					bill_id: "",
+					cc_user: "",
+					bill_title: "",
+					bill_no: Dbill_no,
+					bill_task: "d_new",
+					fbill_no: billNo,
+					bill_user: userbillNo, // 登陆人 
+					bill_com: teamBillCom, //登录人单位  
+					node_price: node_price, //中奖金额
+					node_qty: node_qty, //概率
+					bill_context: linkvd_awards, //奖项
+					link_next: link_next, //奖项类型
+					bill_name: "", //活动名称
+					node_amt: 0, //以中奖数量
+					bill_gpsaddr: bill_gpsaddr, //参数
+					bill_date: vlUtils.dateToString(date),
+					bill_text: JSON.stringify(fromData)
+				}
+				return detailData;
+			}
+
+			//保存
+			function saveAjax(params) {
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async: false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message);
+							flagsave = true;
+							//							setButton(detailInfo);
+							mui("#saveBtn").button('reset');
+
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code, data.error_description, '../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+
+					}
+				});
+			}
+		})
+	</script>
+
+</html>

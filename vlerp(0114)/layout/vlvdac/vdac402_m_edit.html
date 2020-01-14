@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			.bottomLine{
+				border-bottom: 1px solid #8f8f94;
+				position:relative;
+				margin: 25px 50px;
+			}
+			.end{
+				position:absolute;
+				top:-8px;
+				left:32%;
+				background: #efeff4;
+				padding:0 10px;
+				z-index:111;
+				font-size: 10px;
+			}
+			#contList li:nth-of-type(odd){
+				background:#F0F0F0;
+			}
+			input{
+				box-sizing: border-box;
+				border:1px solid #E3E3E3 !important;
+				border-radius: 10px !important;
+				height: 28px !important;
+				padding:3px 8px !important;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			input:hover{
+				color:#40a9ff;
+				border-color: #40a9ff !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 75px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header"></h1>
+			<!--<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit"></a>-->		
+			<!--<div class="mui-row  navBar nodeTopNav">
+				<p class="mui-col-xs-12" id="bBackBtn">
+					<a class="mui-icon mui-icon-paperclip"  id="bBackIcon"></a>
+					<span>收回单据</span>
+				</p>
+			</div>-->
+		</header>
+		<!---->
+		<div class="mui-content mainBody nodeBody" style="padding-top:80px !important;">
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row basicInfo">
+					<div class="mui-col-xs-2 imgFrame">
+						<img class="vdvc105" id="userImg" src="../../images/icon/default.png" />
+					</div>
+					<div class="mui-col-xs-9 mui-row mui-pull-right infoFrame">
+						<div class="mui-col-xs-12 mui-row infoItem">
+							<span class="mui-col-xs-3">员工姓名：</span>
+							<span class="mui-col-xs-5" id="bill_name"></span>
+							<span class="mui-col-xs-5" id="userid" style="display: none;"></span>
+							<!--<span class="mui-col-xs-2 dataState mui-pull-right" id="billtask"></span>-->
+						</div>
+						<div class="list_font mui-col-xs-12  mui-row  infoItem lastItem">
+							<span class="mui-col-xs-3">考勤日期：</span>
+							<span class="mui-col-xs-9" id="bill_ndate"></span>
+						</div>
+					</div>
+				</div>
+				<div class="mui-row infoItem lastItem">
+					<div id="mui-col-xs-6 mui-row">
+						<span class="mui-col-xs-5">班次：</span>
+						<span class="mui-col-xs-7"  id="bill_unit"></span>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row infoItem" style="color:#20B2AA;">
+					<span class="mui-col-xs-3">标题</span>
+					<span class="mui-col-xs-3">考勤情况</span>
+					<span class="mui-col-xs-6" style="text-align:center;">实际考勤</span>
+				</div>
+				<div class="mui-row infoItem" id="billspec">
+					<span class="mui-col-xs-3">出勤情况：</span>
+					<span class="mui-col-xs-3"  id="bill_nunit"></span>
+					<span class="mui-col-xs-6">
+						<input type="text" name="bill_spec" value=""  placeholder="点击修改"/>
+					</span>
+				</div>
+				<div class="mui-row infoItem">
+					<span class="mui-col-xs-3">迟到早退：</span>
+					<span class="mui-col-xs-3"  id="bill_title"></span>
+					<span class="mui-col-xs-6">
+						<input type="text"   name="bill_nspec" class="mui-input-clear" value="" placeholder="点击修改"/>
+					</span>
+				</div>
+				<div class="mui-row infoItem">
+					<span class="mui-col-xs-3">迟到次数：</span>
+					<span class="mui-col-xs-3"  id="node_price"></span>
+					<span class="mui-col-xs-6">
+						<input type="number"  name="node_qty" class="mui-input-clear" value="" placeholder="点击修改"/>
+					</span>
+				</div>
+				<div class="mui-row infoItem">
+					<span class="mui-col-xs-3">早退次数：</span>
+					<span class="mui-col-xs-3"  id="node_nprice"></span>
+					<span class="mui-col-xs-6">
+						<input type="number"   name="qty_Eacct" class="mui-input-clear" value="" placeholder="点击修改"/>
+					</span>
+				</div>
+				<div class="mui-row infoItem">
+					<span class="mui-col-xs-3">延班小时数：</span>
+					<span class="mui-col-xs-3"  id="node_rate"></span>
+					<span class="mui-col-xs-6">
+						<input type="number"  name="qty_Oacct" class="mui-input-clear" value="" placeholder="点击修改"/>
+					</span>
+				</div>
+				<div class="mui-row" style="background: #ffffff;margin-top:15px;margin-bottom: 10px;" > 
+					<span class="mui-col-xs-6" id="deleteBtn" style="text-align: center;display: none;">
+						<button type="buttton" class="mui-btn mui-btn-danger  mui-btn-outlined " style="text-align: center;margin-right:;" >删&nbsp;&nbsp;&nbsp;除</button>	
+					</span>
+					<span class="mui-col-xs-12" id="savebox" style="text-align: center">
+						<button type="buttton" class="mui-btn mui-btn-primary mui-btn-outlined " id="saveBtn" style="text-align: center;margin-right:;" >保存修改</button>	
+					</span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo" style="display:none;">
+				<div class="mui-row infoItem" >
+					<span class="mui-col-xs-3">单据标识：</span>
+					<span class="mui-col-xs-9"  id="bill_no"></span>
+				</div>
+				<div class="mui-row infoItem ">
+					<span class="mui-col-xs-3">fbill_no：</span>
+					<span class="mui-col-xs-9"  id="fbill_no"></span>
+				</div><div class="mui-row infoItem ">
+					<span class="mui-col-xs-3">bill_task：</span>
+					<span class="mui-col-xs-9"  id="bill_task"></span>
+				</div>
+				<div class="mui-row infoItem">
+					<span class="mui-col-xs-3">制单人代码：</span>
+					<span class="mui-col-xs-9"  id="bill_user"></span>
+				</div>
+				<div class="mui-row infoItem">
+					<span class="mui-col-xs-3">制单单位：</span>
+					<span class="mui-col-xs-9"  id="bill_com"></span>
+				</div>
+				<div class="mui-row infoItem lastItem">
+					<span class="mui-col-xs-3">制单时间：</span>
+					<span class="mui-col-xs-9"  id="bill_date"></span>
+				</div>
+			</div>
+			<div class="bottomLine" style="">
+				<p class="end" style="">没有更多数据了！</p>
+			</div>
+			<!-- 点击退出时底部弹出-->
+			<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+				<!-- 可选择菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="sureDelBtn">
+						<a>确认</a>
+					</li>
+				</ul>
+				<!-- 取消菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a href="#sheet1"><b>取消</b></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var deptname;
+		var date = new Date();
+		var rqsData = {}; //提交的数据
+		var dsaveBilltext =[];
+		mui.plusReady(function() {
+			// TODO  0. 重写返回事件
+			// TODO　１.页面上的字段
+			// TODO 2. 接收传过来的参数===========================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			deptname 		= self.deptname;
+			detailInfo = self.detailInfo;
+			
+			// TODO 3. 基础设置/赋值 =============================
+			document.getElementById("bill_name").innerHTML  = detailInfo["标题"].split("-")[0];
+			document.getElementById("bill_unit").innerHTML  = detailInfo["标题"].split("-")[1];
+			document.getElementById("userid").innerHTML  	= detailInfo["参数"];
+			document.getElementById("bill_ndate").innerHTML  = detailInfo["日期"].slice(0,10);
+			var queryparmas={
+				name		:'msvr',    
+				bill_task	:"VR_vdac402_query_02",
+				bill_com	:teamBillCom, 
+				bill_user	:userbillNo,
+				bill_no		:detailInfo["图片"],
+				currentPage	:1, 
+				pageSize	:1, 
+				paramText	:"",
+			}
+			plus.nativeUI.showWaiting("正在查询数据，请稍后~")
+			rqsDataAjax(queryparmas, '/Find/Ddata/activity', attendStatus, '../login.html');		
+			// 赋值
+			document.getElementById("header").innerHTML  = "月审处理";
+			//
+			// TODO 4. 事件绑定==================================
+			// 点击编辑
+			document.getElementById("saveBtn").addEventListener("tap",saveBtn);
+			document.getElementById("deleteBtn").addEventListener("tap",deleteBtn);
+			document.getElementById("sureDelBtn").addEventListener("tap", sureDelBtn);
+			// TODO 5. 监听自定义事件=============================			
+			// TODO 6. 事件/方法=================================
+			// 提交修改
+			function saveBtn(){
+				var date1 = new Date();
+				for(var n in rqsData.bill_text[1]) {
+					rqsData.bill_text[1][n] = jQuery("input[name="+n+"]").val();
+				}
+				rqsData.bill_date=vlUtils.dateToString(date);
+				if(typeof(rqsData.bill_text) != "string"){
+					rqsData.bill_text=JSON.stringify(rqsData.bill_text);
+				}
+				CRUDajax(rqsData,"../login.html",saveSuccess111);
+			}
+			function saveSuccess111(){
+				successFun("vdac402_m_dplist.html","vdac402_m_dlist.html");
+			}
+			//
+			function attendStatus(data){
+				
+				plus.nativeUI.closeWaiting("正在查询数据，请稍后~")
+				if(data.data.length != 0){
+					var newdataArr = {};
+					for(var k in data.data[0]) {
+						newdataArr[k.slice(0, 2)] = data.data[0][k];
+					}
+					// 下载图片	
+				    if(!vlUtils.isnull(newdataArr.bill_user)){
+				    		vlUtils.downloadicon(newdataArr.bill_user,"userImg");
+				   	};
+				   	/*
+				   	"内容出勤情况": "预出勤:,实际出勤:,迟到早退:,实际迟到早退:",
+					"指令班组班次": "单据状态:L,班组:动力一组测试,班次:白",
+					"参数姓名": "员工代码:vdhr10500_20180612_H0000249,姓名:刘斌",
+					"图片原始单据号": "vdac40200_20181203_ff0f3fa5",
+					"数量": "0",
+					"标题统计": "迟到次数:0,早退次数:0,延班小时数:0.00,实际迟到次数:0,实际早退次数:0,实际延班小时:0.00",
+					"日期日期": "2018-12-03 00:00:00",
+					"金额": "0"
+				   	 */
+					rqsData = {
+						bill_no 	: newdataArr["图片"],
+						fbill_no 	: "ROOT",
+						bill_name 	: newdataArr["参数"].split(",")[1].split(":")[1],
+						bill_unit 	: newdataArr["指令"].split(",")[2].split(":")[1],
+						bill_ndate	: newdataArr["日期"],
+						bill_date	: "",
+						bill_task	: "d_save",
+						bill_user	: userbillNo,
+						bill_com	: teamBillCom,
+						bill_nunit	: newdataArr["内容"].split(",")[0].split(":")[1],//出勤情况
+						bill_title	: newdataArr["内容"].split(",")[2].split(":")[1],//迟到早退
+						node_price	: newdataArr["标题"].split(",")[0].split(":")[1],//迟到次数
+						node_nprice	: newdataArr["标题"].split(",")[1].split(":")[1],//早退次数
+						node_rate	: newdataArr["标题"].split(",")[2].split(":")[1],//延班小时数
+					}
+					rqsData.bill_text = [
+						{
+							bill_spec 	: newdataArr["内容"].split(",")[1].split(":")[1],	// 实际出勤情况
+							bill_nspec 	: newdataArr["内容"].split(",")[3].split(":")[1],	// 实际迟到早退
+							node_qty	: newdataArr["标题"].split(",")[3].split(":")[1],	// 实际迟到次数
+							qty_Eacct	: newdataArr["标题"].split(",")[4].split(":")[1],	// 实际早退次数
+							qty_Oacct	: newdataArr["标题"].split(",")[5].split(":")[1]		// 实际延班小时数
+						},
+						{
+							bill_spec 	: newdataArr["内容"].split(",")[1].split(":")[1],	// 实际出勤情况
+							bill_nspec 	: newdataArr["内容"].split(",")[3].split(":")[1],	// 实际迟到早退
+							node_qty	: newdataArr["标题"].split(",")[3].split(":")[1],	// 实际迟到次数
+							qty_Eacct	: newdataArr["标题"].split(",")[4].split(":")[1],	// 实际早退次数
+							qty_Oacct	: newdataArr["标题"].split(",")[5].split(":")[1]		// 实际延班小时数
+						}
+					]
+					var assignmentjson ={
+						bill_nunit	: newdataArr["内容"].split(",")[0].split(":")[1],//出勤情况
+						bill_title	: newdataArr["内容"].split(",")[2].split(":")[1],//迟到早退
+						node_price	: newdataArr["标题"].split(",")[0].split(":")[1],//迟到次数
+						node_nprice	: newdataArr["标题"].split(",")[1].split(":")[1],//早退次数
+						node_rate	: newdataArr["标题"].split(",")[2].split(":")[1],//延班小时数
+					}
+					for(var k in assignmentjson) {
+						document.getElementById(k).innerHTML = assignmentjson[k];
+					}
+					for(var n in rqsData.bill_text[0]) {
+//						document.getElementById(n).innerHTML = rqsData.bill_text[0][n];
+						jQuery("input[name="+n+"]").val(rqsData.bill_text[0][n])
+					}
+				}
+			
+			}
+		}); // plusReady
+	</script>
+
+</html>

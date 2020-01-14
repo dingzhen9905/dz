@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			.mui-row.topNav{
+				padding:0px;
+			}
+			.mui-row.topNav p a {
+				padding:3px;
+			}
+			.mui-row.topNav p span{
+				font-size:12px;
+			}
+			/* 灰色*/
+			.gray {
+				color:gray;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.hide{
+				display: none;
+			}
+			.mui-input-row.lastInput:after{
+				/*display: none;*/
+				height:0;
+			}
+			.spn{
+				color:gray;
+			}
+			/*关联状态*/
+			.list_sts{
+				font-size: 12px;
+				line-height: 14px;
+				color:#f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border:1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			/*顶部导航*/
+			.topNavItem{
+				color:#8f8f94;
+			}
+			.bottomLine{
+				border-bottom: 1px solid #8f8f94;
+				position:relative;
+				margin: 25px 50px;
+			}
+			.end{
+				position:absolute;
+				top:-8px;
+				left:32%;
+				background: #efeff4;
+				padding:0 10px;
+				z-index:111;
+				font-size: 10px;
+			}
+			.mui-input-row.detail{
+				padding-top:8px;
+				padding-left:15px;
+				height:120px;
+			}
+			.mui-input-row.detail p{
+				margin-bottom:0;
+			}
+    		ul{
+				margin-top:5px;
+				margin-bottom:5px;
+				padding:5px;
+				background:#fff;
+			}
+			.m{
+    			overflow: hidden;
+    			margin-top: -28px !important;
+    			padding: 0 !important;
+    		}
+		</style>
+	</head>
+	<body>
+	    <header class="mui-bar mui-bar-nav  headerMain nodeHeader" id='head'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" ></a>
+			<h1 class="mui-title headText" id="header">出库单详情</h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit"></a>	
+			<div class="mui-row  navBar nodeTopNav">
+				<p class="mui-col-xs-12" id="bBackBtn">
+					<a class="mui-icon mui-icon-paperclip"  id="bBackIcon"></a>
+					<span>收回单据</span>
+				</p>
+			</div>
+		</header> 
+	   	<div class="mui-content" style="padding-top:130px;margin-top:0px;margin-bottom:30px;">
+			<!--*******************************************************-->
+		    <!--<div class="mui-input-group" style="padding:5px 18px 5px 25px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">选择客户：</span><span class="mui-col-xs-8 spn"  id="linkvd_term"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">收货地址：</span><span class="mui-col-xs-8 spn"  id="linkvd_termaddr"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">联系信息：</span><span class="mui-col-xs-8 spn"  id="linkvd_termcontact"></span>
+				</div>
+				<div class="mui-row">
+					<span class="mui-col-xs-4 spn">商品件数：</span><span class="mui-col-xs-8 spn"  id="node_qty"></span>
+				</div>
+			</div> -->
+			<div id="" class="mui-row" style="background: #fff;overflow: hidden;padding:10px;height: 80px;">
+	   			<div class="mui-row" style="padding:5px;">
+		   			<p class="mui-col-xs-1" style="text-align: center;margin-bottom:0px;">
+						<a class="mui-icon mui-icon-location" style="font-size:20px;margin:0;padding:0;"></a>
+					</p>
+		   			<p class="mui-col-xs-6" id="linkvd_term" style="text-align: left;margin-bottom:0px;"></p>
+		   			<p class="mui-col-xs-6" id="linkvd_linkcom" style="text-align: left;margin-bottom:0px;display: none;"></p>
+					<p class="mui-col-xs-5" id="linkvd_termcontact" style="text-align: right;margin-bottom:0px;padding-right:10px;font-size: 10px;"></p>
+   				</div>
+   				<div class=" mui-row" style="padding:0;">
+		   			<p class="mui-col-xs-12 " id="linkvd_termaddr" style="text-align:;margin-bottom:0px;padding:0 0 5px 20px;font-size:12px;line-height:14px;"></p>
+   				</div>
+		   </div>
+			<ul id="contList">
+				<!--<li class="mui-table-view-cell" style="padding:5px;margin-top:5px;">
+					<div class="mui-row m">
+						<div class="mui-col-xs-3 mui-row" style="background:;padding:5px;width:;">
+							<img class="vdvc311 mui-col-xs-12" src="../../images/icon/default.png"  id="" style="border:1px solid #ccc;width:60px;border:1px solid #C8C7CCm;" />
+						</div>
+						<div class="mui-col-xs-9" >
+							<div class="mui-row" style="display:block;padding:0;background:;">
+								<div class="mui-col-xs-9 mui-row" style="background:;height:50px;padding:0;">
+									<h5 class="list_h5 mui-col-xs-12" style="color:#242424;">商品名称</h5>
+									<p class="list_font mui-col-xs-12" >903102104260</p>
+									<p class="list_font mui-col-xs-12">单码:0件   其他:0件 </p>
+								</div>
+								<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align:right;padding-right:5px;padding:0;">
+									<p class="list_fonts mui-col-xs-12" style="float:right;"></p>
+									<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:0;">123</p>
+									<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">123</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>-->
+			</ul>
+			<div id="mui-row" style="background:#fff;padding:5px 10px;">
+				<p class="mui-col-xs-12 " style="text-align: right;margin-bottom:0px;padding-right:20px;">
+					共
+					<span id="node_qty"></span>
+					件商品
+				</p>
+			</div>
+	   </div>
+	   
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">  
+		var $$ = jQuery.noConflict();
+		var detailInfo="";
+        mui.plusReady(function() {
+        	// 获取上个页面传过来的参数
+        	var self = plus.webview.currentWebview();
+			var teamBillCom = self.teamBillCom;
+			var teamBillComName = self.teamBillComName;
+			var userbillNo = self.userbillNo;
+			var loginCom = self.loginCom;
+			var loginComName = self.loginComName;
+			detailInfo = self.detailInfo;
+
+
+			if(detailInfo.values.main.bill_task == "L"){
+				jQuery("#bBackIcon").addClass("unclickable");
+				document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn)
+				document.getElementById('toEdit').style.display="block";
+			}else{
+				document.getElementById('bBackBtn').addEventListener("tap", bBackBtn);
+				document.getElementById('toEdit').style.display="none";
+			}
+			if(vlUtils.isnull(detailInfo.values.main["bill_text"])){
+				var buyname = detailInfo.values.main["bill_name"];
+				var tel = (detailInfo.values.main["bill_context"].split(","))[1];
+				var addr = (detailInfo.values.main["bill_context"].split(","))[0];
+			}else{
+				var buyname = detailInfo.values.main.bill_text[0].linkbd_ERP_corrname;
+				var tel = detailInfo.values.main.bill_text[0].linkvd_termcontact ;
+				var addr = detailInfo.values.main.bill_text[0].linkvd_termaddr;
+			}
+			document.getElementById("node_qty").innerHTML = detailInfo.values.main.node_qty;
+			document.getElementById("linkvd_term").innerHTML = buyname;
+			document.getElementById("linkvd_termaddr").innerHTML = addr;
+			document.getElementById("linkvd_termcontact").innerHTML = tel;
+ 			var contList = document.getElementById("contList");  
+			var text="";
+//			var detailInfo.values.detail=detailInfo.values.detail
+//			var detailInfo.values.detail=JSON.parse(detailInfo.values.detail);
+			for(var i=0;i<detailInfo.values.detail.length;i++){ 
+				var contList = document.getElementById("contList");
+				var comImgid = vlUtils.uuid('comImg', 4, 10);
+				if(detailInfo.values.detail[i]["bill_name"] == "" && detailInfo.values.detail[i]["bill_id"]=="1000000000009"){
+	    			detailInfo.values.detail[i]["bill_name"] = "商品(一物一码)";
+	    		}
+				text += '<li class="mui-table-view-cell" style="padding:5px;margin-top:5px;">';
+				text += '<div class="mui-row m">';
+				text += '<div class="mui-col-xs-3 mui-row" style="background:;padding:5px;width:;">';
+				text += '<img class="vdvc311 mui-col-xs-12" src="../../images/icon/default.png"  id="'+comImgid+'" style="width:60px;height:60px;" />';
+				text += '</div>';
+				text += '<div class="mui-col-xs-9" >';
+				text += '<div class="mui-row" style="display:block;padding:0;background:;">';
+				text += '<div class="mui-col-xs-9 mui-row" style="background:;height:50px;padding:0;">';
+				text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;">'+detailInfo.values.detail[i]["bill_name"]+'</h5>';
+				text += '<p class="list_font mui-col-xs-12" >'+detailInfo.values.detail[i]["bill_id"]+'</p>';
+//				text += '<p class="list_font mui-col-xs-12" style="font-size:12px;">箱码:'+ detailInfo.values.detail[i].bill_text[0]["linkbd_aqty"]+'件   虚码:'+detailInfo.values.detail[i].bill_text[0]["linkbd_vqty"]+'件 </p>';
+				text += '</div>';
+				text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align:right;padding-right:5px;padding:0;">';
+				text += '<p class="list_fonts mui-col-xs-12" style="float:right;"></p>';
+				text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:0;">'+detailInfo.values.detail[i]["node_qty"]+'</p>';
+//				text += '<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">'+detailInfo.values.detail[i]["bill_id"]+'</p>';
+				text += '</div>';
+				text += '</div>';
+				text += '</div>';
+				text += '</div>';
+				text += '</li>';
+				contList.innerHTML = text;
+				vlUtils.downloadicon(detailInfo.values.detail[i]["bill_oppo"], comImgid);
+			}
+			// 存储制单人
+			document.getElementById("toEdit").setAttribute("billUser",detailInfo.values.main.bill_user);
+		    // 编辑开始
+			document.getElementById("toEdit").addEventListener("tap",function(){
+				if(detailInfo.values.main.bill_task != "L"){
+					mui.toast("单据已送审\n 若想编辑，请先收回！");
+					return;
+				}
+				var billUser = document.getElementById("toEdit").getAttribute("billUser"); 
+				var privileges = vlUtils.getStorage("newPrivileges");
+ 				var num="";
+				if(billUser == userbillNo || privileges == "ROOT"){
+					mui.openWindow({
+						url: 'vdst215_edit.html',
+				    	id: "vdst215_edit.html",
+					    createNew:true,
+					    extras:{
+							teamBillCom 	: teamBillCom ,
+							teamBillComName : teamBillComName,
+							userbillNo 		: userbillNo,
+							loginCom 		: loginCom,
+							loginComName 	: loginComName,
+							detailInfo 		: detailInfo,
+							flagNew 		: "N",
+							num				: ""
+						} 
+					})
+				}else{
+					mui.alert("仅制单人或管理员有此权限！");
+				}
+			});
+			// 收回
+			function bBackBtn(){ 
+				var date = new Date();
+				var backStateparams = {  // 取消登账 
+					name		: "msvr",
+					bill_task	: "VE_oinv_vdac202_04",								// 结账指令   	
+					bill_no		: detailInfo.values.main.bill_no,	// 要结哪个仓库的账
+					bill_doppo	: detailInfo.values.main.bill_doppo,	// 要结哪个仓库的账
+					bill_com	: teamBillCom,										// 操作人单位
+					bill_user	: userbillNo,										// 操作人代码
+					bill_date	: vlUtils.dateToString(date),						// 当前时间
+				};
+//				// 提交
+				CRUDajax(backStateparams,"../login.html",backStatesucc);
+			}
+			function backStatesucc(){
+				var date = new Date();
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				params.bill_com	 = loginCom;
+				params.fbill_no	 = detailInfo.values.main.fbill_no;
+				params.bill_no 	 = detailInfo.values.main.bill_no;
+				params.bill_user = userbillNo;
+				params.bill_date = vlUtils.dateToString(date);
+				params.bill_task = "b_back";
+				CRUDajax(params,'../login.html',reloadnode)
+			}
+			function reloadnode(){
+//				if(detailInfo.values.main.bill_bflow == "协议出库"){
+					detailInfo.values.main.bill_task = "L";
+					jQuery("#bBackIcon").addClass("unclickable");
+					document.getElementById('toEdit').style.display="block";
+					document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn);
+					hasSend = true;
+//				}else {
+//					var date = new Date();
+//					var backStateparams = { 
+//						name		: "msvr",
+//						bill_task	: "VE_oinv_vdac202_05",								// 结账指令   	
+//						bill_no		: detailInfo.values.main.bill_no,	// 要结哪个仓库的账
+//						bill_doppo	: detailInfo.values.main.bill_doppo,	// 要结哪个仓库的账
+//						bill_com	: teamBillCom,										// 操作人单位
+//						bill_user	: userbillNo,										// 操作人代码
+//						bill_date	: vlUtils.dateToString(date),						// 当前时间
+//					};
+//	//				// 提交
+//					CRUDajax(backStateparams,"../login.html",delStatesucc);
+//				}	
+				var date = new Date();
+				var delparams = JSON.parse(JSON.stringify(sendTaskData));
+				delparams.bill_com	 = loginCom;
+				delparams.fbill_no	 = detailInfo.values.main.fbill_no;
+				delparams.bill_no 	 = detailInfo.values.main.bill_no;
+				delparams.bill_user = userbillNo;
+				delparams.bill_date = vlUtils.dateToString(date);
+				delparams.bill_task = "d_delete";
+				CRUDajax(delparams,"../login.html",delSuccess);//删除方法 
+			}
+			function delStatesucc(){
+				var date = new Date();
+				var delparams = JSON.parse(JSON.stringify(sendTaskData));
+				delparams.bill_com	 = loginCom;
+				delparams.fbill_no	 = detailInfo.values.main.fbill_no;
+				delparams.bill_no 	 = detailInfo.values.main.bill_no;
+				delparams.bill_user = userbillNo;
+				delparams.bill_date = vlUtils.dateToString(date);
+				delparams.bill_task = "d_delete";
+				CRUDajax(delparams,"../login.html",delSuccess);//删除方法 
+			}
+			function delSuccess(){
+				successFun("vdst215_plist.html","vdst215_list.html");
+			}
+        });  // plusReady
+
+	 
+ 			
+    </script>  
+</html>

@@ -1,0 +1,5 @@
+[
+{"fsend_group":"vc001_101","bill_no":"10103","bill_theme":"刘亚","bill_user":"刘总","bill_context":"好的","bill_pic":"vdoa012_b.png","bill_date":"20170101","link_lnext":"vdvc802_list"},
+{"fsend_group":"vc001_102","bill_no":"10203","bill_theme":"张瑞","bill_user":"刘总","bill_context":"可以","bill_pic":"vdoa012_b.png","bill_date":"20170526","link_lnext":"vdvc802_list"},
+{"fsend_group":"vc103_103","bill_no":"10303","bill_theme":"销售一部","bill_user":"刘总","bill_context":"收到","bill_pic":"vdoa012_b.png","bill_date":"20170516","link_lnext":"vdvc802_list"}
+]

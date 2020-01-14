@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>配送查询/片区客户/片区终端</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			
+			
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.mui-bar .mui-icon:active {
+				background: #0062cc!important;
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			
+			#searchName {
+				font-size: 12px;
+				margin: 2px 5px;
+				padding: 0;
+				height: 30px;
+				line-height: 30px;
+				border: 1px solid #007aff;
+				/*dedee2*/
+				border-radius: 3px;
+				text-align: center;
+				color: #007aff;
+			}
+			.mui-input-group:before,
+			.mui-input-group:after{
+				height:0px;
+			}
+			label{
+				font-size: 12px;
+				color: #6C6C6C;
+			}
+			input{
+				font-size: 10px;
+			}
+			input[placeholder] {
+				padding-left:10px !important;
+				font-size: 10px;
+				line-height: 10px;
+				color: #000;
+			}
+			.mui-icon.mui-icon-search {
+				position: absolute;
+				top: 3px;
+				right: 0;
+				
+				width: 36px;
+				height: 26px;
+				
+				text-align: center;
+				color: #FFFFFF;
+				
+				margin:0 !important;
+				padding:0 !important;
+				
+				border-radius: 0 10px 10px 0;
+				background: #5da8fa;
+			}
+			.mui-icon.mui-icon-search:hover{
+				background: #C8C7CC;
+			}
+		</style>
+	</head>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id='head' style="height: 170px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<div class="mui-title plistTitle" id="selectionDepartment">
+				<p id="TO">终端配送信息</p>
+				
+				
+			</div>
+			<div class="mui-row" style="position:fixed;top:70px;left:0px;width:100%;height:auto;background:#fff; color: #000;">
+				<div class="mui-col-xs-9 mui-row" style="margin-bottom:6px;">
+					<div class="mui-col-xs-12 mui-row" style="padding-top: 10px;">
+						<div class="mui-col-xs-1"></div>
+						<div class="mui-col-xs-3">
+							<label>经销商：</label>
+						</div>
+						<div class="mui-col-xs-8">
+							<label id="dealerName"></label>
+						</div>
+					</div>
+					<div class="mui-col-xs-12 mui-row" style="margin-top: 10px;">
+						<div class="mui-col-xs-6">
+							<div class="mui-input-row" style="margin:0;padding:0;">
+								<label style="margin:0;padding:0;text-align: center;">开始<br/>时间</label>
+								<input id="bill_date" type="date" class="change requiredInput" style="border:1px solid #5da8fa;border-radius:10px;height:26px;margin:0;padding:0;">
+							</div>
+						</div>
+						<div class="mui-col-xs-6">
+							<div class="mui-input-row" style="margin:0;padding:0;">
+								<label style="margin:0;padding:0;text-align: center;">结束<br/>时间</label>
+								<input id="bill_ndate" type="date" class="change requiredInput" style="border:1px solid #5da8fa;border-radius:10px;height:26px;margin:0;padding:0;">
+							</div>
+						</div>
+					</div>
+					<div class="mui-input-row mui-col-xs-12" style="margin-top:3px;position: relative;">
+						<label>选择:</label>
+						<input id="bill_name" type="text" class="requiredInput" placeholder="选择或录入关键词搜索" style="border:1px solid #5da8fa;border-radius:10px;height:26px;margin-top:3px;">
+						<!--<span id="searchBname" class="mui-icon mui-icon-search"></span>-->
+					</div>
+				</div>
+				<span class="mui-col-xs-2" id="search" style="margin:15px;margin-top: 60px;">
+					<button class="mui-btn-primary mui-btn-outlined">查询</button>
+				</span>
+			</div>
+			<div id="report02" class="mui-row" style="position:fixed;top:170px;width:100%;background:#20B2AA;padding:0;text-align: center;height: 30px;line-height: 30px;margin-left:0px;color:#fff;font-size:12px;">
+				<span class="mui-col-xs-3" id="title1" style="text-align: left;padding-left: 10px;background:;font-size:10px;">_</span>
+				<span class="mui-col-xs-3" id="title2" style="text-align: center;font-size:10px;">_</span>
+				<span class="mui-col-xs-3" id="title3" style="text-align: center;font-size:10px;">_</span>
+				<span class="mui-col-xs-3" id="title4" style="text-align: center;font-size:10px;">_</span>
+			</div>
+		</header>
+		<div class="mui-content" style="border: transparent;">
+
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url:'vrst315detail_list.html',
+				id: 'vrst315detail_list.html',
+				styles: {
+					top: '195px',
+					bottom: '0px',
+				}
+			}]
+		});
+		var searchName = '';
+		var searchCode = '';
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vrst315detail_list').pullRefresh().scrollTo(0,0,100)");
+		});
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			var dealerName = self.dealerName;
+			var dealerNo = self.dealerNo;
+			var bdate = self.bdate;
+			var edate = self.edate;
+			var userbillNo = self.userbillNo;
+			var commonParams = 'VR_vdst315_query_11';
+			//给经销商名称赋值
+			document.getElementById('dealerName').innerHTML = dealerName;
+			jQuery("#bill_date").val(bdate);
+			jQuery("#bill_ndate").val(edate);
+			//
+			//默认加载一次模糊查询的数据
+			searchReport('',bdate,edate);
+
+			// 点击查询按钮
+			document.getElementById("search").addEventListener("tap", function() {
+				var bdate = jQuery("#bill_date").val();
+				var edate = jQuery("#bill_ndate").val();
+				var bname = jQuery("#bill_name").val();
+				if(vlUtils.isnull(bdate) || vlUtils.isnull(edate)){
+					mui.toast("请先选择查询条件~");
+					return;
+				}
+				searchReport(bname,bdate,edate);
+				// 传值给子表
+				mui.fire(plus.webview.getWebviewById('vrst315detail_list.html'), 'changeReport', {
+					bname: bname,
+					bdate: bdate,
+					edate: edate
+				});
+			});
+			//
+			// 4-4 时间变化，重新计算天数
+			jQuery(".change").bind("input propertychange",function(event){
+				var bdate = jQuery("#bill_date").val();
+				var edate = jQuery("#bill_ndate").val();
+				var bname = jQuery("#bill_name").val();
+				if(!vlUtils.isnull(bdate) && !vlUtils.isnull(edate)){
+					searchReport(bname,bdate,edate);
+					// 传值给子表
+					mui.fire(plus.webview.getWebviewById('vrst315detail_list.html'), 'changeReport', {
+						bname: bname,
+						bdate: bdate,
+						edate: edate
+					});
+				}
+			});
+			function searchReport(bname,bdate,edate){
+				var reportparmas = {
+					bill_task	: commonParams, // 查询的指令
+					bill_user   : userbillNo,	//经销商代码
+					bill_com	: dealerNo, 		// 当前登陆人
+					bill_title  : bname,			//模糊查询
+					bill_bdate	: bdate+" 00:00:00",	// 查询
+					bill_edate	: edate+" 23:59:59",	// 查询
+					currentPage	: 1,
+					pageSize	: 1,
+					paramText	: ""
+				};
+				rqsDataAjax(reportparmas, '/Find/Ddata/activity', report02Data, '../login.html');
+			}
+			// 更换 表头
+			function report02Data(data, type) {
+				var newdataArr = {};
+				if(data.data.length != 0){
+					for(var k in data.data[0]) {
+						newdataArr[k.slice(0, 2)] = k.slice(2);
+					}
+					document.getElementById("title1").innerHTML = vlUtils.isnull(newdataArr["图片"])?document.getElementById("title1").innerHTML:newdataArr["图片"];
+					document.getElementById("title2").innerHTML = vlUtils.isnull(newdataArr["标题"])?document.getElementById("title2").innerHTML:newdataArr["标题"];
+					document.getElementById("title3").innerHTML = vlUtils.isnull(newdataArr["参数"])?document.getElementById("title3").innerHTML:newdataArr["参数"];
+					document.getElementById("title4").innerHTML = vlUtils.isnull(newdataArr["数量"])?document.getElementById("title4").innerHTML:newdataArr["数量"];
+				}else{
+					mui.toast("未查询到数据!")
+				}
+			} // reportData
+		}); //plusReady
+	</script>
+
+</html>

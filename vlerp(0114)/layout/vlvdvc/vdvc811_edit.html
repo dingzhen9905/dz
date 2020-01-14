@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			
+			.mui-row {
+				padding: 8px;
+			}
+			
+			input[placeholder] {
+				font-size: 12px;
+			}
+			
+			.mui-input-row.lastInput:after {
+				height: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id='head'>
+			<a class="mui-action-back mui-pull-left" id="goBack" style="position:relative;z-index: 111;">返回</a>
+			<h1 class="mui-title headText" id="header">添加银行卡</h1>
+			<a class=" mui-pull-right rightIcon" id="saveBtn" data-loading-text="提交中" style="position:relative;z-index: 111;">保存</a>
+			<div class="mui-row navBar buttonBars">
+				
+				<button type="button" id="deleteBtn" class="mui-col-xs-6" style="text-align: center;">
+					<span class="mui-icon mui-icon-trash" id="deleteIcon" ></span>
+					<span >删除</span>
+				</button>
+				<button type="button" id="bSendBtn" class="mui-col-xs-4 " style="display: none;">
+					<span class="mui-icon mui-icon-upload" id="bSendIcon" ></span>
+					<span >送审</span>
+				</button>
+				<button type="button" id="bBackBtn" class="mui-col-xs-3 " style="display: none;">
+					<span class="mui-icon mui-icon-paperclip" id="bBackIcon"></span>
+					<span >收回</span>
+				</button>
+				<span class="mui-col-xs-6 state" id="billState" style="text-align: center;"></span>
+			</div>
+		</header>
+
+		<div class="mui-content" style="padding-top:100px;margin-top:10px;margin-bottom:30px;">
+			<p style="margin-left:20px;font-size:12px;">请绑定持卡人本人的银行卡</p>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row">
+					<label>持卡人：</label>
+					<input id="linkvd_linkuser" type="text" class="" placeholder="录入持卡人" readonly="readonly">
+				</div>
+				<div class="mui-input-row" style="display: none;">
+					<label>持卡人：</label>
+					<input id="fbill_no" type="text" class="" placeholder="录入持卡人" readonly="readonly">
+				</div>
+				<div class="mui-input-row">
+					<label>银行卡号：</label>
+					<input id="bill_id" type="number" class="mui-input-clear requiredInput" placeholder="录入银行卡号" required="required">
+				</div>
+				<div class="mui-input-row">
+					<label>银行：</label>
+					<input id="bill_name" type="text" class="mui-input-clear requiredInput" placeholder="录入银行名称" required="required">
+				</div>
+
+				<div class="mui-input-row lastInput">
+					<label>预留手机号</label>
+					<input id="linkbd_linktel" type="number" class="" readonly="readonly" style="font-size:14px;">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row lastInput" id="linkvd_ifdefault">
+					<div class="mui-col-xs-4 mui-pull-left" style="padding:11px 0 11px 16px;">设为默认卡：</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-4" style="background: ;">
+						<label style="background:;">是</label>
+						<input name="defaultCard" type="radio" class="defaultcard" id="isdefault" value="true" style="background: ;">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-4">
+						<label>否</label>
+						<input name="defaultCard" type="radio" class="defaultcard" id="notdefault" value="false">
+					</div>
+				</div>
+			</div>
+			<!-- 点击退出时底部弹出-->
+			<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+				<!-- 可选择菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="sureDelBtn">
+						<a>确认</a>
+					</li>
+				</ul>
+				<!-- 取消菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a href="#sheet1"><b>取消</b></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = "";
+		var hadSend = false; // 用于判断是否送审
+		var flagsave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		mui.plusReady(function() {
+			var datas = vlUtils.getStorage("user");
+			var datass = JSON.parse(datas);
+			document.getElementById("linkbd_linktel").value = datass.usertel;
+			//			if(document.getElementById("bill_id").value.length >16 || document.getElementById("bill_id").value.length <19){
+			//				alert("银行卡号长度必须在16到19之间");
+			//			}
+			// 接收传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no = self.fbill_no; // 3.fbill_no是
+			loginCom = self.loginCom; // 4.登录人的代码
+			loginComName = self.loginComName; // 5.登录人的名称
+			userbillNo = self.userbillNo; // 6.登录单位代码
+			userName = self.userName; // 7.登录单位名称
+			privileges = self.privileges; // 8.当前的权限是
+			fromPage = self.fromPage; // 9.从哪个页面来
+			// 其他
+			flagNew = self.flagNew; // 定点(不受出库单控制,选终端) 定向(选出库单) 定组
+			// 重写返回事件
+			var oldBack = mui.back;
+			mui.back = function() {
+				var webview = plus.webview.getWebviewById(fromPage + '.html');
+				webview.show();
+			}
+
+			// 上级部门  
+			document.getElementById("linkvd_linkuser").value = userName; //0109增加
+			document.getElementById("fbill_no").value = userbillNo;
+
+			//保存
+			document.getElementById("saveBtn").addEventListener("tap", bSendBtn);
+
+			function saveBtn() {
+//				mui(this).button('loading');
+				var verfiedResults = validateRequired(); //验证是否为必填字段  
+
+				if(verfiedResults == false) {
+					mui("#saveBtn").button('reset');
+					return;
+				}
+				rqsData = getInputValue(); //获取每一个输入框的值的方法   
+				if(typeof(rqsData.bill_text) != "string" && rqsData.bill_text != ""){
+					rqsData.bill_text = JSON.parse(rqsData.bill_text);
+				}
+				if(flagNew == "N") {
+					rqsData = vlUtils.isUpdateObj(detailInfo, rqsData);
+					rqsData.bill_task = "d_save";
+					rqsData.cc_user = JSON.stringify(rqsData.cc_user);
+				}
+				if(flagNew == "Y") {
+
+				}
+				saveAjax(rqsData)
+			}
+			// 按下“删除”后弹出底部菜单
+			document.getElementById("deleteBtn").addEventListener("tap", deleteBtn)
+
+			function deleteBtn() {
+				mui('#sheet1').popover('show', document.getElementById("deleteBtn"));
+
+			}
+			// 删除：弹出确认菜单之后点击确认
+			document.getElementById("sureDelBtn").addEventListener("tap", sureDelBtn);
+
+			function sureDelBtn() {
+				//
+				var date = new Date();
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				params.bill_no 	 = onlyCode;
+				params.bill_task = "d_delete";
+				params.bill_user = userbillNo;
+				params.bill_com	 = teamBillCom;
+				params.bill_date = vlUtils.dateToString(date);
+				//
+				deleteAjax(params); //删除方法 
+			}
+			//送审
+			document.getElementById("bSendBtn").addEventListener("tap", bSendBtn);
+
+			function bSendBtn() {
+				//
+				var date = new Date();
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				params.bill_com	 = teamBillCom;
+				params.bill_no 	 = onlyCode;
+				params.bill_user = userbillNo;
+				params.bill_task = "b_send";
+				params.bill_date = vlUtils.dateToString(date);
+				//
+				if(!flagsave) {
+					saveBtn();
+					auditing(params); //送审方法
+				} else {
+					var verfiedResults = validateRequired(); //验证是否为必填字段  
+
+					if(verfiedResults == false) {
+						mui("#saveBtn").button('reset');
+						return;
+					}
+					rqsData = getInputValue(); //获取每一个输入框的的值的方法   
+
+//					saveAjax(rqsData);
+					auditing(params); //送审方法
+				}
+			}
+			// 收回
+			document.getElementById("bBackBtn").addEventListener("tap", bBackBtn);
+
+			function bBackBtn() {
+				//
+				var date = new Date();
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				params.bill_com	 = teamBillCom;
+				params.bill_no 	 = onlyCode;
+				params.bill_user = userbillNo;
+				params.bill_task = "b_back";
+				params.bill_date = vlUtils.dateToString(date);
+				//
+				if(hadSend) {
+					takeback(params); //收回方法
+				}
+			}
+			// 判断为新增还是修改
+			if(flagNew == "N") { // 修改  
+				document.getElementById("header").innerHTML = "编辑银行卡信息";
+				var detailInfo = self.detailInfo;
+				var privileges = self.privileges;
+				var bill_no = detailInfo.bill_no;
+				onlyCode = detailInfo.bill_no; //bill_no字段  
+				setInputvalue();
+				var bill_task = "d_save";
+				var bill_user = detailInfo.bill_user;
+				flagsave = true;
+				if(detailInfo.bill_task == "L") {
+					hadSend = false;
+				}
+				if(detailInfo.bill_task != "L") {
+					hadSend = true;
+				}
+				rqsData = detailInfo;
+				setButton(detailInfo);
+			}
+			if(flagNew == "Y") { // 新增状态
+				onlyCode = getDataCode("vdvc811"); //bill_no字段
+				var bill_task = "d_new";
+				document.getElementById("billState").innerHTML = "录入中";
+				setButton(detailInfo);
+			}
+			// 按钮设置
+			function setButton(detailInfo) {
+				var userbillNo = vlUtils.getStorage("userbillNo");
+				var privileges = vlUtils.getStorage("newPrivileges");
+				// 1.
+				if(!flagsave) {
+					document.getElementById("deleteBtn").removeEventListener("tap", deleteBtn);
+					// 
+					document.getElementById("deleteIcon").style.color = "#8f8f94";
+				}
+				// 2.
+				if(flagsave && !hadSend) {
+					document.getElementById("deleteBtn").addEventListener("tap", deleteBtn);
+					//
+					document.getElementById("deleteIcon").style.color = "#18B4ED";
+				}
+				// 3.
+				if(flagsave && hadSend && privileges != "ROOT") {
+					document.getElementById("deleteBtn").removeEventListener("tap", deleteBtn);
+					//
+					document.getElementById("deleteIcon").style.color = "#8f8f94";
+				}
+				// 4.
+				if(flagsave && hadSend && privileges == "ROOT") {
+					document.getElementById("deleteBtn").removeEventListener("tap", deleteBtn);
+					//
+					document.getElementById("deleteIcon").style.color = "#8f8f94";
+				}
+			}
+			//验证必填
+			function validateRequired() {
+				var check = true;
+				// 判断必填字段是否填写
+				var blankInputLens = mui(".mui-input-clear.requiredInput").length;
+				for(var i = 0; i < blankInputLens; i++) {
+					if(!mui(".mui-input-clear.requiredInput")[i].value || mui(".mui-input-clear.requiredInput")[i].value.trim() == "") {
+						var label = mui(".mui-input-clear.requiredInput")[i].previousElementSibling;
+						mui.toast(label.innerText + "不允许为空");
+						mui("#saveBtn").button('reset');
+						check = false;
+						return check;
+					}
+				}
+				// 电话
+				document.getElementById("linkbd_linktel").value;
+				var phoneNum = checkMobile(document.getElementById("linkbd_linktel").value);
+				if(phoneNum == '' || phoneNum == false || typeof(phoneNum) == Number) {
+					mui("#saveBtn").button('reset');
+					check = false;
+					return check;
+				}
+				// 检查用户类别是否选择
+				var len = mui(".defaultcard").length;
+				var count = 0;
+				for(var i = 0; i < len; i++) { // 判断是否选择
+					if(!mui(".defaultcard")[i].checked) {
+						count++;
+						if(count == 2) {
+							mui.toast("请选择是否设为默认卡！");
+							check = false;
+							mui("#saveBtn").button('reset');
+							return check;
+						}
+					}
+				}
+				
+				// 验证银行卡号正确与否
+//				if(document.getElementById("bill_id").value.length > 16 || document.getElementById("bill_id").value.length < 19) {
+				if(document.getElementById("bill_id").value.length < 16 || document.getElementById("bill_id").value.length > 19) {
+					mui.toast("银行卡号长度必须在16到19之间");
+					check = false;
+					return check;
+				}
+				//				return check;
+			}
+			//修改输入框赋值
+			function setInputvalue() {
+				// 赋值
+				document.getElementById("bill_name").value = detailInfo.bill_name; // 银行名称
+				document.getElementById("bill_id").value = detailInfo.bill_id; // 银行卡号
+				document.getElementById("fbill_no").value = detailInfo.fbill_no; // 持卡人代码
+				document.getElementById("linkvd_linkuser").value = detailInfo.bill_text[0].linkvd_linkuser; // 持卡人
+				document.getElementById("linkbd_linktel").value = detailInfo.bill_text[0].linkbd_linktel; // 预留手机号
+				// 设为默认卡
+				if(detailInfo.bill_text[0].linkvd_ifdefault == "true") {
+					document.getElementById("isdefault").checked = true;
+				} else if(detailInfo.bill_text[0].linkvd_ifdefault == "false") {
+					document.getElementById("notdefault").checked = true;
+				}
+				// 状态
+				if(detailInfo.bill_task == "S") {
+					document.getElementById("billState").innerHTML = "待审核";
+				}
+				if(detailInfo.bill_task == "Y") {
+					document.getElementById("billState").innerHTML = "已审核";
+				}
+				if(detailInfo.bill_task == "L") {
+					document.getElementById("billState").innerHTML = "待送审";
+				}
+				if(privileges != "ROOT" && (detailInfo.bill_task == "Y" || detailInfo.bill_task == "S")) {
+					document.getElementById("bSendIcon").style.color = "#8f8f94";
+					document.getElementById("deleteIcon").style.color = "#8f8f94";
+				}
+				// 删除按钮的状态
+				document.getElementById("deleteBtn").style.display = "block";
+
+			}
+			//获取每个输入框的值
+			function getInputValue() {
+				// 获取每一个输入框的值
+				var bill_name = $$("#bill_name").val(); // 银行名称
+				var bill_id = $$("#bill_id").val(); // 银行卡号
+				var fbill_no = $$("#fbill_no").val(); // 持卡人代码
+				var linkvd_linkuser = $$("#linkvd_linkuser").val(); // 持卡人
+				var linkbd_linktel = $$("#linkbd_linktel").val(); //  预留手机号
+				// 其他
+				var bill_date = bill_date; // 时间
+				// 用户类别
+				var len = mui(".defaultcard").length;
+				for(var i = 0; i < len; i++) { // 判断是否选择
+					if(mui(".defaultcard")[i].checked) {
+						var linkvd_ifdefault = mui(".defaultcard")[i].value;
+					}
+				}
+				// bill_text提交的数据
+				inputData = [{
+					linkvd_linkuser: linkvd_linkuser,
+					linkbd_linktel: linkbd_linktel,
+					linkvd_ifdefault: linkvd_ifdefault
+				}]
+				// 提交的数据
+				rqsData = {
+					//
+					bill_no		: onlyCode,
+					bill_id		: bill_id,
+					bill_name	: bill_name,
+					fbill_no	: fbill_no,
+					link_next	: "",
+					bill_title	: "",
+					bill_context: "",
+					bill_task	: bill_task,
+					bill_qtask	: "",
+					cc_user		: "",
+					bill_user	: userbillNo, 
+					bill_dept	: "",
+					bill_oppo	: "",
+					bill_com	: teamBillCom, 
+					bill_text	: JSON.stringify(inputData),
+					bill_date	: vlUtils.dateToString(date),
+					bill_ndate	: null,
+					bill_ipaddr : "",
+					bill_gpsaddr: "",
+					node_qty	: 0,
+					node_price	: 0,
+					node_amt	: 0
+				}
+				return rqsData;
+			}
+			//送审
+			function auditing(params) {
+
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async: false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+
+						if(data.code == 0) {
+							mui.toast(data.message);
+							mui.back();
+							//								document.getElementById("bSendIcon").style.color = "#8f8f94";
+							document.getElementById("billState").innerHTML = "已审核";
+							if(fromPage.length == 13) {
+								fromPage = fromPage.substr(0, 7) + "_" + fromPage.substr(9);
+							}
+							deleteSuccess(fromPage + ".html", fromPage + ".html");
+							hadSend = true;
+							setButton(detailInfo);
+							if(privileges != "ROOT") {
+								document.getElementById("deleteIcon").style.color = "#8f8f94";
+							}
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+
+					}
+				});
+			}
+			// 收回
+			function takeback(params) {}
+			//保存
+			function saveAjax(params) {
+				//				return;
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async: false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message);
+							flagsave = true;
+							setButton(detailInfo);
+							mui("#saveBtn").button('reset');
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+					}
+				});
+			}
+			// 删除
+			function deleteAjax(params) {
+
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+
+						if(data.code == 0) {
+							mui.toast(data.message);
+							deleteSuccess("vdvc811_plist.html", "vdvc811_list.html");
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText)
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+
+					}
+				});
+			}
+
+			function deleteSuccess(parentview, childview) {
+				var listview = plus.webview.getWebviewById(childview);
+				listview.reload();
+				var plistview = plus.webview.getWebviewById(parentview);
+				plistview.reload();
+				var oldBack = mui.back;
+				mui.back = function() {
+					var webview = plus.webview.getWebviewById(parentview);
+					webview.show();
+				}
+				mui.back();
+			}
+		}); // plusReady
+	</script>
+
+</html>

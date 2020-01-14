@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<!--
+	#?.点击出勤调整查询
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			/*关联状态*/
+			.list_sts{
+				font-size: 12px;
+				line-height: 14px;
+				color:#f0ad4e;
+				border:1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+			.bottomLine{
+				border-bottom: 1px solid #8f8f94;
+				position:relative;
+				margin: 25px 50px;
+			}
+			.end{
+				position:absolute;
+				top:-8px;
+				left:32%;
+				background: #efeff4;
+				padding:0 10px;
+				z-index:111;
+				font-size: 10px;
+			}
+			button.clock{
+				box-shadow: rgba(255,255,255,0.25) 0px 1px 0px, inset rgba(255,255,255,0.25) 0px 1px 0px, inset rgba(0,0,0,0.25) 0px 0px 0px, inset rgba(255,255,255,0.03) 0px 20px 0px, inset rgba(0,0,0,0.15) 0px -20px 20px, inset rgba(255,255,255,0.05) 0px 20px 20px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+				color:#007AFF;
+			}
+			#contList li:nth-of-type(odd){
+				background:#F0F0F0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 75px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">考勤打卡</h1>
+		</header>
+		<!---->
+		<div class="mui-content mainBody nodeBody" style="padding-top: 80px !important;">
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row basicInfo">
+					<div class="mui-col-xs-2 imgFrame">
+						<img class="vdvc105" id="userImg" src="../../images/icon/default.png" />
+					</div>
+					<div class="mui-col-xs-9 mui-row mui-pull-right infoFrame">
+						<div class="mui-col-xs-12 mui-row infoItem">
+							<span class="mui-col-xs-3">员工编码：</span>
+							<span class="mui-col-xs-3" id="bill_id">A007</span>
+							<span class="mui-col-xs-4 dataState mui-pull-right" id="bill_dept"></span>
+						</div>
+						<!--<div class="mui-col-xs-12 mui-row infoItem" style="display: ;">
+							<span class="mui-col-xs-3">员工号码：</span>
+							<span class="mui-col-xs-9" id="bill_nunit"></span>
+						</div>-->
+						<div class="list_font mui-col-xs-12  mui-row  infoItem lastItem">
+							<span class="mui-col-xs-3">员工姓名：</span>
+							<span class="mui-col-xs-9" id="bill_name"></span>
+						</div>
+					</div>
+				</div>
+				<div class="mui-row infoItem" style="border-bottom:1px solid #efeff4;text-align: center;">
+					<span class="mui-col-xs-4" id="plan"></span>
+					<span class="mui-col-xs-4" id="bill_spec"></span>
+					<span class="mui-col-xs-4" id="banci"></span>
+				</div>
+				<div class="mui-row infoItem lastItem" style="text-align: center;">
+					<!--<span class="mui-col-xs-6">上班时间：<span id="inTime">8:00</span></span>-->
+					<span class="mui-col-xs-6">上下班时间：<span id="outTime"></span></span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row infoItem lastItem" style="display:;">
+					<span class="mui-col-xs-1 mui-icon mui-icon-mic" style="font-size:20px;color:#007AFF;margin-top:5px;"></span>
+					<span id="tip" class="mui-col-xs-11">今天是常白班,记得按时打卡哦!</span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row infoItem" style="margin-bottom:10px;">
+					<span class="mui-row mui-col-xs-6">
+						<span class="mui-col-xs-3" style="font-size: 12px;">班次：</span>
+						<input class="mui-col-xs-8" type="" name="" id="clockBanci" placeholder="点击选择班次" style="border: 1px solid #ccc;border-radius: 5px;margin-top:8px;" readonly="readonly" />
+					</span>
+					<span class="mui-col-xs-3 mui-pull-right">
+						<button  id="appeal" style="font-size: 12px;padding:3px;margin-top:5px;">考勤申诉</button>
+					</span>
+					<span class="mui-col-xs-3 mui-pull-right">
+						<button id="adjust" style="font-size: 12px;padding:3px;margin-top:5px;">出勤调整</button>
+					</span>
+				</div>
+				<div class="mui-row infoItem" style="margin-bottom:10px;">
+					<span class="mui-col-xs-9"> &raquo; <span id="nowdate" style="color: #0062CC;"></span></span>
+					<span class="mui-col-xs-3"> 倒计时：<span id="timer" style="color: #dd524d;"></span></span>
+				</div>
+				<div class="mui-row" style="padding-left:8px; color: gray;margin-bottom:10px;">
+					<span id="zantingdaka" style="display: none;">未查询到员工信息，故暂停打卡功能！</span>
+					<span class="mui-col-xs-6" style="text-align: center;">
+						<button class="mui-btn mui-btn-primary clock clockin" id="clockin" style="border-radius: 50%;width:100px;height:100px;font-size:18px;">
+							上班打卡
+						</button>
+					</span>
+					<span class="mui-col-xs-6" style="text-align: center;">
+						<button class="mui-btn mui-btn-primary mui-btn-outlined clock clockout"  id="clockout" style="border-radius: 50%;width:100px;height:100px;font-size:18px;">
+							下班打卡
+						</button>
+					</span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo" style="display:none;">
+				<div class="mui-row infoItem" >
+					<span class="mui-col-xs-3">部门标识：</span>
+					<span class="mui-col-xs-9"  id=""></span>
+				</div>
+				<div class="mui-col-xs-12 mui-row infoItem lastItem" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-3">员工代码：</span>
+					<span class="mui-col-xs-9" id="bill_no"></span>
+				</div>
+				<div class="mui-row infoItem ">
+					<span class="mui-col-xs-3">fbill_no：</span>
+					<span class="mui-col-xs-9"  id=""></span>
+				</div>
+				<div class="mui-row infoItem">
+					<span class="mui-col-xs-3">bill_bflow：</span>
+					<span class="mui-col-xs-9"  id=""></span>
+				</div>
+				<div class="mui-row infoItem ">
+					<span class="mui-col-xs-3">bill_wflow：</span>
+					<span class="mui-col-xs-9"  id=""></span>
+				</div>
+				<div class="mui-row infoItem lastItem">
+					<span class="mui-col-xs-3">制单单位：</span>
+					<span class="mui-col-xs-9"  id=""></span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row infoItem " style="display:;">
+					<div class="mui-row">
+						<span class="mui-col-xs-4">上班打卡时间：</span>
+						<span class="mui-col-xs-8"  id="clockinT" style="color:#20B2AA"></span>
+					</div>
+					<div class="mui-row" style="line-height: 18px;min-height: 40px;">
+						<a class="mui-col-xs-1 mui-icon mui-icon-location"></a>
+						<span class="mui-col-xs-11"  id="clockinG" data-location="" style="color:#20B2AA"></span>
+					</div>
+				</div>
+				<div class="mui-row infoItem lastItem">
+					<div class="mui-row">
+						<span class="mui-col-xs-4">下班打卡时间：</span>
+						<span class="mui-col-xs-8"  id="clockoutT" style="color:#20B2AA"></span>
+					</div>
+					<div class="mui-row" style="line-height: 18px;min-height: 40px;">
+						<a class="mui-col-xs-1 mui-icon mui-icon-location"></a>
+						<span class="mui-col-xs-11"  id="clockoutG" data-location="" style="color:#20B2AA"></span>
+					</div>
+				</div>
+			</div>
+			<div id="clockinfo"  class="mui-input-group groupInfo">
+				<div style="color: gray;">今日出勤状况：</div>
+				<div id="" class="mui-row" style="background:#ACACB4;color:#fff;text-align:center;font-size:12px;line-height: 14px;padding:3px;border-radius: 5px;">
+					<span class="mui-col-xs-3">出勤班次</span>
+					<span class="mui-col-xs-9">出勤情况</span>
+				</div>
+				<ul id="contList" style="padding:0;margin:0;list-style:none;text-align: center;background:#E3E3E3;">
+					<!--<li class="mui-row" style="padding:5px 3px;margin:0;border：1px solid #ff0;">
+						<span class="mui-col-xs-6" class="todaybanci">夜</span>
+						<span class="mui-col-xs-6" class="todaystats">出</span>
+					</li>-->
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FQCQkNvWb9g4FnFXN3IGieSwQgLOR2PU&services=&t=20171004185957"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=FQCQkNvWb9g4FnFXN3IGieSwQgLOR2PU&services=&t=20171004185957"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var deptname;
+		var date = new Date();
+		var commit = document.getElementById("commit");
+		var bill_date = vlUtils.dateToString(date);
+		var rqsData = null; //提交的数据
+		var inputData = null; // 表单里的数据
+		var clerkSelfInfo ;
+		var banciArr = null;
+		var banciTimeArr = []
+		mui.plusReady(function() {
+			plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+			// TODO  0. 重写返回事件
+			var oldBack = mui.back;
+		    mui.back = function(){
+		    	if(fromPage != "vdhr103list" && fromPage != "vdhr103edit"){
+		    		oldBack();
+		    		return;
+		    	}
+		    	var webview = plus.webview.getWebviewById("vdhr103_plist.html");
+		    	webview.show();
+		    }
+		    
+			// TODO　１.页面上的字段
+			var normalData = {
+				h : {},
+				v : {},
+				c : {}
+			}
+			
+			// TODO 2. 接收传过来的参数===========================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			
+			// TODO 3. 基础设置/赋值 =============================
+			var user = JSON.parse(vlUtils.getStorage('user'));
+			// 获取手机号
+			var usertel = user.usertel;
+			var nowdate = document.getElementById("nowdate");
+			clearInterval(nowTimer);
+			var nowTimer = setInterval("nowdate.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);
+			// 3-1. 查询员工基本信息
+			var clerkInfoParams = {
+				name: 'msvr',
+				bill_task: "VR_find_vdhr105_1", // 查询的指令
+				bill_com: teamBillCom, 	// 当前单位
+				bill_user: userbillNo,	// 当前登陆人
+				bill_name:userName,
+				bill_id: usertel,		// 手机号
+				currentPage: 1,
+				pageSize: 100,
+				paramText: ""
+			};
+			rqsDataAjax(clerkInfoParams, '/Find/Ddata/activity', clerkInfo, '../login.html');
+			// 查询402排班计划
+			var clerk402Params = {
+				name: 'msvr',
+				bill_task: "VR_find_vdac402_1", // 查询的指令
+				bill_com: teamBillCom, // 当前单位
+				bill_user: userbillNo, // 当前登陆人
+				bill_name: userName, // 当前登陆人
+//				bill_name: "测试员工", // 当前登陆人
+				bill_id: usertel,		// 手机号
+//				bill_id: "18811594070",		// 手机号
+				bill_ndate:vlUtils.dateToString(date).slice(0,-8) + "00:00:00",//"2018-06-19 00:00:00"
+				currentPage: 1,
+				pageSize: 100,
+				paramText: ""
+			};
+			rqsDataAjax(clerk402Params, '/Find/Ddata/activity', clerkSche402, '../login.html');
+
+			
+			// TODO 4. 事件绑定==================================
+			document.getElementById("clockin").addEventListener("tap",function(){
+				var clockBanci =  document.getElementById("clockBanci").value;
+				if(vlUtils.isnull(clockBanci)){
+					mui.toast("请先选择班次~");
+					return;
+				}
+				var btn1 = document.getElementById("clockin");
+				var btn2 = document.getElementById("clockout");
+				if(btn1.getAttribute("disabled") != null || btn2.getAttribute("disabled") != null){
+					mui.toast("请稍后再试~");
+					return;
+				}
+				//	
+				var d = new Date();
+				var dd = d.toLocaleString();
+				var msg = "当前时间为:\n" + dd + "\n" +"确认要打卡吗?"
+				mui.confirm(msg, "上班打卡", ["取消","打卡"], function(e) {
+					if(e.index == 1) {
+						getGeocodeIn(d);
+						// 页面变化
+						document.getElementById("clockinT").innerHTML = vlUtils.dateToString(d).slice(10,16);
+						
+						//
+						intervalTime();
+					} 
+				},'div');
+				//
+//				var clerkData = JSON.parse(JSON.stringify(sendTaskData));
+				// 上下班打卡
+				
+			});
+			document.getElementById("clockout").addEventListener("tap",function(){
+				var clockBanci =  document.getElementById("clockBanci").value;
+				if(vlUtils.isnull(clockBanci)){
+					mui.toast("请先选择班次~");
+					return;
+				}
+				var btn1 = document.getElementById("clockin");
+				var btn2 = document.getElementById("clockout");
+				if(btn1.getAttribute("disabled") != null || btn2.getAttribute("disabled") != null){
+					mui.toast("请稍后再试~");
+					return;
+				}
+				//	
+				var nd = new Date();
+				var ndd = nd.toLocaleString();
+				var msg = "当前时间为:\n" + ndd + "\n" +"确认要打卡吗?"
+				mui.confirm(msg, "下班打卡", ["取消","打卡"], function(e) {
+					if(e.index == 1) {
+						getGeocodeOut(nd);
+						// 页面变化
+						document.getElementById("clockoutT").innerHTML = vlUtils.dateToString(nd).slice(10,16);
+						//
+						intervalTime();
+					} 
+				},'div');
+				//
+//				var clerkData = JSON.parse(JSON.stringify(sendTaskData));
+				// 上下班打卡
+				
+			});
+			document.getElementById("adjust").addEventListener("tap",adjust);
+			document.getElementById("appeal").addEventListener("tap",appeal);
+			document.getElementById("clockBanci").addEventListener("tap",function(){
+				if(vlUtils.isnull(banciArr) && vlUtils.isnull(document.getElementById("clockBanci").value)){
+					var banciTimeParams = {
+						name: 'msvr',
+						bill_task: "VR_find_vdhr401_01", // 查询的指令
+						bill_com: teamBillCom, 	// 当前单位
+						bill_user: userbillNo, 	// 当前登陆人
+						bill_name: userName, 	// 当前登陆人
+						bill_id: usertel,		// 手机号
+						bill_ndate:vlUtils.dateToString(date).slice(0,-8) + "00:00:00",// 考勤日期："2018-06-19 00:00:00"
+						bill_bflow:document.getElementById("bill_spec").innerHTML,	// 班组
+//						bill_wflow:"信息中心",	// 班组
+						currentPage: 1,
+						pageSize: 100,
+						paramText: ""
+					};
+					rqsDataAjax(banciTimeParams, '/Find/Ddata/activity', banciTime, '../login.html');
+//					return;
+//TODO
+				}else if(banciArr.length>1){	// 有班次信息
+					var potionBCArr = [];
+					for(var i = 0 ; i < banciArr.length; i ++){
+						var potionBCjson = {"title": banciArr[i],"time":banciTimeArr[i]};
+						potionBCArr.push(potionBCjson);
+					}
+
+					// 弹框
+					plus.nativeUI.actionSheet({
+						title: "选择要打卡的班次",
+						cancel: "取消",
+						buttons: potionBCArr
+					}, function(e) {
+						//商品类型find赋值
+						if((e.index - 1) != -1){
+							document.getElementById("clockBanci").value = potionBCArr[(e.index - 1)].title;
+							document.getElementById("outTime").innerHTML = potionBCArr[(e.index - 1)].time;
+						}
+					});
+				}
+			})
+			// TODO 5. 监听自定义事件=============================
+			// TODO 6. 事件/方法=================================
+			// 收回指令
+			function rqsDataSuccess(data,type){
+				document.getElementById("header").innerHTML 		 = data.data[0].bill_name;
+				detailInfo = vlUtils.deepCopy(data.data[0]);
+				setValue(data.data[0],normalData,false);
+				billstate(data.data[0].bill_task);
+				// 下载图片
+				var imgid= vlUtils.uuid('img', 4, 10);
+			 	$$("#userImg").attr('id',imgid);	
+		 	    //判断有值的话拿到用户的id然后请求小图标
+			    if(!vlUtils.isnull(data.data[0]["bill_no"])){
+			    		vlUtils.downloadicon(data.data[0]["bill_no"],imgid);
+			   	};
+			}
+			function clerkInfo(data){
+
+				if(data.data.length != 0){
+					document.getElementById("zantingdaka").style.display="none";
+					var newdataArr = {};
+					for(var k in data.data[0]) {
+						newdataArr[k.slice(0, 2)] = data.data[0][k];
+					}
+					clerkSelfInfo = newdataArr;
+					document.getElementById("bill_id").innerHTML = newdataArr["指令"];
+					document.getElementById("bill_name").innerHTML = newdataArr["参数"].split(",")[1] + " ( " + newdataArr["图片"] + " ) ";
+					document.getElementById("bill_dept").innerHTML = newdataArr["标题"];
+					document.getElementById("bill_spec").innerHTML = newdataArr["内容"];
+					document.getElementById("bill_no").innerHTML = newdataArr["参数"].split(",")[0];
+					// 3-2. 查询员工排班情况
+					var clerkScheParams = {
+						name: 'msvr',
+						bill_task: "VR_find_vdac401_1", // 查询的指令
+						bill_com: teamBillCom, 	// 当前单位
+						bill_user: userbillNo, 	// 当前登陆人
+						bill_name: userName, 	// 当前登陆人
+						bill_id: usertel,		// 手机号
+						bill_ndate:vlUtils.dateToString(date).slice(0,-8) + "00:00:00",// 考勤日期："2018-06-19 00:00:00"
+						bill_wflow:document.getElementById("bill_spec").innerHTML,	// 班组
+						currentPage: 1,
+						pageSize: 100,
+						paramText: ""
+					};
+					rqsDataAjax(clerkScheParams, '/Find/Ddata/activity', clerkSche, '../login.html');
+					// ？
+					var attendStatusParams = {
+						name: 'msvr',
+						bill_task: "VR_find_vdhr421_425", // 查询的指令
+						bill_com: teamBillCom, // 当前单位
+						bill_user: userbillNo, // 当前登陆人
+						bill_oppo: document.getElementById("bill_no").innerHTML,		// 手机号
+						bill_ndate:vlUtils.dateToString(date).slice(0,-8) + "00:00:00",
+						currentPage: 1,
+						pageSize: 100,
+						paramText: ""
+					};
+					rqsDataAjax(attendStatusParams, '/Find/Ddata/activity', attendStatus, '../login.html');
+					//			 3-4. 查询员工当天打卡状况
+					var checkINParams = {
+						name: 'msvr',
+						bill_task: "VR_find_vdhr421_02", // 查询的指令
+						bill_com: teamBillCom, // 当前单位
+						bill_user: userbillNo, // 当前登陆人
+						bill_oppo: document.getElementById("bill_no").innerHTML,		// 手机号
+						bill_ndate:vlUtils.dateToString(date).slice(0,-8) + "00:00:00",
+						currentPage: 1,
+						pageSize: 100,
+						paramText: ""
+					};
+
+					rqsDataAjax(checkINParams, '/Find/Ddata/activity', checkinData, '../login.html');
+					// 下载图片
+					var imgid= vlUtils.uuid('img', 4, 10);
+				 	$$("#userImg").attr('id',imgid);	
+			 	    //判断有值的话拿到用户的id然后请求小图标
+					if(!vlUtils.isnull(document.getElementById("bill_no").innerHTML)){
+						vlUtils.downloadicon(document.getElementById("bill_no").innerHTML,imgid);
+					}
+				}else{
+					document.getElementById("clockin").setAttribute("disabled","disabled");
+					document.getElementById("clockout").setAttribute("disabled","disabled");//zantingdaka
+					document.getElementById("zantingdaka").style.display="block";
+				}
+			}
+			//员工当日排班
+			function clerkSche(data){
+				if(data.data.length != 0){
+					for (var j = 0; j < data.data.length; j ++) {
+						banciArr =[];
+						var newdataArr = {};
+						for(var k in data.data[j]) {
+							newdataArr[k.slice(0, 2)] = data.data[0][k];
+						}
+						if(j==0){
+							document.getElementById("clockBanci").value = newdataArr["标题"].split(";")[1].split("-")[1];
+							document.getElementById("outTime").innerHTML = newdataArr["标题"].split(";")[2].split("-")[1];
+							document.getElementById("plan").innerHTML = newdataArr["标题"].split(";")[0].split("-")[1];
+							document.getElementById("banci").innerHTML = newdataArr["标题"].split(";")[1].split("-")[1];
+						}
+						banciArr.push(newdataArr["标题"].split(";")[1].split("-")[1]);
+						banciTimeArr.push(newdataArr["标题"].split(";")[2].split("-")[1]);//?
+					}
+				}
+			}
+			function attendStatus(data){
+
+				var contList = document.getElementById("contList");
+				if(data.data.length != 0){
+					var newdataArr = {};
+					for(var k in data.data[0]) {
+						newdataArr[k.slice(0, 2)] = data.data[0][k];
+					}
+					var litxt = '';
+					for(var n = 0; n < data.data.length; n ++){
+						litxt =	 '<li class="mui-row" style="padding:5px 3px;margin:0;border：1px solid #ff0;border-radius: 5px;" data-row=\'' + JSON.stringify(newdataArr["标题"]) + '\'>';
+						litxt += '<span class="mui-col-xs-3" class="todaybanci">'+newdataArr["标题"]+'</span>';
+						litxt += '<span class="mui-col-xs-9" class="todaystats">'+newdataArr["内容"]+'</span>';
+						litxt += '</li>';
+					}
+					contList.innerHTML = litxt;
+				}else{
+					contList.innerHTML = '<li>未查询到出勤情况相关数据~</li>';
+				}
+				
+			}
+			function checkinData(data,type){
+				if(data.data.length != 0){
+					var newdataArr = {};
+					for(var k in data.data[0]) {
+						newdataArr[k.slice(0, 2)] = data.data[0][k];
+					}
+					document.getElementById("clockinT").innerHTML = newdataArr["图片"];	// 上班时间
+					document.getElementById("clockinG").innerHTML = newdataArr["参数"];	// 上班地点
+					document.getElementById("clockoutT").innerHTML = newdataArr["内容"];	// 下班时间
+					document.getElementById("clockoutG").innerHTML = newdataArr["标题"];	// 下班地点
+				}
+			}
+			function saveSuccess(){
+				
+			}
+			function adjust(){
+				var potionArr = [
+					{"title": "出差申请","page":"vdhr422_edit.html","flow":"出差"},
+					{"title": "替换班申请","page":"vdhr423_edit.html","flow":"替班"},
+					{"title": "加班申请","page":"vdhr424_edit.html","flow":"加班"},
+					{"title": "请假申请","page":"vdhr425_edit.html","flow":"请假"}
+				]
+				// 弹框
+				plus.nativeUI.actionSheet({
+					title: "出勤调整",
+					cancel: "取消",
+					buttons: potionArr
+				}, function(e) {
+					//商品类型find赋值
+					if((e.index - 1) != -1){
+						var queryflow = {
+							name: 'msvr',
+							bill_task: "VR_find_vdvc204_00", // 查询的指令
+							bill_com: teamBillCom, // 当前单位
+							bill_user: userbillNo, // 当前登陆人
+							bill_oppo:potionArr[(e.index - 1)].page.slice(0,7),
+							currentPage: 1,
+							pageSize: 10,
+							paramText: ""
+						};
+						rqsDataAjax(queryflow, '/Find/Ddata/activity', findflow, '../login.html');
+						function findflow(data,type){
+							flowData(data,type,potionArr[(e.index - 1)].page,potionArr[(e.index - 1)].flow)
+						}
+					}
+				});
+			}
+			function updateSuccess(){
+			}
+			function appeal(){
+				var ws = plus.webview.getWebviewById("vdhr426_edit.html");
+				if(!vlUtils.isnull(ws)){
+					plus.webview.close(ws);
+				}
+				mui.openWindow({
+					url:"../vlvdhr/vdhr426_plist.html",
+					id: "vdhr426_plist.html",
+					createNew: true,
+					extras: {
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码	// 不变
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变
+						fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+						loginCom 		: loginCom,			// 4.登录人的代码
+						loginComName 	: loginComName,		// 5.登录人的名称
+						userbillNo 		: userbillNo,		// 6.登录单位代码
+						userName 		: userName,			// 7.登录单位名称
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vshr001_clerk.html", // 9.从哪个页面来
+						hadSave			: false,	
+						detailInfo		: clerkSelfInfo
+					}
+				})
+			}
+			//员工排班402返回
+			function clerkSche402(data){
+				var tipDom = document.getElementById("tip");
+				if(data.data.length != 0){
+					var newdataArr = {};
+					for(var k in data.data[0]) {
+						newdataArr[k.slice(0, 2)] = data.data[0][k];
+					}
+					var litxt = '今天是';
+					litxt += '<span style="color:#f00;"> '+newdataArr["标题"].split(";")[1].split(":")[1]+' </span>';
+					litxt += '班,记得按时打卡哦!';
+					tipDom.innerHTML = litxt;
+				}else{
+					tipDom.innerHTML = '今天没有单独排班哦~';
+				}
+			}
+			//
+			function getGeocodeIn(d){
+			  if(plus.os.name ==="Android"){
+				  plus.geolocation.getCurrentPosition(function(p) {
+				  	if(vlUtils.isnull(p.addresses)){
+				  		document.getElementById("clockinG").innerHTML = "定位失败"
+				  	}else{
+				  		document.getElementById("clockinG").innerHTML = p.addresses;
+				  		document.getElementById("clockinG").setAttribute("data-location",JSON.stringify(p));
+				  		// 是
+				  		var clockinData = {
+				  			name		: "msvr",
+				  			bill_task	: "VE_insert_vdhr421",	
+				  			bill_no 	: document.getElementById("bill_no").innerHTML,			// 员工代码(vdhr105)
+				  			bill_bflow 	: document.getElementById("clockBanci").value,			// 班次(早/中/夜)
+				  			bill_wflow 	: "上班",												// 上班/下班
+				  			bill_date 	: vlUtils.dateToString(d),								// 上班/下班时间
+				  			bill_ndate 	: vlUtils.dateToString(d).slice(0,-8) + "00:00:00",		// 考勤日期
+				  			bill_user 	: userbillNo,											// 用户代码
+				  			bill_com 	: teamBillCom,											// 单位代码
+				  			bill_text	: JSON.stringify(p),									// 上班打卡位置
+				  			bill_unit	: document.getElementById("outTime").innerHTML,			// 班次时间
+				  			fbill_no 	: 'ROOT'
+				  		}
+				  		// 保存
+				  		CRUDajax(clockinData,"../login.html",saveSuccess);
+				  	}
+				  }, function ( e ) {
+				  	mui.toast( "获取定位位置信息失败："+e.message );
+				  },{geocode:true});
+			  }else{
+				  var provinces=p.address.province
+				  var citys=p.address.city
+				  var districts=p.address.district
+				  var streets=p.address.street
+				  var titles=provinces+citys+districts+streets
+				  document.getElementById("clockinG").innerHTML = titles;
+				  document.getElementById("clockinG").setAttribute("data-location",JSON.stringify(p));
+				  // 是
+				  var clockinData = {
+				  	name		: "msvr",
+				  	bill_task	: "VE_insert_vdhr421",	
+				  	bill_no 	: document.getElementById("bill_no").innerHTML,			// 员工代码(vdhr105)
+				  	bill_bflow 	: document.getElementById("clockBanci").value,			// 班次(早/中/夜)
+				  	bill_wflow 	: "上班",												// 上班/下班
+				  	bill_date 	: vlUtils.dateToString(d),								// 上班/下班时间
+				  	bill_ndate 	: vlUtils.dateToString(d).slice(0,-8) + "00:00:00",		// 考勤日期
+				  	bill_user 	: userbillNo,											// 用户代码
+				  	bill_com 	: teamBillCom,											// 单位代码
+				  	bill_text	: JSON.stringify(p),									// 上班打卡位置
+				  	bill_unit	: document.getElementById("outTime").innerHTML,			// 班次时间
+				  	fbill_no 	: 'ROOT'
+				  }
+				  // 保存
+				  CRUDajax(clockinData,"../login.html",saveSuccess);
+			  }
+				
+			}
+			function getGeocodeOut(nd){
+				plus.geolocation.getCurrentPosition( function(p) {
+					if(vlUtils.isnull(p.addresses)){
+						document.getElementById("clockoutG").innerHTML = "定位失败"
+					}else{
+						document.getElementById("clockoutG").innerHTML = p.addresses;
+						document.getElementById("clockoutG").setAttribute("data-location",JSON.stringify(p));
+						// 是
+						var clockoutData = {
+							name		: "msvr",
+							bill_task	: "VE_insert_vdhr421",	
+							bill_no 	: document.getElementById("bill_no").innerHTML,			// 员工代码(vdhr105)
+							bill_bflow 	: document.getElementById("clockBanci").value,			// 班次(早/中/夜)
+							bill_wflow 	: "下班",												// 上班/下班
+							bill_date 	: vlUtils.dateToString(nd),								// 上班/下班时间
+							bill_ndate 	: vlUtils.dateToString(nd).slice(0,-8) + "00:00:00",	// 考勤日期
+							bill_user 	: userbillNo,											// 用户代码
+							bill_com 	: teamBillCom,											// 单位代码
+							bill_text	: JSON.stringify(p),									// 上班打卡位置
+							bill_unit	: document.getElementById("outTime").innerHTML,			// 班次时间
+							fbill_no 	: 'ROOT'
+						}
+						// 保存
+
+						CRUDajax(clockoutData,"../login.html",saveSuccess);
+					}
+				}, function ( e ) {
+					mui.toast( "获取定位位置信息失败："+e.message );
+				},{geocode:true});
+			}
+			function intervalTime(){
+				var btnI = document.getElementById("clockin");
+				btnI.setAttribute("disabled","disabled");
+				var btnO = document.getElementById("clockout");
+				btnO.setAttribute("disabled","disabled");
+				var oldItxt = btnI.innerHTML;
+				var oldOtxt = btnO.innerHTML;
+				window.clearInterval(timer);
+				var n = 15;
+				var txt =  '<div>已打卡</div>';
+					txt += '<div style="font-size:10px;">打卡15s后再操作</div>';
+				btnI.innerHTML = txt;
+				var timer = window.setInterval(function(){
+					n--;
+					if(n>=0){
+						document.getElementById("timer").innerHTML = n;
+					}else{
+						document.getElementById("timer").innerHTML = "";
+						btnI.removeAttribute("disabled");
+						btnI.innerHTML = oldItxt;
+						btnO.removeAttribute("disabled");
+						btnO.innerHTML = oldOtxt;
+						window.clearInterval(timer);
+					}
+				},1000);
+			}
+			// 没有查询到排版的情况下，查询该班组的班次
+			function banciTime(data){
+
+				banciArr=[];
+				var clockBanci = document.getElementById("clockBanci");
+				if(data.data.length != 0){
+					
+					for(var j = 0; j< data.data.length; j++){
+						var newdataArr = {};
+						for(var k in data.data[j]) {
+							newdataArr[k.slice(0, 2)] = data.data[j][k];
+						}
+						
+						banciArr.push(newdataArr["标题"]);
+						banciTimeArr.push(newdataArr["内容"]);
+					}
+				}else{
+					banciArr = ["早","中","夜","白"];
+					banciTimeArr = ["","","",""];
+				}
+				var potionBCArr = [];
+				for(var i = 0 ; i < banciArr.length; i ++){
+					var potionBCjson = {"title": banciArr[i],"time":banciTimeArr[i]};
+					potionBCArr.push(potionBCjson);
+				}
+
+				// 弹框
+				plus.nativeUI.actionSheet({
+					title: "选择要打卡的班次",
+					cancel: "取消",
+					buttons: potionBCArr
+				}, function(e) {
+					//商品类型find赋值
+					if((e.index - 1) != -1){
+						document.getElementById("clockBanci").value = potionBCArr[(e.index - 1)].title;
+						document.getElementById("outTime").innerHTML = potionBCArr[(e.index - 1)].time;
+					}
+				});
+			}
+			function flowData(data,type,page,flow){
+
+				var flowInfo = [];
+				if(data.data.length != 0) {
+					var text = '';
+					for(var i = 0; i < data.data.length; i++) {
+						var newdataArr = {};
+						for(var k in data.data[i]) {
+							newdataArr[k.slice(0, 2)] = data.data[i][k];
+						}
+						flowInfo.push(newdataArr);
+					}
+					var ws = plus.webview.getWebviewById(page);
+					if(!vlUtils.isnull(ws)){
+						plus.webview.close(ws);
+					}
+					mui.openWindow({
+						url:"../vlvdhr/"+page,
+						id: page,
+						createNew: true,
+						extras: {
+							teamBillCom 	: teamBillCom, 		// 1.管理单位代码	// 不变
+							teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变
+							fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+							loginCom 		: loginCom,			// 4.登录人的代码
+							loginComName 	: loginComName,		// 5.登录人的名称
+							userbillNo 		: userbillNo,		// 6.登录单位代码
+							userName 		: userName,			// 7.登录单位名称
+							privileges 		: privileges,		// 8.当前的权限是
+							fromPage 		: "vshr001_clerk.html", // 9.从哪个页面来
+							detailInfo		: clerkSelfInfo,
+							flowInfo		: flowInfo,
+							hadSave			: false,				// N为
+							flow			: flow
+						}
+					})
+//					// 流程
+//					document.getElementById("flow").innerHTML = dataInfo[0]["图片"].split(":")[1];
+//					document.getElementById("linkvd_linkwflow").innerHTML = (dataInfo[0]["图片"].split(":"))[0];
+//					// 内容
+//					document.getElementById("linkvd_deptype").innerHTML = (dataInfo[0]["内容"].split(";"))[0].split(":")[1];
+//					document.getElementById("bill_dept").innerHTML = (dataInfo[0]["标题"].split(":"))[0];
+//					document.getElementById("deptypeName").innerHTML = (dataInfo[0]["标题"].split(":"))[1];
+//					document.getElementById("bill_bflow").innerHTML = (dataInfo[0]["内容"].split(";"))[2].split(":")[1];
+//					document.getElementById("bill_wflow").innerHTML = (dataInfo[0]["内容"].split(";"))[3].split(":")[1];
+
+				}else{
+					mui.openWindow({
+						url:"../vlvdhr/"+page,
+						id: page,
+						createNew: true,
+						extras: {
+							teamBillCom 	: teamBillCom, 		// 1.管理单位代码	// 不变
+							teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变
+							fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+							loginCom 		: loginCom,			// 4.登录人的代码
+							loginComName 	: loginComName,		// 5.登录人的名称
+							userbillNo 		: userbillNo,		// 6.登录单位代码
+							userName 		: userName,			// 7.登录单位名称
+							privileges 		: privileges,		// 8.当前的权限是
+							fromPage 		: "vshr001_clerk.html", // 9.从哪个页面来
+							detailInfo		: clerkSelfInfo,
+							flowInfo		: flowInfo,
+							hadSave			: false,				// N为
+							flow			: flow
+						}
+					})
+				}
+			}
+		}); // plusReady
+	</script>
+
+</html>

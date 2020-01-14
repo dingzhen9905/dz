@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="css/common/mui.poppicker.css" />
+		<style>
+
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 70px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">我的余额</h1>
+			<!--<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit" style="display: none;"></a>-->
+			<a class=" mui-pull-right rightIcon" id="history" style="position:relative;z-index: 111;width:80px;top:15px;font-size:14px;">申请历史</a>
+		</header>
+
+		<div class="mui-content mainBody nodeBody" style="padding-top:75px !important;">
+			<div class="mui-input-group groupInfo" style="height:80px;background: ;">
+				<div id="">
+					<span id="">余额(元)</span>
+					<p style="font-size:50px;height: 50px;background: ;padding-top:15px;"><span id="nodeAmt">0</span></p>
+				</div>
+			</div>
+
+			<div id="contList" style="padding:0;margin:0;"></div>
+			
+		</div>
+		<script  id="listTmpl" type="text/template">
+			<div class="mui-input-group groupInfo drawings" style="line-height: 35px;width:100%;padding:5px">
+				<div class="data-row" style="display:none"><%=rowdata%></div>
+				<div class="mui-row infoItem lastItem" style="padding:0;margin:0;width:100%;background:">'
+					<span class="mui-col-xs-7" style="color: #000000;font-size: 14px;" id="teamBillComName">
+						<span class="mui-icon mui-icon-home" style="line-height: 30px;"></span>
+						<%=liTitle%>
+					</span>';
+					<span class="mui-col-xs-2" style="text-align: center;color: #FF4400;"><%=liLeftM%></span>
+					<span class="mui-col-xs-2" style="text-align: center;">提现申请</span>
+					<span class="mui-col-xs-1 mui-icon mui-icon-arrowright" style="font-size: 14px;line-height: 35px;"></span>
+				</div>
+			</div>
+		</script>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/jquery-2.1.0.js"></script>
+	
+	<script src="js/md5.js"></script>
+	<script src="js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var deptname;
+		var balance = 0; //余额
+		mui.plusReady(function() {
+			plus.screen.lockOrientation("portrait-primary");  // 禁止横屏显示
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no = self.fbill_no; // 3.fbill_no是
+			loginCom = self.loginCom; 
+			loginComName = self.loginComName; 
+			userbillNo = self.userbillNo; 
+			userName = self.userName; 
+			privileges = self.privileges; 
+			fromPage = self.fromPage;  
+			
+			document.getElementById("goBack").addEventListener("tap",function(e){
+				var wobj = plus.webview.getWebviewById("tab-webview-subpage-setting");     
+           		wobj.reload(true);  
+			})
+			document.getElementById("history").addEventListener("tap", eBtnHistory, false);// 申请历史
+			mui("#contList").on('tap', '.drawings', function(e) { eaDrawings(e, this); });
+			
+			queryBalance();
+		}); // plusReady
+		function eBtnHistory() {
+			mui.openWindow({
+				url: 'layout/vlvdfa/vdfa312_plist.html',
+				id: "vdfa312_plist.html",
+				createNew: true,
+				extras: {
+					teamBillCom: teamBillCom, 
+					teamBillComName: teamBillComName, 
+					fbill_no: fbill_no, 
+					loginCom: loginCom, 
+					loginComName: loginComName, 
+					userbillNo: userbillNo, 
+					userName: userName, 
+					privileges: privileges, 
+					fromPage: "vdfa312edit", 
+				}
+			})
+		}
+		function eaDrawings(e, self){
+			var div = self;
+			var dataRow = jQuery(self).find(".data-row").eq(0).html();
+			var rowObj = JSON.parse(dataRow);
+			mui.openWindow({
+				url: 'layout/vlvdfa/vdfa312_edit.html',
+				id: "vdfa312_edit.html",
+				createNew: true,
+				extras: {
+					teamBillCom: teamBillCom, 
+					teamBillComName: teamBillComName, 
+					fbill_no: fbill_no, 
+					loginCom: loginCom, 
+					loginComName: loginComName, 
+					userbillNo: userbillNo, 
+					userName: userName, 
+					privileges: privileges, 
+					fromPage: "balance.html", 
+					flagNew: "Y",
+					rowObj: rowObj
+				}
+			});
+		}
+		function queryBalance(){
+			var querybalance = {
+				name: 'msvr',
+				bill_task: "VR_query_vdac311_02 ", // 查询的指令
+				bill_com: teamBillCom, // 当前单位
+				bill_user: userbillNo, // 当前登陆人
+				bill_no: userbillNo, // 当前登陆人
+				bill_bflow: "用户应收",
+				bill_title: "用户应收",
+				currentPage: 1,
+				pageSize: 100,
+				paramText: ""
+			};
+			VlAjax.post({
+				"port":"active",
+				"headers":"json",
+				"outPath":"layout/login.html"
+			}, p, sCB);
+			//发送ajax
+			// function sCB(data, type) {
+			// 	if(data.data.length != 0) {
+			// 		mui.toast("搜索完成，正在加载...")
+			// 		if(!type || type != "up") {
+			// 			document.getElementById("contList").innerHTML = '';
+			// 		}
+			// 		var text = '';
+			// 		for(var i = 0; i < data.data.length; i++) {
+			// 			var newdataArr = {};
+			// 			for(var k in data.data[i]) {
+			// 				newdataArr[k.slice(0, 2)] = data.data[i][k];
+			// 			}
+			// 			var contList = document.getElementById("contList");
+			// 			balance += Number(newdataArr["金额"]);
+			// 			text += '<div class="mui-input-group groupInfo drawings" style="line-height: 35px;width:100%;padding:5px" id=""  data-row=\'' + JSON.stringify(newdataArr) + '\'>';
+			// 			text += '<div class="mui-row infoItem lastItem" style="padding:0;margin:0;width:100%;background:">'
+			// 			text += '<span class="mui-col-xs-7" style="color: #000000;font-size: 14px;" id="teamBillComName"><span class="mui-icon mui-icon-home" style="line-height: 30px;"></span>' + newdataArr["内容"] + '</span>';
+			// 			text += '<span class="mui-col-xs-2" style="text-align: center;color: #FF4400;">¥' + newdataArr["金额"] + '</span>';
+			// 			text += '<span class="mui-col-xs-2" style="text-align: center;">提现申请</span>';
+			// 			text += '<span class="mui-col-xs-1 mui-icon mui-icon-arrowright" style="font-size: 14px;line-height: 35px;"></a>';
+			// 			text += '</div>';
+			// 			text += '</div>';
+			// 			contList.innerHTML = text;
+			// 		}
+			// 		document.getElementById("nodeAmt").innerHTML = balance;
+			// 	} else { // 如果没有长度说明没有数据，提示没有数据
+			// 		mui.toast("未查询到数据~")
+			// 		document.getElementById("contList").innerHTML = '';
+					
+			// 	}
+			// }
+			function sCB(data, type) {
+				var html = '';
+				for(var i = 0; i < data.data.length; i++) {
+					var _rowd = dataAdapter(data.data[i])
+					var source = document.getElementById('listTmpl').innerHTML;
+					var render = template.compile(source);
+					html += render(_rowd);
+					balance += Number(_rowd["liTitle"]);
+					if(type&&i==0){
+						contList.innerHTML = "";
+					}
+				}
+				if(html == ""){mui.toast("未查询到数据~")}
+				jQuery("#contList").append(html);
+				document.getElementById("nodeAmt").innerHTML = balance;
+			}
+			function dataAdapter(data) {
+				var _data = {};
+				for(var k in data) {
+					_data[k.slice(0, 2)] = data[k];
+				}
+				return {
+					"rowdata" 	: JSON.stringify(_data),
+					"liTitle" 	: _data['内容'],
+					"liLeftM" 	: _data['金额'],
+				}
+			}
+		}
+	</script>
+
+</html>

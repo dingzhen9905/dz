@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>经销商安全库存（新建）</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.dtpicker.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			.focus-input{
+				box-sizing: border-box;
+				border:1px solid #40a9ff !important;
+				border-radius: 10px !important;
+			}
+			label{line-height: 18px !important;}
+			input[placeholder] {font-size: 12px;}
+			input:hover{color:#40a9ff;}
+			.mui-input-row.lastInput:after{height:0;}
+			#contList li:nth-of-type(odd){background:#F0F0F0;}
+			.hide{display: none;}
+			.mui-input-row{position: relative;}
+			.mui-switch{position: absolute;right:5px;top:5px;height: 20px;margin-top:0px;}
+			.mui-switch-handle{height: 18px !important;width: 18px !important;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p id="title">安全库存编辑</p>
+				<h1 id="header" ></h1>	
+			</div>
+			<a class=" mui-pull-right rightIcon" id="saveBtn" data-loading-text="提交中" >保存</a>	
+			<div class="mui-row navBar buttonBars" style="background: #F7F7F7;">
+				<span class="mui-col-xs-4 state" id="billState"></span>
+				<button type="button" id="deleteBtn" class="mui-col-xs-4" >
+					<span class="mui-icon mui-icon-trash" id="deleteIcon" ></span>
+					<span >删除</span>
+				</button>
+				<button  type="button" id="bSendBtn" class="mui-col-xs-4 " >
+					<span class="mui-icon mui-icon-upload" id="bSendIcon" ></span>
+					<span >送审</span>
+				</button>
+			</div>
+		</header>
+		<div class="mui-content" style="padding-top:95px;margin-top:10px;margin-bottom:30px;">
+			<div class="mui-input-group hide" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;">
+				<div class="mui-row">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">标识:</span>
+					<span class="mui-col-xs-8" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">fbill_no:</span>
+					<span class="mui-col-xs-8" id="fbill_no">ROOT</span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人:</span>
+					<span class="mui-col-xs-8" id="bill_user"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单单位:</span>
+					<span class="mui-col-xs-8" id="bill_com"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单时间:</span>
+					<span class="mui-col-xs-8" id="bill_date"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<!--<div class="mui-row infoItem" style="color:#20B2AA;">
+					<span>基础信息：</span>
+				</div>-->
+				<!--<div class="mui-input-row">
+					<label>物品名称</label>
+					<input id="bill_name" type="text" class="mui-input-clear requiredInput" readonly="readonly" value="" placeholder="点击选择物品">
+				</div>-->
+				<div class="mui-input-row">
+					<label>物品名称</label>
+					<input id="bill_name" 
+							type="text" 
+							class="requiredInput" 
+							readonly="readonly" 
+							placeholder="点击选择物品"
+							
+							data-field="text.bill_name"  
+							data-link = 'bill_bid'
+							data-href="../vlfind/vdsa210_VRfind.html"
+							data-task="VR_vdsa210_find_04"
+							/>
+				</div>
+				<div class="mui-input-row">
+					<label>物品编码</label>
+					<input id="bill_bid" type="text" class="" readonly="readonly" placeholder="点击选择物品自动带出">
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>政策编码</label>
+					<input id="bill_id" type="text" class="" readonly="readonly" placeholder="点击选择物品自动带出">
+				</div>
+				<div class="mui-input-row hide">
+					<label>生产厂商代码</label>
+					<input id="bill_coppo" type="text" class="" readonly="readonly" placeholder="点击选择物品自动带出">
+				</div>
+				<div class="mui-input-row hide">
+					<label>销售政策标识</label>
+					<input id="bill_oppo" type="text" class="" readonly="readonly" placeholder="点击选择物品自动带出">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row">
+					<label>安全库存</label>
+					<input id="node_qty" type="number" class="mui-input-clear requiredInput">
+				</div>
+				<div class="mui-input-row">
+					<label>订货批量</label>
+					<input id="node_nqty" type="number" class="mui-input-clear requiredInput">
+				</div>
+				<div class="mui-input-row">
+					<label>单托数量</label>
+					<input id="node_price" type="number" class="mui-input-clear requiredInput">
+				</div>
+				<div class="mui-input-row ">
+					<label>当前库存量</label>
+					<input id="node_amt" type="number" class="mui-input-clear requiredInput">
+				</div>
+				<div class="mui-input-row">
+					<label>考虑采购在途</label>
+					<input id="node_nprice" type="text" class="requiredInput" placeholder="" readonly="readonly">
+					<div class="mui-switch mui-switch-blue mui-switch-mini">
+						<div class="mui-switch-handle"></div>
+					</div>
+				</div>
+				<!--<li class="mui-table-view-cell">
+					<span></span>
+					<div class="mui-switch mui-switch-blue mui-switch-mini">
+						<div class="mui-switch-handle"></div>
+					</div>
+				</li>-->
+				<div class="mui-input-row ">
+					<label>采购在途量</label>
+					<input id="node_rate" type="number" class="mui-input-clear requiredInput">
+				</div>
+				<div class="mui-input-row">
+					<label>考虑销售在途</label>
+					<input id="node_namt" type="text" class="requiredInput" placeholder="" readonly="readonly">
+					<div class="mui-switch mui-switch-blue mui-switch-mini">
+						<div class="mui-switch-handle"></div>
+					</div>
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>销售在途量</label>
+					<input id="node_nrate" type="text" class="mui-input-clear requiredInput">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row lastInput">
+					<label>录入人</label>
+					<input id="userName" type="text" readonly="readonly" class="" placeholder="">
+				</div>
+			</div>
+			<!-- 点击退出时底部弹出-->
+			<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+				<!-- 可选择菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="sureDelBtn">
+						<a>确认</a>
+					</li>
+				</ul>
+				<!-- 取消菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a href="#sheet1"><b>取消</b></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/mui.dtpicker.js"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = null;
+		var hadSend = false;  // 用于判断是否送审
+		var flagsave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		var deptname = "";
+		var bill_task = "";
+		var mainInfo = {};
+		var detailArr = null;
+		var newdataInfo = {};
+		var getElem = function(el){return document.getElementById(el);};
+		mui.plusReady(function() {
+			
+			// TODO 1. 页面上的字段========================
+			var  normalData = {
+				h : {
+					bill_no 	:"",
+					fbill_no 	:"",
+					bill_user 	:"",
+					bill_com 	:"",
+					bill_date 	:"",				
+				},
+				 v : {
+					bill_id		: "",
+					bill_bid	: "",
+					bill_name	: "",
+					bill_oppo	: "",
+					bill_coppo	: "",
+					node_qty	: "",
+					node_nqty	: "",
+					node_price  : "",
+					node_amt    : "",
+					node_namt   : "",
+					node_nprice : "",
+					node_rate   : "",
+					node_nrate  : "",
+				},
+				c : {}
+			}
+			
+
+			// TODO 2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	
+			teamBillComName = self.teamBillComName;	
+			fbill_no 		= self.fbill_no;		
+			loginCom 		= self.loginCom;		
+			loginComName 	= self.loginComName;	
+			userbillNo 		= self.userbillNo;		
+			userName 		= self.userName;		
+			privileges 		= self.privileges;		
+			fromPage 		= self.fromPage;		
+			// 其他
+			flagNew = self.flagNew;
+			// TODO 3. 基础设置/赋值 
+			getElem("header").innerHTML = teamBillComName; 				
+			getElem("userName").value = userName;
+			// 判断为新增还是修改
+			if(flagNew == "N") { // 修改  
+				detailInfo = self.detailInfo;
+				mainInfo = detailInfo;
+				detailArr = detailInfo;
+				
+				var bill_task = "d_save";
+				var privileges = self.privileges;
+				var bill_no = mainInfo.bill_no;
+				onlyCode = mainInfo.bill_no; 
+				
+				billstate(mainInfo.bill_task);
+				setValue(mainInfo,normalData,false); 
+				
+				flagsave=true;
+				if(mainInfo.bill_task == "L"){
+					hadSend = false;
+				}else {
+					hadSend = true;
+				}
+				rqsData = mainInfo;
+				
+			} 
+			if(flagNew == "Y") { // 新增状态
+				onlyCode = getDataCode("vdvc512"); //bill_no字段
+				bill_task = "d_new";
+				getElem("billState").innerHTML = "录入中";
+				getElem("bill_date").innerHTML = vlUtils.dateToString(date);
+				getElem("bill_no").innerHTML = onlyCode;
+				getElem("bill_user").innerHTML = userbillNo;
+				getElem("bill_com").innerHTML = teamBillCom;
+			}
+			// TODO 4. 事件绑定==================================
+			setButton(flagsave,hadSend)
+			getElem("sureDelBtn").addEventListener("tap", sureDelBtn);
+			getElem("bill_name").addEventListener("tap",ebillName);
+			mui('.mui-content .mui-switch').each(function() { //循环所有toggle
+				//toggle.classList.contains('mui-active') 可识别该toggle的开关状态
+				this.parentNode.querySelector('input').value = (this.classList.contains('mui-active') ? '是' : '否');
+				this.parentNode.querySelector('input').value === _json[_type][0] ? jQuery(this).addClass('mui-active') : jQuery(this).removeClass('mui-active');
+				this.addEventListener('toggle', function(event) {
+					//event.detail.isActive 可直接获取当前状态
+					this.parentNode.querySelector('input').value = (event.detail.isActive ? '是' : '否');
+				});
+			});
+			//
+			// TODO 5. 监听自定义事件=============================
+			window.addEventListener('vdsa210VRfind', function(event) {
+				var linkName = event.detail.linkName;
+				var _name = event.detail.fieldid;
+				var dataRow = event.detail.dataRow;
+				if(typeof(dataRow)=="string"){
+					dataRow = JSON.parse(dataRow);
+				}
+				var oid = getElem(_name);
+				var _id = oid.getAttribute('data-link');
+				getElem(_name).value= linkName;
+				getElem(_id).value= dataRow[0]['金额']; // 物品编码 0611
+				getElem('bill_oppo').value= dataRow[0]['指令'];
+				getElem('bill_coppo').value= dataRow[0]['内容'].split(',')[6].split(':')[1];
+				getElem('bill_id').value= dataRow[0]['参数']; // 政策编码 z001
+			});
+			// TODO 6. 事件/方法=================================
+			// 保存指令
+			function saveBtn(){ 
+				plus.nativeUI.showWaiting();
+				var checkResults = checkRequiredItems();//验证是否为必填字段  
+				if(checkResults == false){
+					plus.nativeUI.closeWaiting();
+					return false;
+				}
+				var numArr = {"是":1,"否":0};
+				rqsData = getValue(normalData,false); //获取每一个输入框的值的方法  
+				rqsData.node_nprice = numArr[rqsData.node_nprice];
+				rqsData.node_namt 	= numArr[rqsData.node_namt];
+				newdataInfo = vlUtils.deepCopy(rqsData,newdataInfo);
+				if(flagNew == "N") {  flagsave = true; };
+				if(flagsave){
+				 	rqsData = vlUtils.compareData(mainInfo, rqsData,false);
+					rqsData.bill_task = "d_save";
+				}else{
+					rqsData.bill_task = "d_new";
+				}
+				CRUDajax(rqsData,"../login.html",saveSuccess);
+				return true;
+			}
+			// 送审指令
+			function bSendBtn(){ 
+				mui.confirm("确认要送审此单据吗？\n送审后将不可对单据进行再次操作！", "操作确认", ["确认送审", "取消"], function(e) {
+					if(e.index == 0) { // 是
+						plus.nativeUI.showWaiting();
+						var sendParams = taskParam("b_send");
+						if(!saveBtn()){
+							return;
+						}
+						CRUDajax(sendParams,"../login.html",sendSuccess); 
+					} else{
+						return;
+					}
+				});
+				return;
+			}
+			// 删除按钮主表
+			function deleteBtn(){ 
+				mui('#sheet1').popover('show', getElem("deleteBtn"));
+			}
+			
+			// 确认删除主表
+			function sureDelBtn(){ 
+				var delparams = taskParam("d_delete");
+				CRUDajax(delparams,"../login.html",delSuccess);//删除方法 
+			} 
+			// 确认删除明细
+			// 删除/送审的参数
+			function taskParam(task){
+				var fbillNo = getElem("fbill_no").innerHTML;
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				var date = new Date();
+				params.bill_task = task;
+				params.bill_no 	 = onlyCode;
+				params.fbill_no  = fbillNo;
+				params.bill_user = userbillNo;
+				params.bill_com	 = loginCom;
+				params.bill_date = vlUtils.dateToString(date);
+				return params;
+			}
+			function saveSuccess(){
+				plus.nativeUI.closeWaiting();
+				flagsave = true;
+				setButton(flagsave,hadSend)
+				mainInfo = vlUtils.deepCopy(rqsData,mainInfo);
+			}
+			function afterSave(){}
+			function sendSuccess(){
+				plus.nativeUI.closeWaiting();
+				hadSend = true;
+				setButton(mainInfo);
+				mui.openWindow({
+					id: 'vdvc512_node.html',
+					url: 'vdvc512_node.html',
+					createNew: true, 
+					extras: { 
+						teamBillCom 	: teamBillCom, 		
+						teamBillComName : teamBillComName,	
+						fbill_no 	  	: fbill_no,					
+						loginCom 		: loginCom,			
+						loginComName 	: loginComName,		
+						userbillNo 		: userbillNo,		
+						userName 		: userName,			
+						privileges 		: privileges,		
+						fromPage 		: "vdvc512_edit.html",		
+						rqsData			: newdataInfo,//TODO
+					}
+				}); 
+			}
+			function delSuccess(){
+				successFun("vdvc512_plist.html","vdvc512_list.html");
+			}
+			//
+			function setButton(flagsave,hadSend){
+				// 1.
+				if(!flagsave){
+					getElem("saveBtn").addEventListener("tap",saveBtn); 
+					getElem("bSendBtn").addEventListener("tap",bSendBtn);
+			   		getElem("deleteBtn").removeEventListener("tap",deleteBtn);
+			   		// 
+			   		getElem("saveBtn").style.color =  "#FFF"; 
+					getElem("bSendIcon").style.color =  "#18B4ED";
+			   		getElem("deleteIcon").style.color =  "#8f8f94";
+				}
+				// 2.
+				if(flagsave && !hadSend){
+					getElem("saveBtn").addEventListener("tap",saveBtn); 
+					getElem("bSendBtn").addEventListener("tap",bSendBtn);
+			   		getElem("deleteBtn").addEventListener("tap",deleteBtn);
+			   		//
+			   		getElem("saveBtn").style.color =  "#FFF";
+					getElem("bSendIcon").style.color =  "#18B4ED";
+			   		getElem("deleteIcon").style.color =  "#18B4ED";
+				}
+				// 3.
+				if(flagsave && hadSend){
+					getElem("saveBtn").removeEventListener("tap",saveBtn); 
+					getElem("bSendBtn").removeEventListener("tap",bSendBtn);
+			   		getElem("deleteBtn").removeEventListener("tap",deleteBtn);
+			   		//
+			   		getElem("saveBtn").style.color =  "#8f8f94";
+					getElem("bSendIcon").style.color =  "#8f8f94";
+			   		getElem("deleteIcon").style.color =  "#8f8f94";
+				}
+			}
+			function billstate(task){
+				var oStatus = {"L":"待送审","S":'待审核',"Y":"已审核"};
+				getElem("billState").innerHTML = oStatus[task];
+			}
+			function ebillName(){
+				var _opt = {
+					"id" : "bill_name",
+				}
+				openPage(_opt);
+			}
+			function openPage(opt) {
+				var dataHref = getElem(opt.id).getAttribute("data-href"); // 没有连接即为未开发
+				var dataTask = getElem(opt.id).getAttribute("data-task"); // 没有连接即为未开发
+				if(dataHref == "" || dataHref == undefined || dataHref == null){
+					plus.nativeUI.toast("～敬请期待～", {
+						'verticalAlign': "top"
+					});
+					return;
+				}
+				var scanpage = plus.webview.getWebviewById(dataHref.slice(8));
+				if(!vlUtils.isnull(scanpage)){
+					plus.webview.hide(scanpage);
+					plus.webview.close(scanpage);
+				}
+				var urlarr = dataHref.split("/");
+				// 打开页面
+				mui.openWindow({
+					url:dataHref,
+					id: urlarr[urlarr.length-1],
+					createNew:true,
+					extras:{
+						teamBillCom 	: teamBillCom ,
+						teamBillComName : teamBillComName,
+						userbillNo 		: userbillNo,
+						userName 		: userName,
+						loginCom 		: loginCom,
+						loginComName 	: loginComName,
+						privileges 		: privileges,
+//						userRole		: userRole,
+						fieldid 		: opt.id,
+						bill_task		: dataTask,
+						choice			: 'single',
+						fromPage		: 'vdvc512_edit.html',
+				    },
+				});
+
+			}
+		}); // plusReady
+		
+	</script>
+
+</html>

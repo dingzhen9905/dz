@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+		<title>忘记密码</title>
+		<script src="../js/mui.min.js"></script>
+		<link href="../css/common/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/fonts/iconfont.css" />
+
+		<style>
+			input[placeholder]{font-size:14px;}
+			.confirm {margin:10px;}
+			.vlinput-required:before{content:"* ";color: crimson;}
+			.vlel-hide{display: none;}
+		</style>
+	</head>
+
+	<body>
+
+		<header class="mui-bar mui-bar-nav" id='head' style="height:70px; background: #F7F7F7;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="line-height: 70px;"></a>
+			<h1 class="mui-title" id="pageTitle" style="line-height:90px;"></h1>
+		</header>
+		<div class="mui-content" style="padding:80px 10px;">
+			<form class="mui-input-group" style="border-radius: 10px;padding-right:5px;">
+				<div id="context" >
+					<div class="mui-input-row" id="bnamebox">
+						<label  class="">姓名：</label>
+						<input id="userName" type="text" placeholder="请输入您的姓名">
+					</div>
+					<div class="mui-input-row">
+						<label  class="vlinput-required">账号：</label>
+						<input id="acctountNum" type="text" placeholder="请输入您的账号">
+					</div>
+					<div class="mui-input-row mui-row" style="border-bottom:1px solid #f0f0f0;">
+						<div class="mui-col-xs-9" style="">
+							<label  class="vlinput-required" style="width: 55%;">短信验证码：</label>
+							<input class="test" id="securityCode" type="number" placeholder="输入验证码" style="width: 45%;">
+						</div>
+						<div class="mui-col-xs-3">
+							<span class="mui-btn mui-btn-primary" id="J_btn_getCode" canClick="true" style="margin:1px 0;padding:0;width:100%;height:35px;line-height:35px;">获取验证码</span>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label class="vlinput-required">设置密码：</label>
+						<input id="J_input_newPW" type="text" placeholder="输入新密码（至少6位）">
+					</div>
+					<div class="mui-input-row">
+						<label class="vlinput-required">确认密码：</label>
+						<input class="test" id="J_input_confirmPW" type="text" placeholder="再次输入新密码">
+					</div>
+					<div class="mui-button-row confirm">
+						<button type="button" class="mui-btn mui-btn-primary mui-btn-block" id="J_btn_setNewPW" style="height: 30px;margin:0;padding:5px;font-size:14px;">确认</button>
+					</div>
+					<!-- <div class="mui-button-row confirm">
+						<button type="button" class="mui-btn mui-btn-primary mui-btn-block" id="J_btn_verify" style="height: 30px;margin:0;padding:5px;font-size:14px;">确认</button>
+					</div> -->
+				</div>
+				<div id="contexts">
+				</div>
+			</form>
+		</div>
+	</body>
+
+</html>
+<script src="../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/md5.js"></script>
+<script>
+	var oTip = {
+		"r001" : "请先输入",
+		"a001" : "您的账号不符合规则",
+		"c001" : "请输入验证码信息",
+		"p001" : "密码长度不够，至少6位~",
+		"p002" : "您两次输入的密码不一致",
+	};
+	var oInit = {
+		"forget" : {
+			"title" : "找回密码",
+			"nameShow" : false,
+			"headers" : {
+				"port"	  : "validMsgC",
+				"headers" : "json2",
+			},
+			"needSet" : true,
+			"scb" : setNewPW
+		},
+		"update" : {
+			"title" : "修改密码",
+			"nameShow" : true,
+			"headers":{
+				"port"	  : "changePW",
+				"headers" : "form"
+			},
+			"scb" : sCBUpdate
+		},
+	}
+	mui.plusReady(function() {
+		var self = plus.webview.currentWebview();
+		var type = self.type;
+		var telNum = self.tel;
+		// console.log(telNum)
+		// var type = "update";
+		//获取验证码按钮
+		var oBtnGetCode = document.getElementById("J_btn_getCode"),	//获取验证码按钮
+			oBtnVerify = document.getElementById("J_btn_verify"),	//确认按钮
+			oBtnSetNewPW = document.getElementById("J_btn_setNewPW"); // 修改密码
+		document.getElementById("acctountNum").value = telNum; // 修改密码
+		document.getElementById("pageTitle").innerHTML = oInit[type]["title"];
+		// document.getElementById("bnamebox").style.display = oInit[type]["nameShow"] ? "block" : "none";
+		
+		oBtnGetCode.addEventListener("tap", eBtnGetCode, false);
+		oBtnSetNewPW.addEventListener("tap", eBtnSetNewPW , false);
+		//点击获取验证码
+		
+		function eBtnGetCode() {
+			var canClick = oBtnGetCode.getAttribute("canClick");
+			if(canClick == "true"){
+				var acctountNum = document.getElementById("acctountNum").value;
+				//账号
+				if(acctountNum == "") {
+					alert("请先输入账号");
+					return;
+				}
+				if(acctountNum.length != 11) {
+					alert("您的账号不符合规则");
+					return;
+				}
+				var _p = {tel: acctountNum};
+				VlAjax.post({
+					"port"	  : "getMsgC",
+					"headers" : "json2",
+				},_p,sCB);
+				
+				//账号
+				oBtnGetCode.setAttribute("canClick","false");
+				window.clearInterval(timer);
+				var n = 60;
+				var timer = window.setInterval(function(){
+					n--;
+					if(n>=0){
+						oBtnGetCode.innerHTML = n+ "s";
+					}else{
+						oBtnGetCode.innerHTML = "获取<br/>验证码";
+						oBtnGetCode.setAttribute("canClick","true");
+						window.clearInterval(timer);
+					}
+				},1000);
+				function sCB(data){
+					plus.nativeUI.toast("短信验证码已发送~",{"verticalAlign":"top"});
+				}
+			}else{
+				plus.nativeUI.toast("请勿频繁操作~",{"verticalAlign":"top"});
+			}
+		}
+		//设置新密码
+		
+		function eBtnSetNewPW() {
+			var sNewPW = document.getElementById("J_input_newPW").value;
+			var sConfirmPW = document.getElementById("J_input_confirmPW").value;
+			var acct = document.getElementById("acctountNum").value;
+			var VWCode = document.getElementById("securityCode").value;
+			var userName = document.getElementById("userName").value;
+			// console.log(VWCode);
+			if(acct == ""){
+				alert("请先输入账号");
+				return;
+			}
+			
+			if(VWCode == "" ) {
+				alert("请输入验证码信息");
+				return;
+			}
+			if(sNewPW == "123456"){
+				alert("请勿将密码设置为初始密码~");
+				return;
+			}
+			if(sNewPW.length < 6){
+				alert("密码长度不够，至少6位~");
+				return;
+			}
+			if(sNewPW != sConfirmPW) {
+				alert("您输入的两次密码不一致");
+				return;
+			}
+			VWCode = parseInt(VWCode);
+			var newPWMd5 = hex_md5(sNewPW);
+			var oParam = {
+				"forget" : {
+					tel: acct,
+					code: VWCode
+				},
+				"update" : {
+					userName: userName,
+					tel: acct,
+					code: VWCode,
+					newPassWord	: newPWMd5,
+					checkPassWord	: newPWMd5,
+				}
+			}
+			VlAjax.post(oInit[type]["headers"], oParam[type], oInit[type]["scb"]);
+		}
+		function checkBeforeSumbit(){
+			
+		}
+
+	})
+	function setNewPW(data){
+		var acct = document.getElementById("acctountNum").value;
+		var sNewPW = document.getElementById("J_input_newPW").value;
+		var newPWMd5 = hex_md5(sNewPW);
+		var  rqsData = {
+			userName	: acct,
+			newPassWord	: newPWMd5,
+			code		:"2",
+		};
+		VlAjax.post({
+			"port"	  : "setNewPW",
+			"headers" : "form",
+		}, rqsData, sCBUpdate);
+	}
+	function sCBUpdate(data){
+		mui.toast(data.message);
+		mui.back();
+	}
+</script>

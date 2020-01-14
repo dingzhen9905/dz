@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			/* list内容*/
+			
+			.list_font {
+				font-size: 10px;
+				line-height: 12px;
+				height: 24px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+			}
+			
+			.list_h5 {
+				/*margin-top:-3px;*/
+				font-size: 13px;
+				overflow: hidden;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+			}
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			
+			.topNav {
+				text-align: center;
+				padding-top: 10px;
+				color: #353b42;
+				margin-bottom: 0;
+			}
+			
+			.active {
+				color: #ea6d10;
+				border-bottom: 2px solid #ea6d10;
+				/*background:pink;*/
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			
+			#searchBtn {
+				position: relative;
+				top: 4px;
+				padding: 6px 8px;
+				margin-left: 5px;
+			}
+			
+			#searchBox {
+				margin-left: 5px;
+				border-radius: 10px;
+			}
+			
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+			.chosen{
+				background: blanchedalmond !important;
+				border-radius: 3px;
+			}
+			.chosen h5{
+				color: #999 !important; 
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:70px;border-bottom:0.5px solid #C0C0C0;background-color:#0062cc;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:white;background-color:#0062cc;"></a>
+			<h1 class="mui-title" id="header" style="color:white;background-color:#0062cc;font-weight:normal;right: 60px;">选择部门</h1>
+			<!--<a class=" mui-icon mui-icon mui-icon-plusempty  mui-pull-right" id="toEdit" href="vdsa211_new.html"></a>-->
+			<a class="mui-pull-right" id="save" style="color:white;background-color:#0062cc;padding-top:12px;font-size: 18px;">确认</a>
+			<div class="mui-row" style="position: fixed;top:70px;width:100%; background-color:#efeff4;margin-left:-10px;z-index:1000000;" id="topNav">
+				<div class="mui-row">
+					<div class="mui-col-xs-10">
+						<div class="mui-input-row mui-search">
+							<input type="search" id="searchBox" class="mui-input-clear" onkeyup="enterSearch(event)" placeholder="" style='margin-bottom:5px;'>
+						</div>
+					</div>
+					<div class=" mui-col-xs-2">
+						<button type="button" id="searchBtn" class="mui-btn">搜索</button>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group" id="sendTo" style="position:fixed;top:110px;z-index:999;width:100%;padding:auto 15px;height:40px;margin-bottom:5px;margin-left:-10px;">
+				<div class="mui-row" style="margin:0;padding:auto 15px;">
+					<span class="mui-col-xs-2 spn" style="line-height: 40px;text-align: right;">选择：</span>
+					<span class="mui-icon mui-icon-close" id="closeIcon" style="float:right;margin-right: 10px;line-height: 20px;"></span>
+					<span class="mui-col-xs-8 spn" id="bill_name" data-arr="" style="color: #18B4ED;"></span>
+					<span class="mui-col-xs-8 spn" id="dataArr" data-arr="" style="color: #18B4ED;display: none;"></span>
+				</div>
+			</div>
+		</header>
+
+		<div id="vdvc104_VRfind" class="mui-content mui-content mui-scroll-wrapper" style="padding-top: 150px;">
+			<div class="mui-scroll">
+				<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+					<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+					<p style="font-size:12px;">正在搜索中......</p>
+				</div>
+				<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+					<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+					<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+					<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+				</div>
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-bottom:50px;border: transparent;">
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vdvc104_VRfind',
+				down: {
+					style:'circle',
+					callback: pulldownRefresh
+				},
+				up: {
+					auto:false,
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var choice = "";
+		var fromPage = "";
+		var startIndex = 1; // 起始页码
+		var pageSize = 30; // 每页显示几条信息
+		var search = ''; // 要查询的内容，paramText的value
+		var fbill_no = "ROOT"; // 查询的fbill_no
+		var detailInfo = {}; // 把查询到的东西放到数组里面
+		var queryparmas = {}; //查询参数
+		var pager = {}; //分页
+		var backPageId = "";
+		var loginCom1 = "";
+		var other = "";
+		var bill_task = "";
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom 	= self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo 		= self.userbillNo;
+			loginCom 		= self.loginCom;
+			loginComName 	= self.loginComName;
+			choice 			= self.choice;
+			fromPage 		= self.fromPage;
+			fbill_no 		= self.fbill_no;
+			other			= self.other;	
+			bill_task 		= self.bill_task;
+			// 更改header的显示信息
+			// document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+			
+			queryparmas = { // 默认我的客户001
+				name: 'msvr',
+				bill_com	: teamBillCom,
+				bill_user	: userbillNo,//员工id登录人
+				bill_task	: bill_task, // VR_find_pur001 查供货商  // VR_find_corr101 查经销商
+				bill_title  : "",
+				currentPage	: 1,
+				pageSize	: pageSize,
+				paramText	: ''
+			}
+			// 默认查询
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData, '../login.html',true);
+		}) // plusReady
+		
+		function pulldownRefresh() {
+			mui.toast("加载中...");
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			//
+			queryparmas.currentPage = 1;
+			queryparmas.pageSize = pageSize;
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData,'../login.html',true);
+			mui('#vdvc104_VRfind').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+		}
+		function pullupRefresh() {
+			if(queryparmas.currentPage < pager.totalPage) {
+				queryparmas.currentPage = queryparmas.currentPage + 1;
+				queryparmas.pageSize = pageSize;
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData,'../login.html',false);
+				mui('#vdvc104_VRfind').pullRefresh().endPullupToRefresh();
+			} else {
+				plus.nativeUI.toast("~没有更多啦~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdvc104_VRfind').pullRefresh().endPullupToRefresh();
+				return;
+			}
+		}
+		//点进选择、放入列表中*************************
+		var selectedArr = [];
+//		var selectedArr = [
+//			{"aaa":"张三"}
+//		];
+		mui("#contList").on('tap', 'li', function(e) {
+			var e = this;
+			var li = e;
+			var dataRow = li.getAttribute("data-row");
+			dataRow = JSON.parse(dataRow);
+
+			var linkName = document.getElementById("bill_name").innerHTML;
+			var dataarr = document.getElementById("dataArr").innerHTML;
+			if(!vlUtils.isnull(dataarr)){
+				selectedArr = JSON.parse(dataarr);
+			}
+			var isRepeat = false;
+			
+			if(choice == "multiple") { // 如果多选
+				var chosenStates = Boolean(Number(jQuery(li).attr("data-chosen")));
+				chosenStates = !chosenStates;
+				if(vlUtils.isnull(linkName)) { // 为空,没有已选的
+					linkName = dataRow["标题"];
+					var selectjson  = {};
+					selectjson[dataRow["标题"]] = dataRow["图片"];
+					selectedArr.push(selectjson);
+					jQuery(li).attr("data-chosen", 1);
+					jQuery(li).addClass("chosen");
+					jQuery(li).children().addClass("chosen");
+				} else {
+					// 不为空则判断里面有没有这个值，有则不再增加,取消选择
+					for(var j = 0; j < selectedArr.length; j++) {
+						for(var k in selectedArr[j]){
+							if(k == dataRow["标题"]) {
+								isRepeat = true;
+								//0707 有的话从数组里面删掉
+								selectedArr.splice(j,1);
+								var namestr = document.getElementById("bill_name").innerHTML;
+								var namearr = namestr.split(",");
+								namearr.splice(j,1);
+								linkName = namearr.join(",");
+//								document.getElementById("bill_name").innerHTML = linkName;
+								break;
+							}
+						}
+					}
+					if(!isRepeat) {//不重复
+						jQuery(li).attr("data-chosen", 1);
+						jQuery(li).addClass("chosen");
+						jQuery(li).children().addClass("chosen");
+						linkName += "," + dataRow["标题"];
+						var selectjson  = {};
+						selectjson[dataRow["标题"]] = dataRow["图片"];
+						selectedArr.push(selectjson);
+					}else{
+						jQuery(li).attr("data-chosen", 0);
+						jQuery(li).removeClass("chosen");
+						jQuery(li).children().removeClass("chosen");
+						
+					}
+				}
+			}
+			if(choice == "single") { // 如果单选
+				var chosenStates = Boolean(Number(jQuery(li).attr("data-chosen")));
+				chosenStates = !chosenStates;
+				jQuery(li).attr("data-chosen", Number(chosenStates));
+
+				if(chosenStates) { // t
+					// 自己添加类，兄弟移除类，兄弟的data-chosen为0
+					jQuery(li).children().addClass("chosen").parent().siblings().children().removeClass("chosen");
+					jQuery(li).addClass("chosen").siblings().removeClass("chosen");
+					jQuery(li).addClass("chosen").siblings().attr("data-chosen", 0);
+					linkCom = dataRow["图片"];
+					linkName = dataRow["标题"];
+				} else {
+					// 自己移除类
+					jQuery(li).children().removeClass("chosen");
+					jQuery(li).removeClass("chosen");
+					linkCom = "";
+					linkName = "";
+					dataRow = "";
+				}
+			}
+
+			document.getElementById("bill_name").innerHTML = linkName;
+			document.getElementById("dataArr").innerHTML = JSON.stringify(selectedArr);
+
+		});
+		// 点进选择、放入列表中============================
+		// 右上角点击返回105_find.html*************************
+		document.getElementById("save").addEventListener("tap", function() {
+			var linkName = document.getElementById("bill_name").innerHTML;
+			var dataArr = document.getElementById("dataArr").innerHTML;
+			//触发详情页面的newsId事件
+			mui.fire(plus.webview.getWebviewById(fromPage), 'vdhr104SelecteDept', {
+				teamBillCom		: teamBillCom,
+				uteamBillComName: teamBillComName,
+				serbillNo		: userbillNo,
+				loginCom		: loginCom,
+				loginComName	: loginComName,
+				linkName		: linkName,
+				dataRow			: dataArr,
+				other			: other
+			});
+
+			//打开详情页面          
+			mui.openWindow({
+				id: fromPage
+			});
+		})
+		// 清空
+		document.getElementById("closeIcon").addEventListener("tap", function() {
+			document.getElementById("bill_name").innerHTML = "";
+			document.getElementById("dataArr").innerHTML = "";
+			jQuery("ul li").children().removeClass("chosen");
+			jQuery("ul li").removeClass("chosen");
+		});
+
+		// 
+		function enterSearch(e) {
+			if(e.keyCode == 13) {
+				startIndex = 1;
+				detailInfo.length = 0;
+				document.getElementById("searchBox").blur();
+				var search = document.getElementById("searchBox").value;
+				var loginCom1 = vlUtils.getStorage("newTeamBillCom");
+				document.getElementById("showHint").style.display = "none"; // 先隐藏再判断
+				queryparmas = { // 默认我的客户001
+					name: 'msvr',
+					bill_com	: teamBillCom,
+					bill_user	: userbillNo,//员工id登录人
+					bill_task	: "VR_find_vdhr104_1", // VR_find_pur001 查供货商  // VR_find_corr101 查经销商
+//					bill_bflow	: bill_bflow,
+					bill_title	: search,
+					currentPage	: 1,
+					pageSize	: pageSize,
+					paramText	: ''
+				}
+				// 默认查询
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData, '../login.html',true);
+			}
+		}
+		// 
+		document.getElementById("searchBtn").addEventListener("tap", function() {
+			var search = document.getElementById("searchBox").value;
+			document.getElementById("showHint").style.display = "none"; // 先隐藏再判断
+			var loginCom1 = vlUtils.getStorage("newTeamBillCom");
+			queryparmas = { // 默认我的客户001
+				name: 'msvr',
+				bill_com	: teamBillCom,
+				bill_user	: userbillNo,//员工id登录人
+				bill_task	: "VR_find_vdhr104_1", // VR_find_pur001 查供货商  // VR_find_corr101 查经销商
+//				bill_bflow	: bill_bflow,
+				bill_title	: search,
+				currentPage	: 1,
+				pageSize	: pageSize,
+				paramText	: ''
+			}
+			// 默认查询
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData, '../login.html',true);
+		});
+
+		//发送ajax
+		function reportData(data, type) {
+			pager = data.page;
+			document.getElementById("showHint").style.display = "none";
+			var comImgid = vlUtils.uuid('comImg', 4, 10);
+			var contList = document.getElementById("contList");
+			if(data.data.length != 0) {
+				for(var i = 0; i < data.data.length; i++) {
+
+					var newdataArr = {};
+					for(var k in data.data[i]) {
+						newdataArr[k.slice(0, 2)] = data.data[i][k];
+					}
+					var li = document.createElement("li");
+					li.setAttribute("data-row",JSON.stringify(newdataArr));
+					li.setAttribute("class", "mui-table-view-cell");
+					li.style.padding = "10px";
+					li.style.height = "50px";
+					if(type&&i==0){
+						contList.innerHTML = '';
+					}
+					var text = '';
+					text += '<div class="mui-slider-cell  mui-slider-handle">';
+					text += '<div class="mui-row">';
+					text += '<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;width:35px;">';
+					text += '<img class="vdvc312 mui-col-xs-12" src="../../images/icon/default.png"  id="' + newdataArr["图片"] + '" />';
+					text += '</div>';
+					text += '<div class="mui-col-xs-7 mui-row" style="background:;height:50px;">';
+					text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;padding-top:1px;">' + newdataArr["标题"]+ '</h5>';
+					text += '<p class="list_font mui-col-xs-12"></p>';
+					text += '</div>';
+					text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;">';
+					text += '<p class="list_fonts mui-col-xs-12" style="float:right;"></p>';
+					text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;"></p>';
+					text += '<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;color:#4cd964;border-color:#4cd964;display:none;"> </p>';
+					text += '</div>';
+					text += '</div>';
+					text += '</div>';
+					//
+					if(type&&i==0){
+						document.getElementById("searching").style.display = "none";
+					}
+					li.innerHTML = text;
+					contList.appendChild(li);
+					vlUtils.downloadicon(newdataArr["图片"], newdataArr["图片"]);
+				}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				mui.toast("未查询到数据~")
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("showHint").style.display = "block";
+			}
+			plus.nativeUI.closeWaiting();
+		}
+	</script>
+
+</html>

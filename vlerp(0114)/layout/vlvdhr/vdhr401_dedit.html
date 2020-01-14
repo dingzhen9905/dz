@@ -1,0 +1,410 @@
+<!--
+	//字段:bill_no	//主:	// 细:
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>部门管理（新建）</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.dtpicker.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.mui-input-row.lastInput:after{
+				height:0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p id="title">编辑班次</p>
+				<h1 id="header" ></h1>	
+			</div>
+			<a class=" mui-pull-right rightIcon" id="saveBtn" data-loading-text="提交中" >保存</a>	
+			<div class="mui-row navBar buttonBars" style="background: #F7F7F7;">
+				<span class="mui-col-xs-6 state" id="billState"></span>
+				<button type="button" id="deleteBtn" class="mui-col-xs-6" >
+					<span class="mui-icon mui-icon-trash" id="deleteIcon" ></span>
+					<span >删除</span>
+				</button>
+			</div>
+		</header>
+		<div class="mui-content" style="padding-top:95px;margin-top:10px;margin-bottom:30px;">
+			<div class="mui-input-group" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;display:none;">
+				<div class="mui-row">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">部门标识:</span>
+					<span class="mui-col-xs-8" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">fbill_no:</span>
+					<span class="mui-col-xs-8" id="fbill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">所属班组:</span>
+					<span class="mui-col-xs-8" id="bill_wflow"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">班组名称:</span>
+					<span class="mui-col-xs-8" id="bill_bflow"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">bill_nunit:</span>
+					<span class="mui-col-xs-8" id="bill_nunit"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人:</span>
+					<span class="mui-col-xs-8" id="bill_user"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单单位:</span>
+					<span class="mui-col-xs-8" id="bill_com"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单时间:</span>
+					<span class="mui-col-xs-8" id="bill_date"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row">
+					<label>班次编码</label>
+					<input id="bill_id" type="text" class="mui-input-clear requiredInput" placeholder="录入班次编码" value="">
+				</div>
+				<div class="mui-input-row ">
+					<label>班次类型</label>
+					<input id="bill_name" type="text" class="requiredInput" readonly="readonly" placeholder="点击选择班次类型">
+				</div>
+				<div class="mui-input-row">
+					<label>班次说明</label>
+					<input id="bill_title" type="text" class="" placeholder="录入排班说明">
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>排次补贴</label>
+					<input id="node_price" type="number" class="requiredInput" placeholder="录入排班补贴">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row">
+					<label>班次开始时间</label>
+					<input id="billspec0" type="text" data-options='{"type":"time"}' class="requiredInput" readonly="readonly" placeholder="点击选择班次开始时间">
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>班次结束时间</label>
+					<input id="billspec1" type="text" data-options='{"type":"time"}' class="requiredInput" readonly="readonly" placeholder="点击选择班次结束时间">
+				</div>
+				<div class="mui-input-row" style="display: none;">
+					<label>班次时间</label>
+					<input id="bill_spec" type="text" class="" placeholder="班次时间" value="">
+				</div>
+			</div>
+			<!-- 点击退出时底部弹出-->
+			<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+				<!-- 可选择菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="sureDelBtn">
+						<a>确认</a>
+					</li>
+				</ul>
+				<!-- 取消菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a href="#sheet1"><b>取消</b></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/mui.dtpicker.js"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = null;
+		var hadSend = false;  // 用于判断是否送审
+		var flagsave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		var deptname = "";
+		var bill_task = "";
+		var serialNum = "";
+		var bill_wflow;
+		var billspecArr=["",""]
+		mui.plusReady(function() {
+			
+			// TODO 1. 页面上的字段========================
+			var normalData = {
+				h : {
+					bill_no 	:"",							//主:				// 细:
+					fbill_no 	:"",							//主:ROOT?			// 细:?
+					bill_wflow 	:"",							//主:部门			// 细:岗位
+					bill_bflow 	:"",							//主:部门			// 细:岗位
+					bill_nunit 	:"",							//主:部门			// 细:岗位
+					bill_user 	:"",							//主:				// 细:
+					bill_com 	:"",							//主:				// 细:
+					bill_date 	:"",				
+				},
+				 v : {
+					bill_id		:"",
+					bill_name 	:"",							//主:				// 细:
+					bill_title	:"",							//主:-				// 细:具体描述
+					bill_spec	:"",							//主:-				// 细:具体描述
+					node_price	:"",							//主:-				// 细:具体描述
+				},
+				c : {}
+			}
+
+			// TODO 2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录人的代码
+			loginComName 	= self.loginComName;	// 5.登录人的名称
+			userbillNo 		= self.userbillNo;		// 6.登录单位代码
+			userName 		= self.userName;		// 7.登录单位名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			bill_wflow 		= self.bill_wflow;		// 9.从哪个页面来
+			bill_spec 		= self.bill_spec;		// 9.从哪个页面来
+			serialNum		= self.serialNum;
+			// 其他
+			flagNew = self.flagNew;
+			deptname = self.deptname;
+			
+			// TODO 3. 基础设置/赋值 
+			document.getElementById("header").innerHTML = teamBillComName; 				
+			document.getElementById("fbill_no").innerHTML = fbill_no; 				
+			document.getElementById("bill_wflow").innerHTML = bill_wflow; 				
+			document.getElementById("bill_bflow").innerHTML = bill_spec; 				
+			// 判断为新增还是修改
+			if(flagNew == "N") { // 修改  
+				detailInfo = self.detailInfo;
+				var bill_task = "d_save";
+			 	document.getElementById("title").innerHTML = "信息编辑";
+			 	billstate(detailInfo.bill_task);
+				var privileges = self.privileges;
+				var bill_no = detailInfo.bill_no;
+				onlyCode = detailInfo.bill_no; //bill_no字段  
+				setValue(detailInfo,normalData,false); 
+				billspecArr = detailInfo.bill_spec.split(",");
+				document.getElementById("billspec0").value = billspecArr[0];
+				document.getElementById("billspec1").value = billspecArr[1];
+				flagsave=true;
+				if(detailInfo.bill_task == "L"){
+					hadSend = false;
+				}
+				if(detailInfo.bill_task != "L"){
+					hadSend = true;
+				}
+				rqsData = detailInfo;
+			} 
+			if(flagNew == "Y") { // 新增状态
+				onlyCode = getDataCode("vdhr401"); //bill_no字段
+				bill_task = "d_new";
+				document.getElementById("billState").innerHTML = "录入中";
+				document.getElementById("bill_date").innerHTML = vlUtils.dateToString(date);
+				document.getElementById("bill_no").innerHTML = onlyCode;
+				document.getElementById("bill_user").innerHTML = userbillNo;
+				document.getElementById("bill_com").innerHTML = teamBillCom;
+			}
+			// TODO 4. 事件绑定==================================
+			setButton(flagsave,hadSend)
+			document.getElementById("sureDelBtn").addEventListener("tap", sureDelBtn); 	// 删除：弹出确认菜单之后点击确认
+			document.getElementById("billspec0").addEventListener("tap",choiceDate);
+			document.getElementById("billspec1").addEventListener("tap",choiceDate1);
+			document.getElementById("bill_name").addEventListener("tap",function(){
+				var potionArr = [
+					{"title": "白班","btime":"","etime":""},
+					{"title": "早班","btime":"06:00","etime":"14:00"},
+					{"title": "中班","btime":"14:00","etime":"22:00"},
+					{"title": "夜班","btime":"22:00","etime":"06:00"}
+				]
+				// 弹框
+				plus.nativeUI.actionSheet({
+					title: "选择班次",
+					cancel: "取消",
+					buttons: potionArr
+				}, function(e) {
+					//商品类型find赋值
+					if((e.index - 1) != -1){
+//						document.getElementById("bill_name").value = potionArr[(e.index - 1)].title;
+//						document.getElementById("bill_bflow").innerHTML = potionArr[(e.index - 1)].title;
+						document.getElementById("bill_name").value = potionArr[(e.index - 1)].title;
+						document.getElementById("bill_nunit").innerHTML = potionArr[(e.index - 1)].title.slice(0,1);
+						//
+						document.getElementById("billspec0").value = potionArr[(e.index - 1)].btime;
+						document.getElementById("billspec1").value = potionArr[(e.index - 1)].etime;
+					}
+				});
+			})
+			// TODO 5. 监听自定义事件=============================
+			// TODO 6. 事件/方法=================================
+			// 保存指令
+			function saveBtn(){ 
+				plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+				var checkResults = checkRequiredItems();//验证是否为必填字段  
+				if(checkResults == false){
+					plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+					return;
+				}
+				billspecArr[0]=document.getElementById("billspec0").value;
+				billspecArr[1]=document.getElementById("billspec1").value;
+				document.getElementById("bill_spec").value = billspecArr.join(",");
+				rqsData = getValue(normalData,false); //获取每一个输入框的值的方法 
+//				var backdata = {};
+//				backdata = vlUtils.deepCopy(rqsData,backdata)
+				if(flagNew == "N") {  flagsave = true; };
+				if(flagsave){
+				 	rqsData = vlUtils.compareData(detailInfo, rqsData,false);
+					rqsData.bill_task = "d_save";
+				}else{
+					rqsData.bill_task = "d_new";
+				}
+				CRUDajax(rqsData,"../login.html",saveSuccess);
+			}
+			// 删除按钮
+			function deleteBtn(){ 
+				mui('#sheet1').popover('show', document.getElementById("deleteBtn"));
+			}
+			// 确认删除
+			function sureDelBtn(){ 
+				var delparams = taskParam("d_delete");
+				CRUDajax(delparams,"../login.html",delSuccess);//删除方法 
+			} 
+			
+			// 删除/送审的参数
+			function taskParam(task){
+				var fbillNo = document.getElementById("fbill_no").innerHTML;
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				var date = new Date();
+				params.bill_task = task;
+				params.bill_no 	 = onlyCode;
+				params.fbill_no  = fbillNo;
+				params.bill_user = userbillNo;
+				params.bill_com	 = loginCom;
+				params.bill_date = vlUtils.dateToString(date);
+				return params;
+			}
+			function saveSuccess(){
+				plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+				flagsave = true;
+				setButton(flagsave,hadSend)
+				detailInfo = getValue(normalData,false);
+				detailInfo.bill_task = "L";
+				mui.fire(plus.webview.getWebviewById('vdhr401_edit.html'), 'addDdtailItems', {
+					detailRow: detailInfo,
+					detailType: flagNew,
+					serialNum: serialNum
+				});
+				mui.openWindow({
+					id:"vdhr401_edit.html"
+				})
+			}
+			function delSuccess(){
+				successFun("vdhr401_plist.html","vdhr401_list.html");
+			}
+			//
+			function setButton(flagsave,hadSend){
+				// 1.
+				if(!flagsave){
+					document.getElementById("saveBtn").addEventListener("tap",saveBtn); 
+			   		document.getElementById("deleteBtn").removeEventListener("tap",deleteBtn);
+			   		// 
+			   		document.getElementById("saveBtn").style.color =  "#FFF"; 
+
+			   		document.getElementById("deleteIcon").style.color =  "#8f8f94";
+				}
+				// 2.
+				if(flagsave && !hadSend){
+					document.getElementById("saveBtn").addEventListener("tap",saveBtn); 
+			   		document.getElementById("deleteBtn").addEventListener("tap",deleteBtn);
+			   		//
+			   		document.getElementById("saveBtn").style.color =  "#FFF";
+			   		document.getElementById("deleteIcon").style.color =  "#18B4ED";
+				}
+				// 3.
+				if(flagsave && hadSend){
+					document.getElementById("saveBtn").removeEventListener("tap",saveBtn); 
+			   		document.getElementById("deleteBtn").removeEventListener("tap",deleteBtn);
+			   		//
+			   		document.getElementById("saveBtn").style.color =  "#8f8f94";
+			   		document.getElementById("deleteIcon").style.color =  "#8f8f94";
+				}
+			}
+			function choiceDate(){
+				dataPicker("billspec0",false);	//可用
+//				pickTime("billspec0");	//可用
+			}
+			function choiceDate1(){
+				dataPicker("billspec1",false);//可用
+//				pickTime("billspec1",false);//可用
+			}
+			function billstate(task){
+				if(task == "S") {
+					document.getElementById("billState").innerHTML = "待审核";
+				}
+				if(task == "Y") {
+					document.getElementById("billState").innerHTML = "已审核";
+				}
+				if(task == "L"){
+					document.getElementById("billState").innerHTML = "待送审";
+				}
+			}
+			function pickTime(id) {
+				var dTime = new Date();
+				dTime.setHours(6, 0);
+				plus.nativeUI.pickTime(function(e) {
+					var d = e.date;
+					var hours = d.getHours();
+					var mins = d.getMinutes();
+					if (hours.length == 1) {
+			            hours = "0" + hours;
+			        }
+					if (mins.length == 1) {
+			            mins = "0" + mins;
+			        }
+					document.getElementById(id).value = hours + ":" + mins;
+				}, function(e) {
+				}, {
+					title: "请选择时间",
+					is24Hour: true,
+					time: dTime
+				});
+			}
+		}); // plusReady
+		
+	</script>
+
+</html>

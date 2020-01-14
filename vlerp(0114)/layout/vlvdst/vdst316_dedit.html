@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>物品回收明细（新建）</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.dtpicker.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.mui-input-row.lastInput:after{
+				height:0;
+			}
+			.mui-input-group{
+				padding:5px 18px 5px 18px;margin-bottom:5px;
+			}
+			.hide{
+				display: none;
+			}
+			.auto-fill {
+				padding:1px;
+				padding-left:5px;
+				color: #242424;
+				font-size: 11px;
+				line-height: 12px;
+				height: 12px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			.auto-fill-title{color: gray;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head" style="height:80px;">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p id="title">物品回收明细</p>
+				<h1 id="header" ></h1>	
+			</div>
+			<a class=" mui-pull-right rightIcon" id="saveBtn" data-loading-text="提交中" >保存</a>	
+		</header>
+		<div class="mui-content" style="padding-top:80px;margin-top:5px;margin-bottom:30px;">
+			<div class="mui-input-group hide" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;">
+				<div class="mui-row">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">部门标识:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_no" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">fbill_no:</span>
+					<span class="mui-col-xs-8" data-field="html.fbill_no" id="fbill_no">ROOT</span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_user" id="bill_user"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单单位:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_com" id="bill_com"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单时间:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_date" id="bill_date"></span>
+					<br/>
+				</div>
+			</div>
+			<div class="mui-input-group">
+				<div class="mui-input-row lastInput">
+					<label>物品名称</label>
+					<input id="bill_name" 
+							type="text" 
+							class="mui-input-clear requiredInput" 
+							placeholder="点击选择物品"
+							readonly="readonly"
+							data-field="text.bill_name" 
+							data-link="bill_id" 
+							
+							data-task = 'VR_vdsa210_find_02'
+							data-href="../vlfind/vdsa210_VRfind.html"
+							/>
+				</div>
+				<div class="mui-row " style="padding:10px 0 0 0;margin:0 0 0 16px;border-top:1px dashed #ccc;border-bottom: 1px solid #c8c7cc;">
+					<p class="auto-fill mui-col-xs-3 auto-fill-title">> 物品政策码：</p><p id="bill_id" class="auto-fill mui-col-xs-9"></p>
+					<p class="auto-fill mui-col-xs-3 auto-fill-title">> 物品编码：</p><p id="bill_bid" class="auto-fill mui-col-xs-9"></p>
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>物品单位</label>
+					<input id="bill_unit" data-field="text.bill_unit" class="mui-input-clear requiredInput" type="text" placeholder="物品单位">
+				</div>
+				
+			</div>
+			<div class="mui-input-group">
+				<div class="mui-input-row">
+					<label>数量</label>
+					<input id="node_qty" class="mui-input-clear requiredInput"  data-field="number.node_qty" type="number"  placeholder="">
+				</div>
+				<div class="mui-input-row">
+					<label>单价</label>
+					<input id="node_price" class="mui-input-clear requiredInput"  data-field="number.node_price" type="number"  placeholder="">
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>金额</label>
+					<input id="node_amt" class="mui-input-clear requiredInput"  data-field="number.node_amt" type="number" readonly="readonly" placeholder="">
+				</div>
+			</div>
+			
+			<!-- 点击退出时底部弹出-->
+			<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+				<!-- 可选择菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="sureDelBtn">
+						<a>确认</a>
+					</li>
+				</ul>
+				<!-- 取消菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a href="#sheet1"><b>取消</b></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/mui.dtpicker.js"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = null;
+		var hadSend = false;  // 用于判断是否送审
+		var flagsave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		var deptname = "";
+		var bill_task = "";
+		var mainInfo = {};
+		var detailArr = null;
+		var MDInfo = {
+			"values":{
+				"main":{},
+				"detail":[]
+			}
+		}
+		mui.plusReady(function() {
+			
+			// TODO 1. 页面上的字段========================
+			var normalData ={
+				h : {
+					bill_no 	:"",
+					fbill_no 	:"",
+					bill_com 	:"",
+					bill_date 	:"",				
+					bill_user 	:"",
+					bill_id 	:"",
+					bill_bid 	:"",
+				},
+				v : {
+				 	bill_name 	:"",
+				 	bill_unit 	:"",
+					node_qty	:"",
+					node_price	:"",
+					node_amt	:"",
+				},
+				c : {}
+			}
+
+			// TODO 2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			var userinfo = JSON.parse(vlUtils.getStorage('user'));
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录人的代码
+			loginComName 	= self.loginComName;	// 5.登录人的名称
+			userbillNo 		= self.userbillNo;		// 6.登录单位代码
+			userName 		= self.userName;		// 7.登录单位名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			bflow 		= self.bflow;		// 9.从哪个页面来
+			serialNum	= self.serialNum;
+			// 其他
+			flagNew = self.flagNew;
+			deptname = self.deptname;
+			
+			// TODO 3. 基础设置/赋值 
+			document.getElementById("header").innerHTML = teamBillComName; 				// 0109修改
+			document.getElementById("fbill_no").innerHTML = fbill_no; 				// 0109修改
+			// 判断为新增还是修改
+			if(flagNew == "N") { // 修改  
+				detailInfo = self.detailInfo;
+				mainInfo = detailInfo;
+				MDInfo.values.main ={};
+				MDInfo.values.main = vlUtils.deepCopy(detailInfo,MDInfo.values.main);
+				var bill_task = "d_save";
+				var privileges = self.privileges;
+				var bill_no = mainInfo.bill_no;
+				onlyCode = mainInfo.bill_no; //bill_no字段  
+				
+				setValue(mainInfo,normalData,false); 
+				
+				flagsave=true;
+				if(mainInfo.bill_task == "L"){
+					hadSend = false;
+				}
+				if(mainInfo.bill_task != "L"){
+					hadSend = true;
+				}
+				rqsData = mainInfo;
+				
+				document.getElementById("title").innerHTML = "信息编辑";
+			} 
+			if(flagNew == "Y") { // 新增状态
+				onlyCode = getDataCode("vdst316"); //bill_no字段
+				bill_task = "d_new";
+				document.getElementById("bill_date").innerHTML = vlUtils.dateToString(date);
+				document.getElementById("bill_no").innerHTML = onlyCode;
+				document.getElementById("bill_user").innerHTML = userbillNo;
+				document.getElementById("bill_com").innerHTML = loginCom;
+			}
+			// TODO 4. 事件绑定==================================
+			document.getElementById("sureDelBtn").addEventListener("tap", sureDelBtn); 		
+			document.getElementById("bill_name").addEventListener("tap", eBillName); 	
+			document.getElementById("saveBtn").addEventListener("tap",saveBtn); 
+			jQuery('#node_price').bind('input propertychange', function() {
+				var _qty = jQuery('#node_qty').val();
+				_qty = (_qty === "") ? 0 : _qty;
+				var _price = jQuery('#node_price').val();
+				_price = (_price === "") ? 0 : _price;
+				var _amt = _qty * _price;
+				jQuery('#node_amt').val(_amt);
+			});
+			jQuery('#node_qty').bind('input propertychange', function() {
+				var _qty = jQuery('#node_qty').val();
+				_qty = (_qty === "") ? 0 : _qty;
+				var _price = jQuery('#node_price').val();
+				_price = (_price === "") ? 0 : _price;
+				var _amt = _qty * _price;
+				jQuery('#node_amt').val(_amt);
+			});
+			
+			// TODO 5. 监听自定义事件=============================
+			// 选择负责人
+//			window.addEventListener('vdvc511VRfind', function(event) {
+//				var linkName = event.detail.linkName;
+//				var _name = event.detail.fieldid;
+//				var dataRow = event.detail.dataRow;
+//				if(typeof(dataRow)=="string"){
+//					dataRow = JSON.parse(dataRow);
+//				}
+//				var other = event.detail.other;
+//				var oid = document.getElementById(_name);
+//				var _id = oid.getAttribute('data-link');
+//				document.getElementById(_name).value= linkName;
+//				document.getElementById(_id).innerHTML= dataRow[0]['参数'];
+//				document.getElementById("bill_bid").innerHTML= dataRow[0]['参数'];
+//				document.getElementById("bill_unit").value= dataRow[0]['内容'].split(",")[3].split(":")[1];
+//			});
+			window.addEventListener('vdsa210VRfind', function(event) {
+				var linkName = event.detail.linkName;
+				var _name = event.detail.fieldid;
+				var dataRow = event.detail.dataRow;
+				if(typeof(dataRow)=="string"){
+					dataRow = JSON.parse(dataRow);
+				}
+				
+				var oid = document.getElementById(_name);
+				var _id = oid.getAttribute('data-link');
+				document.getElementById(_name).value= linkName;
+				document.getElementById(_id).innerHTML= dataRow[0]['参数'];
+				document.getElementById('bill_bid').innerHTML= dataRow[0]['图片'];
+			});
+			// TODO 6. 事件/方法=================================
+			// 保存指令
+			function saveBtn(){ 
+				plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+				var checkResults = checkRequiredItems();//验证是否为必填字段  
+				if(checkResults == false){
+					plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+					return false;
+				}
+				rqsData = getValue(normalData,false); //获取每一个输入框的值的方法   
+				rqsData.node_qty = rqsData.node_qty === ""? 0 : rqsData.node_qty;
+				rqsData.node_price = rqsData.node_price === ""? 0 : rqsData.node_price;
+				rqsData.node_amt = rqsData.node_amt === ""? 0 : rqsData.node_amt;
+				//
+				MDInfo.values.main = vlUtils.deepCopy(rqsData,MDInfo.values.main);
+				if(flagNew == "N") {  flagsave = true; };
+				if(flagsave){
+				 	rqsData = vlUtils.compareData(mainInfo, rqsData,false);
+					rqsData.bill_task = "d_save";
+				}else{
+					rqsData.bill_task = "d_new";
+				}
+				CRUDajax(rqsData,"../login.html",saveSuccess);
+				return true;
+			}
+			// 送审指令
+			function bSendBtn(){}
+			// 删除按钮主表
+			function deleteBtn(){}
+			
+			// 确认删除主表
+			function sureDelBtn(){} 
+			// 确认删除明细
+			// 删除/送审的参数
+			function taskParam(task){
+				var fbillNo = document.getElementById("fbill_no").innerHTML;
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				var date = new Date();
+				params.bill_task = task;
+				params.bill_no 	 = onlyCode;
+				params.fbill_no  = fbillNo;
+				params.bill_user = userbillNo;
+				params.bill_com	 = loginCom;
+				params.bill_date = vlUtils.dateToString(date);
+				return params;
+			}
+			function saveSuccess(){
+				plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+				flagsave = true;
+				mainInfo = vlUtils.deepCopy(rqsData,mainInfo);
+				mui.fire(plus.webview.getWebviewById(fromPage), 'vdst316deditSave', {
+					data: MDInfo.values.main,
+					flagNew: flagNew,
+					serialNum: serialNum
+				});
+				
+				mui.back();
+			}
+			// TODO
+
+			function selectPoP(opt){
+				var _arr = opt.arr;
+				var selectArr = [];
+				for(var i = 0; i <=_arr.length; i++){
+					var temp = {"title": _arr[i]};
+					selectArr.push(temp);
+				}
+				// 弹框
+				plus.nativeUI.actionSheet({
+					title: opt.title,
+					cancel: "取消",
+					buttons: selectArr
+				}, function(e) {
+					//商品类型find赋值
+					if((e.index - 1) != -1){
+						document.getElementById(opt.id).value = selectArr[(e.index - 1)].title;
+					}
+				});
+			}
+			
+			function eBillName(){
+				var _opt = {
+					"id"  : "bill_name",
+				}
+				openPage(_opt)
+			}
+			function openPage(opt) {
+				var dataHref = document.getElementById(opt.id).getAttribute("data-href"); // 没有连接即为未开发
+				if(dataHref == "" || dataHref == undefined || dataHref == null){
+					plus.nativeUI.toast("～敬请期待～", {
+						'verticalAlign': "top"
+					});
+					return;
+				}
+				var scanpage = plus.webview.getWebviewById(dataHref.slice(8));
+				if(!vlUtils.isnull(scanpage)){
+					plus.webview.hide(scanpage);
+					plus.webview.close(scanpage);
+				}
+				var urlarr = dataHref.split("/");
+				// 打开页面
+				mui.openWindow({
+					url:dataHref,
+					id: urlarr[urlarr.length-1],
+					createNew:true,
+					extras:{
+						teamBillCom 	: userinfo.bill_coppo,
+						teamBillComName : userinfo.com_bill_comName,
+						userbillNo 		: userbillNo,
+						userName 		: userName,
+						loginCom 		: loginCom,
+						loginComName 	: loginComName,
+						privileges 		: privileges,
+						fieldid 		: opt.id,
+						bill_task		: 'VR_vdsa210_find_02',
+						choice			: 'single',
+						fromPage		: 'vdst316_dedit.html',
+						tradeName : "",
+						tradeCode : "",
+				    },
+				});
+
+			}
+		}); // plusReady
+		
+	</script>
+
+</html>

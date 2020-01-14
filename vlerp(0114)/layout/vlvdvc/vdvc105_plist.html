@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			#toEdit{
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" ></a>
+			<div class="mui-title plistTitle" >
+				<p id="TO">用户管理</p>
+				<h1 id="header"></h1>	
+			</div>
+			<a class=" mui-icon mui-icon mui-icon-plusempty  mui-pull-right" id="toEdit"></a>
+			
+			<div class="mui-row navBar topNavRow " id="topNav">
+				<p class="mui-col-xs-4 topNav active" data-type="004" data-active="active" >全部</p>
+				<p class="mui-col-xs-4 topNav" data-type="002">待处理</p>
+				<p class="mui-col-xs-4 topNav" data-type="001">已冻结</p>
+			</div>
+		</header>
+
+		<div class="mui-content" id="list">
+
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdvc105_list.html',
+				id: 'vdvc105_list.html',
+				styles: {
+					top: '100px',
+					bottom: '0px',
+				}
+			}]
+		});
+
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			// contentWebview.evalJS("mui('#vdvc105_list_subpage').pullRefresh().scrollTo(0,0,100)");
+		});
+		// 定义变量
+		var teamBillCom; 	// 1.管理单位代码
+		var teamBillComName;// 2.管理单位名称
+		var fbill_no;		// 3.fbill_no是
+		var loginCom;		// 4.登录单位代码
+		var loginComName;	// 5.登录单位名称
+		var userbillNo;		// 6.登录人的代码
+		var userName;		// 7.登录人的姓名
+		var privileges;		// 8.当前的权限是
+		var fromPage;		// 9.从哪个页面来
+		var business;
+		var searchBillCom;	// 查询的单位
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			// 其他
+			business 		= self.business;
+			/* *
+			 * 103部门下的用户：
+			 * → list查询：通过登录单位+fbill_no
+			 * → edit新增：单位=登录单位，fbill_no = fbill_no
+			 * 311客户下的用户：
+			 * → list查询：通过管理单位+fbill_no()
+			 * → edit新增：单位=管理单位，fbill_no = fbill_no
+			 * */
+			
+			// 更改header的显示信息
+			if(business == "103") {
+				var detailInfo 		= self.detailInfo;
+				var teamBillComName = detailInfo.bill_name;
+				document.getElementById("header").innerHTML = teamBillComName;
+				document.getElementById("toEdit").style.display="block";
+			}
+
+			document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+
+			// 右上角点击进入211_new.html
+			document.getElementById("toEdit").addEventListener("tap", function() {
+				mui.openWindow({
+					url: 'vdvc105_edit.html',
+					id: "vdvc105_edit.html",
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom,
+						teamBillComName: teamBillComName,
+						userbillNo: userbillNo,
+						loginCom: loginCom,
+						loginComName: loginComName,
+						fromPage: fromPage,
+						fbill_no: fbill_no,
+						business: business,
+						flagNew: "Y"
+					}
+				})
+			})
+
+			mui("#topNav").on("tap", "p", function() {
+				var self = this;
+				jQuery(this).addClass("active").siblings().removeClass("active");
+				mui.fire(plus.webview.getWebviewById('vdvc105_list.html'), 'subpage105list', {
+					active: self.getAttribute("data-type")
+				});
+			})
+
+		})
+	</script>
+
+</html>

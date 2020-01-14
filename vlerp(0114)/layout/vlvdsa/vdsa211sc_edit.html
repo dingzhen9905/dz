@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>终端协议（新建）</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.dtpicker.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.mui-input-row.lastInput:after{
+				height:0;
+			}
+			.hide{
+				display: none;
+			}
+			.blabel{color:#FF4400;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p id="title">终端协议编辑</p>
+				<h1 id="header" ></h1>	
+			</div>
+			<a class=" mui-pull-right rightIcon" id="saveBtn" data-loading-text="提交中" >保存</a>	
+			<div class="mui-row navBar buttonBars" style="background: #F7F7F7;">
+				<button type="button" id="deleteBtn" class="mui-col-xs-4" >
+					<span class="mui-icon mui-icon-trash" id="deleteIcon" ></span>
+					<span >删除</span>
+				</button>
+				<button  type="button" id="bSendBtn" class="mui-col-xs-4 " >
+					<span class="mui-icon mui-icon-upload" id="bSendIcon" ></span>
+					<span >送审</span>
+				</button>
+				<span class="mui-col-xs-4 state" id="billState"></span>
+			</div>
+		</header>
+		<div class="mui-content" style="padding-top:95px;margin-top:10px;margin-bottom:30px;">
+			<div class="mui-input-group hide" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;">
+				<div class="mui-row">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">标识:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_no" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">fbill_no:</span>
+					<span class="mui-col-xs-8" data-field="html.fbill_no" id="fbill_no">ROOT</span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单单位:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_com" id="bill_com"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_user" id="bill_user"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单时间:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_date" id="bill_date"></span>
+					<br/>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row lastInput">
+					<label>三级流程</label>
+					<input id="bill_bflow" data-field="text.bill_bflow" type="text" class="mui-input-clear requiredInput" readonly="readonly" placeholder="点击选择三级流程">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row">
+					<label>经销商</label>
+					<input id="bill_spec" 
+							type="text" 
+							class="mui-input-clear linkhref mui-input-clear" 
+							readonly="readonly" 
+							placeholder="点击选择经销商"
+							
+							data-link='bill_coppo'
+							data-task = 'VR_vdvc311_find_02'
+							data-href="../vlfind/vdvc311_VRfind.html"
+							/>
+				</div>
+				<div class="mui-input-row hide">
+					<label>经销商(代码)</label>
+					<input id="bill_coppo" 
+							type="text" 
+							class="mui-input-clear linkhref" 
+							readonly="readonly" 
+							placeholder="选择经销商自动带出"
+							
+							data-field="text.bill_coppo" 
+							/>
+				</div>
+				
+				
+				<div class="mui-input-row">
+					<label>片区</label>
+					<input id="bill_nspec" 
+							type="text" 
+							class="mui-input-clear requiredInput linkhref" 
+							readonly="readonly" 
+							placeholder="点击选择片区"
+							
+							data-link='bill_doppo'
+							data-task='VR_find_dept001'
+							/>
+				</div>
+				<div class="mui-input-row hide">
+					<label>片区(代码)</label>
+					<input id="bill_doppo" 
+							type="text" 
+							class="mui-input-clearlinkhref" 
+							readonly="readonly" 
+							placeholder="选择片区自动带出"
+							
+							data-field="text.bill_doppo" 
+							/>
+				</div>
+				
+				<div class="mui-input-row">
+					<label>终端名</label>
+					<input id="bill_name" 
+							type="text" 
+							class="mui-input-clear requiredInput" 
+							readonly="readonly" 
+							placeholder="点击选择终端"
+							
+							data-field="text.bill_name"  
+							data-link = 'bill_oppo'
+							data-task='VR_vdvc312_query_03'
+							data-href ="../vlfind/vdvc312_VRfind.html"
+							/>
+				</div>
+				<div class="mui-input-row hide">
+					<label>终端(代码)</label>
+					<input id="bill_oppo" 
+							type="text" 
+							class="mui-input-clear requiredInput" 
+							readonly="readonly" 
+							placeholder="选择终端自动带出"
+							
+							data-field="text.bill_oppo"  
+							/>
+				</div>
+				<div class="mui-input-row">
+					<label>协议编号</label>
+					<input id="bill_id" data-field="text.bill_id" type="text" class="mui-input-clear requiredInput" placeholder="录入协议编号">
+				</div>
+				<div class="mui-input-row">
+					<label>开始时间</label>
+					<input id="bill_bdate" data-field="date.bill_bdate" class="mui-input-clear requiredInput" type="date"  placeholder="">
+				</div>
+				<div class="mui-input-row">
+					<label>截止时间</label>
+					<input id="bill_edate" data-field="date.bill_edate" class="mui-input-clear requiredInput" type="date"  placeholder="">
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>业务员</label>
+					<input id="userName"  type="text"  placeholder="自动带出负责人代码">
+				</div>
+			</div>
+			<div class="mui-input-group" id="cc" style="padding:5px 10px 5px 10px;margin-bottom:5px;">
+				<div class="mui-row" style="padding-left: 25px; padding-right:18px;">
+					<span class="mui-col-xs-10 spn">协议明细：</span>
+					<!--<span class="mui-icon mui-icon-plusempty" id="addDetail" style="float:right;color: #0062CC;font-weight: bold;"></span>-->
+					<button type="button" id="addDetail" class="mui-icon mui-icon-plusempty mui-pull-right mui-col-xs-2 mui-btn-outlined" style="position:relative;top:-2px;padding:0;background:;color: #0062CC;"></button>
+				</div>
+				<div id="J_detailTitle" style="background:#E3E3E3;">
+					<div id="" class="mui-row" style="background:#ACACB4;color:#fff;text-align:center;font-size:12px;line-height: 14px;padding:3px;margin:0;">
+						<span class="mui-col-xs-4">返利时间</span>
+						<span class="mui-col-xs-4">赠送物品</span>
+						<span class="mui-col-xs-2">赠送数量</span>
+						<span class="mui-col-xs-2">编辑</span>
+					</div>
+					<ul id="J_detailList" style="padding:0;margin:0;list-style:none;text-align: center;">
+					</ul>
+				</div>
+			</div>
+			<!-- 点击退出时底部弹出-->
+			<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+				<!-- 可选择菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="sureDelBtn">
+						<a>确认</a>
+					</li>
+				</ul>
+				<!-- 取消菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a href="#sheet1"><b>取消</b></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/mui.dtpicker.js"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = null;
+		var hadSend = false;  // 用于判断是否送审
+		var flagsave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		var deptname = "";
+		var bill_task = "";
+		var mainInfo = {};
+		var detailArr = null;
+		var MDInfo = {
+			"values":{
+				"main":{},
+				"detail":[]
+			}
+		}
+		var branchInfo=[];
+		var getElem = function(el){return document.getElementById(el);};
+		var oBtnEdit = getElem('toEdit');
+		mui.plusReady(function() {
+			
+			// TODO 1. 页面上的字段========================
+			var normalData ={
+				h : {
+					bill_no 	:"",
+					fbill_no 	:"",
+					bill_date 	:"",				
+					bill_user 	:"",
+					bill_com 	:"",
+				},
+				 v : {
+				 	bill_oppo 	:"",
+				 	bill_doppo 	:"",
+				 	bill_name 	:"",
+				 	bill_coppo 	:"",
+				 	bill_bflow 	:"",
+					bill_id 	:"",
+					bill_bdate 	:"",
+					bill_edate 	:"",
+					bill_spec 	:"",
+					bill_nspec 	:"",
+				},
+				c : {}
+			}
+
+			// TODO 2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	
+			teamBillComName = self.teamBillComName;	
+			fbill_no 		= self.fbill_no;		
+			loginCom 		= self.loginCom;		
+			loginComName 	= self.loginComName;	
+			userbillNo 		= self.userbillNo;		
+			userName 		= self.userName;		
+			userRole 		= self.userRole;		
+			privileges 		= self.privileges;		
+			fromPage 		= self.fromPage;		
+			// 其他
+			flagNew = self.flagNew;
+			deptname = self.deptname;
+			// TODO 3. 基础设置/赋值 
+			document.getElementById("header").innerHTML = teamBillComName; 				
+			document.getElementById("userName").value = userName; 				
+			// 判断为新增还是修改
+			if(flagNew == "N") { // 修改  
+				detailInfo = self.detailInfo;
+				mainInfo = detailInfo.values.main;
+				detailArr = detailInfo.values.detail;
+				MDInfo.values.main ={};
+				MDInfo.values.detail = [];
+				MDInfo.values.main = vlUtils.deepCopy(detailInfo.values.main,MDInfo.values.main);
+				MDInfo.values.detail = vlUtils.deepCopy(detailInfo.values.detail,MDInfo.values.detail);
+				var bill_task = "d_save";
+				var privileges = self.privileges;
+				var bill_no = mainInfo.bill_no;
+				onlyCode = mainInfo.bill_no; //bill_no字段  
+				
+				billstate(mainInfo.bill_task);
+				setValue(mainInfo,normalData,false); 
+				getElem("bill_bdate").value = mainInfo.bill_bdate.slice(0,10);
+				getElem("bill_edate").value = mainInfo.bill_edate.slice(0,10);
+				renderAllDetail(detailArr);
+				
+				flagsave=true;
+				if(mainInfo.bill_task == "L"){
+					hadSend = false;
+				}
+				if(mainInfo.bill_task != "L"){
+					hadSend = true;
+				}
+				rqsData = mainInfo;
+				
+				document.getElementById("title").innerHTML = "信息编辑";
+			} 
+			if(flagNew == "Y") { // 新增状态
+				onlyCode = getDataCode("vdsa211"); //bill_no字段
+				bill_task = "d_new";
+				findDoppo();
+//				document.getElementById("title").innerHTML = "部门注册";
+				document.getElementById("billState").innerHTML = "录入中";
+				document.getElementById("bill_date").innerHTML = vlUtils.dateToString(date);
+				document.getElementById("bill_no").innerHTML = onlyCode;
+				document.getElementById("bill_user").innerHTML = userbillNo;
+				document.getElementById("bill_com").innerHTML = teamBillCom;
+			}
+			// TODO 4. 事件绑定==================================
+			setButton(flagsave,hadSend)
+			document.getElementById("sureDelBtn").addEventListener("tap", sureDelBtn); 	
+			document.getElementById("addDetail").addEventListener("tap",addDetail);
+			document.getElementById("bill_bflow").addEventListener("tap",ebillBflow);
+			document.getElementById("bill_name").addEventListener("tap",ebillName);
+			document.getElementById("bill_spec").addEventListener("tap",eCoppoName);
+			document.getElementById("bill_nspec").addEventListener("tap",eDoppoName);
+			mui("#J_detailList").on('tap', '.mui-icon-compose', function(e){
+				var e = this;
+				var li = e.parentNode; //firstChild
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow);
+				var reportArr = [{"title": "编辑"},{"title": "删除"}];
+				// 弹框
+				plus.nativeUI.actionSheet({
+					title: rowObj.bill_name,
+					cancel: "取消",
+					buttons: reportArr
+				}, function(e) {
+					//商品类型find赋值
+					if((e.index - 1) == (reportArr.length-1)){
+						//修改弹出框默认input类型为password 
+						mui.confirm("您要删除该条数据信息吗？", "操作确认", ["是", "否"], function(e) {
+							if(e.index == 0) {
+								// 是
+								var delDetailparams = JSON.parse(JSON.stringify(sendTaskData));
+								var date = new Date();
+								delDetailparams.bill_task = "d_delete";
+								delDetailparams.bill_no   = rowObj.bill_no;
+								delDetailparams.fbill_no  = rowObj.fbill_no;
+								delDetailparams.bill_user = userbillNo;
+								delDetailparams.bill_com  = teamBillCom;
+								delDetailparams.bill_date = vlUtils.dateToString(date);
+//								jQuery("#J_detailList li").eq(jQuery(li).index()).remove();
+								CRUDajax(delDetailparams,"../login.html",sCBdelDetail);
+
+								li.parentNode.removeChild(li);
+								function sCBdelDetail(){
+									mui.toast("明细删除成功~");
+								}
+							} else {
+								// 否
+							}
+						});
+						
+					}else if((e.index - 1) == 0){
+						var opt = {
+								num : jQuery(li).index(),
+								bflow : rowObj.bill_bflow,
+								flag : 'N',
+								data : rowObj,
+							}
+						openDetailPage(opt);
+					}
+				});
+			});
+			
+			// TODO 5. 监听自定义事件=============================
+			// 添加明细
+			window.addEventListener('vdsa211deditSave', function(event) {
+				var detailRow = event.detail.data;
+				var flagNew = event.detail.flagNew;
+				var serialNum = event.detail.serialNum;
+				renderDetail(flagNew,serialNum,detailRow);
+			});
+			// 选择负责人
+			window.addEventListener('vdvc311VRfind01', function(event) {
+				var linkName = event.detail.linkName;
+				var _name = event.detail.fieldid;
+				var btn = event.detail.btn;
+				var dataRow = event.detail.dataRow;
+				if(typeof(dataRow)=="string"){
+					dataRow = JSON.parse(dataRow);
+				}
+				var other = event.detail.other;
+				var oid = document.getElementById(_name);
+				var _id = oid.getAttribute('data-link');
+				document.getElementById(_name).value= linkName;
+				document.getElementById(_id).value= dataRow[0]['图片'];
+			});
+			// TODO 6. 事件/方法=================================
+			function checkBDdate(){
+				var _bd = jQuery('#bill_bdate').val();
+				var _ed = jQuery('#bill_edate').val();
+				var _btime = new Date(_bd);
+				var _etime = new Date(_ed);
+				if ( _btime > _etime){
+					mui.toast('开始时间应该小于截止时间~')
+					return false;
+				}
+				return true;
+			}
+			// 保存指令
+			function saveBtn(){ 
+				plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+				var checkResults = checkRequiredItems();//验证是否为必填字段  
+				var _checkBDdate  = checkBDdate();
+				if(!checkResults || !_checkBDdate){
+					plus.nativeUI.closeWaiting();
+					return false;
+				}
+				rqsData = getValue(normalData,false); //获取每一个输入框的值的方法   
+				rqsData.bill_bdate = rqsData.bill_bdate.slice(0,10) + ' 00:00:00';
+				rqsData.bill_edate = rqsData.bill_edate.slice(0,10) + ' 23:59:59';
+				MDInfo.values.main = vlUtils.deepCopy(rqsData,MDInfo.values.main);
+				if(flagNew == "N") {  flagsave = true; };
+				if(flagsave){
+				 	rqsData = vlUtils.compareData(mainInfo, rqsData,false);
+					rqsData.bill_task = "d_save";
+				}else{
+					rqsData.bill_task = "d_new";
+				}
+				CRUDajax(rqsData,"../login.html",saveSuccess);
+				return true;
+			}
+			// 送审指令
+			function bSendBtn(){ 
+				plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+				var sendParams = taskParam("b_send");
+				if(!saveBtn()){
+					return;
+				}
+				CRUDajax(sendParams,"../login.html",sendSuccess); 
+			}
+			// 删除按钮主表
+			function deleteBtn(){ 
+				mui('#sheet1').popover('show', document.getElementById("deleteBtn"));
+			}
+			// 确认删除主表
+			function sureDelBtn(){ 
+				var delparams = taskParam("d_delete");
+				CRUDajax(delparams,"../login.html",delSuccess);
+			} 
+			// 确认删除明细
+			// 删除/送审的参数
+			function taskParam(task){
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				var date = new Date();
+				params.bill_task = task;
+				params.bill_no 	 = document.getElementById('bill_no').innerHTML;
+				params.fbill_no  = 'ROOT';
+				params.bill_user = userbillNo;
+				params.bill_com	 = teamBillCom;
+				params.bill_date = vlUtils.dateToString(date);
+				return params;
+			}
+			function saveSuccess(){
+				plus.nativeUI.closeWaiting();
+				flagsave = true;
+				setButton(flagsave,hadSend)
+				mainInfo = vlUtils.deepCopy(rqsData,mainInfo);
+			}
+			function sendSuccess(){
+				plus.nativeUI.closeWaiting();
+				hadSend = true;
+				setButton(mainInfo);
+				MDInfo.values.main.bill_task = "S";
+				mui.openWindow({
+					id: 'vdsa211sc_node.html',
+					url: 'vdsa211sc_node.html',
+					createNew: true, 
+					extras: { 
+						teamBillCom 	: teamBillCom, 		
+						teamBillComName : teamBillComName,	
+						fbill_no 	  	: fbill_no,			
+						loginCom 		: loginCom,			
+						loginComName 	: loginComName,		
+						userbillNo 		: userbillNo,		
+						userName 		: userName,			
+						privileges 		: privileges,		
+						fromPage 		: "vdsa211sc_edit.html",		
+						rqsData			: MDInfo,//TODO
+					}
+				}); 
+			}
+			function delSuccess(){
+				successFun("vdsa211sc_plist.html","vdsa211sc_list.html");
+			}
+			//
+			function setButton(flagsave,hadSend){
+				// 1.
+				if(!flagsave){
+					document.getElementById("saveBtn").addEventListener("tap",saveBtn); 
+					document.getElementById("bSendBtn").addEventListener("tap",bSendBtn);
+			   		document.getElementById("deleteBtn").removeEventListener("tap",deleteBtn);
+			   		// 
+			   		document.getElementById("saveBtn").style.color =  "#FFF"; 
+					document.getElementById("bSendIcon").style.color =  "#18B4ED";
+			   		document.getElementById("deleteIcon").style.color =  "#8f8f94";
+				}
+				// 2.
+				if(flagsave && !hadSend){
+					document.getElementById("saveBtn").addEventListener("tap",saveBtn); 
+					document.getElementById("bSendBtn").addEventListener("tap",bSendBtn);
+			   		document.getElementById("deleteBtn").addEventListener("tap",deleteBtn);
+			   		//
+			   		document.getElementById("saveBtn").style.color =  "#FFF";
+					document.getElementById("bSendIcon").style.color =  "#18B4ED";
+			   		document.getElementById("deleteIcon").style.color =  "#18B4ED";
+				}
+				// 3.
+				if(flagsave && hadSend){
+					document.getElementById("saveBtn").removeEventListener("tap",saveBtn); 
+					document.getElementById("bSendBtn").removeEventListener("tap",bSendBtn);
+			   		document.getElementById("deleteBtn").removeEventListener("tap",deleteBtn);
+			   		//
+			   		document.getElementById("saveBtn").style.color =  "#8f8f94";
+					document.getElementById("bSendIcon").style.color =  "#8f8f94";
+			   		document.getElementById("deleteIcon").style.color =  "#8f8f94";
+				}
+			}
+			function choiceDate(){
+				dataPicker("bill_ndate",true);
+			}
+			function billstate(task){
+				var oStatus = {"L":"待送审","S":'待审核',"Y":"已审核"};
+				getElem("billState").innerHTML = oStatus[task];
+			}
+			//
+			function addDetail(){
+				if(saveBtn()){
+					var _opt = {
+						num : mui('#J_detailList li').length,
+						flag : 'Y',
+						data : '',
+					}
+					openDetailPage(_opt)
+				}
+				
+			}
+			function renderDetail(flag,num,data){
+				if(flag == "Y"){
+					MDInfo.values.detail.push(data);
+					var _bflow = document.getElementById('bill_bflow').value;
+					var litxt = ''
+					var contList = document.getElementById("J_detailList");
+					var li = document.createElement('li');
+					li.className = 'mui-row';
+					li.setAttribute("data-row", JSON.stringify(data));
+					//
+					litxt += '<span class="mui-col-xs-4 nodeqty">'+data.bill_title+','+data.bill_nunit+'</span>';
+					litxt += '<span class="mui-col-xs-4 nodeprice">'+data.bill_name+'</span>';
+					litxt += '<span class="mui-col-xs-2 nodeamt">';
+					litxt += data.node_nqty+"/";
+					litxt += data.node_qty;
+					litxt += '</span>';
+					litxt += '<button type="button" class="mui-icon mui-icon-compose mui-pull-right mui-col-xs-2 " style="position:relative;top:-2px;border:none;padding:0;background:;color: #0062CC;"></button>';
+					li.innerHTML = litxt;
+					li.style.padding = "3px";
+					li.style.margin = "0px";
+					contList.appendChild(li);
+				}else{
+					MDInfo.values.detail[num]= data;
+					jQuery("#J_detailList li").eq(num).find(".nodeqty").html(data.bill_title+','+data.bill_nunit); 
+					jQuery("#J_detailList li").eq(num).find(".nodeprice").html(data.bill_name); 
+					jQuery("#J_detailList li").eq(num).find(".nodeamt").html(data.node_nqty+"/"+data.node_qty);
+					jQuery("#J_detailList li").eq(num).find(".noderate").html(data.node_nqty + data.node_rate); 
+				}
+			}
+			function renderAllDetail(data){
+				var litxt = '';
+				var _bflow = document.getElementById('bill_bflow').value;
+				var contList = document.getElementById("J_detailList");
+				for(var n = 0; n < data.length; n ++){
+					litxt +=	 '<li class="mui-row" style="padding: 3px;margin:0;" data-row=\'' + JSON.stringify(data[n]) + '\'>';
+					litxt += '<span class="mui-col-xs-4 nodeqty">'+data[n].bill_title+','+data[n].bill_nunit+'</span>';
+					litxt += '<span class="mui-col-xs-4 nodeprice">'+data[n].bill_name+'</span>';
+					litxt += '<span class="mui-col-xs-2 nodeamt">';
+					litxt +=  data[n].node_nqty+"/";
+					litxt += data[n].node_qty;
+					litxt += '</span>';
+					litxt += '<button type="button" class="mui-icon mui-icon-compose mui-pull-right mui-col-xs-2 " style="position:relative;top:-2px;border:none;padding:0;background:;color: #0062CC;"></button>';
+					litxt += '</li>';
+				}
+				contList.innerHTML = litxt;
+			}
+			// TODO 
+			function ebillBflow() {
+				var _opt = {
+					"arr" : [{"title": "正常协议"},{"title": "临时协议"}],
+					"title" : "选择协议类型",
+					"id" : "bill_bflow",
+				}
+				selectPoP(_opt);
+			}
+			function showDetailType() {}
+			function eCoppoName(){
+				var _opt = {
+					"id" : "bill_spec",
+					"btn" : "经销商",
+					"com" : teamBillCom,
+				}
+				openPage(_opt)
+			}
+			function ebillName(){
+				var _doppo = getElem('bill_doppo').value;
+				if(_doppo===""){mui.toast('请先选择片区~');return;}
+				var _opt = {
+					"id" : "bill_name",
+					"btn" : "终端",
+					"com" : getElem("bill_coppo").value,
+				}
+				openPage(_opt);
+			}
+			function findDoppo(){
+				var _tempUser = privileges === "ROOT" ? "%" : userbillNo;
+				var _parmas = { // 默认全部004
+					name: 'msvr',
+					bill_com: vlUtils.getStorage("newTeamBillCom"),
+					bill_task: "VR_find_dept001", //默认004
+					bill_user:_tempUser,
+					bill_title:"",
+					currentPage: 1,
+					pageSize: 10,
+					paramText: ""
+				}
+				plus.nativeUI.showWaiting("正在查询部门..."); 
+				rqsDataAjax(_parmas, '/Find/Ddata/activity', rqsDataSuccess,'../layout/login.html');
+			}
+			function eDoppoName() {
+				if(branchInfo.length > 0){
+					selectDoppo();
+				}else{
+					return;
+				}
+			}
+			function selectDoppo(){
+				var _opt = {
+					"arr" : branchInfo,
+					"title" : "选择片区",
+					"id" 	: "bill_nspec",
+					"bno" 	: "bill_doppo",
+				}
+				selectPoP(_opt);
+			}
+			function selectPoP(opt,callback){
+				
+				var selectArr = opt.arr;
+				// 弹框
+				plus.nativeUI.actionSheet({
+					title: opt.title,
+					cancel: "取消",
+					buttons: selectArr
+				}, function(e) {
+					//商品类型find赋值
+					if((e.index - 1) != -1){
+						var _res = selectArr[(e.index - 1)].title;
+						if(callback){
+							callback(_res);
+						}else{
+							document.getElementById(opt.id).value = _res;
+							if(selectArr[(e.index - 1)].bno){
+								document.getElementById(opt.bno).value = selectArr[(e.index - 1)].bno;
+							}
+						}
+					}
+				});
+			}
+			function openDetailPage(opt){
+				mui.openWindow({
+					url: 'vdsa211_dedit.html',
+					id: "vdsa211_dedit.html",
+					createNew: true,
+					extras: {
+//						teamBillCom 	: document.getElementById("bill_coppo").value,
+//						teamBillComName : document.getElementById("bill_spec").value,
+						teamBillCom 	: teamBillCom, // 之前为什么改？
+						teamBillComName : document.getElementById("bill_spec").value, // 显示用的
+						fbill_no 		: document.getElementById("bill_no").innerHTML,	
+						bdate 			: document.getElementById("bill_bdate").value,	
+						edate 			: document.getElementById("bill_edate").value,	
+						loginCom 		: loginCom,	
+						loginComName 	: loginComName,	
+						userbillNo 		: userbillNo,
+						userName 		: userName,	
+						privileges 		: privileges,
+						fromPage 		: "vdsa211sc_edit.html",
+						detailInfo		: opt.data,
+						flagNew			: opt.flag,
+						serialNum		: opt.num,
+					}
+				})
+			}
+			function openPage(opt) {
+				var dataTask = document.getElementById(opt.id).getAttribute("data-task");
+				var dataHref = document.getElementById(opt.id).getAttribute("data-href");
+				if(dataHref == "" || dataHref == undefined || dataHref == null){
+					plus.nativeUI.toast("～敬请期待～", {
+						'verticalAlign': "top"
+					});
+					return;
+				}
+				var scanpage = plus.webview.getWebviewById(dataHref.slice(8));
+				if(!vlUtils.isnull(scanpage)){
+					plus.webview.hide(scanpage);
+					plus.webview.close(scanpage);
+				}
+				var urlarr = dataHref.split("/");
+				// 打开页面
+				mui.openWindow({
+					url:dataHref,
+					id: urlarr[urlarr.length-1],
+					createNew:true,
+					extras:{
+						teamBillCom 	: opt.com ,
+						teamBillComName : teamBillComName,
+						fbill_no		: getElem('bill_doppo').value,
+						userbillNo 		: userbillNo,
+						userName 		: userName,
+						loginCom 		: loginCom,
+						loginComName 	: loginComName,
+						privileges 		: privileges,
+						userRole		: userRole,
+						btn 			: opt.btn,
+						fieldid 		: opt.id,
+						bill_task		: dataTask,
+						choice			: 'single',
+						fromPage		: 'vdsa211sc_edit.html',
+				    },
+				});
+			}
+			function rqsDataSuccess(data,type){
+				plus.nativeUI.closeWaiting();
+				var contList = document.getElementById("contList");
+				if(data.data.length > 1) {
+					for(var i = 0; i < data.data.length; i++) {
+	//					var newdataArr = {};
+	//					for(var k in data.data[i]) {
+	//						newdataArr[k.slice(0, 2)] = data.data[i][k];
+	//					}
+						for(var i=0;i<data.data.length;i++){
+							branchInfo.push({"title":data.data[i]["标题客户名称"],"bno":data.data[i]["图片元数据"]}); 
+						}
+					}
+				} else if(data.data.length === 1){
+					getElem("bill_doppo").value = data.data[0]["图片元数据"];
+					getElem("bill_nspec").value = data.data[0]["标题客户名称"];
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					mui.toast("未查询到数据~")
+				}
+				plus.nativeUI.closeWaiting();
+		
+			}
+			
+		}); // plusReady
+		
+	</script>
+
+</html>

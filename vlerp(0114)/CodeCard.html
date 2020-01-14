@@ -1,0 +1,130 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="css/common/mui.poppicker.css" />
+		<style>
+			#birCode:active{
+				background: #007AFF;
+			}
+			.mui-bar-nav ~ .mui-content{
+				padding-top: 20px !important;
+			}
+			#head_title{
+				display: inline-block;
+				padding-bottom: 10px;
+				margin-left: 20px;
+				font-size: 16px;
+				color: #6C6C6C;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body style="background: rgba(0,0,0,.3);">
+		<!--公用头部-->
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id='head' style="height: 70px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">二维码名片</h1>
+		</header>		
+		<!--二维码部分-->
+		<div class="mui-content" style="margin-top:120px !important;margin-left: 20px;margin-right: 20px;">
+			<!--头部信息-->
+			<span id="head_title"></span>
+			<div class="mui-input-group">
+				<div class="mui-row head" id="">
+					<div id="code" style="width: 220px;height: 220px;border-radius: 5px; border: 1px dashed #007AFF;padding:10px;margin:20px auto;">
+						
+					</div> 
+				</div>
+			</div>	
+			<span id="bottomLine" style="display: none;margin-left:15px;padding:5px;font-size:14px;"></span>
+		</div>			
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/jquery-2.1.0.js"></script>
+	
+	<script src="js/jquery.qrcode.min.js"></script>
+	<script src="js/md5.js"></script>
+	<script src="js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var teamBillCom,
+			fbill_no,
+			loginCom,
+			userbillNo,
+			billno,
+			billname,
+			onlyCode2,
+			commonParams;
+		var oQtask  = {
+			"vdvc001q1": 	"个人信息码",
+			"vdvc101q1": 	"单位二维码",
+			"vdvc31101": 	"新建客户码",
+			"vdvc31201": 	"新建片区客户码",
+			"vdvc10501": 	"新建一级经销商负责人",
+			"vdvc10502":	"新建配送员",
+			"vdvc10503":	"新建服务员",
+		}
+		mui.plusReady(function() {
+			plus.screen.lockOrientation("portrait-primary");  // 禁止横屏显示
+			var user = JSON.parse(VlStore.pGet('user'));//读取本地的登入信息
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			billno       	= self.bill_no;
+			billname       	= self.bill_name;
+			commonParams 	= self.commonParams;
+			onlyCode2 = VlTools.getBno("vdvc822");//生成会员数据号
+			plus.nativeUI.showWaiting("正在准备数据..."); 
+
+			if(commonParams=="vdvc10501"){
+	        	document.getElementById("bottomLine").style.display="block";
+				document.getElementById("bottomLine").innerHTML = billname;
+			}
+	        document.getElementById("head_title").innerHTML = oQtask[commonParams] || " ";
+	        //
+			var p ={
+				"name" 		: "msvr",
+				"bill_task" : "VE_vdvc822_insert_01",
+				"bill_no" 	: onlyCode2,
+				"fbill_no" 	: fbill_no,
+				"bill_bflow" : commonParams,
+				"bill_user" : userbillNo,
+				"bill_com" 	: loginCom,
+				"bill_date" : VlDate.get(new Date(),"_ymdhms"),
+				"bill_oppo" : billno,
+			}
+			VlAjax.post({
+				"port":"sendTask",
+				"headers":"json",
+				"outPath":"../login.html"
+			}, p, sCB);		
+			function sCB(){
+				//点击生成二维码图片
+				jQuery("#code").qrcode({ 
+					width: 200, //宽度 
+					height:200, //高度 
+					text: VlUtils.toUtf8(onlyCode2),//扫描二维码显示内容
+					//src: 'images/1.jpg',//二维码中间显示的图片
+				});
+				plus.nativeUI.closeWaiting("正在准备数据..."); 
+			}
+		}); // plusReady
+	</script>
+
+</html>

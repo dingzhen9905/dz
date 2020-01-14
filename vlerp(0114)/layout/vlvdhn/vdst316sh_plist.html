@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>回收单审核</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.top-nav {position: relative;height: 35px;margin-bottom: 0px;text-align: center;color: #353b42;}
+			.active {border-bottom: 2px solid #ea6d10;color: #ea6d10;}
+			.mui-bar .mui-icon:active {background: #0062cc!important;}
+			.input-title{
+				padding-left:5px;
+				line-height: 38px;
+				text-align: center;
+			}
+			.input-box{padding: 5px !important;}
+			.search-input {
+				height: 30px !important;
+				padding: auto 2px  !important;
+				margin: 0 !important;
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head" style="height: 142px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" ></a>
+			<div class="mui-title plistTitle">
+				<p id="pageTitle">回收单审核</p>
+				<h1 id="header" ></h1>	
+			</div>
+			<div class="mui-row navBar topNavRow" id="topNavOut">
+				<p class="mui-col-xs-6 top-nav active" data-task="VR_vdst316_query_09" data-title="业务员/配送员" data-isRequire=true data-user="" data-active="active" data-type="001">待审核</p>
+				<p class="mui-col-xs-6 top-nav" data-task="VR_vdst316_query_08" data-title="查询条件" data-user="" data-isRequire=false data-type="002">已审核</p>
+			</div>
+			<div class="mui-row searchBar">
+				<div class="mui-col-xs-4 input-title">业务员/配送员</div>
+				<div class="mui-col-xs-6 input-box">
+					<input type="text" id="J_input_selectDlv" class="mui-input-clear search-input" readonly="readonly" placeholder="">
+				</div>
+				<div class="mui-col-xs-2">
+					<button type="button" id="searchBtn" class="mui-btn">查询</button>
+				</div>
+			</div>
+		</header>
+		<div class="mui-content" ></div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		var oTask = {
+			"vdst316" : {
+				"001" : {
+					"navTask" : "VR_vdst316_query_09",
+					"title" : "业务员/配送员",
+					"isRequire" : true,
+					"text" : "待审核",
+					"class" : "mui-col-xs-6 top-nav active",
+					"userTask" : "VR_vdst316_query_06"
+				},
+				"002" : {
+					"navTask" : "VR_vdst316_query_08",
+					"title" : "查询条件",
+					"isRequire" : false,
+					"text" : "已审核",
+					"class" : "mui-col-xs-6 top-nav"
+				},
+			},
+			"vdst315" : {
+				"001" : {
+					"navTask" : "VR_vdst315_query_13",
+					"title" : "配送员",
+					"isRequire" : true,
+					"text" : "待审核",
+					"class" : "mui-col-xs-6 top-nav active",
+					"userTask" : "VR_vdst315_query_12"
+				},
+				"002" : {
+					"navTask" : "VR_vdst315_query_15",
+					"title" : "查询条件",
+					"isRequire" : false,
+					"text" : "已审核",
+					"class" : "mui-col-xs-6 top-nav"
+				},
+			},
+		}
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdst316sh_list.html',
+				id: 'vdst316sh_list.html',
+				styles: {
+					top: '145px',
+					bottom: '0',
+				}
+			}]
+		});
+
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vdst316sh_list').pullRefresh().scrollTo(0,0,100)");
+		});
+		var teamBillCom,teamBillComName,userName,userbillNo,loginCom,loginComName,fbill_no,privileges,fromPage,
+			pageTitle,commonParams,userInfo,system,defaultTask,aDlv=[];
+		var oldBack = mui.back;
+		
+		mui.plusReady(plsReady);
+		function plsReady(){
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			userName = self.userName;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			fbill_no = self.fbill_no;
+			privileges = self.privileges;
+			fromPage = self.fromPage;
+			pageTitle = self.pageTitle;
+			commonParams = self.commonParams;
+			userInfo = JSON.parse(VlStore.pGet("user"));
+			system = userInfo.com_linkvd_userCom;
+//		    console.log(commonParams)
+		    mui.back = newBack;
+		    jQuery(".top-nav").eq(1).attr("data-user", userbillNo);
+			document.getElementById("pageTitle").innerHTML = pageTitle+"列表"; 
+			document.getElementById("header").innerHTML = teamBillComName; 
+			document.getElementById("searchBtn").addEventListener("tap", eBtnSearch, false);
+			document.getElementById("J_input_selectDlv").addEventListener("tap", eInputSearchDlv, false);
+			mui("#topNavOut").on("tap", "p", function(e) { eaTapNav(e, this)});
+			findDlv(oTask[commonParams]['001']["userTask"]);
+			renderTab(oTask[commonParams]);
+		}
+		function renderTab(data){
+			var innerHtml = "";
+			for(var k in data){
+				if(data.hasOwnProperty(k)){
+					innerHtml += '<p class="'+data[k]["class"]+' top-nav" data-task="'+data[k]["navTask"]+'" data-isRequire="'+data[k]["isRequire"]+'" data-user="" data-title="'+data[k]["title"]+'" data-type="'+ k +'">'+data[k]["text"]+'</p>';
+				}
+			}
+			document.getElementById("topNavOut").innerHTML = innerHtml;
+			jQuery(".input-title").html(data["001"]["title"]);
+		}
+		function findDlv(task){
+			var p = {
+				bill_task : task,
+				bill_com : teamBillCom,
+				bill_user : userbillNo,
+				currentPage : 1,
+				pageSize : 30,
+				paramText : "",
+			}
+			VlAjax.post({
+				"port" : "active",
+				"headers" : "json"
+			}, p, sCBFindDiv)
+		}
+		function sCBFindDiv(data){
+			if(data.data.length != 0) {
+				var datas = data.data,
+					i, item, k;
+				for(i = 0; i < datas.length; i++ ){
+					item = datas[i];
+					var obj = {};
+					obj["title"] = item["标题制单人姓名"];
+					obj["bno"] = item["图片制单人代码"];
+					aDlv.push(JSON.parse(JSON.stringify(obj)))
+				}
+			}
+		}
+		function eInputSearchDlv(){ 
+			showActionSheet(aDlv, this); 
+		}
+		function showActionSheet(data, self){
+			if(data.length !== 0 ){
+				plus.nativeUI.actionSheet({
+					title: "选择业务员/配送员",
+					cancel: "取消",
+					buttons: data
+				}, function(e) {
+					if(e.index != -1){
+						var txt = data[(e.index - 1)].title;
+						changeDlv(data[(e.index - 1)], self);
+					}
+				});
+			}else{
+				mui.toast("未查询到业务员/配送员~");
+			}
+		}
+		function changeDlv(data, self){
+			self.value = data.title;
+			jQuery(".top-nav").eq(0).attr("data-user", data.bno);
+		}
+		function newBack(){
+	    	if(fromPage != "vdst316sh_edit.html"){
+	    		oldBack();
+	    		return;
+	    	}
+	    	var webview = plus.webview.getWebviewById("index-ps.html");
+	    	var childView = plus.webview.getWebviewById("tab-webview-subpage-work.html");
+	    	webview.show();
+	    	childView.show();
+	    }
+		function eaTapNav(e,self) {
+
+			jQuery("#J_input_selectDlv").val("");
+			jQuery(".input-title").html(jQuery(self).attr("data-title"));
+			jQuery(".top-nav").eq(0).attr("data-user","");
+			if(jQuery(self).attr("data-type") == "001"){
+				document.getElementById("J_input_selectDlv").addEventListener("tap", eInputSearchDlv, false);
+				document.getElementById("J_input_selectDlv").setAttribute("readonly", "readonly");
+			}else{
+				document.getElementById("J_input_selectDlv").removeEventListener("tap", eInputSearchDlv, false);
+				document.getElementById("J_input_selectDlv").removeAttribute("readonly");
+			}
+			jQuery(self).addClass("active").siblings().removeClass("active");
+			
+			definedCustomEvent(self);
+		}
+		function definedCustomEvent(self){
+			
+			var search = document.getElementById("J_input_selectDlv").value;
+			mui.fire(plus.webview.getWebviewById('vdst316sh_list.html'), 'subpage133list',  {
+				activeType		: self.getAttribute("data-type"),
+				activeTask		: self.getAttribute("data-task"),
+				activeText		: self.innerText,
+				activeClass		: self.getAttribute("data-class"),
+				activeSearch 	: document.getElementById("J_input_selectDlv").value,
+				activeDlvno 	: jQuery("#topNavOut").find('.active').attr("data-user"),
+				activeRequire	: self.getAttribute("data-isRequire")
+			});
+		}
+		function enterSearch(e) {
+			if(e.keyCode == 13) {
+				var self = jQuery("#topNavOut").children(".active")[0];
+				definedCustomEvent(self);
+			}
+		}
+		function eBtnSearch(e){
+			var self = jQuery("#topNavOut").children(".active")[0];
+			definedCustomEvent(self);
+		}
+	</script>
+
+</html>

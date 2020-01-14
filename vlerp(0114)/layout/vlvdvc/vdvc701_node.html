@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/icons-extra.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			
+			.mui-row {
+				padding: 8px;
+			}
+			/*三级联动样式*/
+			
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+			
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			
+			.ui-push {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+				display: none;
+			}
+			/* 灰色*/
+			
+			.gray {
+				color: gray;
+			}
+			
+			.spn {
+				color: gray;
+			}
+			/*关联状态*/
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id='head' style="height:70px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header"></h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit"></a>
+
+		</header>
+		<div class="mui-content" style="padding-top:100px;margin-top:">
+			<!--<div class="mui-input-group" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row">
+					<span class="mui-col-xs-4 ">组织类别：</span><span class="mui-col-xs-8 " id="userType"></span>
+				</div>-->
+		</div>
+		<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+			<div class="" style="padding:0px;height:72px;">
+				<div class="mui-row" style="background:;padding:0px;border-bottom:1px solid #efeff4;">
+					<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;margin-right:10px;">
+						<img class="vdvc311 mui-col-xs-12" id="userImg" src="../../images/icon/default.png" style="padding:0px;width:60px;border:1px solid #ccc;border-radius:10px;" />
+
+					</div>
+					<div class="mui-col-xs-9 mui-row mui-pull-right" style="background:;padding-right:0;padding-left:0px;margin-left:15px;">
+						<div class="list_h5 mui-col-xs-12" style="color:#242424;border-bottom:1px solid #efeff4;padding:5px 0;height:28px;">
+							<span class="mui-col-xs-4 spn">组号：</span>
+							<span class="mui-col-xs-5 spn" id="bill_id"></span>
+							<span class="list_sts mui-col-xs-3 mui-pull-right" id="bill_task" style="float:right;margin-top:3px;height: 16px;width:60px;"></span>
+						</div>
+						<div class="list_font mui-col-xs-12" style="padding:5px 0;height:28px;">
+							<span class="mui-col-xs-4 spn">号码：</span>
+							<span class="mui-col-xs-6 spn" id="bill_name"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+				<span class="mui-col-xs-4 spn">派发单位：</span><span class="mui-col-xs-8 spn" id="linkvd_linkcom"></span>
+			</div>
+			<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+				<span class="mui-col-xs-4 spn">联系人：</span><span class="mui-col-xs-8 spn" id="linkvd_linkuser"></span>
+			</div>
+			<div class="mui-row" style="">
+				<span class="mui-col-xs-4 spn">注册电话：</span><span class="mui-col-xs-8 spn" id="linkbd_linktel"></span>
+			</div>
+		</div>
+
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<!--三级联动-->
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/mui.poppicker.js"></script>
+	<script src="../../js/areas(2).js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+
+		var $$ = jQuery.noConflict();
+		var detailInfo = null;
+		var teamBillCom; // 1.管理单位代码
+		var teamBillComName; // 2.管理单位名称
+		var fbill_no; // 3.fbill_no是
+		var loginCom; // 4.登录单位代码
+		var loginComName; // 5.登录单位名称
+		var userbillNo; // 6.登录人的代码
+		var userName; // 7.登录人的姓名
+		var privileges; // 8.当前的权限是
+		var fromPage; // 9.从哪个页面来
+
+		mui.plusReady(function() {
+			// 重写返回事件
+			var oldBack = mui.back;
+			mui.back = function() {
+				var prevPage = plus.webview.getWebviewById('vdvc701_plist.html');
+				prevPage.show();
+			}
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no = self.fbill_no; // 3.fbill_no是
+			loginCom = self.loginCom; // 4.登录单位代码
+			loginComName = self.loginComName; // 5.登录单位名称
+			userbillNo = self.userbillNo; // 6.登录人的代码
+			userName = self.userName; // 7.登录人的姓名
+			privileges = self.privileges; // 8.当前的权限是
+			fromPage = self.fromPage; // 9.从哪个页面来
+			detailInfo = self.detailInfo;
+			// 其他
+			document.getElementById("header").innerHTML = detailInfo.bill_title;
+			document.getElementById("bill_id").innerHTML = detailInfo.bill_title;
+			document.getElementById("bill_name").innerHTML = detailInfo.bill_name;
+			document.getElementById("linkvd_linkcom").innerHTML = detailInfo.bill_text[0].linkvd_linkcom;
+			if(detailInfo.bill_task == "S") {
+				document.getElementById("bill_task").innerHTML = "待审核";
+			} else if(detailInfo.bill_task == "Y") {
+				document.getElementById("bill_task").innerHTML = "已审核";
+			} else {
+				document.getElementById("bill_task").innerHTML = "待送审";
+			}
+			if(fromPage == "vdvc311list") {
+				detailInfo = self.detailInfo;
+			}
+			if(fromPage == "vdvc311edit") {
+				detailInfo = self.rqsData;
+				detailInfo.bill_task = "S";
+				if((typeof detailInfo.bill_text) == "string") {
+					detailInfo.bill_text = JSON.parse(detailInfo.bill_text);
+				}
+			}
+
+			var date = new Date();
+			var commit = document.getElementById("commit");
+			var bill_date = vlUtils.dateToString(date);
+			var rqsData = null; //提交的数据
+			var inputData = null; // 表单里的数据 
+
+
+			// 编辑
+			document.getElementById("toEdit").addEventListener("tap", function() {
+				var privileges = vlUtils.getStorage("newPrivileges");
+
+				if(privileges == "ROOT") {
+					mui.openWindow({
+						url: 'vdvc701_edit.html',
+						id: "vdvc701_edit.html",
+						createNew: true,
+						extras: {
+							teamBillCom: teamBillCom, // 1.管理单位代码	// 不变
+							teamBillComName: teamBillComName, // 2.管理单位名称	// 不变
+							fbill_no: fbill_no, // 3.fbill_no是		// 不变
+							loginCom: loginCom, // 4.登录单位代码
+							loginComName: loginComName, // 5.登录单位名称
+							userbillNo: userbillNo, // 6.登录人的代码
+							userName: userName, // 7.登录人的姓名
+							privileges: privileges, // 8.当前的权限是
+							fromPage: "vdvc311plist", // 9.从哪个页面来
+							flagNew: "N",
+							detailInfo: detailInfo,
+						}
+					})
+				} else {
+					mui.toast("仅制单人或管理员有此权限！");
+				}
+
+			});
+
+	
+
+		}); // plusReady
+	</script>
+
+</html>

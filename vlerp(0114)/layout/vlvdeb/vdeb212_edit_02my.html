@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			#linkvd_stcode li {
+				list-style: none;
+			}
+			
+			#linkvd_stcode li::before {
+				content: "+ ";
+				/*color:blue;*/
+				/*font-size:30px;*/
+			}
+			
+			form {
+				margin: 10px 0;
+			}
+			
+			.topInput,
+			.topInput a {
+				/*height:40px;
+				line-height: 40px;*/
+				height: 50px;
+				line-height: 50px;
+			}
+			
+			.topInput a {
+				padding-top: 0;
+				padding-bottom: 0;
+				line-height: 14px;
+			}
+			
+			.topInput a input {
+				padding-top: 0;
+				color: #929292;
+			}
+			
+			.topInput a input#linkvd_term {
+				/*border:1px solid #E0E0E0;*/
+				padding-top: 5px;
+				padding-bottom: 5px;
+				color: #555;
+				height: 28px;
+				width: auto;
+				border-radius: 5px;
+				background-color: #E0E0E0;
+			}
+			
+			.topInput a input[placeholder] {
+				font-size: 14px;
+			}
+			
+			ul {
+				margin-top: 5px;
+				/*margin-bottom: 5px;*/
+				padding: 5px;
+				/*background: #fff;*/
+			}
+			
+			.mui-row:before,
+			.mui-row:after {
+				display: none;
+			}
+			
+			.threeBottom {
+				overflow: hidden;
+			}
+			
+			.m {
+				overflow: hidden;
+				margin-top: -28px !important;
+				padding: 0 !important;
+			}
+			
+			.topNav {
+				padding: 0;
+			}
+			
+			.topNav p {
+				height: 35px;
+				line-height: 35px;
+			}
+			/*删除*/
+			
+			#sheet1 ul li:after {
+				height: 0;
+			}
+			
+			p.topitem {
+				padding: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:60px;border-bottom:0.5px solid #C0C0C0;background-color:;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" style="color:white;background-color:;height:60px;line-height: 60px;"></a>
+			<h1 class="mui-title" id="header" style="color:white;background-color:;font-weight:normal;height:60px;line-height: 85px;">确认提交</h1>
+			<a class=" mui-icon mui-icon mui-icon-plusempty  mui-pull-right" style="color:#0062cc;background-color:;height:60px;line-height: 60px;"></a>
+
+		</header>
+
+		<nav class="mui-bar mui-bar-tab" id="footer" style="display:;">
+			<a class="mui-tab-item" id="Select" style="background:;color:#262930;margin-top:5px;">
+				<!--<div style="width:25px;height:25px; margin-top:20px;border-radius:50%;background:#18B4ED;position: absolute;top:-12px;left:20px;line-height: 25px;">
+				 <span id="Check1" class="mui-icon mui-icon-checkmarkempty" style="width:25px;height:25px;font-size:40px;color:#F7F7F8;line-height:25px;text-align: center;margin-left: -8px;display: none;"></span>
+				<span style="margin-left:40px;">全选</span>
+				</div>-->
+				<!--<span class="mui-tab-label" style="margin-top:1px;">全选</span>-->
+			</a>
+			<a class="mui-tab-item" id="" style="background:;color:#262930;">
+				<span class="mui-tab-label">合计：<span style="color:red" id="Total">0</span></span>
+			</a>
+			<a class="mui-tab-item" id="saveBtn" style="background:#0062cc;color:#ffffff;">
+				<span class="mui-tab-label">确认提交（<span id="amount">0</span>）</span>
+			</a>
+		</nav>
+
+		<ul id="example" style="margin-top:60px;display:none;">
+			<div class="topStore" style="height:30px;background:white">
+				<span class="mui-icon mui-icon-arrowright"></span>
+				<span class="mui-icon mui-icon-home"></span>
+				<span style="margin-left:10px">店铺</span>
+				<span style="float:right;"></span>
+			</div>
+			<li class="mui-table-view-cell" style="padding-top:5px;background:white">
+				<div class="mui-slider-right mui-disabled">
+					<a class="mui-btn mui-btn-red">删除</a>
+				</div>
+				<div class="mui-slider-cell mui-slider-handle">
+					<div class="mui-row m">
+						<!--<div class="mui-col-xs-1">
+							<div style="width:25px;height:25px; margin-top:20px;border-radius:50%;background:#18B4ED;">
+								<span id="Check" class="mui-icon mui-icon-checkmarkempty" style="font-size:40px;color:#F7F7F8;line-height:25px;text-align: center;margin-left: -8px;"></span>
+							</div>
+						</div>-->
+						<div class="mui-col-xs-3 mui-row" style="background:;padding:5px;width:;">
+							<img class="vdvc311 mui-col-xs-12" src="../../images/icon/default.png" style="width:60px;height:60px;" />
+						</div>
+						<div class="mui-col-xs-8 ">
+							<div class="mui-row addNumBox1" id="" style="display:none;overflow:hidden;">
+								<div class="mui-col-xs-9 mui-row" style="background:;height:50px;position: relative;">
+
+									<div style="position: absolute;top:18px;left:30px;width:70%; border:1px solid #808080;border-radius: 5px;">
+										<div style="width:30px;height:25px;float:left; text-align:center;line-height:25px;">-</div>
+										<input value=" " style="width:60%; float:left;text-align:center"></input>
+										<div style="width:30px;height:25px; float:left;text-align:center;line-height:25px;">+</div>
+									</div>
+
+								</div>
+								<div class="mui-col-xs-4 mui-row list_three" style="text-align:right;padding-right:5px">
+									<p class="list_fonts mui-col-xs-12 addnum" style="float:right;background:#f0ad4e;height:85px;line-height:85px;width:50px;text-align: center;color:#fff;">完成</p>
+								</div>
+							</div>
+							<div class="mui-row addNumBox0" style="display:block;overflow:hidden;height:70px;">
+								<div class="mui-col-xs-9 mui-row" style="background:;height:50px;">
+									<h5 class="list_h5 mui-col-xs-12" style="color:#242424;">商品名称</h5>
+									<p class="list_font mui-col-xs-12">商品编码</p>
+									<p class="list_font mui-col-xs-12" style="background:;font-size:12px;">规格:10*10</p>
+								</div>
+								<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align:right;padding-right:5px">
+									<!--<p class="list_fonts mui-col-xs-12" style="float:right;"><span class="mui-icon mui-icon-compose"></span></p>-->
+									<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;"></p>
+									<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">总件数</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<div class="topStore" style="height:30px;background:white;margin-top:5px">
+				<span class="mui-icon mui-icon-arrowright"></span>
+				<span class="mui-icon mui-icon-home"></span>
+				<span style="margin-left:10px">店铺</span>
+				<span style="float:right;"></span>
+			</div>
+			<li class="mui-table-view-cell" style="padding-top:5px;background:white">
+				<div class="mui-slider-right mui-disabled">
+					<a class="mui-btn mui-btn-red">删除</a>
+				</div>
+				<div class="mui-slider-cell mui-slider-handle">
+					<div class="mui-row m">
+						<div class="mui-col-xs-1">
+							<div style="width:25px;height:25px; margin-top:20px;border-radius:50%;background:#18B4ED;">
+								<span id="Check" class="mui-icon mui-icon-checkmarkempty" style="font-size:40px;color:#F7F7F8;line-height:25px;text-align: center;margin-left: -8px;"></span>
+							</div>
+						</div>
+						<div class="mui-col-xs-3 mui-row" style="background:;padding:5px;width:;">
+							<img class="vdvc311 mui-col-xs-12" src="../../images/icon/default.png" style="width:60px;height:60px;" />
+						</div>
+						<div class="mui-col-xs-8 ">
+							<div class="mui-row addNumBox1" id="" style="display:;overflow:hidden;">
+								<div class="mui-col-xs-9 mui-row" style="background:;height:50px;position: relative;">
+
+									<div style="position: absolute;top:18px;left:30px;width:70%; border:1px solid #808080;border-radius: 5px;">
+										<div style="width:30px;height:25px;float:left; text-align:center;line-height:25px;">-</div>
+										<input value=" " style="width:60%; float:left;text-align:center"></input>
+										<div style="width:30px;height:25px; float:left;text-align:center;line-height:25px;">+</div>
+									</div>
+
+								</div>
+								<div class="mui-col-xs-4 mui-row list_three" style="text-align:right;padding-right:5px">
+									<p class="list_fonts mui-col-xs-12 addnum" style="float:right;background:#f0ad4e;height:85px;line-height:85px;width:50px;text-align: center;color:#fff;">完成</p>
+								</div>
+							</div>
+							<div class="mui-row addNumBox0" style="display:block;overflow:hidden;height:70px;">
+								<div class="mui-col-xs-9 mui-row" style="background:;height:50px;">
+									<h5 class="list_h5 mui-col-xs-12" style="color:#242424;">商品名称</h5>
+									<p class="list_font mui-col-xs-12">商品编码</p>
+									<p class="list_font mui-col-xs-12" style="background:;font-size:12px;">规格:10*10</p>
+								</div>
+								<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align:right;padding-right:5px">
+									<p class="list_fonts mui-col-xs-12" style="float:right;"><span class="mui-icon mui-icon-compose"></span></p>
+									<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;"></p>
+									<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">总件数</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+		<ul id="contList" style="margin-top:60px">
+
+		</ul>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		var $$ = jQuery.noConflict();
+		var mianOnlyCode = getDataCode("vdeb211");
+		var detailOnlyCode = getDataCode("vdeb212");
+		var detail_vInfo = [];
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var parentPage = "";
+		var search = ""; // 要查询的内容
+		var startIndex = 1;
+		var pageSize = 10;
+		var linkvd_stcode = ''; //用于存储扫描的码 
+		var inputData = null; // 表单里的数据
+		var hadSend = false; // 用于判断是否送审
+		var billnoSave = ""; // 修改时的主表bill_no 
+		var detailInfo = {};
+		var date = new Date();
+		var bill_date = vlUtils.dateToString(date);
+		//定义全局的rqs 
+		var dataSourse = {}; //用来重新渲染DOM
+		var saveDataSourse = ""; //用来提交到212的数据
+		var saveDeleteData = []; //用于存放删除的bill_no
+		var mainInfos = "";
+		var amount = "";
+		var Total = "";
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			parentPage = self.parentPage;
+			flagNew = self.flagNew;
+			amount = self.amount;
+			Total = self.Total
+			saveDataSourse = self.saveDataSourse;
+
+			var contList = document.getElementById("contList");
+			var text = "";
+			for(var i = 0; i < saveDataSourse.length; i++) {
+				text += '<div class="topStore" style="height:30px;background:white;margin-top:5px;">';
+				text += '<span class="mui-icon mui-icon-arrowright"></span>';
+				text += '<span class="mui-icon mui-icon-home"></span>';
+				text += '<span style="margin-left:10px">' + saveDataSourse[i].main.bill_name + '</span>';
+				text += '<span style="float:right;"></span>';
+				text += '</div>';
+				for(var j = 0; j < saveDataSourse[i].detail.length; j++) {
+					var comImgid = vlUtils.uuid('comImg', 4, 10);
+					saveDeleteData.push(saveDataSourse[i].detail[j].bill_no)
+					text += '<li class="mui-table-view-cell" style="padding-top:5px;background:white" data-row=\'' + JSON.stringify(saveDataSourse[i].detail[j]) + '\'>';
+					text += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+					text += '<div class="mui-slider-cell  mui-slider-handle">';
+					text += '<div class="mui-row m">';
+					text += '</div>'
+					text += '<div class="mui-col-xs-12 mui-row" style="background:white;padding:5px;width:;">';
+					text += '<img class="vdeb211 mui-col-xs-12" src="../../images/icon/default.png"  id="' + comImgid + '" style="width:60px;height:60px;" />';
+					text += '</div>';
+					text += '<div class="mui-col-xs-12" style="background:;">';
+					text += '<div class="mui-row addNumBox1" id="add" style="display:none;overflow:hidden;">';
+					text += '<div class="mui-col-xs-9 mui-row" style="background:#f00;height:50px;position: relative;">';
+
+					//					text += '<div style="position: absolute;top:18px;left:20px;width:80%;border:1px solid #ddd;border-radius: 4px;">';
+					//					text += '<div class="subfun" style="width:25px;height:25px;float:left; text-align:center;line-height:30px;border-right:1px solid #ddd;">-</div>';
+					//					text += '<input id="num"  value="' + saveDataSourse[i].detail[j].node_qty + '" style="width:50%; float:left;text-align:center;height:30px;border:0;"></input>';
+					//					text += '<div class="addfun" style="width:25px;height:25px;float:left;text-align:center;line-height:30px;padding:0;border-left:1px solid #ddd;">+</div>';
+					//					text += '</div>';
+					// ↑自己写
+					text += '</div>';
+					text += '<div class="mui-col-xs-4 mui-row list_three" style="background:; text-align:right;padding-right:5px">';
+					text += '<p class="list_fonts mui-col-xs-12 addnum" mainNum ="' + i + '" detailNum="' + j + '" style="float:right;background:#f0ad4e;height:65px;line-height:65px;width:50px;text-align: center;color:#fff;">完成</p>';
+					text += '</div>';
+					text += '</div>';
+					text += '<div class="mui-row addNumBox0" style="background:; display:block;overflow:hidden;height:70px;">';
+					text += '<div class="mui-col-xs-8 mui-row" style="background:;height:50px;padding-left:20px;">';
+					text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;">' + saveDataSourse[i].detail[j].bill_name + '</h5>';
+					text += '<p class="list_font mui-col-xs-12" >' + saveDataSourse[i].detail[j].bill_id + '</p>';
+					text += '<p class="list_font mui-col-xs-12" style="background:;font-size:12px; color:red"><span>￥</span>&nbsp' + saveDataSourse[i].detail[j].node_price + '</p>';
+					text += '</div>';
+					text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align:right;padding-right:5px">';
+					// text += '<p class="list_fonts mui-col-xs-12" style="float:right;"><span class="mui-icon mui-icon-compose"></span></p>';
+					// text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;"></p>';
+					text += '<p id="number" class="list_sts mui-col-xs-12" style="float:right;margin-top:3px;height: 16px;width:60px;">×' + saveDataSourse[i].detail[j].node_qty + '</p>';
+					text += '</div>';
+					text += '</div>';
+					text += '</div>';
+					text += '</div>';
+					text += '</div>';
+					text += '</li>';
+					vlUtils.downloadicon(saveDataSourse[i].detail[j]["bill_text"][0]["linkbd_bEANcode"], comImgid);
+				}
+			}
+			contList.innerHTML = text;
+			document.getElementById("amount").innerHTML = amount;
+			document.getElementById("Total").innerHTML = Total
+			// 管理单位
+			vlUtils.setStorage("agencyTeamBillCom", teamBillCom);
+			//返回事件
+			document.getElementById("goBack").addEventListener("tap", function() {
+				var oldBack = mui.back;
+			})
+
+			// 删除 
+			mui("#contList").on('tap', '.mui-btn-red', function(e) {
+				var e = this;
+				var li = e.parentNode.parentNode;
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow);
+				var bill_id = rowObj.bill_id;
+				var node_qty = rowObj.node_qty;
+				sliderDelete(bill_id);
+			});
+			//滑动删除
+			function sliderDelete(bill_id) {
+				for(var i = 0; i < dataSourse.length; i++) {
+					for(var k = 0; k < dataSourse[i].detail.length; k++) {
+						if(dataSourse[i].detail[k].bill_id == bill_id) {
+							dataSourse[i].detail.splice(k, 1);
+							renderDom(dataSourse);
+						}
+
+					}
+				}
+
+			}
+
+			//重新渲染DOM
+			function renderDom(data) {
+				var text = "";
+				Toal = 0;
+				amount = 0;
+				document.getElementById("Total").innerHTML = 0;
+				document.getElementById("amount").innerHTML = 0;
+				for(var i = 0; i < data.length; i++) {
+					var contList = document.getElementById("contList");
+					text += '<div class="topStore" style="height:30px;background:white;margin-top:5px;">';
+					text += '<span class="mui-icon mui-icon-arrowright"></span>';
+					text += '<span class="mui-icon mui-icon-home"></span>';
+					text += '<span style="margin-left:10px">' + data[i].main.bill_comName + '</span>';
+					text += '<span style="float:right;"></span>';
+					text += '</div>';
+					for(var k = 0; k < data[i].detail.length; k++) {
+						var contList = document.getElementById("contList");
+						var comImgid = vlUtils.uuid('comImg', 4, 10);
+						text += '<li class="mui-table-view-cell" style="padding-top:5px;background:white;" data-row=\'' + JSON.stringify(data[i].detail[k]) + '\'>';
+						text += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+						text += '<div class="mui-slider-cell  mui-slider-handle">';
+						text += '<div class="mui-row m">';
+						text += '<span id="Check" class="mui-icon mui-icon-checkmarkempty" style="font-size:40px;color:#F7F7F8;line-height:25px;text-align: center;margin-left: -8px; display:none;"></span>'
+						text += '</div>'
+						text += '<div class="mui-col-xs-4 mui-row" style="background:;padding:5px;width:;">';
+						text += '<img class="vdeb211 mui-col-xs-12" src="../../images/icon/default.png"  id="' + comImgid + '" style="width:60px;height:60px;" />';
+						text += '</div>';
+						text += '<div class="mui-col-xs-8 " >';
+						text += '<div class="mui-row addNumBox1" id="add" style="display:none;overflow:hidden;">';
+						text += '<div class="mui-col-xs-10 mui-row" style="background:;height:50px;position: relative;">';
+						text += '<div style="position: absolute;top:18px;left:20px;width:80%;border:1px solid #ddd;border-radius: 4px;">';
+						text += '<div class="subfun" style="width:25px;height:25px;float:left; text-align:center;line-height:30px;border-right:1px solid #ddd;">-</div>';
+						text += '<input id="num"  value="' + data[i].detail[k].node_qty + '" style="width:50%; float:left;text-align:center;height:30px;border:0;"></input>';
+						text += '<div class="addfun" style="width:25px;height:25px;float:left;text-align:center;line-height:30px;padding:0;border-left:1px solid #ddd;">+</div>';
+						text += '</div>';
+						// ↑自己写
+						text += '</div>';
+						text += '<div class="mui-col-xs-3 mui-row list_three" style="text-align:right;padding-right:5px">';
+						text += '<p class="list_fonts mui-col-xs-12 addnum" mainNum="' + i + '" detailNum="' + k + '" style="float:right;background:#f0ad4e;height:65px;line-height:65px;width:50px;text-align: center;color:#fff;">完成</p>';
+						text += '</div>';
+						text += '</div>';
+						text += '<div class="mui-row addNumBox0" style="display:block;overflow:hidden;height:70px;">';
+						text += '<div class="mui-col-xs-9 mui-row" style="background:;height:50px;">';
+						text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;">' + data[i].detail[k].bill_name + '</h5>';
+						text += '<p class="list_font mui-col-xs-12" >' + data[i].detail[k].bill_id + '</p>';
+						text += '<p class="list_font mui-col-xs-12" style="background:;font-size:12px; color:red"><span>￥</span>&nbsp' + data[i].detail[k].node_price + '</p>';
+						text += '</div>';
+						text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align:right;padding-right:5px">';
+						text += '<p class="list_fonts mui-col-xs-12" style="float:right;"><span class="mui-icon mui-icon-compose"></span></p>';
+						text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;"></p>';
+						text += '<p id="number" class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">×' + data[i].detail[k].node_qty + '</p>';
+						text += '</div>';
+						text += '</div>';
+						text += '</div>';
+						text += '</div>';
+						text += '</div>';
+						text += '</li>';
+						vlUtils.downloadicon(data[i].detail[k]["bill_text"][0]["linkbd_bEANcode"], comImgid);
+					}
+					text += '</div>'
+					contList.innerHTML = text;
+				}
+			}
+
+			document.getElementById("saveBtn").addEventListener("tap", saveBtn);
+
+			function saveBtn() {
+				mui("#saveBtn").button('loading');
+				rqsData = getInputValue(); //获取每一个输入框的的值的方法   
+				for(var i = 0; i < saveDataSourse.length; i++) {
+					for(var k = 0; k < saveDataSourse[i].detail.length; k++) {
+						saveDataSourse[i].detail[k].fbill_no = saveDataSourse[i].main.bill_no;
+						detailOnlyCode = getDataCode("vdeb212")
+						saveDataSourse[i].detail[k].bill_no = detailOnlyCode;
+						saveDataSourse[i].detail[k].bill_date = bill_date;
+						saveDataSourse[i].detail[k].bill_task = "d_new";
+						saveDataSourse[i].detail[k].bill_text = JSON.stringify(saveDataSourse[i].detail[k].bill_text);
+					}
+				}
+				for(var j = 0; j < saveDataSourse.length; j++) {
+					saveAjax(saveDataSourse[j])
+					var params = {
+						bill_com: teamBillCom,
+						bill_no: saveDataSourse[j].main.bill_no,
+						bill_user: userbillNo,
+						bill_task: "b_send"
+					}
+					auditing(params);
+				}
+
+			}
+function auditing(params) {
+			mui.ajax(systemURL + 'Api/Task/sendTask', {
+				data: params,
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				beforeSend: function() {
+					checkNetState(); // 检查网络链接状态
+				},
+				timeout: 10000, //超时时间设置为10秒
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				success: function(data) {
+					if(data.code == 0) {
+					}
+					if(data.code == 1) {
+						ajaxCode1(data.error_code, data.error_description, '../login.html');
+						mui("#saveBtn").button('reset');
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					console.log(xhr.responseText);
+					mui("#saveBtn").button('reset');
+					console.log(JSON.stringify(xhr));
+					console.log(errorThrown);
+					console.log(type);
+					if(type == "timeout") {
+						mui.toast("请求超时");
+					}
+
+				}
+			});
+		}
+			//验证必填
+			function validateRequired() {
+				var check = true;
+				if($$(".radius").children().is(':hidden')) {
+					mui.toast("请选择商品！");
+					mui("#saveBtn").button('reset');
+					check = false;
+					return check;
+				}
+				return check;
+			}
+			//获取每个输入框的值
+			function getInputValue() {
+				//第一部分
+				var linkvd_term = $$("#linkvd_term").html(); //收货单位     	
+				var linkvd_linkcom = $$("#linkvd_linkcom").html(); //收货单位     	
+				var linkvd_termaddr = $$("#linkvd_termaddr").html(); //收货地址        	
+				var linkvd_termcontact = $$("#linkvd_termcontact").html(); //联系信息 
+				var bill_id = $$("#Id").html();
+				var bill_name = $$("#name").html();
+				// 提交数据
+				var date = new Date();
+				var bill_date = vlUtils.dateToString(date);
+				inputData = [{
+					linkvd_termaddr: linkvd_termaddr, // 
+					linkvd_termcontact: linkvd_termcontact, //
+					linkbd_ERP_itemid: "", // 产品id
+					linkbd_ERP_itemname: "", // 产品id
+					linkbd_ERP_corrid: linkvd_linkcom, // 经销商id
+					linkbd_ERP_corrname: linkvd_term, // 经销商
+					linkbd_ERP_orderno: "", // 订单号
+					linkbd_ERP_invname: "", //仓库名称
+					linkbd_ERP_invid: "" //仓库id
+				}]
+				rqsData = {
+					bill_id: bill_id,
+					cc_user: "",
+					bill_title: "",
+					bill_no: onlyCode,
+					bill_task: "L",
+					fbill_no: "ROOT",
+					bill_user: userbillNo, // 登陆人
+					bill_com: teamBillCom, //登录人单位
+					bill_dept: "",
+					link_next: "",
+					node_qty: "",
+					bill_ipaddr: "",
+					bill_gpsaddr: "",
+					bill_context: "",
+					bill_name: bill_name,
+					bill_date: bill_date,
+					bill_text: JSON.stringify(inputData)
+				}
+				return rqsData;
+			}
+			//保存提交
+			function saveAjax(params) {
+				mui.ajax(systemURL + 'Api/Task/sendTaskDetail', {
+					data: params,
+					dataType: 'json',
+					type: 'post',
+					beforeSend: function() {
+						checkNetState();
+					},
+					timeout: 10000,
+					async: false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message);
+							flagsave = true;
+							mui("#saveBtn").button('reset');
+							for(var i = 0; i < saveDeleteData.length; i++) {
+								for(var j = 0; j < saveDataSourse.length; j++) {
+									for(var k = 0; k < saveDataSourse[j].detail.length; k++) {
+										deleteData(saveDeleteData[i], userbillNo, teamBillCom, saveDataSourse[j].detail[k].node_qty, saveDataSourse[j].detail[k].node_price);
+									}
+								}
+							}
+
+							mui.openWindow({
+								id: 'vdeb212_list_02.html',
+								url: 'vdeb212_list_02.html',
+								createNew: true,
+								extras: {
+									teamBillCom: teamBillCom,
+									teamBillComName: teamBillComName,
+									userbillNo: userbillNo,
+									loginCom: loginCom,
+									loginComName: loginComName
+								}
+							});
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code, data.error_description, '../login.html');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+
+					}
+				});
+			}
+			//删除
+			function deleteData(bill_no, userbillNo, teamBillCom, node_qty, node_price) {
+				var rqsData = {
+					bill_no: bill_no,
+					bill_task: "d_delete",
+					fbill_no: mainInfos,
+					bill_user: userbillNo, // 登陆人
+					bill_com: teamBillCom, //登录人单位  
+					node_qty: node_qty,
+					node_price: node_price
+				}
+				mui.ajax(systemURL + 'Buy/deleteProduct', {
+					data: rqsData,
+					dataType: 'json',
+					type: 'post',
+					beforeSend: function() {
+						checkNetState();
+					},
+					timeout: 10000,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message);
+							deleteSuccess();
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code, data.error_description, '../login.html');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText)
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+					}
+				});
+				// 发送请求结束 
+			}
+
+			function deleteSuccess() {
+			}
+		}); // PlusReady 结束
+	</script>
+
+</html>

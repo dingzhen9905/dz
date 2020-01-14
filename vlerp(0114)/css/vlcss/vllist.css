@@ -1,0 +1,33 @@
+/* 列表查询提示：start*/
+.vl-list-search-tip{padding:100px;height:300px;text-align: center;}
+.vl-list-search-tip .icon {color:#353B42;font-size:100px;}
+.vl-list-search-result{color:#000 !important;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;}
+.vl-list-search-icon{color:#0062cc;height:100px;line-height: 100px;font-size: 100px;}
+/* 列表查询提示：end */
+
+/* 常用的公用类：start */
+.vlel-hide{display: none;}
+
+.vlinput-required:before{content:"* ";color: crimson;}
+
+.vltxt-center{text-align: center;}
+.vltxt-ellipsis{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.vltxt-wrap-two{display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;}
+/* 常用的公用类：end */
+
+/* 普通列表通用样式-历史页面中还在使用，后续慢慢废弃：start */
+.list_font {min-height: 16px;font-size: 10px;line-height: 12px;overflow: hidden;}
+.list_fonts {font-size: 12px;line-height: 12px;}
+.list_h5 {font-size: 13px;}
+.list_sts {border: 1px solid #f0ad4e;border-radius: 2px;font-size: 12px;line-height: 14px;color: #f0ad4e;text-align: center;}
+/* 普通列表通用样式-历史页面中还在使用，后续慢慢废弃：end */
+
+/* 普通列表通用样式-新：start */
+.mui-table-view:after,.mui-table-view:before,.mui-table-view-cell:after {height: 0 !important;}
+.vl-list-item{}
+.vl-list-item-title{}
+.vl-list-item-detail{}
+.vl-list-item-left{}
+.vl-list-item-right{}
+.vl-list-item-status{}
+/* 普通列表通用样式-新：end */

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>组织管理（新建）</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.dtpicker.css" />
+		<link rel="stylesheet" href="css/simple-calendar.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:2px 8px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.mui-input-row.lastInput:after{
+				height:0;
+			}
+			#contList li:nth-of-type(odd){
+				background:#F0F0F0;
+			}
+			.grey{
+				color:#C8C7CC;
+			}			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head" style="height: 75px;">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p id="title">工作日历</p>
+				<h1 id="header" ></h1>	
+			</div>
+			<a class=" mui-pull-right rightIcon" id="saveBtn" data-loading-text="提交中" >保存</a>	
+		
+		</header>
+		<div class="mui-content" style="padding-top:80px;margin-top:10px;margin-bottom:30px;">
+			<div id="container" style="float:none;margin: 0px auto;"></div>
+			
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/mui.dtpicker.js"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="js/simple-calendar.js"></script>
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = null;
+		var hadSend = false;  // 用于判断是否送审
+		var flagsave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		var deptname = "";
+		var bill_task = "";
+		var mainInfo = null;
+		var detailArr = null;
+		var MDInfo = {
+			"values":{
+				"main":{},
+				"detail":[]
+			}
+		}
+		mui.plusReady(function() {
+			
+			// TODO 1. 页面上的字段========================
+
+			// TODO 2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录人的代码
+			loginComName 	= self.loginComName;	// 5.登录人的名称
+			userbillNo 		= self.userbillNo;		// 6.登录单位代码
+			userName 		= self.userName;		// 7.登录单位名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			// 其他
+			flagNew = self.flagNew;
+			deptname = self.deptname;
+			
+			// TODO 3. 基础设置/赋值 
+			document.getElementById("header").innerHTML = teamBillComName; 
+			// TODO 4. 事件绑定==================================
+			// TODO 5. 监听自定义事件=============================
+			// TODO 6. 事件/方法=================================						
+			var myCalendar = new SimpleCalendar('#container');
+    		myCalendar.updateSize('95.8%', '400px');
+		}); // plusReady
+	</script>
+
+</html>

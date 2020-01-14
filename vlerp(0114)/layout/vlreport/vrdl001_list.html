@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>报表下载</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		
+		<style>
+			body{
+				font-size: 14px;
+			}
+			ul{
+				margin:10px !important;
+				padding-right:5px; 
+				border-radius:10px;
+			}
+			ul li{
+				height: 50px !important;
+				line-height:30px;
+			}
+			.mui-table-view:after, .mui-table-view:before{
+				height: 0;
+			}
+
+			.vlend-tip{
+				position:relative;
+				top: 0px;
+				margin:0 10px;
+				height: 20px;
+				font-size: 10px;
+				color: #8f8f94;
+				text-align: center;
+			}
+			.vlend-tip:before{
+				content: "";
+				position: absolute;
+				top: 49%;
+				left: 30%;
+				width: 28px;
+				height: 1px;
+				background-color: #8f8f94;
+			}
+			.vlend-tip:after{
+				content: "";
+				position: absolute;
+				top: 47%;
+				right: 30%;
+				width: 28px;
+				height: 1px;
+				background-color: #8f8f94;
+			}
+		</style>
+	</head>
+	<body> 
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 75px;" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>	
+			<h1 class="mui-title headText" id="header">报表下载</h1>
+		</header>
+		<div class="mui-content" style="margin-top:30px;">
+			<div id="J_list_box"></div>
+			<div class="vlend-tip" style="">没有更多啦~！</div>
+		</div>
+		<script  id="J_list_tmpl" type="text/template">
+			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+				<% for(var i in data){ var item=data[i]; %>
+					<li class="mui-table-view-cell" data-title="<%=item.title%>" data-task="<%=item.task%>" data-href='<%=item.page%>'>
+					    <a class="mui-navigate-right">
+							<div class="data-row hide"><%=item.rowdata%></div>
+					    	<span class="mui-icon mui-icon-download"></span>
+					    	<%=item.title%>
+					    </a>
+					</li>
+				<% } %>
+			</ul>
+		</script>
+		
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../js/arttmpl.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../js/vlindex.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		var curPageData = {};
+		var data = {
+			"企业": [{
+					"title": "业务员销量报表",
+					"task": "VR_vdst315_query_28",
+					"label": "管理员",
+					"page": "vrdl001_pickdate.html"
+				},
+				{
+					"title": "业务员销量报表",
+					"task": "VR_vdst315_query_29",
+					"label": "主管,经理,部长",
+					"page": "vrdl001_pickdate.html"
+				}
+			],
+			"经销商": [{
+				"title": "业务员销量报表",
+				"task": "VR_vdst315_query_30",
+				"label": "负责人,仓管员",
+				"page": "vrdl001_pickdate.html"
+			}]
+		};
+        mui.plusReady(function() {
+			curPageData = plus.webview.currentWebview();
+			var userInfo = JSON.parse(VlStore.pGet("user")),
+				opt = {"system":userInfo.com_linkvd_userCom,"role": curPageData.userRole},
+				renderData = filterData(opt, data);
+			
+			mui("#J_list_box").on('tap', 'li', function(e) { eTapli(e, this); });
+			
+			mui("#J_list_box")[0].innerHTML = template("J_list_tmpl", { "data": renderData });
+			
+        });  // plusready
+ 		function filterData(opt, data){
+ 			var arr = data[opt.system],
+ 				_newarr = [];
+ 			for(var i = 0; i < arr.length; i++){
+ 				if(arr[i]['label'].indexOf(opt.role) > -1){
+ 					_newarr.push(arr[i]);
+ 				}
+ 			}
+ 			return _newarr;
+ 		}
+		function eTapli(e, self){
+			var dataHref = self.getAttribute("data-href"),
+				dataTask = self.getAttribute("data-task"),
+				dataTitle = self.getAttribute("data-title");
+			if(dataHref == "" || dataHref == undefined || dataHref == null){
+				plus.nativeUI.toast("～敬请期待～", {
+					'verticalAlign': "top"
+				});
+				return;
+			}
+			var scanpage = plus.webview.getWebviewById(dataHref.slice(8));
+			if(!VlUtils.isnull(scanpage)){
+				plus.webview.hide(scanpage);
+				plus.webview.close(scanpage);
+			}
+			// 打开页面
+			mui.openWindow({
+				url:dataHref,
+				id: dataHref.slice(8),
+				createNew:true,
+				extras:{
+					teamBillCom 	: curPageData.teamBillCom ,
+					teamBillComName : curPageData.teamBillComName,
+					userbillNo 		: curPageData.userbillNo,
+					userName 		: curPageData.userName,
+					loginCom 		: curPageData.loginCom,
+					loginComName 	: curPageData.loginComName,
+					privileges 		: curPageData.privileges,
+					userRole		: curPageData.userRole,
+					dataTask		: dataTask,
+					dataTitle		: dataTitle,
+				},
+			});			
+		}
+    </script>  
+</html>

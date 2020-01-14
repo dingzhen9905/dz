@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			.mui-row.topNav{
+				padding:0px;
+			}
+			.mui-row.topNav p a {
+				padding:3px;
+			}
+			.mui-row.topNav p span{
+				font-size:12px;
+			}
+			/* 灰色*/
+			.spn{
+				color:gray;
+			}
+			/*关联状态*/
+			.list_sts{
+				font-size: 12px;
+				line-height: 14px;
+				color:#f0ad4e;
+				border:1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+			.mui-badge{
+				margin: 5px;
+			}
+			.mui-radio input[type='radio']:before{
+				font-size: 20px;
+				position: relative;
+				top:3px;
+				left:-19px;
+			}
+			textarea[placeholder]{
+				font-size:12px;
+			}
+			.mui-radio.mui-left label{
+				padding-left: 27px !important;
+			}
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head">
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">单据审批详情</h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit" style="display: none;"></a>		
+			<div class="mui-row navBar nodeTopNav">
+				<p class="mui-col-xs-4" id="bBackBtn">
+					<a class="icon iconfont icon-gangweiguanli" id="bBackIcon"></a>
+					<span>收回审批</span>
+				</p>
+				<p class="mui-col-xs-4" id="rejectPrev">
+					<a class="icon iconfont icon-xiajibumen" id="rejectIcon"></a>
+					<span>驳回审批</span>
+				</p>
+				<p class="mui-col-xs-4" id="agreeBtn">
+					<a class="icon iconfont icon-migrate" id="agreeIcon"></a>
+					<span>同意</span>
+				</p>
+			</div>
+		</header>
+		<div class="mui-content mainBody nodeBody" >
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;display: ;">
+					<span class="mui-col-xs-4 spn">审批主题：</span>
+					<span class="mui-col-xs-8 spn"  id="bill_name" style="color:#000;font-weight: bold;"></span>
+					<div id="agreeSign" style="position:absolute;top:30px;right:30px;display: none;">
+						<span class="icon iconfont icon-shenhetongguo-copy" style="color: #4cd964;font-size:80px;"></span>
+					</div>
+					<div id="readSign" style="position:absolute;top:30px;right:30px;display:none;">
+						<span class="mui-btn mui-btn-primary mui-btn-outlined" type="button"style="margin:0;font-size: 20px;height:;line-height:30px;border:2px dashed #007aff;">已阅</span>
+					</div>
+					<div id="rejectSign" style="position:absolute;top:30px;right:30px;display: none;">
+						<span class="icon iconfont icon-bohui-copy" style="color: #dd524d;font-size:80px;"></span>
+					</div>
+				</div>
+				<div class="mui-row lastInput" style="height: 80px;">
+					<span class="mui-col-xs-4 spn">审批意见：</span>
+					<textarea id="opinionText" class="mui-col-xs-8 mui-input-clear" placeholder="审批意见" style="padding:0;color:#000000;"></textarea>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:0px solid #efeff4;">
+					<span class="mui-col-xs-2 spn">当前：</span>
+					<span class="mui-col-xs-5 spn" id="stepDescp" style="color:#000;font-weight: bold;"></span>
+					<span class="mui-btn mui-btn-royal mui-btn-outlined" type="button" id="stepTitle" style="padding: 0 2px;font-size: 12px;margin-top:3px;"></span>
+					<span class="mui-btn mui-btn-warning mui-btn-outlined mui-pull-right" id="bOppo" type="button" style="padding: 5px 10px;font-size: 12px;color:#000000;">查看原始单据</span>
+					<span class="mui-btn mui-btn-warning mui-btn-outlined mui-pull-right" type="button" id="bill_oppo" style="display:none;padding: 5px 10px;font-size: 12px;color:#000000;">查看原始单据</span>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">审批进度记录：</span>
+				</div>
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-bottom:10px;">
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var detailInfo = null;
+		var rqsData = null; //提交的数据
+		mui.plusReady(function() {
+			// 重写返回事件
+		    var oldBack = mui.back;
+//		    mui.back = function(){
+//		    	var webview = plus.webview.getWebviewById('vdoa001_plist.html');
+//		    	webview.show();
+//		    }
+			document.getElementById("goBack").addEventListener("tap",function(){
+		    	rqsSuccessBack("vdoa001_plist.html","vdoa001_list.html");
+			})
+
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			var teamBillCom 	= self.teamBillCom;
+			var teamBillComName = self.teamBillComName;
+			var userbillNo 		= self.userbillNo;
+			var userName 		= self.userName;
+			var loginCom 		= self.loginCom;
+			var loginComName 	= self.loginComName;
+			var fbill_no 		= self.fbill_no;
+			var fromPage 		= self.fromPage;
+			var privileges 		= self.privileges;
+			// 
+			if(self.detailInfo) {
+				detailInfo = self.detailInfo;
+			}
+			// 
+			if(self.rqsData) {
+				detailInfo = self.rqsData;
+				detailInfo.bill_task = "S";
+			}
+			//
+			// 页面赋值
+			setInputValue(detailInfo);
+			setButton(detailInfo);
+			// 获取审批进度数据
+			var queryparmas={
+				name		:'vdoa001',    
+				bill_id		:detailInfo[0].bill_id, 
+				bill_com	:teamBillCom,
+				bill_user	:userbillNo,
+				bill_oppo	:detailInfo[0].bill_oppo,
+				fbill_no	:detailInfo[0].fbill_no,
+				bill_task	:"L,S,Y,YF",
+				bill_text	:"123",
+				currentPage	:1, 
+				pageSize	:100, 
+				paramText	:""
+			}
+			rqsDataAjax(queryparmas,'/workFlow/workProcess', pendingData, '../login.html',true);
+			// 查询单条数据
+			function searchAjax(queryparmas) {
+				mui.ajax(systemURL +'/workFlow/workProcess', { // 'Find/Ddata/find'
+					data:queryparmas,
+					beforeSend: function() {
+						var network = true;
+						checkNetState(); // 检查网络链接状态
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 60000, //超时时间设置为10秒；
+//					contentType: "application/x-www-form-urlencoded; charset=utf-8",
+					contentType: "application/json;charset=utf-8",
+					success: function(rps) {
+						if(rps.code == 0) {
+							var datas = rps.data;
+							if(datas.length != 0) {
+								var litext = " ";
+								for(var i = 0; i < rps.data.length; i++) {
+									var contList = document.getElementById("contList");
+									// 状态
+									if(rps.data[i].bill_task == "Y") {//f0ad4e
+										var bill_task = "已审批";
+									}else{
+										var bill_task = "待审批";
+									}
+									
+									
+									contList.innerHTML = litext;
+								}
+							} else {
+								mui.toast("未查询到数据");
+							}
+						}
+						if(rps.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						console.log(errorThrown);
+						console.log(type);
+					}
+				});
+			}
+			// 查看原始单据
+			document.getElementById("bOppo").addEventListener("tap",function(){
+				plus.nativeUI.showWaiting("请稍后~");
+				// 获取目标页面的页面名
+				var billOppo 	= detailInfo[0].bill_oppo.slice(0, 7); 	// 例如：vdvc103
+				var filesname 	= "vl"+ billOppo.slice(0, 4);			// 例如：vlvdvc
+				var oppoPageId 	= billOppo+'_node.html';				// vdvc103_node.html
+				var oppoPageUrl = "";									// ../vlvdvc/vdvc103_node.html
+				if(billOppo != "vdoa001"){
+					oppoPageUrl = '../'+filesname+'/'+billOppo + '_node.html';	// ../vlvdvc/vdvc103_node.html
+				}else{
+					oppoPageUrl = oppoPageId;
+				}
+				var  pageInfo={
+					"url":oppoPageUrl,
+					"id":oppoPageId,
+					"data":detailInfo[0]
+				}
+				var queryparmas={
+					name:billOppo,    
+					bill_com:detailInfo[0].bill_com, 
+					bill_task:"L,S,Y,YF",
+					currentPage:1, 
+					pageSize:1, 
+					paramText:"",
+					bill_no:detailInfo[0].bill_oppo  
+				}
+				rqsDataAjax(queryparmas,  'Find/Ddata/findDetail', reportData, '../login.html',pageInfo);
+				function reportData(data,type){
+					if(data.data.length != 0) {
+						// 打开页面
+						mui.openWindow({
+							url: oppoPageUrl,
+							id:  oppoPageId,
+						    createNew:true,
+						    extras:{
+								teamBillCom 	: type.bill_com,
+								teamBillComName : type.bill_comName,
+								userbillNo 		: userbillNo,
+								userName 		: userName,
+								loginCom		: loginCom,
+								loginComName 	: loginComName,
+								fbill_no 		: fbill_no,
+								detailInfo 		: data.data[0],
+								privileges 		: privileges,
+//								fromPage 		: "vdoa001node",
+								fromPage 		: "vdoa001_node.html",
+								flagNew 		: "N"
+							} 
+						})
+					} else { // 如果没有长度说明没有数据，提示没有数据
+						mui.toast("单据不存在~");
+					}
+					//
+					plus.nativeUI.closeWaiting();
+				}
+			});
+			// 数据填空
+			function setInputValue(detailInfo){
+				// 
+				document.getElementById('bill_name').innerHTML = detailInfo[0].bill_text[0].title; //部门名称
+				document.getElementById('bill_oppo').innerHTML = detailInfo[0].bill_oppo; // 原单据号
+				document.getElementById('stepDescp').innerHTML = detailInfo[0].bill_name;
+				document.getElementById('stepTitle').innerHTML = detailInfo[0].bill_title;
+				// 管理员、业务员
+				document.getElementById("toEdit").setAttribute("billUser",detailInfo[0].bill_user);
+				// 处理状态
+				if(detailInfo[0].bill_task != "Y"){
+					jQuery("#opinionText").focus();
+				}else{
+					jQuery("#opinionText").html(detailInfo[0].bill_text[0].opinion)
+				}
+				
+			}
+			function setButton(detailInfo){
+				document.getElementById("agreeBtn").addEventListener("tap",agreeBtn);		// 按下“同意”后弹出底部菜单
+				document.getElementById("rejectPrev").addEventListener("tap", rejectPrev); 	// 同意：弹出确认菜单之后点击确认
+				if(detailInfo[0].bill_task == "Y") { // 已处理 // 收 !驳 !审 
+					document.getElementById("agreeBtn").removeEventListener("tap",agreeBtn);		// 移除
+					document.getElementById("rejectPrev").removeEventListener("tap",rejectPrev);	// 移除
+					document.getElementById("bBackBtn").addEventListener("tap",bBackBtn);		
+					document.getElementById("opinionText").setAttribute("readonly","readonly");
+					//
+					document.getElementById("agreeIcon").style.color = "#8f8f94";	// 置灰
+					document.getElementById("rejectIcon").style.color = "#8f8f94";	// 置灰
+					document.getElementById("bBackIcon").style.color = "#8f8f94";	// 置灰
+					//
+					if(detailInfo[0].bill_context == "同意"){
+						document.getElementById("agreeSign").style.display = "block";	
+						document.getElementById("rejectSign").style.display = "none";	
+						document.getElementById("readSign").style.display = "none";		
+					}else if(detailInfo[0].bill_context == "已阅"){
+						document.getElementById("agreeSign").style.display = "none";	
+						document.getElementById("rejectSign").style.display = "none";	
+						document.getElementById("readSign").style.display = "block";	
+					}else{
+						document.getElementById("agreeSign").style.display = "none";	
+						document.getElementById("rejectSign").style.display = "block";	
+						document.getElementById("readSign").style.display = "none";	
+					}
+				}else{ // 待处理   // !收   // 阅=
+					document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn);	// 移除
+					document.getElementById("bBackIcon").style.color = "#8f8f94";				// 置灰
+					//
+					document.getElementById("rejectSign").style.display = "none";	
+					document.getElementById("agreeSign").style.display = "none";	
+					// 审阅时只能查看不能操作，默认发送
+					if(detailInfo[0].bill_title != "审阅"){
+						document.getElementById("agreeBtn").addEventListener("tap",agreeBtn);			
+						document.getElementById("rejectPrev").addEventListener("tap",rejectPrev);	// 
+						document.getElementById("agreeIcon").style.color = "#0062CC";				//
+						document.getElementById("rejectIcon").style.color = "#0062CC";				// 
+						// 已阅请求处理
+						jQuery("#opinionText").focus();
+					}else{
+						jQuery("#opinionText").html("已阅");
+						document.getElementById("readSign").style.display = "block";	
+						dealBill(detailInfo,teamBillCom,userbillNo,detailInfo[0].bill_bno,"w_send","已阅");
+						document.getElementById("agreeBtn").removeEventListener("tap",agreeBtn);	// 移除
+						document.getElementById("rejectPrev").removeEventListener("tap",rejectPrev);// 移除
+						document.getElementById("agreeIcon").style.color = "#8f8f94";	
+						document.getElementById("rejectIcon").style.color = "#8f8f94";	
+						jQuery("#opinionText").attr("readonly","readonly"); // 
+					}
+				}
+			}
+			// 审批=同意按钮
+			function agreeBtn(){
+				plus.nativeUI.actionSheet( {title:"同意",cancel:"取消",buttons:[{"title":"确认"}]}, function(e){
+					if(e.index==1){	// 确认
+						dealBill(detailInfo,teamBillCom,userbillNo,detailInfo[0].bill_bno,"w_send","同意");
+					};
+				});
+			}
+			
+			//
+			// 驳回按钮
+			function rejectPrev(){
+				plus.nativeUI.actionSheet( {title:"驳回",cancel:"取消",buttons:[{"title":"驳回上一步"},{"title":"驳回新建人"}]}, function(e){
+					if(e.index==1){	// 确认
+						// 处理请求
+						dealBill(detailInfo,teamBillCom,userbillNo,detailInfo[0].bill_bno,"w_reject","驳回上一步");
+					}else if(e.index==2){	// 确认
+						// 处理请求
+						dealBill(detailInfo,teamBillCom,userbillNo,0,"w_reject","驳回新建人");
+					};
+				});
+			}
+			// 
+			function bBackBtn(){}
+			// 
+			function dealBill(detailInfo,bcom,buser,bno,btask,bcontext){
+				var opinionText = document.getElementById("opinionText").value; // 审批意见
+				if(opinionText.length==0){
+					mui.toast("请先填写审批意见！");
+					return;
+				}
+				if(vlUtils.isnull(detailInfo[0].bill_text)){
+					detailInfo[0].bill_text = [{}]; // 审批意见
+				}
+				var billText = JSON.parse(JSON.stringify(detailInfo[0].bill_text))
+				detailInfo[0].bill_text[0].opinion = opinionText; // 审批意见
+				//
+				var date = new Date();
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				params.bill_no 	 	= detailInfo[0].bill_no;
+				params.fbill_no  	= detailInfo[0].fbill_no;
+				params.bill_oppo 	= detailInfo[0].bill_oppo;
+				params.bill_dept 	= detailInfo[0].bill_dept;
+				params.bill_id 	 	= detailInfo[0].bill_id;
+				params.bill_nflag   = detailInfo[0].bill_nflag;
+				params.bill_unit  	= detailInfo[0].bill_unit;
+				params.bill_bno	 	= bno;
+				params.bill_com	 	= bcom;
+				params.bill_user 	= buser;
+				params.bill_task 	= btask;
+				params.bill_context = bcontext;
+				params.cc_user 		= JSON.stringify(detailInfo[0].cc_user);
+				params.bill_text	= JSON.stringify(detailInfo[0].bill_text)
+				params.bill_date 	= vlUtils.dateToString(date);
+				//
+				if(bcontext!="已阅"){
+					CRUDajax(params,"../login.html",sendSuccess);
+				}else{
+					CRUDajax(params,"../login.html",readSuccess);
+				}
+			}
+			function readSuccess(){}
+			function sendSuccess(){
+				rqsSuccessBack("vdoa001_plist.html","vdoa001_list.html");
+			}
+			// 返回list刷新父子页面
+			function rqsSuccessBack(parentview,childview){
+				var listview = plus.webview.getWebviewById(childview);
+    			listview.reload();
+    			var plistview = plus.webview.getWebviewById(parentview);
+    			plistview.reload();
+				var oldBack = mui.back;
+			    mui.back = function(){
+			    	var webview = plus.webview.getWebviewById(parentview);
+			    	webview.show();
+			    }
+			    mui.back();
+			}
+			// TODO ajax 返回处理
+			// 渲染审批进度记录
+			function pendingData(data,type){
+				var pager = data.page;
+				var contList = document.getElementById("contList");
+				var lens = 1;
+				if(data.data.length != 0) {
+					for(var i = 0; i < data.data.length; i++) {
+						//
+						datas= data.data;
+						if(type&&i==0){
+							contList.innerHTML = "";
+						}
+						// 序号按照审批类型来区分颜色
+						if(datas[i].bill_title=="审批"){//purple
+							var btncolor = 'royal';
+						}else if(datas[i].bill_title == '审阅'){
+							var btncolor = 'primary';
+						}else if(datas[i].bill_title == '会签'){
+							var btncolor = 'warning';
+						}
+						// 审批人
+						for (var a in datas[i].cc_user[0]){
+							var appover = datas[i].cc_user[0][a];
+						}
+						// 审批结果区分颜色
+						var ctext = datas[i].bill_context;
+						if(datas[i].bill_context == ""){
+							var ctextCl="#f0ad4e";
+							if(datas[i].bill_title == "审阅"){
+								ctext = "待审阅";
+							}else{
+								ctext = "待审批";
+							}
+						}else if(datas[i].bill_context == "同意"){
+							var ctextCl="#4cd964";
+						}else if(datas[i].bill_context == "已阅"){
+							var ctextCl="#007aff";
+						}else{
+							var ctextCl="#dd524d";
+						}
+						var li = document.createElement("li");
+						li.setAttribute("data-row",JSON.stringify(datas[i]));
+						li.setAttribute("class", "mui-table-view-cell mui-left mui-row");
+						// 当前步骤显示边框
+						if(detailInfo[0].bill_no == datas[i].bill_no){
+							li.style.border = "1px solid yellowgreen";
+						}
+						var litext = "";
+						//
+						litext += '<div class="mui-col-xs-1"><span class="mui-badge mui-badge-'+btncolor+' mui-pull-left" style="margin:0;">'+(lens+i)+'</span></div>';
+						litext += '<span class="mui-col-xs-4"  style="background: ;">'+datas[i].bill_name+'</span>';
+						litext += '<span class="mui-col-xs-2"  style="background: ;">'+appover+'</span>';
+						litext += '<span class="mui-col-xs-3" style="color:'+ctextCl+';">'+ctext+'</span>';
+						litext += '<span class="mui-col-xs-2"  style="background: ;text-align: right;font-size:10px;line-hright:12px;margin:0;padding:0;">'+(datas[i]["bill_date"]).slice(5,16)+'</span>';
+						//
+						li.innerHTML = litext;
+						contList.appendChild(li);
+					}
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					document.getElementById("contList").innerHTML = '未查询到相关进度数据~';
+				}
+				plus.nativeUI.closeWaiting();
+			}
+		function reportData(){
+			if(data.data.length != 0) {
+				
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				mui.toast("单据不存在~");
+			}
+			//
+			plus.nativeUI.closeWaiting();
+		}
+	}); // plusReady
+	</script>
+
+</html>

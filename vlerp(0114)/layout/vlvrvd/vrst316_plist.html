@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			label {
+				line-height: 30px;
+			}
+			
+			input[placeholder] {
+				font-size: 12px;
+				line-height: 10px;
+			}
+			
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			#topNav {
+				padding: 0;
+			}
+			
+			.topNav {
+				text-align: center;
+				position: relative;
+				margin-bottom: 0px;
+				height: 35px;
+				color: #353b42;
+			}
+			
+			.active {
+				color: #ea6d10;
+				border-bottom: 2px solid #ea6d10;
+				/*background:pink;*/
+			}
+			
+			.mui-bar .mui-icon:active {
+				background: #0062cc!important;
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			
+			.queryCondition {
+				display: block;
+				position: relative;
+				top: 12px;
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background: #f7f7f7;
+				vertical-align: middle;
+			}
+			
+			.queryCondition:before {
+				display: inline-block;
+				position: relative;
+				top: -13px;
+				left: -5px;
+				z-index: 9;
+				content: " ";
+				width: 18px;
+				height: 18px;
+				border: 1px solid #0062CC;
+				border-radius: 50%;
+				vertical-align: middle;
+			}
+			
+			#searchName {
+				font-size: 12px;
+				margin: 2px 5px;
+				padding: 0;
+				height: 30px;
+				line-height: 30px;
+				border: 1px solid #007aff;
+				/*dedee2*/
+				border-radius: 3px;
+				text-align: center;
+				color: #007aff;
+			}
+			.mui-input-group:before,
+			.mui-input-group:after{
+				height:0px;
+			}
+		</style>
+	</head>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id='head' style="height: 163px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>	
+			<h1 class="mui-title headText" id="header"></h1>
+			<div class="mui-row" style="position:fixed;top:70px;width:100%;height:auto;background:#FFFFFF;color:gray;">
+				<span class="mui-col-xs-8">
+					<div class="mui-input-group" style="padding:2px 2px;height: 30px;">
+						<div class="mui-input-row">
+							<label style="height: 26px;line-height: 26px;padding:0 10px;margin:0;">开始时间 :</label>
+							<input id="bill_date" type="date" class="requiredInput" style="border:1px solid #E0E0E0;border-radius:10px;font-size: 12px;height:26px;">
+						</div>
+					</div>
+					<div class="mui-input-group" style="padding:2px 2px;margin-bottom:3px;height: 30px;">
+						<div class="mui-input-row lastInput">
+							<label style="height: 26px;line-height: 26px;padding:0 10px;margin:0;">结束时间 :</label>
+							<input id="bill_ndate" type="date" class="requiredInput" style="border:1px solid #E0E0E0;border-radius:10px;font-size: 12px;height:26px;">
+						</div>
+					</div>
+				</span>
+				<span class="mui-col-xs-2" id="search" style="margin:10px 15px;">
+					<button>查询</button>
+				</span>
+			</div>
+			<div id="jxs" class="mui-row" style="position:fixed;top:133px;width:100%;background:#20B2AA;padding:0;text-align: center;height: 30px;line-height: 30px;margin-left:0px;color:#fff;">
+				<span class="mui-col-xs-6" id="title1" style="text-align: left;padding-left: 10px;">-</span>
+				<span class="mui-col-xs-2" id="title2" style="text-align: center;">-</span>
+				<span class="mui-col-xs-2" id="title3" style="text-align: center;">-</span>
+				<span class="mui-col-xs-2" id="title4" style="">-</span>
+			</div>
+			
+		</header>
+	<div class="mui-content">
+	</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vrst316_list.html',
+				id: 'vrst316_list.html',
+				styles: {
+					top: '171px',
+					bottom: '0px',
+				}
+			}]
+		});
+		var searchName = '';
+		var searchCode = '';
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vrst316_list').pullRefresh().scrollTo(0,0,100)");
+		});
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom 	= self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo 		= self.userbillNo;
+			userName 		= self.userName;
+			loginCom 		= self.loginCom;
+			loginComName 	= self.loginComName;
+			privileges 		= vlUtils.getStorage("newPrivileges");
+			commonParams 	= self.commonParams;
+			//
+			// 更改header的显示信息
+			document.getElementById("header").innerHTML = self.pageTitle; 
+			var dates = new Date();
+			var year = dates.getFullYear();
+			var curtMonth = dates.getMonth() + 1;
+			var curtDay = dates.getDate();
+			if(String(curtMonth).length == 1){
+				curtMonth = "0" + curtMonth;
+			}
+			if(String(curtDay).length == 1){
+				curtDay = "0" + curtDay;
+			}
+			var curtYM = year +"-"+ curtMonth+"-01";
+			var curtYMD = year +"-"+ curtMonth+"-"+curtDay;
+			jQuery("#bill_date").val(curtYM);
+			jQuery("#bill_ndate").val(curtYMD);
+
+			// 点击查询按钮
+			document.getElementById("search").addEventListener("tap", function() {
+				var bdate = jQuery("#bill_date").val();
+				var edate = jQuery("#bill_ndate").val();
+				if(vlUtils.isnull(bdate) || vlUtils.isnull(edate)){
+					mui.toast("请先选择要查询的日期~");
+					return;
+				}
+				// 传值给子表
+				mui.fire(plus.webview.getWebviewById('vrst316_list.html'), 'changeReport', {
+					bdate: bdate,
+					edate: edate,
+					commonParams:commonParams
+				});
+			})
+			window.addEventListener('changeReportPlist', function(event) {
+				data = event.detail.data;
+				reportData(data);
+			});
+			function reportData(data, type) {
+				var newdataArr = {};
+				if(data.data.length != 0){
+					for(var k in data.data[0]) {
+						newdataArr[k.slice(0, 2)] = k.slice(2);
+					}
+					document.getElementById("title1").innerHTML = newdataArr["标题"];
+					document.getElementById("title2").innerHTML = newdataArr["参数"];
+					document.getElementById("title3").innerHTML = newdataArr["数量"];
+					document.getElementById("title4").innerHTML = newdataArr["金额"];
+				}else{
+					mui.toast("未查询到数据!")
+				}
+			} // reportData
+		}); //plusReady
+	</script>
+
+</html>

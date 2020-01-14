@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+		<title>获取验证码</title>
+		<script src="../js/mui.min.js"></script>
+		<link href="../css/common/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/fonts/iconfont.css" />
+
+		<style>
+			.mui-content{
+				padding: 80px 10px !important;
+			}
+			.mui-content .mui-input-group{
+				border-radius: 10px;
+				background:none ;
+				
+			}
+			.mui-content .mui-input-group .vl-card{
+				margin-bottom: 5px;
+				padding-right:5px;
+				padding-bottom:/*5px*/;
+				border-radius: 5px;
+				background: #FFFFFF;
+				display: block;
+			}
+			.mui-content .mui-input-group .vl-card.vl-hide{
+				display:none;
+			}
+			.vl-wrong[placeholder]{
+				background: #facbd9;
+				border-radius: 10px;
+			}
+			.vl-tips {
+				padding-left: 15px;
+				font-size: 12px;
+				color: #AAAAAA;
+			}
+			.vl-tips.vl-wrong {
+				color: crimson;
+			}
+			.vl-tips span{
+				color : crimson;
+			}
+			.mui-input-group:before,
+			.mui-input-group:after,
+			.mui-input-row:after{
+				height:0;
+			}
+			input[placeholder]{
+				font-size:14px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:70px; background: #F7F7F7;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="line-height: 70px;"></a>
+			<h1 class="mui-title" style="line-height:90px;">校验手机号</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="vl-card vl-card-verify-code">
+					<div class="mui-input-row">
+						<label>手机号：</label>
+						<input id="J_acctountNum" type="number" placeholder="请输入您的手机号">
+					</div>
+					<div class="mui-input-row mui-row" style="border-bottom:1px solid #f0f0f0;">
+						<div class="mui-col-xs-9" style="">
+							<label style="width:48%;">短信验证码：</label>
+							<input class="test" id="securityCode" type="number" placeholder="输入验证码" style="width:52%;" />
+						</div>
+						<div class="mui-col-xs-3">
+							<span class="mui-btn mui-btn-primary" id="J_obtainCode" canClick="true" style="margin:1px 0;padding:0;width:100%;height:35px;line-height:35px;">获取验证码</span>
+						</div>
+					</div>
+				</div>
+				<div class="vl-card vl-card-password vl-hide" id="J_newUser">
+				<!--<div class="vl-card vl-card-password" id="J_newUser">-->
+					<div class="mui-input-row">
+						<label>姓名：</label>
+						<input type="text" id="J_userName" placeholder="请输入您的姓名">
+					</div>
+					<div class="mui-input-row">
+						<label>密码：</label>
+						<input type="password" class='' id="J_firstPw" placeholder="请设置您的密码">
+					</div>
+					<div class="mui-input-row">
+						<label>确认密码:</label>
+						<input type="password" id='J_secondPw' placeholder="请再次输入密码" />
+					</div>
+					<div class="vl-tips"><span>* </span>密码至少6位，支持数字、字母、下划线</div>
+				</div>
+				<div class="mui-button-row confirm" style="margin:10px;">
+					<button type="button" class="mui-btn mui-btn-primary mui-btn-block" id="J_confirmBtn" data-checkUser="true" style="height: 30px;margin:0;padding:5px;font-size:14px;">确认</button>
+				</div>
+			</form>
+		</div>
+	</body>
+
+</html>
+<script src="../js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/md5.js"></script>
+<script>
+	var $$ = jQuery.noConflict();
+	var pageUrl=null;
+	var pageId=null;
+	var paramColl = null;
+	mui.plusReady(function() {
+		// 接收传值
+		var self = plus.webview.currentWebview(),
+			paramColl = self.paramColl,
+			obtainCode = document.getElementById("J_obtainCode"),
+			confirmBtn = document.getElementById("J_confirmBtn"),
+			acctNum = document.getElementById("J_acctountNum"),
+			newUserCard = document.getElementById('J_newUser'), // 注册卡片
+			ipt_userName = document.getElementById("J_userName"), // 用户名
+			ipt_firstPw = document.getElementById("J_firstPw"),	// 密码1
+			ipt_secondPw = document.getElementById("J_secondPw"), // 密码2
+			box_tips = document.getElementsByClassName("vl-tips")[0],
+			onlyCode = null,
+			qrDataTextArr = paramColl && paramColl.qrData && paramColl.qrData.bill_text && paramColl.qrData.bill_text.split("&") || [];
+		bindEvent(); // 
+		if(paramColl.fromPage === "scan_signup.html"){
+			var oldBack = mui.back;
+			var detailPage = mui.preload({
+				url:'scan_signup.html',
+				id:'scan_signup.html'
+			});
+		    mui.back = function(){
+		    	mui.fire(detailPage,'restartScan',{
+					id:"goback"
+				});
+				mui.openWindow({
+					id:'scan_signup.html'
+				});
+				var pageid = plus.webview.getWebviewById(pageId);
+				if(!VlUtils.isnull(pageid)){
+					plus.webview.hide(pageid);
+					plus.webview.close(pageid);
+				}
+				plus.webview.currentWebview().hide();
+				plus.webview.currentWebview().close();
+		    }
+		}
+		function bindEvent(){
+			obtainCode.addEventListener("tap", getCode, false);//点击获取验证码
+			confirmBtn.addEventListener("tap", confirm, false);//点击确认
+			jQuery("#J_firstPw").blur(pwReg);
+		}
+		
+		function getCode(){//TODO
+			var canClick = obtainCode.getAttribute("canClick");
+			if(canClick == "true"){
+				var acctountNum = acctNum.value;
+				if(acctountNum == "") {
+					alert("请先输入手机号");
+					return;
+				}
+				if(acctountNum.length != 11) {
+					alert("您的账号不符合规则");
+					return;
+				}
+				var obtainCodeOpt = {
+					port: 'Login/SMSValidation', // "getMsgC"
+					data: {
+						tel: acctountNum
+					},
+					fn: sendMsg()
+				}
+				VlAjax.post({"port" : "getMsgC", "headers" : "json2"}, obtainCodeOpt.data);
+				// VlAjax.post({"port" : "getMsgC", "headers" : "json"}, obtainCodeOpt.data);
+				// ajax(obtainCodeOpt);
+				//账号
+				obtainCode.setAttribute("canClick","false");
+				window.clearInterval(timer);
+				var n = 30;
+				var timer = window.setInterval(function(){
+					n--;
+					if(n>=0){
+						obtainCode.innerHTML = n+ "s";
+					}else{
+						obtainCode.innerHTML = "获取验证码";
+						obtainCode.setAttribute("canClick","true");
+						window.clearInterval(timer);
+					}
+				},1000);
+			}else{
+				plus.nativeUI.toast("请勿频繁操作~",{"verticalAlign":"top"});
+			}
+		}
+		function sendMsg(){
+			mui.toast("短信验证码已发送");
+		}
+		function confirm(){
+			var VWCode = document.getElementById("securityCode").value;
+			var checkState = confirmBtn.getAttribute("data-checkUser"); // 
+			
+			var acctountNum = acctNum.value;
+			VWCode = parseInt(VWCode);
+			if(VWCode == "" || acctountNum == "") {
+				alert("请输入验证码信息");
+				return;
+			}
+			if(checkState === "true"){
+				var comfirmOpt = {
+					// port: 'Login/Inspect', // "validMsgC"
+					port: 'validMsgC', // "Login/Inspect"
+					data: {
+						tel: acctountNum,
+						code: VWCode
+					}
+				}
+				VlAjax.post({"port" : "validMsgC", "headers" : "json2", "isFirst" : acctountNum}, comfirmOpt.data, sCBValidMsgC);
+				// ajax(comfirmOpt,sCBValidMsgC);
+				
+			}else if(checkState === "false"){
+				checkPW();
+			}
+		}
+		
+		function closePage(pageId){
+			if(!pageId){return;}
+			var pageid = plus.webview.getWebviewById(pageId);
+			if(!VlUtils.isnull(pageid)){
+				plus.webview.hide(pageid);
+				plus.webview.close(pageid);
+			}
+		}
+		function sCBValidMsgC(data, acctNum){
+			mui.toast("验证码校验成功～");
+			var checkUserParam = { // 默认我的客户001
+				name: 'msvr',
+				bill_task	: 'VR_vdvc001_query_01',
+				bill_bid	: acctNum,
+				bill_title  : "",
+				currentPage	: 1,
+				pageSize		: 1,
+				paramText	: ''
+			}
+			// 默认查询
+			VlAjax.post({"port":"activeSkipLogon", "headers" : "json"}, checkUserParam, sCBCheckUser);
+		}
+		function sCBCheckUser(data,type){
+			if(data.data.length != 0) {
+				mui.toast("搜索完成，正在加载...");
+				for(var i = 0; i < data.data.length; i++) {
+					var newdataArr = {};
+					for(var k in data.data[i]) {
+						newdataArr[k.slice(0, 2)] = data.data[i][k];
+					}
+					openTargetPage(paramColl,acctNum.value,newdataArr["标题"],newdataArr["内容"]);
+				}
+			} else { // 如果没有长度说明没有数据，提示没有数据 // 不是我们的用户，需要注册
+				plus.nativeUI.toast("您还未注册，请先注册～", {
+					'verticalAlign': "top"
+				});
+				newUserCard.className = 'vl-card vl-card-password';
+				onlyCode = VlTools.getBno("vdvc001");
+				confirmBtn.setAttribute("data-checkUser","false");
+			}
+		}
+		function pwReg(){
+			var str = jQuery('#J_firstPw').val();
+			var reg = /\w{6,}/;
+			var checkResult = reg.test(str);
+			if (!checkResult) {
+				ipt_firstPw.className = 'vl-wrong';
+				box_tips.className = 'vl-tips vl-wrong';
+			}else{
+				ipt_firstPw.className = '';
+				box_tips.className = 'vl-tips';
+			}
+		}
+		function checkPW(){
+			var userName = ipt_userName.value;
+			var firstPw = ipt_firstPw.value;
+			var secondPw = ipt_secondPw.value;
+			if(userName === "" || firstPw === "" || secondPw == ""){
+				alert("请先输入完整信息后再提交～");
+				return;
+			}
+			if(firstPw !== secondPw){
+				alert("两次密码录入不一致，请重新录入");
+				return;
+			}
+			var nowPw = hex_md5(firstPw);
+			var ndate = new Date(); 
+			var bdate = VlDate.get(ndate, "_ymdhms");
+			// var Params = JSON.parse(JSON.stringify(sendTaskData));
+			var p = {
+				bill_task : 'VE_insert_vdvc001',
+				bill_no : onlyCode,// 单据号
+				bill_user : qrDataTextArr[1], // 制单人？
+				bill_com : qrDataTextArr[10], // 
+				bill_date : bdate,	// 制单时间
+				bill_name : userName,	// 用户姓名
+				bill_context : nowPw,	// 密码？
+				// bill_context : nowPw,	// 密码？
+				bill_bid : acctNum.value, // 手机号
+			}
+			VlAjax.post({"port":"sendTaskSkipLogon"}, p, regBack);
+
+		}
+		function regBack(){
+			mui.toast("提交成功~");
+			var userName = ipt_userName.value
+			openTargetPage(paramColl,acctNum.value,onlyCode,userName);
+		}
+		function openTargetPage(paramColl,acctNum,userno,username){
+			var uname = username || "";
+			closePage(paramColl.pageId);// 关闭页面
+			mui.openWindow({
+				url		: paramColl.pageUrl,
+				id		: paramColl.pageId,
+				createNew	: true,
+				extras:{
+					paramColl 	: paramColl,
+					linktel		: acctNum,
+					userno		: userno,
+					username		: uname
+				}
+			});
+		}
+		function ajax(opt,fun){
+			mui.ajax(systemURL + opt.port, {
+				data: opt.data,
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				async: true,
+				beforeSend: function() {
+					checkNetState(); // 检查网络链接状态
+				},
+				timeout: 10000, //超时时间设置为10秒
+				headers: {
+					'contentType': "application/json;"
+				},
+				success: function(data) {
+
+					if(data.code === "0" ) {
+						if(fun){
+							
+							fun(opt.data.tel);
+						}
+					}else if(data.code === "1" && data.error_code === 1) {
+						mui.toast(data.error_description);
+					}else {
+						ajaxCode1(data.error_code, data.error_description, '../login.html');
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					console.log(xhr.responseText)
+					console.log(JSON.stringify(xhr));
+					console.log(errorThrown);
+					console.log(type);
+				}
+	
+			});
+		}
+	})// plusReady
+</script>

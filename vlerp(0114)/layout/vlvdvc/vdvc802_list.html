@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>照片</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css"/>
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+	</head>
+	<body>
+	    <header class="mui-bar mui-bar-nav" id='head'>	
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">选择照片</h1>
+				<a class="mui-icon mui-icon-camera   mui-pull-right"  id="imgVdvc801"></a>	
+	    </header>
+				
+		</header> 
+		   	<nav class="mui-bar mui-bar-tab">
+			<button type="button"  id="toBtn" class="mui-btn mui-btn-primary bottomBton">提交</button>
+		   </nav>
+		   <div class="mui-content">
+		       <ul class="mui-table-view">
+	   				<li class="mui-table-view-cell ">
+	   					<a href="#">
+	   						<label class="" style="display: inline-block;width: 20%;">制单人:</label>
+	   				        <input type="text" id="makeUser"   readonly="readonly" style="width: 80%;"/>
+	   					</a>
+	   				</li>
+			   	</ul>	
+			   	 <ul class="mui-table-view">
+	   				<li class="mui-table-view-cell ">
+	   					<a href="#">
+	   						<label class="" style="display: inline-block;width: 20%;">制单时间:</label>
+	   				        <input type="text"  id="makeTime"  readonly="readonly" style="width: 80%;"/>
+	   					</a>
+	   				</li>
+			   	</ul>
+			   	<!--照片图片--> 
+			   	<div id="divImg" style="width: 100%;padding: 0 3% 4px;"></div>
+			   	<!--<form class="mui-input-group"  id="imgVdvc801">
+			   		<a href="vdvc801_list.html">
+			   			<ul class="mui-table-view">
+			   				<li class="mui-table-view-cell ">
+			   					<a class="mui-navigate-right" href="#">
+			   						<label class="">选择照片</label>
+			   					</a>
+			   				</li>
+			   			</ul>
+			   		</a>	
+			   	</form>-->
+		   </div>
+	</body>
+<script src="../../js/mui.min.js"></script>
+
+<script src="../../js/jquery-2.1.0.js"></script>
+<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+ <script type="text/javascript">  
+        mui.plusReady(function(){
+	    	var date = getDate();
+	    	var ondlyCode = getDataCode("vdvc");
+	    	var user = JSON.parse(vlUtils.getStorage('user'));
+	    	var userName = user.linkbd_username;
+
+			var toBtn = document.getElementById("toBtn");
+			var toBtn = document.getElementById("imgVdvc801");
+			
+			//点击上传图片
+			toBtn.addEventListener("tap",function(){
+			});
+			imgVdvc801.addEventListener("tap",function(){
+		          callAndiodTab()
+			});
+			$$("#makeUser").val(userName);
+			$$("#makeTime").val(date);
+			
+			//调用原生tab 
+			function callAndiodTab(){
+				var a = [{
+					title: "拍照"
+				}, {
+					title: "从手机相册选择"
+				}];	plus.nativeUI.actionSheet({
+					title: "选择照片",
+					cancel: "取消",
+					buttons: a
+				}, function(b) {
+					switch (b.index) {
+						case 0:
+							break;
+						case 1:
+							callPhotograph();
+							break;
+						case 2:
+							galleryMaximum();
+							break;
+						default:
+							break
+					}
+				})	
+			}
+			
+			//点击调用手机相册跟照相机
+			function  callPhotograph(){
+				var cmr = plus.camera.getCamera();
+				//  拍照的大小
+				var aRes = cmr.supportedImageResolutions;
+				var res = aRes[aRes.length - 1]; // 默认取最小的
+				//获取照片的格式
+				var fmt = cmr.supportedImageFormats[0];
+				cmr.captureImage( function( path ){
+						var imgText= " ";
+					     plus.io.resolveLocalFileSystemURL(path, function(entry) {  
+					     	var paths = entry.fullPath;
+					     	imgText = '<img  class="content-image"  src="'+paths+'"/>'
+			    	        $$("#divImg").html(imgText);
+				        }, function(e) {  
+//				            concole.log(e.message);  
+				        });  
+					},
+					function( error ) {
+//						concole.log( "Capture image failed: " + error.message );
+					},
+					{resolution:res,format:".png",filename: "_documents/Vlbfile/"+ondlyCode}
+				);
+			}
+			
+			
+			// 保存图片到相册中 
+			function savePicture(ondlyCode) {
+				var imgUrl = "_documents/Vlbfile/"+ondlyCode+".png";
+				plus.gallery.save( imgUrl, function () {
+//					concole.log( "保存图片到相册成功" );
+				},function(e){
+//					concole.log( e.Message + "失败" );
+				});
+			}
+			
+			
+			// 从相册中选择多张图片 
+			function galleryMaximum(){
+				// 从相册中选择图片
+			    plus.gallery.pick( function(e){
+			    	var imgText= " ";
+			    	for(var i in e.files){
+			    		imgText = '<img  style="width: 30%; padding-right: 1%; height: 100px;" src="'+e.files[i]+ '"/>'
+			    		$$("#divImg").append(imgText);
+			    	}
+			    }, function ( e ) {
+			    },{filter:"image",multiple:true,maximum:3,system:false});// 最多选择3张图片
+			}
+			
+			
+		});
+
+		
+		
+    </script>  
+</html>

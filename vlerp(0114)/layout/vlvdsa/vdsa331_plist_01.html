@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<div class="mui-title plistTitle">
+				<p id="TO">活动列表</p>
+				<h1 id="header"></h1>
+			</div>
+			<a class="mui-icon mui-icon-plusempty mui-pull-right" id="toEdit" style="display: none;"> </a>
+			<div class="mui-row navBar topNavRow" id="topNav">
+				<p class="mui-col-xs-6 topNav active" data-type="001">全部</p>
+				<p class="mui-col-xs-6 topNav" data-type="004">已失效</p>
+			</div>
+		</header>
+		<div class="mui-content">
+
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var teamBillCom = null;
+		var teamBillComName = null;
+		var userbillNo = null;
+		var userName = null;
+		var loginCom = null;
+		var loginComName = null;
+		var privilege = null;
+		var fromPage = null;
+		var fbill_no = null;
+		var BreadcrumbNav = [];
+		var BreadcrumbNavName = [];
+		var ROOTfbillNo = "";
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdsa331_list_01.html',
+				id: 'vdsa331_list_01.html',
+				styles: {
+					top: '110px',
+					bottom: '20px',
+				}
+			}]
+		});
+
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vdsa331_list_01').pullRefresh().scrollTo(0,0,100)");
+		});
+
+
+		mui.plusReady(function() {
+			//接收上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no = self.fbill_no; // 3.fbill_no是
+			loginCom = self.loginCom; // 4.登录单位代码
+			loginComName = self.loginComName; // 5.登录单位名称
+			userbillNo = self.userbillNo; // 6.登录人的代码
+			userName = self.userName; // 7.登录人的姓名
+			privileges = self.privileges; // 8.当前的权限是
+			fromPage = self.fromPage; // 9.从哪个页面来
+			// 更改header的显示信息
+			document.getElementById("header").innerHTML = teamBillComName; 
+			
+			// nav
+			mui("#topNav").on("tap", "p", function() {
+				var self = this;
+				jQuery(this).addClass("active").siblings().removeClass("active");
+				//触发详情页面的newsId事件
+				mui.fire(plus.webview.getWebviewById('vdsa331_list_01.html'), 'differentStatesRefresh331list01', {
+					active: self.getAttribute("data-type")
+				});
+			})
+		});	// TODO
+	</script>
+</html>

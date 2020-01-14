@@ -1,0 +1,9 @@
+[
+{"bill_no":"set01","bill_theme":"个人资料","bill_context":"weilian","bill_pic":"headImg.jpg","link_lnext":"account"},
+{"bill_no":"set02","bill_theme":"我的单位","bill_context":"","bill_pic":"vdhr134_b.png","link_lnext":"vdvc001_list"},
+{"bill_no":"set03","bill_theme":"我的地址","bill_context":"","bill_pic":"vdhr134_b.png","link_lnext":""},
+{"bill_no":"set04","bill_theme":"我的发票信息","bill_context":"","bill_pic":"vdhr134_b.png","link_lnext":""},
+{"bill_no":"set05","bill_theme":"新消息通知","bill_context":"","bill_pic":"vdhr134_b.png","link_lnext":"notifications"},
+{"bill_no":"set06","bill_theme":"隐私","bill_context":"","bill_pic":"vdhr134_b.png","link_lnext":"privacy"},
+{"bill_no":"set07","bill_theme":"通用","bill_context":"","bill_pic":"vdhr134_b.png","link_lnext":"general"}
+]

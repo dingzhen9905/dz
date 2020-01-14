@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			input[placeholder]{
+				font-size:12px;
+			}
+			.bottomLine{
+				border-bottom: 1px solid #8f8f94;
+				position:relative;
+				margin: 25px 50px;
+			}
+			.end{
+				position:absolute;
+				top:-8px;
+				left:32%;
+				background: #efeff4;
+				padding:0 10px;
+				z-index:111;
+				font-size: 10px;
+			}
+			.mui-input-group:after, .mui-input-group:before{
+				height: 0;
+			}
+			.mui-input-row:hover {
+				background: aliceblue;
+			}
+			.scontent{
+				color:#20B2AA;
+			}
+		</style>
+	</head>
+	<body> 
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id='head' style="height: 75px;" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>	
+			<h1 class="mui-title headText" id="header">出库单查询</h1>
+		</header>
+		<div class="mui-content" style="margin-top:30px">
+			<div class="mui-input-group" style="margin: 10px;border-radius: 10px;">
+			    <div class="mui-input-row">
+			        <label>查询内容：</label>
+			        <input id="searchCode" type="text" class="mui-input-clear" placeholder="请输入单号/箱码">
+			    </div>
+			    <div class="mui-button-row">
+			   		<button id="search" type="button"  class="mui-btn mui-btn-primary mui-btn-outlined" data-loading-text="提交中" style="width:60%;">确认</button>
+				</div>
+			</div>
+			<div class="mui-card" style="border-radius: 10px;">
+				<!--页眉，放置标题-->
+				<div class="mui-card-header">查询内容:<span id="scode"></span></div>
+				<!--内容区-->
+				<div class="mui-card-content" style="padding: 10px;">
+					<div class="mui-row">
+						<span class="mui-col-xs-3 stitle">上传时间:</span>
+						<span id="bdate" class="mui-col-xs-9 scontent"> </span>
+					</div>
+					<div class="mui-row">
+						<span class="mui-col-xs-3 stitle">经销商:</span>
+						<span id="boppon" class="mui-col-xs-9 scontent"> </span>
+					</div>
+				</div>
+				<!--页脚，放置补充信息或支持的操作-->
+				<div id="result" class="mui-card-footer">尚未查询</div>
+			</div>
+			<div class="bottomLine" style="">
+				<p class="end" style="">没有更多啦~！</p>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../js/index.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		var $$ = jQuery.noConflict();
+        mui.plusReady(function() {
+        	// 获取上个页面传过来的参数
+        	var self = plus.webview.currentWebview();
+			var teamBillCom 	= self.teamBillCom;
+			var teamBillComName = self.teamBillComName;
+			var userbillNo 		= self.userbillNo;
+			var loginCom 		= self.loginCom;
+			var loginComName 	= self.loginComName;
+			var fromPage 		= self.fromPage;
+			var business 		= self.business;
+			var privileges 		= self.privileges;
+
+			document.getElementById("search").addEventListener("tap",function(){
+				var code = document.getElementById("searchCode").value;
+				if (code === ""){
+					mui.alert("请先填写所有查询条件!");
+					return;
+				}
+				document.getElementById("scode").innerHTML = code;
+				// 
+				var params = {
+					name		: 'msvr',
+					bill_task 	: 'VR_vdst212_query_00',
+					bill_com 	: teamBillCom,
+					bill_id 	: code,
+					bill_user	: userbillNo,
+					currentPage	: 1,
+					pageSize	: 10,
+					paramText	: ""
+				}
+				// 查询
+				plus.nativeUI.showWaiting("正在查询数据...");
+				rqsDataAjax(params, '/Find/Ddata/activity', reportData, '../login.html',false);
+			})
+			function reportData(data,type){
+				if(data.code == 0) {
+					var dataInfo = [];
+					if(data.data.length != 0) {
+						var text = '';
+						for(var i = 0; i < data.data.length; i++) {
+							var newdataArr = {};
+							for(var k in data.data[i]) {
+								newdataArr[k.slice(0, 2)] = data.data[i][k];
+							}
+							dataInfo.push(newdataArr);
+						}
+	//					// 流程
+						document.getElementById("bdate").innerHTML = dataInfo[0]["日期"];
+						document.getElementById("boppon").innerHTML = dataInfo[0]["标题"];
+						document.getElementById("result").innerHTML = '查询结束~';
+						document.getElementById("result").style.color = '#18B4ED';
+					}else{
+						document.getElementById("bdate").innerHTML = "";
+						document.getElementById("boppon").innerHTML = "";
+						document.getElementById("result").innerHTML = '未查询到相关结果~';
+						document.getElementById("result").style.color = 'crimson';
+					}
+					plus.nativeUI.closeWaiting(); 
+				}
+				if(data.code == 1) {
+					plus.nativeUI.closeWaiting();
+					ajaxCode1(data.error_code,data.error_description,urlPath);
+				}
+			}
+        });  // plusready
+ 				
+    </script>  
+</html>

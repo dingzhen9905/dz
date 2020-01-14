@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<style>
+
+			#icon a{
+				color:white;height:30px;line-height: 60px;width:50px;font-size: 30px;display: inline-block;margin:0;padding:0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head" style="height:140px;">
+			<a class="mui-action-back mui-pull-left mui-icon mui-icon-left-nav" id="goBack"></a>
+			<div class="mui-title plistTitle" >
+				<p  id="title">商城采购</p>
+				<h1 id="header"></h1>	
+			</div>
+			<div style="float:right;margin:0;margin-right:10px;padding:0;" id="icon">
+				<a id="toList" data-href="vdeb212_plist.html" class="mui-icon mui-icon mui-icon mui-icon mui-icon-list" style=""></a>
+				<a id="toEdit" data-href="vdeb211_list.html" class="icon iconfont icon-iconset0308 car" style="position:relative;"></a>
+			</div>
+			<div class="mui-row navBar topNavRow" id="topNavOut"></div>
+			<div class="mui-row searchBar" style="">
+				<div class="mui-col-sm-10 mui-col-xs-10">
+					<div class="mui-input-row mui-search">
+						<input type="search" id="searchBox" class="mui-input-clear" onkeyup="enterSearch(event)" placeholder="">
+					</div>
+				</div>
+				<div class="mui-col-sm-2 mui-col-xs-2">
+					<button type="button" id="searchBtn" class="mui-btn">搜索</button>
+				</div>
+			</div>
+		</header>
+
+		<div class="mui-content">
+
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript"></script>
+	<!-- <script src="../../js/arttmpl.js" type="text/javascript"></script> -->
+	<script type="text/javascript">
+		var teamBillCom = null,
+			teamBillComName = null,
+			userbillNo = null,
+			loginCom = null,
+			loginComName = null,
+			fbill_no = null,
+			fromPage = "",
+			user,
+			pageInit = {
+				"经销商" : [{
+					"type" : "001",
+					"name" : "直接采购",
+					"task" : "VR_vdsa210_find_05",
+					"class"	: "mui-col-xs-6 topNav active"
+				},{
+					"type" :"002",
+					"name" : "订货点法采购",
+					"task"	: "VR_vdvc512_query_01",
+					"class"	: "mui-col-xs-6 topNav"
+				}],
+				 "终端" : [{
+				 	"type" : "001",
+					"name" : "直接采购",
+				 	"task" : "VR_vdsa210_find_03",
+					"class" : "mui-col-xs-12 topNav active" 
+				 }] 
+			}
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdeb511_list.html',
+				id: 'vdeb511_list.html',
+				styles: {
+					top: '140px',
+					bottom: '0px',
+				}
+			}]
+		});
+
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vdeb511_list').pullRefresh().scrollTo(0,0,100)");
+		});
+		
+		mui.plusReady(function() {
+			// console.log(new Date().getTime())
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			userName = self.userName;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			fromPage = self.fromPage;
+			fbill_no = self.fbill_no;
+			fromSale = self.fromSale;
+			privileges = self.privileges;
+			user = JSON.parse(vlUtils.getStorage('user'));
+			renderTab(pageInit[user.com_linkvd_userCom]);
+			document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+		
+			document.getElementById("toEdit").addEventListener("tap", openPage, false);
+			document.getElementById("toList").addEventListener("tap", openPage, false);
+			document.getElementById("searchBtn").addEventListener("tap",eventSearch,false);
+			document.addEventListener('reload', eReload, false); 
+			mui("#topNavOut").on("tap", "p", function(e) { eaTapNav(e, this);});
+			
+		}); // plusReady
+		
+		function eReload(){
+			jQuery('#topNavOut p').eq(0).addClass("active").siblings().removeClass("active");
+		}
+		function renderTab(data){
+			var innerHtml = "";
+			for(var k in data){
+					innerHtml += '<p class="'+data[k]["class"]+'" data-task="'+data[k]["task"]+'"  data-type="'+data[k]["type"]+'">'+data[k]["name"]+'</p>';
+			}
+			document.getElementById("topNavOut").innerHTML = innerHtml;
+		}
+		function eaTapNav(e, self){
+			jQuery(self).addClass("active").siblings().removeClass("active");
+			change(self);
+		}
+		function enterSearch(e) {
+			if(e.keyCode == 13) {eventSearch(e)}
+		}
+		function eventSearch(){
+			document.getElementById("searchBox").blur();
+			change(this);
+		}
+		function change(self){
+			var _active = jQuery('#topNavOut').find("p.active")
+				_type = _active.attr("data-type"),
+				_task = _active.attr("data-task"),
+				activeSearch = document.getElementById("searchBox").value;
+			mui.fire(plus.webview.getWebviewById('vdeb511_list.html'), 'differentStatesRefresh511list', {
+				activeType: _type,
+				activeTask: _task,
+				activeSearch: activeSearch,
+				activePort  : 'active'
+			});
+		}
+					// 
+		function openPage(){
+			var li = this;
+			var dataHref = li.getAttribute("data-href"); // 没有连接即为未开发
+			if(dataHref == "" || dataHref == undefined || dataHref == null){
+				plus.nativeUI.toast("～敬请期待～", {
+					'verticalAlign': "top"
+				});
+				return;
+			}
+			var tarPage = plus.webview.getWebviewById(dataHref.slice(8));
+			if(!vlUtils.isnull(tarPage)){
+				plus.webview.hide(tarPage);
+				plus.webview.close(tarPage);
+			}
+			var urlarr = dataHref.split("/");
+			// 打开页面
+			mui.openWindow({
+				url:dataHref,
+				id: urlarr[urlarr.length-1],
+				createNew:true,
+				extras:{
+					teamBillCom 		: teamBillCom ,
+					teamBillComName : teamBillComName,
+					userbillNo 		: userbillNo,
+					userName 		: userName,
+					loginCom 		: loginCom,
+					loginComName 	: loginComName,
+					privileges 		: privileges,
+//					userRole			: userRole,
+					fbill_no			: fbill_no,
+					fromPage			: "vdeb511_list.html",
+					flagNew			: "Y"
+				},
+			});
+
+		}
+	</script>
+</html>

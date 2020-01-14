@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/icons-extra.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+
+		<!--三级联动-->
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			body {
+				font-size: 12px;
+				color: #666;
+			}
+			
+			ul,
+			li {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			ul li {
+				list-style: none;
+			}
+			
+			.list_font {
+				color: #000000;
+				font-size: 11px;
+				line-height: 12px;
+				height: 12px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+			
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+			
+			.detail {
+				border-bottom: 1px solid #20b2aa;
+				margin-bottom: 10px;
+			}
+			
+			.detail li {
+				border-bottom: 1px dashed #eee;
+				height: 25px;
+				line-height: 25px;
+				padding: 0px 15px;
+				font-size: 11px;
+				color: #242424;
+			}
+			.outLi {
+				margin-bottom: 10px;
+			}
+			
+			.fs {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			.fs p {
+				font-size: 10px;
+				margin: 0px !important;
+				padding: 0px !important;
+				text-align: left;
+				color: #000;
+			}
+			
+			.fs p span {
+				color: #20B2AA;
+				margin-left: 5px;
+			}
+			
+			.mui-input-group:after {
+				background-color: #c8c7cc !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:65px;background-color:;">
+			<a class="mui-icon mui-icon-left-nav mui-pull-left mui-action-back" id="goBack" style="color:white;background-color:;overflow: hidden;"></a>
+			<h1 class="mui-title" id="header" style="color:white;background-color:;width:90%; text-align:;">库存帐管理</h1>
+		</header>
+		<div class="mui-content" style="padding-top:70px;">
+			<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="background: ">
+			</ul>
+
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var bill_user;
+		var detailInfo;
+		var billId;
+		mui.plusReady(function() {
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no = self.fbill_no; // 3.fbill_no是
+			loginCom = self.loginCom; // 4.登录单位代码
+			loginComName = self.loginComName; // 5.登录单位名称
+			userbillNo = self.userbillNo; // 6.登录人的代码
+			userName = self.userName; // 7.登录人的姓名
+			privileges = self.privileges; // 8.当前的权限是 
+			fromPage = self.fromPage; // 9.从哪个页面来	
+			detailInfo = self.detailInfo;
+			billId = detailInfo.bill_id;
+
+			// 点击返回按钮
+			document.getElementById("goBack").addEventListener("tap", function() {
+				var oldBack = mui.back;
+				mui.back = function() {
+					var webview = plus.webview.getWebviewById('vdac301_plist.html');
+					webview.show();
+				}
+				mui.back();
+			})
+
+			//默认查询11月份 
+			var dates = new Date();
+			//获取当前月份
+//			var Month = dates.getMonth() + 1; //0409注释
+			var Month = Number(detailInfo.bill_date.slice(6,7));
+			//获取当前年份
+			var year = dates.getFullYear();
+			var dateInfo = year * 100 + Month;
+			//年份×100+月份=201703
+			//TODO
+			queryparmas = {
+				name: 'vdac301',
+				bill_com: teamBillCom,
+				bill_id: billId,
+				fbill_no: "",
+				//				bill_title: "商业库存",
+				fiscal_Bperiod: dateInfo, // 开始日期
+				fiscal_Eperiod: dateInfo, // 截止日期 
+				currentPage: 1,
+				pageSize: 31,
+				paramText: ""
+			}
+			searchAjax(queryparmas);
+			//结存=本期入-本期出 + 期初
+
+		});
+
+		//发送ajax
+		function searchAjax(queryparmas) {
+			mui.ajax(systemURL + '/Account/findStorage', {
+				data: queryparmas,
+				beforeSend: function() {
+					checkNetState(); // 检查网络链接状态
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 60000, //超时时间设置为10秒；
+				contentType: "application/json; charset=utf-8",
+				success: function(data) {
+					if(data.code == 0) {
+						var datas = data.data;
+						pager = data.page;
+						var text = " ";
+						if(datas.length != 0) {
+							var contList = document.getElementById("contList");
+							var comImgid = vlUtils.uuid('comImg', 4, 10);
+							text += '<li class="outLi" style="background-color:;padding-bottom: 0px;padding-bottom: 0px;" >';
+							text += '<div class="mui-slider-cell  mui-slider-handle " style="background: ;padding:10px 20px 3px 15px;">';
+							text += '<div class="mui-row">';
+							text += '<div class="mui-col-xs-2 mui-row" style="text-align: left;">';
+							text += '<img class="vdvc204 mui-col-xs-11" src="../../images/icon/default.png" id="' + comImgid + '" />';
+							text += '</div>';
+							text += '<div class="mui-col-xs-6 mui-row">';
+							text += '<div style="font-size:14px;color:#000000;margin-top:10px;" id="bill_name">商品：<span>' + detailInfo.bill_name + '</span></div>';
+							text += '<div><span>入库:' + detailInfo.qty_Iacct + '</span><span style="margin-left:5px;">出库:' + detailInfo.qty_Oacct + '</span><span style="margin-left:10px;">期初:' + detailInfo.qty_Bacct + '</span><span style="margin-left:10px;">结存:' + detailInfo.qty_Eacct + '</span></div>';
+							text += '</div>';
+							text += '<div class="mui-col-xs-4 mui-row list_three" style="background: ;">';
+							text += '<p class="list_font mui-col-xs-12" style="text-align:right;margin-bottom:5px;margin-top:10px;" id="bill_date">' + detailInfo.bill_date + '</p>';
+							text += '<p class="list_sts mui-col-xs-12" style="width:auto;padding:1px 5px;float: right;margin-bottom:5px;" id="bill_task">状态</p>';
+							text += '</div>';
+							text += '</div>';
+							text += '</div>';
+							text += '<div class="mui-input-group" id="" style="padding:5px 12px 0px 10px;margin-bottom:5px;">';
+							text += '<div class="mui-row" style="width:100%;background:#20B2AA;">';
+							text += '<span class="mui-col-xs-3" id="" style="text-align:center;">时间</span>';
+							text += '<span class="mui-col-xs-3" style="text-align: center;"> 业务说明</span>';
+							text += '<span class="mui-col-xs-3" style="text-align:center;">数量</span>';
+							text += '<span class="mui-col-xs-3" style="text-align:center;">原始单据</span>';
+							text += '</div>';
+							text += '</div>';
+							for(var i = 0; i < datas.length; i++) {
+								text += '<ul class="detail" style="background-color:;border-top: 1px solid #eee;padding: 0px 10px;">';
+								text += '<li class="mui-table-view-cell mui-checkbox mui-left mui-row" style="padding-left:10px;" data-row=\'' + JSON.stringify(datas[i]) + '\'>';
+								text += '<span class="mui-col-xs-3" style="text-align:center;" id="">' + datas[i].bill_date + '</span>';
+								text += '<div class=" mui-col-xs-9" style="padding-left: 28px;">';
+								text += '<div class="mui-row fs">';
+								if(datas[i].bill_task == "O") {
+									datas[i].bill_task = "出库"
+								}
+								if(datas[i].bill_task == "I") {
+									datas[i].bill_task = "入库"
+								}
+								text += '<p class="mui-col-xs-4" style="color:red;" id="">' + datas[i].bill_task + '</p>';
+								text += '<p class="mui-col-xs-4" style="text-align:center;" id="">' + datas[i].node_qty + '</p>';
+								text += '<p class="mui-col-xs-4" style="text-align:center;" id="">' + datas[i].fbill_no + '</p>';
+								text += '</div>';
+								text += '</div>';
+								text += '</li>';
+
+								text += '</ul>';
+							}
+							text += '</li>';
+							vlUtils.downloadicon(detailInfo.bill_id, comImgid);
+							contList.innerHTML = text;
+
+						} else {
+							document.getElementById("showHint").style.display = "block";
+							if(openlock) {
+								document.getElementById("showHint").style.display = "block";
+							} else {
+								document.getElementById("contList").innerHTML = '';
+							}
+
+						}
+					}
+					if(data.code == 1) {
+						ajaxCode1(data.error_code,data.error_description,'../login.html');
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					console.log(xhr.responseText)
+					console.log(errorThrown);
+					console.log(type);
+				}
+			});
+
+		}
+	</script>
+
+</html>

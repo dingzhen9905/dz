@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>考勤日审</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			/*关联状态*/
+			.list_sts{
+				font-size: 12px;
+				line-height: 14px;
+				color:#f0ad4e;
+				border:1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+			.bottomLine{
+				border-bottom: 1px solid #8f8f94;
+				position:relative;
+				margin: 25px 50px;
+			}
+			.end{
+				position:absolute;
+				top:-8px;
+				left:32%;
+				background: #efeff4;
+				padding:0 10px;
+				z-index:111;
+				font-size: 10px;
+			}
+			button.clock{
+				box-shadow: rgba(255,255,255,0.25) 0px 1px 0px, inset rgba(255,255,255,0.25) 0px 1px 0px, inset rgba(0,0,0,0.25) 0px 0px 0px, inset rgba(255,255,255,0.03) 0px 20px 0px, inset rgba(0,0,0,0.15) 0px -20px 20px, inset rgba(255,255,255,0.05) 0px 20px 20px;
+			}
+			.choiceOne {
+				color:#007AFF;
+			}
+			#clerkList li:nth-of-type(odd){
+				background:#F0F0F0;
+			}
+			.mui-icon-bars:hover{
+				border-radius: 10px;
+				background:#C0C0C0;
+				color:#fff !important;
+			}
+			input[placeholder]{
+				font-size:12px;color: #20B2AA;
+			}
+			.chosen{
+				color:#0062CC;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 75px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">考勤日处理</h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab" id="footer" style="font-size:14px;color:#2187E7;">
+		    <span class="mui-tab-item" id="selectAll" style="color:#2187E7;background:;">
+		    	<button class="" data-v="未选" style="margin-top:3px;">全选</button>
+		    </span>
+		    <span class="mui-tab-item"></span>
+		    <span class="mui-tab-item"></span>
+		    <span class="mui-tab-item" id="dealSche" style="color: #2187E7;padding-right:0px;">
+		    	<button type="button" class="mui-btn mui-btn-primary mui-btn-outlined" id="schedule" style="margin-top:-3px;">排班</button>
+		    </span>
+		</nav>
+		<div class="mui-content mainBody nodeBody" style="padding-top: 80px !important;">
+			<div class="mui-input-group groupInfo" style="display:;" id="">
+				<div class="mui-row infoItem lastItem" style="color: #0070C0;">
+					<span class="mui-col-xs-4">当前考勤日期：</span>
+					<span id="" class="mui-col-xs-5">
+						<input type="date"  name="clockDate" id="clockDate" placeholder="" />
+					</span>
+					<span class="mui-col-xs-3" id="" style="float:right;margin-top:3px;color:gray">* 点击可切换</span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo" style="display:;">
+				<div class="mui-row infoItem lastItem" style="color: #0070C0;">
+					<span class="mui-row mui-col-xs-6" id="clockArr">
+						<span class="mui-col-xs-4">考勤组：</span>
+						<span class="mui-col-xs-8" style="color: #20B2AA;text-align: center;" id="nowAttendGroup"></span>
+					</span>
+					<span class="mui-col-xs-6 mui-row" id="shiftbox">
+						<span class="mui-col-xs-3">班次：</span>
+						<span class="mui-col-xs-9" style="color: #20B2AA;text-align: center;">
+							<input type="text" id="shift" name="" value="" readonly="readonly" placeholder="点击修改"/>
+						</span>
+					</span>
+				</div>
+			</div>
+
+			<div id="postinfo" class="mui-input-group groupInfo" style="">
+				<div style="color: gray;">今日出勤状况：</div>
+				<div id="" class="mui-row" style="background:#ACACB4;color:#fff;text-align:center;font-size:12px;line-height: 14px;padding:3px;margin:0;">
+					<span class="mui-col-xs-6">员工</span>
+					<span class="mui-col-xs-6">选择</span>
+				</div>
+				<ul id="clerkList" style="padding:0;margin:0;list-style:none;text-align: center;background:#E3E3E3;margin-bottom:10px;">
+					<!--<li class="mui-row" style="padding:5px 3px;margin:0;background:;">
+						<span class="mui-col-xs-2">刘文伟</span>
+						<span class="mui-col-xs-2">夜</span>
+						<span class="mui-col-xs-2">出,退</span>
+						<span class="mui-col-xs-2">出,退</span>
+						<button type="button" class="mui-icon mui-icon-compose mui-pull-right mui-col-xs-2" style="position:relative;border:none;padding:0;background:;color: #0062CC;"></button>
+						<span class="mui-icon mui-icon-bars mui-pull-right mui-col-xs-2" style="padding:0;background:;color: #0062CC;"></span>
+					</li>
+					<li class="mui-row" style="padding: 3px;margin:0;">
+						<span class="mui-col-xs-2">王冰</span>
+						<span class="mui-col-xs-2">夜</span>
+						<span class="mui-col-xs-2">出,退</span>
+						<span class="mui-col-xs-2">出,退</span>
+						<button type="button" class="mui-icon mui-icon-compose mui-pull-right " style="position:relative;border:none;padding:0;background:;color: #0062CC;"></button>
+						<span class="mui-col-xs-2" style="border:1px solid #4cd964;border-radius:50%;color:#4cd964;padding:1px 5px;">已审</span>
+						<span class="mui-icon mui-icon-bars mui-pull-right mui-col-xs-2" style="padding:0;background:;color: #0062CC;"></span>
+					</li>-->
+				</ul>
+			</div>
+			<!--<div id="btnbox" class="mui-input-group groupInfo" style="">
+				<div style="color: gray;margin-bottom: 10px;">该组下员工：</div>
+				<div id="btnlist">
+					<button type="button" class="mui-btn mui-btn-primary mui-btn-outlined" id="schedule" style="margin-top:-3px;">排班</button>
+				</div>
+			</div>-->
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var deptname;
+		var date = new Date();
+		var commit = document.getElementById("commit");
+		var bill_date = vlUtils.dateToString(date);
+		var rqsData = null; //提交的数据
+		var inputData = null; // 表单里的数据
+		var clerkSelfInfo ;
+		var typeOptionArr = [];
+		mui.plusReady(function() {
+			// TODO  0. 重写返回事件
+			var oldBack = mui.back;
+		    mui.back = function(){
+		    	if(fromPage != "vdac402_list.html" && fromPage != "vdac402_edit.html"){
+		    		oldBack();
+		    		return;
+		    	}
+		    	var webview = plus.webview.getWebviewById("vdac402_plist.html");
+		    	webview.show();
+		    }
+		    
+			// TODO　１.页面上的字段
+			var h = {}
+			var v = {};
+			
+			// TODO 2. 接收传过来的参数===========================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			detailInfo		= self.detailInfo;
+			
+			// TODO 3. 基础设置/赋值 =============================
+			var user = JSON.parse(vlUtils.getStorage('user'));
+			document.getElementById("clockDate").value = vlUtils.dateToString(date).slice(0,-9); 
+			document.getElementById("nowAttendGroup").innerHTML = detailInfo.bill_coppo; 
+			// 获取手机号
+			var usertel = user.usertel;
+			
+			// 下载图片
+			var imgid= vlUtils.uuid('img', 4, 10);
+		 	$$("#userImg").attr('id',imgid);	
+			// 查询考勤组
+			var clerkInfoParams = {
+				name: 'msvr',
+				bill_task: "VR_find_vdhr105", // 查询的指令
+				bill_com: teamBillCom, 	// 当前单位
+				bill_user: userbillNo,	// 当前登陆人
+//				bill_user: 'vdvc00100_20180612_H101H001',	// 当前登陆人
+				bill_coppo: detailInfo.bill_coppo,		// 手机号
+				currentPage: 1,
+				pageSize: 100,
+				paramText: ""
+			};
+			rqsDataAjax(clerkInfoParams, '/Find/Ddata/activity', clerkInfo, '../login.html');
+			// 选择
+			mui("#clerkList").on('tap', '.chosenstate', function(e){
+				var e = this;
+				var li = e.parentNode; //firstChild
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow);
+				var num = jQuery(li).index();
+				jQuery("#selectAll").find("button").attr("data-v","未选");
+				var isChosen = jQuery(li).is(".chosen");
+				if(isChosen){
+					e.innerHTML = "点击选择";
+					jQuery(li).removeClass("chosen");
+				}else{
+					e.innerHTML = "√";
+					jQuery(li).addClass("chosen");
+				}
+				
+			});
+			// 处理申诉
+			mui("#clerkAppealList").on('tap', '.mui-btn-warning', function(e){});
+			
+			//  审核
+			document.getElementById("shiftbox").addEventListener("tap",function(){
+				var shiftArr = [
+					{"title":"早"},
+					{"title":"中"},
+					{"title":"夜"},
+					{"title":"白"}
+				];
+				plus.nativeUI.actionSheet({
+					title: "选择班次",
+					cancel: "取消",
+					buttons: shiftArr
+				}, function(e) {
+					//商品类型find赋值
+					if((e.index - 1) != -1){
+						document.getElementById("shift").value = shiftArr[(e.index - 1)].title;
+						var group = document.getElementById("nowAttendGroup").innerHTML;
+						var ndate1 = document.getElementById("clockDate").value + " 00:00:00";
+//						query402(group,ndate1);
+					}
+				});
+			});
+			// 选择日期
+			jQuery("#clockDate").change(function(){
+				var nbanci = document.getElementById("nowAttendGroup").innerHTML;
+				var ndate2 = document.getElementById("clockDate").value + " 00:00:00";
+//				query402(nbanci,ndate2);
+			});
+			// 全选
+			document.getElementById("selectAll").addEventListener("tap",function(){
+				var falg = jQuery("#selectAll").find("button").attr("data-v");
+				if(falg=="选中"){
+					for(var i = 0;i < jQuery("#clerkList li").length ;i++){
+						jQuery("#clerkList li").eq(i).find(".chosenstate").html("点击选择");
+						jQuery("#clerkList li").eq(i).removeClass("chosen");
+					}
+					jQuery("#selectAll").find("button").attr("data-v","未选");
+				}else{
+					for(var i = 0;i < jQuery("#clerkList li").length ;i++){
+						jQuery("#clerkList li").eq(i).find(".chosenstate").html("√");
+						jQuery("#clerkList li").eq(i).addClass("chosen");
+					}
+					jQuery("#selectAll").find("button").attr("data-v","选中");
+				}
+			});
+			// 排班
+			document.getElementById("dealSche").addEventListener("tap",function(){
+				var banzu = document.getElementById("nowAttendGroup").innerHTML;
+				var ndate0 = document.getElementById("clockDate").value + " 00:00:00";
+				var banci = document.getElementById("shift").value;
+				if(vlUtils.isnull(banci)){
+					mui.toast("请先选择班次~");
+					return;
+				}
+				//
+				var chosenStr = "";
+				var states = jQuery("#selectAll").find("button").attr("data-v");
+				if(states == "选中"){
+					chosenStr = "ALL";
+				}else{
+					var chosenArr = [];
+					var len = jQuery("#clerkList li").length;
+					for(var i = 0; i < len; i ++){
+						if(jQuery("#clerkList li").eq(i).is(".chosen")){
+							var chosenNaem = jQuery("#clerkList li").eq(i).find(".billname").html();
+							chosenArr.push(chosenNaem)
+						}
+					}
+					chosenStr = chosenArr.join(",");
+					if(vlUtils.isnull(chosenStr)){
+						mui.toast("请先选择人员~");
+						return;
+					}
+				}
+				// 将选中的人员写入vdac402表中
+				var insertData = {
+					bill_no 	: getDataCode("vdac402"),//标识
+					bill_task	: "VE_insert_vdac402",
+					bill_com	: teamBillCom,
+					bill_user	: userbillNo,
+					bill_coppo	: banzu,		// 班组
+					bill_nunit	: banci,		// 班组
+					bill_text	: chosenStr,	// 人名
+					bill_ndate	: ndate0,		// 时间
+					bill_date	: vlUtils.dateToString(date),//时间
+					fbill_no 	: "ROOT"
+				}
+				CRUDajax(insertData,"../login.html",insertSuccess);
+				//
+				var updateData = {
+					bill_no 	: getDataCode("vdac402"),//标识
+					bill_task	: "VE_update_vdac402",
+					bill_com	: teamBillCom,
+					bill_user	: userbillNo,
+					bill_coppo	: banzu,		// 班组
+					bill_nunit	: banci,		// 班组
+					bill_text	: chosenStr,	// 人名
+					bill_ndate	: ndate0,		// 时间
+					bill_date	: vlUtils.dateToString(date),//时间
+					fbill_no 	: "ROOT"
+				}
+				CRUDajax(updateData,"../login.html",updateSuccess);
+			});
+			// TODO 5. 监听自定义事件=============================
+			// TODO 6. 事件/方法=================================
+			// 收回指令
+			function rqsDataSuccess(data,type){}
+			function clockPopper(txt,id){}
+			function clerkSche(data){}
+			function clerkInfo(data){
+				if(data.data.length != 0) {
+					var litxt = ''
+					var clerkList = document.getElementById("clerkList");
+					var btnlist = document.getElementById("btnlist");
+					for(var i = 0; i < data.data.length; i++) {
+						var newdataArr = {};
+						for(var k in data.data[i]) {
+							newdataArr[k.slice(0, 2)] = data.data[i][k];
+						}
+						litxt += '<li class="mui-row" style="padding: 3px;margin:0;" data-row=\'' + JSON.stringify(newdataArr) + '\'>';
+						litxt += '<span class="mui-col-xs-6 billname">'+newdataArr["标题"]+'</span>';
+						litxt += '<span class="mui-col-xs-6 chosenstate" style="">点击选择</span>';
+						litxt += '</li>';
+						clerkList.innerHTML = litxt;
+//						litxt += '<button type="button" class="mui-btn mui-btn-primary mui-btn-outlined" style="margin:auto 5px;">'+newdataArr["标题"]+'</button>';
+//						btnlist.innerHTML = litxt;
+					}
+				}else{
+					document.getElementById("nowAttendGroup").innerHTML = '<li style="color:gray;">未查询到相关员工信息~</li>';
+				}
+				
+			}
+			function clerkAppeal(data){}
+			function auditSuccess(){}
+			function saveSuccess(data){}
+			function saveSuccess111(){}
+			function insertSuccess(){}
+			function updateSuccess(){}
+			function query402(banci,ndate){
+				// 3-1. 查询该考勤组考勤情况
+				var clerkScheParams = {
+					name		: 'msvr',
+					bill_task	: "VR_find_vdac402", // 查询的指令
+					bill_com	: teamBillCom, // 当前单位
+					bill_user	: userbillNo, // 当前登陆人
+					bill_coppo	: banci,		// 考勤组
+					bill_ndate	: ndate,
+					currentPage	: 1,
+					pageSize	: 100,
+					paramText	: ""
+				};
+//				rqsDataAjax(clerkScheParams, '/Find/Ddata/activity', clerkSche, '../login.html');
+				var clerkScheParams = {
+					name		: 'msvr',
+					bill_task	: "VR_find_vdhr426", // 查询的指令
+					bill_com	: teamBillCom, // 当前单位
+					bill_user	: userbillNo, // 当前登陆人
+					bill_coppo	: banci,		// 考勤组
+					bill_ndate	: ndate,
+					currentPage	: 1,
+					pageSize	: 100,
+					paramText	: ""
+				};
+//				rqsDataAjax(clerkScheParams, '/Find/Ddata/activity', clerkAppeal, '../login.html');
+			}
+			//
+			function selectTypeSuccess(data){}
+		}); // plusReady
+	</script>
+
+</html>

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;  
+			}
+			/* list内容*/
+			
+			.list_font {
+				font-size: 10px;
+				line-height: 12px;
+				height: 24px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+			}
+			
+			.list_h5 {
+				font-size: 13px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			
+			.topNav {
+				text-align: center;
+				padding-top: 10px;
+				color: #353b42;
+				margin-bottom: 0;
+			}
+			
+			.active {
+				color: #ea6d10;
+				border-bottom: 2px solid #ea6d10;
+				/*background:pink;*/
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			
+			#searchBtn {
+				position: relative;
+				top: 4px;
+				padding: 6px 8px;
+				margin-left: 5px;
+			}
+			
+			#searchBox {
+				margin-left: 5px;
+				border-radius: 10px;
+			}
+			
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+			.chosen{
+				background: blanchedalmond !important;
+				border-radius: 3px;
+			}
+			.chosen h5{
+				color: #999 !important; 
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:70px;border-bottom:0.5px solid #C0C0C0;background-color:;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:white;background-color:;"></a>
+			<h1 class="mui-title" id="header" style="color:white;background-color:;font-weight:normal;right: 70px;">选择商品</h1>
+			<a class="mui-pull-right" id="save" style="color:white;background-color:;padding-top:12px;width: ;font-size:17px;">确认</a> 
+			<div class="mui-row" style="position: fixed;top:59px;width:100%; background-color:#efeff4;margin-left:-10px;z-index:1000000;" id="topNav">
+				<div class="mui-row" style="margin-top: 10px;">
+					<div class="mui-col-sm-10 mui-col-xs-10">
+						<div class="mui-input-row mui-search">
+							<input type="search" id="searchBox" class="mui-input-clear" onkeyup="enterSearch(event)" placeholder="" style='margin-bottom:5px;'>
+						</div>
+					</div>
+					<div class="mui-col-sm-2 mui-col-xs-2">
+						<button type="button" id="searchBtn" class="mui-btn">搜索</button>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div class="mui-content" id="list" style="padding-top: 140px;">
+			<div id="showHint" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+				<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;padding-bottom:0;">未查询到相关的数据</p>
+				<p style="font-size:10px;">可以尝试其他查询</p>
+			</div>
+			<div class="mui-input-group" id="sendTo" style="position: fixed;top:110px;z-index:999;width:100%;height:34px;padding:5px 18px 5px 25px;margin-bottom:5px;">
+				<span class="" style="position: absolute;top:5px;left: 8px;">选择：</span>
+				<span class="mui-icon mui-icon-close" id="closeIcon" style="position: absolute;top:5px;right: 10px;"></span>
+
+				<div style="width: 280px;overflow: hidden;margin-left: 20px;color:#20B2AA;">
+					<div class="mui-row" id="swipeBar" style="width:5000px;position: relative;padding-left:10px;">
+						<span class="" id="linkvd_linkitem" style="display:none;"></span>
+						<span class="" id="bill_name"></span>
+					</div>
+				</div>
+
+			</div>
+			<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-top:10px;margin-bottom:50px;">
+				<!--<li class="mui-table-view-cell" style="padding:10px;height:70px;">
+					<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-yellow">下级商品</a></div>
+					<div class="mui-slider-cell  mui-slider-handle">
+						<div class="mui-row">
+						
+							<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;width:55px;">
+								<img class="vdvc511 mui-col-xs-12" src="../../images/icon/default.png" />
+							</div>
+							<div class="mui-col-xs-6 mui-row" style="background:;height:50px;">
+								<h5 class="list_h5 mui-col-xs-12" style="color:#242424;">商品</h5>
+								<p class="list_font mui-col-xs-12">123</p>
+								<p class="list_font mui-col-xs-12" style="margin-top:-10px;">·1234</p>
+							</div>
+							<div class="mui-col-xs-4 mui-row list_three" style="background:;text-align: right;">
+								<p class="list_fonts mui-col-xs-12" style="float:right;">12388</p>
+								<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;">4447347</p>
+								<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">状态</p>
+							</div>
+						</div>
+					</div>
+				</li>-->
+			
+			
+			</ul>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var choice = "";
+		var fromPage = "";
+		var startIndex = 1; // 起始页码
+		var pageSize = 10; // 每页显示几条信息
+		var search = ''; // 要查询的内容，paramText的value
+		var fbill_no = "ROOT"; // 查询的fbill_no
+		var detailInfo = {}; // 把查询到的东西放到数组里面
+		var queryparmas = {}; //查询参数
+		var pager = {}; //分页
+		var loginCom1 = "";
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			choice = self.choice;
+			tradeName =self.tradeName;
+			tradeCode = self.tradeCode;
+			commonParams = self.commonParams;
+			fbill_no = "ROOT";
+			loginCom1 = vlUtils.getStorage("newTeamBillCom"); // 获取登录单位
+			fromPage = self.fromPage;    
+//			赋值
+			document.getElementById("linkvd_linkitem").innerHTML = tradeCode;//商品代码
+			document.getElementById("bill_name").innerHTML = tradeName;//商品名称
+			var params = {
+				name: 'msvr',
+				bill_task:commonParams,	// 查询的指令 // 
+				bill_com: teamBillCom,		// 当前单位
+				bill_user:userbillNo,		// 当前登陆人
+				fbill_no: "ROOT",			// 查询主表
+				currentPage: 1,
+				pageSize: 100,
+				paramText: ""
+			};
+			rqsDataAjax(params,'/Find/Ddata/activity',rqsDataSuccess);
+		}) // plusReady
+
+		//点进选择、放入列表中*************************
+		var linkItemArr = []; //字符窜转为数组
+		var linkNameArr = [];
+		var ccUserJson = {};
+		mui("#contList").on('tap', 'li', function(e) {
+
+
+			var e = this;
+			var li = e;
+			var dataRow = li.getAttribute("data-row");
+			dataRow = JSON.parse(dataRow);
+			dataRows = JSON.stringify(dataRow);
+
+			var teamBillCom = dataRow.bill_com;
+			var linkItem = document.getElementById("linkvd_linkitem").innerHTML;
+			var linkName = document.getElementById("bill_name").innerHTML;
+			linkItemArr = linkItem.split(","); 
+			var isRepeat = false;
+				if(choice=="multiple"){ 
+					if(vlUtils.isnull(linkName)){
+						linkName = dataRow.bill_name;
+						if(fromPage == "vdsa331edit"){
+							linkItem = dataRow.bill_id;
+//							linkItem = dataRow.bill_text[0].linkvd_linkitem;
+						}else{
+							linkItem = dataRow.bill_text[0].linkbd_bEANcode;
+						}
+					}else{  
+						// 不为空则判断里面有没有这个值，有则不再增加
+	    				for(var j = 0 ; j < linkItemArr.length ; j ++){
+
+	    					if(fromPage == "vdsa331edit"){
+								if( linkItemArr[j] == dataRow.bill_id){
+			    					isRepeat = true;
+			    					break;
+			    				}
+							}else{
+								if( linkItemArr[j] == dataRow.bill_text[0].linkbd_bEANcode){
+			    					isRepeat = true;
+			    					break;
+			    				}	
+							}
+	    				}
+	    				if(isRepeat == false){	
+	    					linkName += "," + dataRow.bill_name;
+							if(fromPage == "vdsa331edit"){
+								linkItem += "," + dataRow.bill_id;
+							}else{
+								linkItem += "," + dataRow.bill_text[0].linkbd_bEANcode;
+							}
+	    				}else{
+	    					linkItemArr.push(linkItem);
+	    					linkNameArr.push(linkName); 
+	    				}
+					}
+				}
+				if(choice == "single"){
+					var chosenStates = Boolean(Number(jQuery(li).attr("data-chosen")));
+					chosenStates = !chosenStates;
+					jQuery(li).attr("data-chosen",Number(chosenStates));
+					
+					if(chosenStates){ // t
+						// 自己添加类，兄弟移除类，兄弟的data-chosen为0
+						jQuery(li).children().addClass("chosen").parent().siblings().children().removeClass("chosen");
+						jQuery(li).addClass("chosen").siblings().removeClass("chosen");
+						jQuery(li).addClass("chosen").siblings().attr("data-chosen",0);
+						
+						linkItem = dataRow["指令指令"];
+						linkName = dataRow["内容内容"];
+					}else{ // f
+						// 自己移除类
+						jQuery(li).children().removeClass("chosen");
+						jQuery(li).removeClass("chosen");
+						linkItem ="";
+						linkName ="";
+					}
+				}
+			document.getElementById("linkvd_linkitem").innerHTML = linkItem;
+			document.getElementById("bill_name").innerHTML = linkName;
+
+		});
+		//
+		document.getElementById("save").addEventListener("tap", function() {
+			var linkName = document.getElementById("bill_name").innerHTML;
+			var linkCom = document.getElementById("linkvd_linkitem").innerHTML;
+
+			if(fromPage == "511edit") {  
+				mui.openWindow({    
+					//	url: "../vlvdsa/vdsa402_edit.html",
+					id: 'vdvc511_edit.html',
+					//createNew: true,
+				});  
+				mui.fire(plus.webview.getWebviewById('vdvc511_edit.html'), '511findTo511edit', {
+					teamBillCom: teamBillCom,
+					teamBillComName: teamBillComName,
+					userbillNo: userbillNo,
+					loginCom: loginCom,
+					loginComName: loginComName,
+					linkName: linkName,
+					choice : choice,
+					linkCom: linkCom
+				
+				});
+
+			}
+			if(fromPage == "vrsa001_plist") {  
+				mui.openWindow({    
+					url: "vrsa001_plist.html",
+					id: 'vrsa001_plist.html',
+//					createNew: true,
+				});  
+				mui.fire(plus.webview.getWebviewById('vrsa001_plist.html'), 'choiceReport', {
+					teamBillCom: teamBillCom,
+					teamBillComName: teamBillComName,
+					userbillNo: userbillNo,
+					loginCom: loginCom,
+					loginComName: loginComName,
+					linkName: linkName,
+					choice : choice,
+					linkCom: linkCom
+				
+				});
+
+			}
+			
+		})
+		
+		// 清空
+		document.getElementById("closeIcon").addEventListener("tap", function() {
+			document.getElementById("linkvd_linkitem").innerHTML = "";
+			document.getElementById("bill_name").innerHTML = "";
+			jQuery("ul li").children().removeClass("chosen");
+			jQuery("ul li").removeClass("chosen");
+		})
+
+		//滑动事件开始
+		var startClientX; // 初始位置
+		var dirX; // 横向滑动的距离
+		var nowLeft = 0; // 当前的left值
+		// 开始触摸
+		document.getElementById("swipeBar").addEventListener("touchstart", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			startClientX = event.touches[0].clientX; // 获取初始位置
+		}, false)
+		// 触摸移动
+		document.getElementById("swipeBar").addEventListener("touchmove", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			dirX = event.touches[0].clientX - startClientX; // 获取结束位置与初始位置的距离
+			document.getElementById("swipeBar").style.transform = "translate(" + dirX + "px,0px)";
+		}, false)
+
+		// 触摸结束
+		document.getElementById("swipeBar").addEventListener("touchend", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			document.getElementById("swipeBar").style.transform = "none";
+			nowLeft += dirX; // 获取结束位置
+			if(nowLeft > 0) {
+				document.getElementById("swipeBar").style.left = "0px";
+			} else {
+				document.getElementById("swipeBar").style.left = nowLeft + "px"; // 记住结束位置
+
+			}
+
+		}, false)
+		// ===选择列表滑动事件结束=============================
+
+		//点击确认返回511——edit页面
+		mui("#contList").on('tap', '.mui-btn-yellow', function(e) {
+			//
+			var e 			= this;
+			var li 			= e.parentNode.parentNode;
+			var dataRow 	= li.getAttribute("data-row");
+			var rowObj 		= JSON.parse(dataRow);
+			var search 		= ''; // 搜索内容
+			var startIndex  = 1; // 搜索的页数
+			fbill_no 		= rowObj.bill_no; 	
+			teamBillCom 	= rowObj.bill_no;
+			teamBillComName = rowObj.bill_name;
+			var search = ''; // 搜索内容
+			var startIndex = 1; // 搜索的页数
+			document.getElementById("header").innerHTML = rowObj.bill_name;
+			//***************
+			// 默认查询参数
+			queryparmas_lowerDept = { // 默认全部004
+				name: 'vdvc511',
+				bill_com: loginCom1,
+				bill_task: "Y",
+				fbill_no: fbill_no,
+				currentPage: 1,
+				pageSize: 30,
+				paramText: ''
+			}
+			// 发ajax请求数据
+//			return;
+			searchAjax(queryparmas_lowerDept, 'Business/allocated');
+		});
+		// 搜索框事件
+		function enterSearch(e) {
+			if(e.keyCode == 13) {
+				startIndex = 1;
+				detailInfo.length = 0;
+				document.getElementById("searchBox").blur();
+				var search = document.getElementById("searchBox").value;
+				var loginCom1 = vlUtils.getStorage("newTeamBillCom");
+				document.getElementById("showHint").style.display = "none"; // 先隐藏再判断
+				queryparmas = { // 默认我的客户001
+					name: 'vdvc511',
+					bill_com: loginCom1,
+					//				cc_user:userbillNo,//员工id登录人
+					bill_task: "Y",
+					fbill_no:"ROOT",
+					currentPage: 1,
+					pageSize: 30,
+					paramText: search
+				}
+//				searchAjax(queryparmas, 'Find/Ddata/find');
+			}
+		}
+		// 搜索按钮事件
+		document.getElementById("searchBtn").addEventListener("tap", function() {
+			var search = document.getElementById("searchBox").value;
+			document.getElementById("showHint").style.display = "none"; // 先隐藏再判断
+			var loginCom1 = vlUtils.getStorage("newTeamBillCom");  
+			
+			queryparmas = { // 默认我的客户001
+				name: 'vdvc511',
+				bill_com: loginCom1,
+				//				cc_user:userbillNo,//员工id登录人
+				bill_task: "Y",
+				fbill_no:"ROOT",
+				currentPage: 1,
+				pageSize: 30,
+				paramText: search
+			}
+//			searchAjax(queryparmas, 'Find/Ddata/find');
+		});
+		
+		function rqsDataSuccess (data){
+			if(data.data.length != 0){
+				document.getElementById("showHint").style.display = "none";
+				var text = '';
+				for(var i = 0; i < data.data.length; i++) {
+					var contList = document.getElementById("contList");
+					text += '<li style="background:;border-bottom:1px solid #eee;height:50px;line-height:50px;padding-left:10px;" data-chosen=0 data-row=\'' + JSON.stringify(data.data[i]) + '\'>';
+					text += data.data[i]["内容内容"];
+					text += '</li>';
+					contList.innerHTML = text;
+				}
+			}else{
+				document.getElementById("showHint").style.display = "block";
+			}
+		}
+		
+	</script>
+
+</html>

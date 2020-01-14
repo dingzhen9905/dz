@@ -1,0 +1,11 @@
+[
+{"fsend_group":"vdim10100_20170707_0101M001","bill_user":"vdvc00100_20170707_0707A002","bill_no":"10101","bill_theme":"刘亚","bill_context":"你在哪里","bill_pic":"vdoa012_b.png","bill_icon":"vdas011_b.png","bill_date":"20170101"},
+{"fsend_group":"vdim10100_20170707_0101M001","bill_user":"666666","bill_no":"10102","bill_theme":"刘亚","bill_context":"我在公司","bill_pic":"vdoa012_b.png","bill_icon":"vdas011_b.png","bill_date":"20170102"},
+{"fsend_group":"vdim10100_20170707_0101M001","bill_user":"vdvc00100_20170707_0707A002","bill_no":"10103","bill_theme":"刘亚","bill_context":"好的","bill_pic":"vdoa012_b.png","bill_icon":"vdas011_b.png","bill_date":"20170103"},
+{"fsend_group":"vdvc00100_20170707_0707A003","bill_user":"666666","bill_no":"10201","bill_theme":"张瑞","bill_context":"周末加班","bill_pic":"vdoa012_b.png","bill_icon":"vdas011_b.png","bill_date":"20170104"},
+{"fsend_group":"vdvc00100_20170707_0707A003","bill_user":"vdvc00100_20170707_0707A002","bill_no":"10202","bill_theme":"张瑞","bill_context":"收到","bill_pic":"vdoa012_b.png","bill_icon":"vdas011_b.png","bill_date":"20170105"},
+{"fsend_group":"vdim10100_20170707_0101M002","bill_user":"666666","bill_no":"10203","bill_theme":"张瑞","bill_context":"可以","bill_pic":"vdoa012_b.png","bill_icon":"vdas011_b.png","bill_date":"20170106"},
+{"fsend_group":"vdim10100_20170707_0101M003","bill_user":"333333","bill_no":"10301","bill_theme":"销售一部","bill_context":"完成销售目标","bill_pic":"vdoa012_b.png","bill_icon":"vdas011_b.png","bill_date":"20170107"},
+{"fsend_group":"vdvc00100_20170707_0707A004","bill_user":"vdvc00100_20170707_0707A002","bill_no":"10302","bill_theme":"销售一部","bill_context":"好的","bill_pic":"vdoa012_b.png","bill_icon":"vdas011_b.png","bill_date":"20170108"},
+{"fsend_group":"vdvc00100_20170707_0707A004","bill_user":"333333","bill_no":"10303","bill_theme":"销售一部","bill_context":"收到","bill_pic":"vdoa012_b.png","bill_icon":"vdas011_b.png","bill_date":"20170109"}
+]

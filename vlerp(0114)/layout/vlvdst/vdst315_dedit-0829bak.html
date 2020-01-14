@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+		<title>扫码</title>
+		<link href="../../css/common/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" href="../../css/index.css" />
+		<style type="text/css">
+			body {
+				backface: #000000;
+			}
+			#bcid {
+				width: 100%;
+				height: 75%;
+				position: absolute;
+				top: 100px;
+				bottom: 100px;
+				text-align: center;
+				background: #000000;
+			}
+			.tip {
+				color: #FFFFFF;
+				font-weight: bold;
+				text-shadow: 0px -1px #103E5C;
+			}
+			
+			footer {
+				width: 100%;
+				height: 50px;
+				position: absolute;
+				bottom: 0px;
+				line-height: 44px;
+				text-align: center;
+				color: #FFF;
+				background: #0062CC;
+				z-index: 999;
+			}
+			
+			.fbt {
+				width: 50%;
+				height: 100%;
+				float: left;
+			}
+			
+			.fbt:active {
+				-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+				box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+			}
+			#resetBtn{
+				width:60px;
+				height: 45px;
+				line-height: 45px;
+				text-align: center;
+				font-size:14px;
+				position:relative;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" ></a>
+			<div class="mui-title plistTitle">
+				<p id="title">扫码(<span id="num">0</span>)</p>
+				<h1 id="header" ></h1>	
+			</div>
+			<div class=" mui-pull-right" id="resetBtn" style="display: none;" >重置</div>	
+			<div class="mui-row navBar topNavRow" id="topNavOut">
+				<p  id="Code"style="">当前码：<span id="innerCode" style="color:#0062cc;font-size: 18px;"></span></p>
+			</div>
+		</header>
+		<div id="bcid" style="">
+			<p class="tip" style="position: absolute;top:40%;left:40%;">...载入中...</p>
+		</div>
+		<footer>
+			<div class="fbt" id="scan1">新增扫描</div>
+			<div class="fbt" id="scan2">手电筒</div>
+		</footer>
+
+	</body>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/index.js"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		var ws = null,
+			wo = null;
+		var scan = null,
+			domready = false;
+		var count = 0; //扫码计数
+		var scantype = null; //扫描的类型
+		var codeArr = []; //返回一个列表 // 0119
+		var nums = 0;
+		var fromPage = "";
+		var reScanNum = 0;
+		if(window.plus) {
+			carcode();
+		} else {
+			document.addEventListener('plusready', carcode, false);
+		}
+		document.addEventListener('DOMContentLoaded', function() {
+			domready = true;
+		}, false);
+//		mui.init();
+//		mui.plusReady(function() {
+//			carcode();
+//		});
+		//
+		function carcode() { //识别二维码 和其他plus操作
+			// 获取窗口对象
+			ws = plus.webview.currentWebview();
+			fromPage  = ws.fromPage;
+			codeArr   = ws.codeArr;
+			wo 		  = ws.opener();
+			scantype  = ws.dir;
+			document.getElementById("num").innerHTML = codeArr.length;
+			//
+			// 开始扫描
+			ws.addEventListener('show', function() {
+				scan = new plus.barcode.Barcode('bcid',[0,1]);
+				scan.onmarked = onmarked;
+				scan.start({
+					conserve: true,
+					sound: "default",
+					filename: '_doc/barcode/'
+				});
+			}, false);
+			// 显示页面并关闭等待框
+			ws.show('pop-in');
+			//wo.evalJS('closeWaiting()');
+
+			scantype = ws.dir;
+			//
+			if(scantype == "reversescan") { // 如果是反扫则下面显示当前状态为反扫
+				document.querySelector('#scan1 ').innerHTML = "反扫";
+			}
+			//识别二维码
+			function onmarked(type, result, file) { //回调
+				var innercode = result;
+				if(/([^\/]+)$/.test(innercode)){
+				  	innercode=RegExp.$1;
+				}
+				document.getElementById("innerCode").innerHTML =innercode;
+				ws = plus.webview.currentWebview();
+				wo = ws.opener();
+				result = result.replace(/\n/g, '');
+//				codeArr.push(result); //0119
+
+				var headerH1 = document.getElementById('header_h1');
+				scantype = ws.dir;
+				//正扫数字增加
+				if(scantype == "positivescan") {
+					var flag1 = false;
+					// 判断数组中是否存在，存在则返回
+					for(var i = 0; i < codeArr.length; i++) {
+						if(codeArr[i] == result) {
+							flag1 = true;
+							break;
+						}
+					}
+					// 如果数组中没有则增加
+					if(!flag1) {
+						// 把结果推入数组
+						codeArr.push(result);
+						var num = wo.evalJS("scaned('" + type + "','" + result + "','" + file + "','" + scantype + "','" + codeArr + "');");
+						document.getElementById("num").innerHTML = codeArr.length;
+					}else{
+						plus.nativeUI.toast("此码已扫描！", {
+							'verticalAlign': "top"
+						});
+					}
+					// 
+					setTimeout(function() {
+						scan.start({
+							conserve: true,
+							sound: "default",
+							filename: '_doc/barcode/'
+						});
+					}, 1000);
+				} else { //反扫数字减少
+					// 判断数组中是否存在，存在则返回
+					for(var i = 0; i < codeArr.length; i++) {
+						if(codeArr[i] == result) {
+							codeArr.splice(i, 1);
+							document.getElementById("num").innerHTML = codeArr.length;
+							var num = wo.evalJS("scaned('" + type + "','" + result + "','" + file + "','" + scantype + "','" + codeArr + "');");
+							//
+							scan.close();
+							if(ws.fromPage == "vdsa133_edit.html"){
+								var webview = plus.webview.getWebviewById('vdsa133_edit.html'); 
+						    		webview.show();
+							}
+							if(fromPage == "index-ps.html"){
+								plus.webview.getWebviewById('tab-webview-subpage-work').show();
+							}
+							plus.webview.currentWebview().close();
+							break;
+						}else{
+							reScanNum ++;
+							if(reScanNum == codeArr.length){
+								plus.nativeUI.toast("列表中没有这个码哦！", {
+									'verticalAlign': "top"
+								});
+								setTimeout(function() {
+									scan.start({
+										conserve: true,
+										sound: "default",
+										filename: '_doc/barcode/'
+									});
+								}, 1000);
+								reScanNum = 0;
+							}
+						}
+					}
+				};
+				// 
+//				if(ws.dir == "positivescan") {
+//					setTimeout(function() {
+//						scan.start({
+//							conserve: true,
+//							sound: "default",
+//							filename: '_doc/barcode/'
+//						});
+//					}, 1000);
+//				} else { //如果是反扫则扫描结束后关闭扫描空间并返回上一页
+//					scan.close();
+//					if(ws.fromPage == "vdsa133_edit.html"){
+//						var webview = plus.webview.getWebviewById('vdsa133_edit.html'); 
+//				    		webview.show();
+//					}
+//					if(fromPage == "index-ps.html"){
+//						plus.webview.getWebviewById('tab-webview-subpage-work').show();
+//					}
+//					plus.webview.currentWebview().close();
+//				}
+			}
+			// 
+			scan = new plus.barcode.Barcode('mask');
+			scan.onmarked = onmarked;
+			scan.start({
+				conserve: true,
+				sound: "default",
+				filename: '_doc/barcode/'
+			});
+			//监听back安卓
+			plus.key.addEventListener("backbutton", function() {
+				scan.close();
+				plus.webview.currentWebview().close();
+				if(fromPage == "index-ps.html"){
+					plus.webview.getWebviewById('tab-webview-subpage-work').show();
+				}
+			});
+		}
+		document.getElementById("goBack").addEventListener('click', function() { //点击back箭头
+			scan.close();
+			plus.webview.currentWebview().close();
+			if(fromPage == "index-ps.html"){
+				plus.webview.getWebviewById('tab-webview-subpage-work').show();
+			}
+		})
+		var openFlag = false;
+		document.getElementById('scan2').addEventListener('tap', function() { //开启手电筒
+			openFlag = !openFlag;
+			if(openFlag) {
+				scan.setFlash(true);
+			} else {
+				scan.setFlash(false);
+			}
+		})
+		//
+//		document.getElementById('resetBtn').addEventListener('tap', function() { //开启手电筒
+////			plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+//			scan.close(); 
+//		});
+		
+		//
+		
+	</script>
+
+</html>

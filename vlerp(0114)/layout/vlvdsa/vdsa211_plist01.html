@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head" style="height: 136px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<div class="mui-title plistTitle">
+				<p id="TO">终端协议</p>
+				<h1 id="header"></h1>
+			</div>
+			<a class="mui-icon mui-icon-plusempty mui-pull-right" id="toEdit"> </a>
+			<div class="mui-row navBar topNavRow" id="topNav" style="display: none;">
+				<p class="mui-col-xs-3 topNav active" data-type="001">全部</p>
+				<p class="mui-col-xs-3 topNav" data-type="003">待审核</p>
+				<p class="mui-col-xs-3 topNav" data-type="002">待送审</p>
+				<p class="mui-col-xs-3 topNav" data-type="004">已失效</p>
+			</div>
+			<div class="mui-row searchBar" >
+				<div class="mui-col-sm-10 mui-col-xs-10">
+					<div class="mui-input-row mui-search">
+						<input type="search" id="searchBox" class="mui-input-clear" onkeyup="enterSearch(event)" placeholder="">
+					</div>
+				</div>
+				<div class="mui-col-sm-2 mui-col-xs-2">
+					<button type="button" id="searchBtn" class="mui-btn" >搜索</button>
+				</div> 
+			</div>
+		</header>
+		<div class="mui-content">
+
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var teamBillCom = null;
+		var teamBillComName = null;
+		var userbillNo = null;
+		var userName = null;
+		var loginCom = null;
+		var loginComName = null;
+		var privilege = null;
+		var fromPage = null;
+		var fbill_no = null;
+		var BreadcrumbNav = [];
+		var BreadcrumbNavName = [];
+		var ROOTfbillNo = "";
+		var search = '';
+
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdsa211_list01.html',
+				id: 'vdsa211_list01.html',
+				styles: {
+					top: '140px',
+					bottom: '5px',
+				}
+			}]
+		});
+
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vdsa211_list01.).pullRefresh().scrollTo(0,0,100)");
+		});
+
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no = self.fbill_no; // 3.fbill_no是
+			loginCom = self.loginCom; // 4.登录单位代码
+			loginComName = self.loginComName; // 5.登录单位名称
+			userbillNo = self.userbillNo; // 6.登录人的代码
+			userName = self.userName; // 7.登录人的姓名
+			privileges = self.privileges; // 8.当前的权限是
+			fromPage = self.fromPage; // 9.从哪个页面来
+			// 其他
+			ROOTfbillNo = self.fbill_no;
+
+			//BreadcrumbNav.push(fbill_no);// 0109注释掉
+			BreadcrumbNav.push(teamBillCom); // 0109增加
+			BreadcrumbNavName.push(teamBillComName);
+
+			// 重写mui.back, 手机上的返回键默认跟随mui.back
+			//备份mui.back，mui.back已将窗口关闭逻辑封装的比较完善（预加载及父子窗口），因此最好复用mui.back
+			var oldBack = mui.back;
+			mui.back = function() {
+				// 重写
+				if(BreadcrumbNav.length > 1) {
+					// 读数组，删掉最后一项，用导数第二项刷新当前页面
+					// 删除数组最后一项
+					BreadcrumbNav.splice(BreadcrumbNav.length - 1, 1);
+					BreadcrumbNavName.splice(BreadcrumbNavName.length - 1, 1);
+
+					// 当前的最后一项赋值给fbill_no,刷新当前页、刷新子页
+					//					fbill_no = BreadcrumbNav[BreadcrumbNav.length-1];				// 0109注释
+					//					fbillnoname = BreadcrumbNavName[BreadcrumbNavName.length-1]; 	// 0109注释
+					teamBillCom = BreadcrumbNav[BreadcrumbNav.length - 1]; // 0109增加
+					teamBillComName = BreadcrumbNavName[BreadcrumbNavName.length - 1]; // 0109增加
+
+					fbill_no = BreadcrumbNav[BreadcrumbNav.length - 1]; // 0109增加
+					if(fbill_no == loginCom) { // 0109增加
+						fbill_no = "ROOT";
+					}
+
+					document.getElementById("header").innerHTML = teamBillComName; // 0109之前为 fbillnoname
+					jQuery(".topNav:first").addClass("active").siblings().removeClass("active");
+
+					var childList = plus.webview.getWebviewById('vdsa211_list01.html');
+					mui.fire(plus.webview.getWebviewById('vdsa211_list01.html'), "backAndRefreshList", {
+						teamBillCom: teamBillCom, // 1.管理单位代码	// 每点一次就变为数组中的上一项
+						teamBillComName: teamBillComName, // 2.管理单位名称	// 每点一次就变为数组中的上一项
+						fbill_no: fbill_no, // 3.fbill_no是		// 每点一次就变为数组中的上一项
+						loginCom: loginCom, // 4.登录单位代码
+						loginComName: loginComName, // 5.登录单位名称
+						userbillNo: userbillNo, // 6.登录人的代码
+						userName: userName, // 7.登录人的姓名
+						privileges: privileges, // 8.当前的权限是
+						fromPage: "vdsa211_plist01.html", // 9.从哪个页面来
+					})
+					mui.openWindow({
+						id: "vdsa211_list01.html"
+
+					})
+				}
+				if(BreadcrumbNav.length == 1) {
+					oldBack();
+					return;
+				}
+
+			}
+			// 更改header的显示信息
+			document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+
+			// nav
+			mui("#topNav").on("tap", "p", function() {
+				var self = this;
+				jQuery(this).addClass("active").siblings().removeClass("active");
+				//触发详情页面的newsId事件
+				mui.fire(plus.webview.getWebviewById('vdsa211_list01.html'), 'differentStatesRefresh210list', {
+					active: self.getAttribute("data-type"),
+					search: search,
+					port  : '/Find/Ddata/activity'
+				});
+			});
+		}); // plusReady
+		// 搜索框事件
+		function enterSearch(e) {e.keyCode == 13 && eventSearch();}
+		// 搜索按钮事件
+		document.getElementById("searchBtn").addEventListener("tap",eventSearch);
+		function eventSearch() {
+			document.getElementById("searchBox").blur();
+	        search = document.getElementById("searchBox").value;
+			mui.fire(plus.webview.getWebviewById('vdsa211_list01.html'), 'differentStatesRefresh210list', {
+				active: jQuery("#topNav").children(".active").attr("data-type"),
+				search: search,
+				port  : '/Find/Ddata/activity'
+			});
+		}
+	</script>
+
+</html>

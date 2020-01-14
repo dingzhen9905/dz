@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.list_font {
+				font-size: 10px;
+				line-height: 12px;
+				height: 16px;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+			}
+			
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+			}
+			
+			.list_h5 {
+				font-size: 13px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.mui-pull-top-pocket {
+				border: transparent;
+			}
+			
+			.mui-table-view:after,.mui-table-view:before,.mui-table-view-cell:after  {
+				height: 0 !important;
+			}
+			.list_sts {
+				margin-top:3px;
+				padding:0 5px;
+				font-size:10px;
+				line-height: 14px;
+			}
+			#contList li.select {
+				padding:6px;
+				height:70px;
+				background: #fff;
+				margin-bottom: 3px;
+			}
+			input[type="checkbox"]:before {
+				font-size: 20px !important;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div id="vdsa402_list" class="mui-content mui-scroll-wrapper">
+			<div class="mui-input-group" id="aboutFlow" style="padding:5px 18px 5px 18px;margin:5px 0;position: relative;font-size: 10px;height: 70px;">
+				<div class="mui-row" style="margin: 0;padding:0;height:40px;overflow:hidden;">
+					<span class="mui-col-xs-2" style="color:#ACACB4;">当前地址:</span>
+					<span class="mui-col-xs-10" id="bill_title" style="font-size:12px;"></span>
+				</div>
+				<div class="mui-row" style="margin: 0;padding:0;height: 20px;">
+					<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+						<span class="mui-col-xs-3" style="color:#ACACB4;">经度:</span>
+						<span class="mui-col-xs-8" id="bill_ipaddr"></span>
+					</div>
+					<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+						<span class="mui-col-xs-3" style="color:#ACACB4;">纬度:</span>
+						<span class="mui-col-xs-8" id="bill_gpsaddr"></span>
+					</div>
+				</div>
+			</div>
+			<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+				<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+			</div>
+			<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+				<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+				<p style="font-size:12px;">正在搜索中......</p>
+			</div>
+			<div id="showError" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-kulian" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">出错啦~</p>
+				<p style="font-size:10px;border-bottom: transparent;">请稍后再试</p>
+			</div>
+			<div class="mui-scroll" style="padding-top:0px;width: 100%;overflow: hidden;">
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-bottom:50px;background: #EAEAEA;margin-top:-10px">
+				</ul>
+			</div>
+		</div>
+		<nav class="mui-bar mui-bar-tab" style="display: none;" id="footer">
+		    <a class="mui-tab-item" id="selectAll" style="font-size:18px;background:;color:#2187E7;">全选</a>
+		    <a class="mui-tab-item"></a>
+		    <a class="mui-tab-item"></a>
+		    <a class="mui-tab-item" id="dealAccount" style="background:#FB6F18;color: #FFFFFF;">送审</a>
+		</nav> 
+	</body>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FQCQkNvWb9g4FnFXN3IGieSwQgLOR2PU&services=&t=20171004185957"></script>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vdsa402_list',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					height: 200,
+					contentnomore: '没有更多数据了',
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		var startIndex = 1;
+		var pageSize = 10;
+		var search = '';
+		var detailInfo = [];
+		var queryparmas = {}; //查询参数
+		var openlock = false; // 用于区分是首次进入页面还是搜索页面
+		var pager = {};
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var port = '/Find/Ddata/activity'; // 查询的接口，该接口为默认接口
+		var guid = '001';
+//		'Business/allocated'
+		mui.plusReady(function() {
+			getGeocodeIn();
+			//接收传过来的参数
+			var self = plus.webview.currentWebview().parent();
+			teamBillCom 	= self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			loginCom 		= self.loginCom;
+			loginComName 	= self.loginComName;
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			fbillnoName 	= self.fbillnoName;
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+
+			// 切换片区
+			window.addEventListener('plist_in_list', function(event) {
+				fbill_no = event.detail.fbill_no;
+				fbillnoName = event.detail.fbillnoName;
+				queryparmas = {
+					name		: 'msvr',
+					bill_task	: "VR_find_vdvc312_02",	// 指令
+					bill_com	: loginCom,				// 单位
+					fbill_no	: fbill_no,				// 片区
+					bill_unit	: document.getElementById("bill_ipaddr").innerHTML,	// 经度
+					bill_nunit	: document.getElementById("bill_gpsaddr").innerHTML,	// 纬度
+					bill_title	: search,	// 纬度
+					currentPage	: startIndex,
+					pageSize	: pageSize,
+					paramText	: search
+				}
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending312Data, '../login.html',true);
+			}) 
+			
+			// 切换tab
+			document.addEventListener('differentStatesRefresh311list', function(event) {
+				guid 	= event.detail.active;
+				search 	= event.detail.search;
+				document.getElementById("contList").innerHTML 	= '';
+				document.getElementById("showHint").style.display = "none"; 
+				document.getElementById("searching").style.display = "block";
+				document.getElementById("footer").style.display = "none";
+				/* *
+				 * 判断当前接口
+				 * 如果接口是'Business/allocated',则用paramText: search,
+				 * 如果接口是'Find/Ddata/fuzzy',则用bill_name:search,
+				 * 
+				 * */
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				if(guid == "001") { //待附近的
+					queryparmas = {
+						name		: 'msvr',
+						bill_task	: "VR_find_vdvc312_02",	// 指令
+						bill_com	: loginCom,				// 单位
+						fbill_no	: fbill_no,				// 片区
+						bill_unit	: document.getElementById("bill_ipaddr").innerHTML,	// 经度
+						bill_nunit	: document.getElementById("bill_gpsaddr").innerHTML,	// 纬度
+						bill_title	: search,	// 纬度
+						currentPage	: startIndex,
+						pageSize	: pageSize,
+						paramText	: search
+					}
+
+					rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending312Data, '../login.html',true);
+				}else if(guid == "002"){
+					queryparmas = {
+						name		: 'msvr',
+						bill_task	: "VR_find_vdvc312_03",	// 指令
+						bill_com	: loginCom,				// 单位
+						fbill_no	: fbill_no,				// 片区
+						bill_unit	: document.getElementById("bill_ipaddr").innerHTML,	// 经度
+						bill_nunit	: document.getElementById("bill_gpsaddr").innerHTML,	// 纬度
+						bill_title	: search,	// 纬度
+						currentPage	: startIndex,
+						pageSize	: pageSize,
+						paramText	: search
+					}
+					rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending312Data, '../login.html',true);
+				}else  if(guid == "003"){
+					queryparmas = {
+						name: 'vdsa402',
+						bill_task: "L",	// 指令		
+						bill_com: loginCom, 
+						bill_user: userbillNo, //员工id登录人
+						currentPage: startIndex,
+						pageSize: pageSize,
+						paramText: search,
+					}//pendingdclData
+					rqsDataAjax(queryparmas,'Business/allocated', pendingdclData, '../login.html',true);
+				}else  if(guid == "004"){
+					queryparmas = {
+						name		: 'msvr',
+						bill_task	: "VR_find_vdsa402_01",	// 指令
+						bill_com	: loginCom,				// 单位
+						fbill_no	: fbill_no,				// 片区
+						bill_unit	: document.getElementById("bill_ipaddr").innerHTML,		// 经度
+						bill_nunit	: document.getElementById("bill_gpsaddr").innerHTML,	// 纬度
+						bill_title	: search,	// 纬度
+						currentPage	: startIndex,
+						pageSize	: pageSize,
+						paramText	: search
+					}//pending402Data
+					rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending402Data, '../login.html',true);
+				}
+//				console.log(JSON.stringify(queryparmas))
+			});
+			// 【附近的店】【未拜访】
+			mui("#contList").on('tap', '.client', function(e) {
+				var e = this;
+//				var li = e.parentNode.parentNode;
+				var li = e;
+				//获取id
+				var dataRow = li.getAttribute("data-row");
+				var dataRow = JSON.parse(dataRow);
+				var ws = plus.webview.getWebviewById("vdsa402_edit.html");
+				if(!vlUtils.isnull(ws)){
+					plus.webview.close(ws);
+				}
+				mui.openWindow({
+					id: 'vdsa402_edit.html',
+					url: 'vdsa402_edit.html',
+					createNew: true,
+					extras: {
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 不变 
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变 
+						fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+						loginCom 		: loginCom,			// 4.登录单位代码
+						loginComName 	: loginComName,		// 5.登录单位名称
+						userbillNo 		: userbillNo,		// 6.登录人的代码
+						userName 		: userName,			// 7.登录人的姓名
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vdsa402_list.html",	// 9.从哪个页面来
+						clientInfo 		: dataRow,
+						hadSave 		: false,
+					}
+				});
+				
+			});
+
+			//【拜访记录】点击
+			mui("#contList").on('tap', '.visit', function(e) {
+				var e = this;
+				var li = e;
+				//获取id
+				var dataRow = li.getAttribute("data-row");
+				var dataRow = JSON.parse(dataRow);
+				var ws = plus.webview.getWebviewById("vdsa402_node.html");
+				if(!vlUtils.isnull(ws)){
+					plus.webview.close(ws);
+				}
+
+				mui.openWindow({
+					url: 'vdsa402_node.html',
+					id: 'vdsa402_node.html',
+					createNew: true,
+					extras: {
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 不变 
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变 
+						fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+						loginCom 		: loginCom,			// 4.登录单位代码
+						loginComName 	: loginComName,		// 5.登录单位名称
+						userbillNo 		: userbillNo,		// 6.登录人的代码
+						userName 		: userName,			// 7.登录人的姓名
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vdsa402_list.html",	// 9.从哪个页面来
+						detailInfo 		: dataRow,
+					}
+				});
+			});
+			//【待处理】左滑
+			mui("#contList").on('tap', '.select .mui-btn-yellow', function(e) {
+				var e = this;
+				var li = e.parentNode.parentNode;
+				//获取id
+				var dataRow = li.getAttribute("data-row");
+				var dataRow = JSON.parse(dataRow);
+				var ws = plus.webview.getWebviewById("vdsa402_edit.html");
+				if(!vlUtils.isnull(ws)){
+					plus.webview.close(ws);
+				}
+				mui.openWindow({
+					id: 'vdsa402_edit.html',
+					url: 'vdsa402_edit.html',
+					createNew: true,
+					extras: {
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 不变 
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变 
+						fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+						loginCom 		: loginCom,			// 4.登录单位代码
+						loginComName 	: loginComName,		// 5.登录单位名称
+						userbillNo 		: userbillNo,		// 6.登录人的代码
+						userName 		: userName,			// 7.登录人的姓名
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vdsa402_list.html",	// 9.从哪个页面来
+						detailInfo 		: dataRow,
+						hadSave 		: true,
+					}
+				});				
+			});
+			// ===============编辑结束
+		})
+		//全选
+		document.getElementById("selectAll").addEventListener("tap",function(){
+			var allCheckBoxs = document.getElementsByName("checkbox"); 
+			var ckeckedAll=false; // 没有全选 
+			for(var i = 0; i < allCheckBoxs.length; i ++ ) { 
+				if(allCheckBoxs[i].checked){ 
+					ckeckedAll=true;  
+					break; 
+				} 
+			} 
+			if (ckeckedAll) { 
+				_allUnchecked(allCheckBoxs); 
+
+			}else { 
+				_allchecked(allCheckBoxs); 
+			} 
+			function isAllcheckde(allCheckBoxs){
+				for(var i = 0; i < allCheckBoxs.length; i ++ ) { 
+					if(allCheckBoxs[i].checked == false){ // 只要有一个没有选就是没有全选
+						ckeckedAll = false;
+					}
+				} 
+			}
+			function _allchecked(allCheckBoxs){ 
+				for(var i = 0; i < allCheckBoxs.length; i ++ ) { 
+					allCheckBoxs[i].checked = true; 
+				} 
+			} 
+			function _allUnchecked(allCheckBoxs){ 
+				for(var i = 0; i < allCheckBoxs.length; i ++ ) { 
+					allCheckBoxs[i].checked = false; 
+				} 
+			}
+		});
+		// 送审指令
+		function bSendBtn(){ 
+			plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+			var sendParams = taskParam("b_send");
+			if(!saveBtn()){
+				return;
+			}
+			CRUDajax(sendParams,"../login.html",sendSuccess); 
+		}
+		function sendSuccess(){
+			
+			plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+			
+		}
+		function updateSucc(){
+			delSuccess();
+		}
+		function delSuccess(){
+			successFun("vdsa402_plist.html","vdsa402_list.html");
+		}
+		// 送审
+		document.getElementById("dealAccount").addEventListener("tap",function(){
+			var rowObjArr = [];
+			var liLens = mui("#contList li").length;
+			for(var i = 0 ; i < liLens ; i ++ ){			
+				// 检查是否选中，选中则取对应的li的dataRow 放在数组里面
+				var rmStatus = jQuery("#contList li .liinput").eq(i).children("input").is(":checked");
+				if(rmStatus){										
+					var dataRow = jQuery("#contList li").eq(i).attr("data-row");					
+					var rowObj = JSON.parse(dataRow);
+					rowObjArr.push(rowObj);
+				}
+			}
+			if(rowObjArr.length == 0){
+				mui.toast("请先选择单据！");
+				return;
+			}
+			for(var k = 0; k < rowObjArr.length; k++){
+				// 先判断【经营状况】，如果【经营状况】不是“正常”，则之判断这两项，否则都要判断
+				var arr = {
+					c : {
+						bill_flag			: "是否更新客户地址",	
+						bill_nflag			: "经营状况",	
+					}
+				}
+				var bnflag = rowObjArr[k].bill_nflag; 
+				if(bnflag == "正常"){
+					arr = {
+						c : {
+							bill_flag			: "是否更新客户地址",	
+							linkvd_corrlevel 	: "终端类别 ", 
+							bill_bflow			: "渠道类型",	
+							node_rate			: "展柜数量",	
+							bill_doppo			: "投入情况",	
+						},
+						b:{
+							bill_spec :"本品目录",
+							bill_nspec :"竞品目录",
+						}
+					}
+					// 多选
+					for(var b in arr.b){
+						if (vlUtils.isnull(rowObjArr[k][b])){
+							alert('送审失败\n单据已为您保存\n原因：\n"'+arr.b[b]+'"未选择~\n请确保页面上的信息填写完毕再送审', {'verticalAlign': "middle"});
+							return;
+						}else{
+							// 如果【燕京产品】选了“清爽”，则【该店清爽价格】必填，否则可不填
+							if(b == "bill_spec"){
+								var checkedArr = rowObjArr[k].bill_spec.split(",");
+								for(var i = 0 ; i < checkedArr.length; i ++ ){
+									if(checkedArr[i] == "清爽"){
+										if (vlUtils.isnull(rowObjArr[k].bill_text[0].linkbd_price_saleqs)){
+											alert('送审失败\n单据已为您保存\n原因：\n "该店清爽售价"未选择~\n请确保页面上的信息填写完毕再送审', {'verticalAlign': "middle"});
+											return;
+										}
+									}
+								}
+							}
+						}
+					}
+					//
+				}
+				// 单选
+				for(var kk in arr.c){
+					if (kk != "linkvd_corrlevel" && vlUtils.isnull(rowObjArr[k][kk])){
+						alert('送审失败\n单据已为您保存\n原因：\n"'+arr.c[kk]+'"未选择~\n请确保页面上的信息填写完毕再送审', {'verticalAlign': "middle"});
+						return;
+					}else if (kk == "linkvd_corrlevel" && vlUtils.isnull(rowObjArr[k].bill_text[0][kk])){
+						alert('送审失败\n单据已为您保存\n原因：\n"'+arr.c[kk]+'"未选择~\n请确保页面上的信息填写完毕再送审', {'verticalAlign': "middle"});
+						return;
+					}
+				}
+				//
+				var date = new Date();
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				params.bill_task 	= "b_send";
+				params.bill_no 	 	= rowObjArr[k].bill_no;
+				params.fbill_no  	= rowObjArr[k].fbill_no;
+				params.bill_oppo  	= rowObjArr[k].bill_oppo;		// 312代码
+				params.bill_unit  	= rowObjArr[k].bill_ipaddr;	// 经度
+				params.bill_nunit  	= rowObjArr[k].bill_gpsaddr;	// 纬度
+				params.bill_title  	= rowObjArr[k].bill_flag;	// 地址
+				params.bill_context = rowObjArr[k].bill_context;	// 地址
+				params.bill_user 	= userbillNo;
+				params.bill_com	 	= loginCom;
+				params.bill_date 	= vlUtils.dateToString(date);
+				if(typeof(params.bill_context) != "string"){
+					params.bill_context = JSON.stringify(params.bill_context);
+				}
+				//
+//				CRUDajax(params, "../login.html", param)
+				auditing(params);// 送审方法
+			}
+		})
+		//下拉刷新
+		function pulldownRefresh() {
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			//
+			queryparmas.currentPage = 1;
+			queryparmas.pageSize = pageSize;
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+//			if(guid != "003") {
+//				rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending312Data, '../login.html',true);
+//			}else{
+//				rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending402Data, '../login.html',true);
+//			}
+			if(guid == "001") {
+				rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending312Data, '../login.html',true);
+			}else if(guid == "002"){
+				rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending312Data, '../login.html',true);
+			}else  if(guid == "003"){
+				rqsDataAjax(queryparmas,'Business/allocated', pendingdclData, '../login.html',true);
+			}else  if(guid == "004"){
+				rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending402Data, '../login.html',true);
+			}
+			mui('#vdsa402_list').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+		}
+
+		/*上拉加载具体业务实现 */
+		function pullupRefresh() {
+			if(queryparmas.currentPage < pager.totalPage) {
+				queryparmas.currentPage = queryparmas.currentPage + 1;
+				queryparmas.pageSize = pageSize;
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+//				if(guid != "003") {
+//					rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending312Data, '../login.html',false);
+//				}else{
+//					rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending402Data, '../login.html',false);
+//				}
+				if(guid == "001") {
+					rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending312Data, '../login.html',false);
+				}else if(guid == "002"){
+					rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending312Data, '../login.html',false);
+				}else  if(guid == "003"){
+					rqsDataAjax(queryparmas,'Business/allocated', pendingdclData, '../login.html',false);
+				}else  if(guid == "004"){
+					rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending402Data, '../login.html',false);
+				}
+				mui('#vdsa402_list').pullRefresh().endPullupToRefresh();
+			} else {
+				plus.nativeUI.toast("~没有更多了~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdsa402_list').pullRefresh().endPullupToRefresh();
+				return;
+			}
+		}
+		//
+		function pending312Data(data,type) {
+
+			pager = data.page;
+			document.getElementById("showHint").style.display = "none";
+			var comImgid = vlUtils.uuid('comImg', 4, 10);
+			if(data.data.length != 0) {
+				var text = '';
+				for(var i = 0; i < data.data.length; i++) {
+					var newdataArr = {};
+					for(var k in data.data[i]) {
+						newdataArr[k.slice(0, 2)] = data.data[i][k];
+					}
+					var contList = document.getElementById("contList");
+					//
+					if(type&&i==0){
+						contList.innerHTML = "";
+					}
+					var li = document.createElement("li");
+					li.setAttribute("data-row",JSON.stringify(newdataArr));
+					li.setAttribute("data-load","false");
+					li.setAttribute("data-show","false");
+					li.setAttribute("class", "mui-table-view-cell client");
+					li.style.marginBottom = "3px";
+					li.style.overflow = "hidden";
+					li.style.background = "#fff";
+					var txt = "";
+//					if(guid == "003"){
+//						txt += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-yellow">详情</a></div>';
+//					}else{
+//						txt += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-yellow">去拜访</a></div>';
+//					}
+					txt += '<div class="mui-slider-cell  mui-slider-handle">';
+					txt += '<div class="mui-row mainfulltxt" style="overflow: hidden;background:;">';
+					txt += '<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;width:55px;">';
+					txt += '<img class="vdfa332 mui-col-xs-12" src="../../images/icon/default.png" id="'+newdataArr["标题"].split(":")[0]+'" />';
+					txt += '</div>';
+					txt += '<div class="mui-col-xs-6 mui-row" style="background:;height:50px;">';
+					txt += '<h5 class="list_h5 mui-col-xs-12 mftbillname" style="color:#242424;padding-top:1px;">'+newdataArr["标题"].split(":")[1]+'</h5>';
+					var addrStr = newdataArr["内容"].split("+")[0].split("=")[1];
+					if(addrStr.slice(0,2)=="[{"){
+						var addrObj = JSON.parse(newdataArr["内容"].split("+")[0].split("=")[1]);
+						addrStr = addrObj[0].linkbd_linkprov +" "+ addrObj[0].linkbd_linkstreet +" "+ addrObj[0].linkvd_corraddr;
+					}
+					txt += '<p class="list_font mui-col-xs-12 mft">地址：'+addrStr+'</p>';
+					txt += '<p class="list_font mui-col-xs-12 mft">上次拜访：'+vlUtils.isnull(newdataArr["日期"])?"":newdataArr["日期"].slice(0,16)+'</p>';
+					txt += '</div>';
+					txt += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;">';
+//					("全部:\n"+JSON.stringify(newdataArr["内容"])+"\n 分组:\n"+newdataArr["内容"].split("+")+"\n姓名:\n"+newdataArr["内容"].split("+")[1].split("=")[1]+"\n电话:\n"+newdataArr["内容"].split("+")[2].split("=")[1]);
+					txt += '<p class="list_fonts mui-col-xs-12">'+newdataArr["内容"].split("+")[1].split("=")[1]+'</p>';
+					txt += '<p class="list_fonts mui-col-xs-12 money"><span class="price mftbillamt">'+newdataArr["内容"].split("+")[2].split("=")[1]+'</span></p>';
+					if(guid=="001"){
+						txt += '<p class="list_fonts mui-col-xs-12">'+newdataArr["指令"]+'m</p>';
+					}else{
+						txt += '<p class="list_fonts mui-col-xs-12">'+newdataArr["指令"]+'</p>';
+					}
+					txt += '</div>';
+					txt += '</div>';
+					txt += '<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed detailist" style="display:none;overflow: hidden;background:;">';
+					txt += '</ul>';
+					txt += '</div>';
+					if(type&&i==0){
+						document.getElementById("searching").style.display = "none";
+					}
+					li.innerHTML = txt;
+					contList.appendChild(li);
+					vlUtils.downloadicon(newdataArr["图片"],newdataArr["标题"].split(":")[0]);
+				}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				mui.toast("未查询到数据~")
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("searching").style.display = "none";
+				document.getElementById("showHint").style.display = "block";
+			}
+			plus.nativeUI.closeWaiting();
+		}
+		function pendingdclData(data,type){
+			pager = data.page[0];
+			document.getElementById("showHint").style.display = "none";
+			var comImgid = vlUtils.uuid('comImg', 4, 10);
+			if(data.data.length != 0) {
+				datas= data.data;
+				for(var i = 0; i < data.data.length; i++) {
+					if(type&&i==0){
+						contList.innerHTML = "";
+					}
+					var li = document.createElement("li");
+					var text = '';
+					document.getElementById("footer").style.display = "block";
+					li.setAttribute("data-row",JSON.stringify(data.data[i]));
+					li.setAttribute("class", "mui-table-view-cell mui-row select");	
+//					li.setAttribute("data-load","false");
+//					li.setAttribute("data-show","false");
+					li.style.marginBottom = "3px";
+					li.style.overflow = "hidden";
+					li.style.background = "#fff";
+					if(guid == "003"){
+						text += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-yellow">修改</a></div>';					
+					}
+					text += '<div class="mui-slider-cell  mui-slider-handle libody mui-row ">';
+					text += '<div class="mui-col-xs-1 mui-input-row mui-checkbox mui-left liinput" style="padding: 0;line-height:60px;">';
+					text += '<input name="checkbox" value="Item 1" type="checkbox" style="padding:0;margin-top:12px;position: relative;left:0px;top:0;">';
+					text += '</div>';
+					text += '<div class="mui-slider-cell  mui-slider-handle mui-col-xs-11 libody mui-row">';
+					text += '<div class="mui-col-xs-2 mui-row" style="background:;padding:5px 0px;">';
+					text += '<img class="vdoa001 mui-col-xs-12" src="../../images/icon/default.png"  id="' + datas[i].bill_no + '" style="width: 50px;" />';
+					text += '</div>';
+					text += '<div class="mui-col-xs-7 mui-row" style="background:;height:50px;">';
+					// ↓ 1024
+					text += '<div class="mui-col-xs-12" style="color:#242424;margin-top:3px;">';
+//					text += '<span class="mui-btn mui-btn-'+btnclass+' mui-btn-outlined" type="button" id="stepTitle" style="padding:2px  2px 0;font-size: 10px;margin-right:1px;line-height:12px;">'+datas[i].bill_title+'</span>';
+					text += '<span class="list_h5" style="line-height:12px;display: inline-block;padding-top:5px;">'+datas[i].bill_name+'</span></div>';
+					text += '<p class="mui-col-xs-12 list_font" style="color:#242424;margin-top:10px;">地址：' + datas[i].bill_title+ '</p> ';
+					text += '</div>';
+					text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;padding-top:3px;padding-right:8px;">';
+					text += '<p class="list_fonts mui-col-xs-12" style="float:right;color:#FF5053;">' + datas[i].bill_nflag+ '</p>';
+					text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;">' + datas[i].bill_date.slice(5,16) + '</p>';
+					text += '<p class="mui-col-xs-12" style="float:right;margin-top:3px;">';
+					text += '<button type="button" class="list_sts mui-btn mui-btn-warning mui-btn-outlined">待处理</button>';
+					// ↑ 1024 
+					text += '</p>';
+					text += '</div>';
+					text += '</div>';
+			
+				if(type&&i==0){
+					document.getElementById("searching").style.display = "none";
+				}
+				li.innerHTML = text;
+				contList.appendChild(li);
+				// 图片名，<img />id
+				vlUtils.downloadicon(datas[i].fbill_no, datas[i].bill_no);
+			}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+//				mui.toast("未查询到数据~")
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("searching").style.display = "none";
+				document.getElementById("showHint").style.display = "block";
+			}
+			//
+			plus.nativeUI.closeWaiting();
+		}
+		function pending402Data(data,type){
+
+			pager = data.page;	
+			document.getElementById("showHint").style.display = "none";
+			var comImgid = vlUtils.uuid('comImg', 4, 10);
+			if(data.data.length != 0) {
+				var text = '';
+				for(var i = 0; i < data.data.length; i++) {
+					var newdataArr = {};
+					for(var k in data.data[i]) {
+						newdataArr[k.slice(0, 2)] = data.data[i][k];
+					}
+					var contList = document.getElementById("contList");
+					//
+					if(type&&i==0){
+						contList.innerHTML = "";
+					}
+					var li = document.createElement("li");
+					li.setAttribute("data-row",JSON.stringify(newdataArr));
+					li.setAttribute("data-load","false");
+					li.setAttribute("data-show","false");
+					li.setAttribute("class", "mui-table-view-cell visit");
+					li.style.marginBottom = "3px";
+					li.style.overflow = "hidden";
+					li.style.background = "#fff";
+					var txt = "";
+//					txt += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-yellow">查看</a></div>';
+					txt += '<div class="mui-slider-cell  mui-slider-handle">';
+					txt += '<div class="mui-row mainfulltxt" style="overflow: hidden;background:;">';
+					txt += '<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;width:55px;">';
+					txt += '<img class="vdfa332 mui-col-xs-12" src="../../images/icon/default.png" id="'+newdataArr["指令"]+'" />';
+					txt += '</div>';
+					txt += '<div class="mui-col-xs-6 mui-row" style="background:;height:50px;">';
+					txt += '<h5 class="list_h5 mui-col-xs-12 mftbillname" style="color:#242424;padding-top:1px;">'+newdataArr["标题"].split(":")[1]+'</h5>';
+					var addrStr = newdataArr["内容"];
+					if(addrStr.slice(0,2)=="[{"){
+						var addrObj = JSON.parse(newdataArr["内容"]);
+						addrStr = addrObj[0].linkbd_linkprov +" "+ addrObj[0].linkbd_linkstreet +" "+ addrObj[0].linkvd_corraddr;
+					}
+					txt += '<p class="list_font mui-col-xs-12 mft">地址：'+addrStr+'</p>';
+					txt += '<p class="list_font mui-col-xs-12 mft"></p>';
+					txt += '</div>';
+					txt += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;">';
+					txt += '<p class="list_fonts mui-col-xs-12">'+newdataArr["参数"]+'</p>';
+					txt += '<p class="list_fonts mui-col-xs-12 money"><span class="price mftbillamt"></span></p>';
+					txt += '<p class="list_fonts mui-col-xs-12">'+newdataArr["日期"].slice(5,16)+'</p>';
+					txt += '</div>';
+					txt += '</div>';
+					txt += '<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed detailist" style="display:none;overflow: hidden;background:;">';
+					txt += '</ul>';
+					txt += '</div>';
+					if(type&&i==0){
+						document.getElementById("searching").style.display = "none";
+					}
+					li.innerHTML = txt;
+					contList.appendChild(li);
+					// 图片名，<img />id
+					vlUtils.downloadicon(newdataArr["图片"], newdataArr["指令"]);
+				}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				mui.toast("未查询到数据~")
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("searching").style.display = "none";
+				document.getElementById("showHint").style.display = "block";
+			}
+			plus.nativeUI.closeWaiting();
+		}
+		
+		//
+		function getGeocodeIn(){
+			
+			if(plus.os.name ==="Android"){
+							 plus.geolocation.getCurrentPosition(function(p) {
+							 	if(VlUtils.isnull(p.addresses)){
+							 		document.getElementById("bill_title").innerHTML = "定位失败"
+							 	}else{
+							 		document.getElementById("bill_title").innerHTML = p.addresses;
+							 		document.getElementById("bill_ipaddr").innerHTML = p.coords.longitude;
+							 		document.getElementById("bill_gpsaddr").innerHTML = p.coords.latitude;
+							 		document.getElementById("bill_title").setAttribute("data-location",JSON.stringify(p));
+									//进入页面默认查询
+									queryparmas = {
+										name		: 'msvr',
+										bill_task	: "VR_find_vdvc312_02",	// 指令
+										bill_com	: loginCom,				// 单位
+										fbill_no	: fbill_no,				// 片区
+										bill_unit	: p.coords.longitude,	// 经度
+										bill_nunit	: p.coords.latitude,	// 纬度
+										bill_title	: search,	// 纬度
+										currentPage	: startIndex,
+										pageSize	: pageSize,
+										paramText	: search
+									}
+									
+									plus.nativeUI.showWaiting("正在查询数据..."); 
+									rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending312Data, '../login.html',true);
+							 	}
+							 }, function ( e ) {
+							 	document.getElementById("bill_title").innerHTML = "获取定位位置信息失败："+e.message ;
+							 },{geocode:true});
+			}else{
+							 var geolocation = new BMap.Geolocation();
+							   geolocation.getCurrentPosition(function(r) {
+							     if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+							 	   var provinces=p.address.province
+							 	   var citys=p.address.city
+							 	   var districts=p.address.district
+							 	   var streets=p.address.street
+							 	   var titles=provinces+citys+districts+streets
+							 	   document.getElementById("bill_title").innerHTML = titles;
+							 	   document.getElementById("bill_ipaddr").innerHTML = p.longitude;
+							 	   document.getElementById("bill_gpsaddr").innerHTML = p.latitude;
+							 	   document.getElementById("bill_title").setAttribute("data-location", JSON.stringify(p));
+								   //进入页面默认查询
+								   queryparmas = {
+								   	name		: 'msvr',
+								   	bill_task	: "VR_find_vdvc312_02",	// 指令
+								   	bill_com	: loginCom,				// 单位
+								   	fbill_no	: fbill_no,				// 片区
+								   	bill_unit	: p.coords.longitude,	// 经度
+								   	bill_nunit	: p.coords.latitude,	// 纬度
+								   	bill_title	: search,	// 纬度
+								   	currentPage	: startIndex,
+								   	pageSize	: pageSize,
+								   	paramText	: search
+								   }
+								   
+								   plus.nativeUI.showWaiting("正在查询数据..."); 
+								   rqsDataAjax(queryparmas,'/Find/Ddata/activity', pending312Data, '../login.html',true);
+							     } else {
+							 	   document.getElementById("bill_title").innerHTML = "获取定位位置信息失败：";
+							     }
+							   });
+			}
+			
+			
+			
+		
+		}
+		function auditing(params){
+
+			mui.ajax(systemURL + 'Api/Task/sendTask', {
+				data: params,
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				beforeSend: function() {
+					checkNetState(); // 检查网络链接状态
+				},
+				timeout: 10000, //超时时间设置为10秒
+				async:false,
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				success: function(rps) {
+
+					if(rps.code == 0) {
+						//
+						var dates = new Date();
+						var updateparams = {
+							name : "msvr",
+							bill_task: "VE_vdsa402_02",
+							bill_com: loginCom,
+							bill_user: userbillNo,
+							bill_no:params.bill_no,// 402代码
+							bill_oppo:params.bill_oppo,	// 312代码
+							bill_unit:params.bill_ipaddr,// 经度
+							bill_nunit:params.bill_gpsaddr,// 纬度
+							bill_title:params.bill_flag,// 地址
+							bill_context:params.bill_context,
+							bill_date : vlUtils.dateToString(dates)
+						}
+
+						CRUDajax(updateparams,"../login.html",updateSucc); 
+						//
+						mui.toast("已提交送审请求");
+					}
+					if(rps.code == 1) {
+						ajaxCode1(rps.error_code,rps.error_description,'../login.html');
+						mui("#saveBtn").button('reset');
+					}
+				},
+				error: function(xhr, type, errorThrown) { 
+					mui("#saveBtn").button('reset');
+					console.log(JSON.stringify(xhr));
+					console.log(errorThrown);
+					console.log(type);
+					if(type == "timeout") {
+						mui.toast("请求超时");
+					}
+				}
+			});
+		}
+		function updateSucc(){
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			document.getElementById("contList").innerHTML 	= '';
+			queryparmas = {
+				name: 'vdsa402',
+				bill_task: "L",	// 指令		
+				bill_com: loginCom, 
+				bill_user: userbillNo, //员工id登录人
+				currentPage: startIndex,
+				pageSize: pageSize,
+				paramText: search,
+			}//pendingdclData
+			rqsDataAjax(queryparmas,'Business/allocated', pendingdclData, '../login.html',true);
+		}
+	</script>
+
+</html>

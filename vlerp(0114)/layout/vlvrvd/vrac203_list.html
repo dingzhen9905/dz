@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../../css/common/mui.min.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style type="text/css">
+			header{
+	height: 60px !important;
+}
+header a, header h1{
+	color: #FFFFFF !important;
+}
+.mui-content{
+	padding-top: 64px !important;
+}
+.vrac203-search-terms{
+	overflow: hidden;
+	background: #EAEAEA;
+}
+.mui-input-row{
+	margin-top:3px;position: relative;
+}
+label{
+	font-size: 12px;
+	color: #6C6C6C;
+}
+input{
+	margin-top:3px;
+	height:26px !important;
+	border:1px solid #5da8fa !important;
+	border-radius:10px !important;
+	font-size: 10px;
+}
+input[placeholder] {
+	padding-left:10px !important;
+	font-size: 10px;
+	line-height: 10px;
+	color: #000;
+}
+.mui-input-row .mui-icon.mui-icon-search {
+	position: absolute;
+	top: 3px;
+	right: 0;
+	
+	width: 36px;
+	height: 26px;
+	
+	text-align: center;
+	color: #FFFFFF;
+	
+	margin:0 !important;
+	padding:0 !important;
+	
+	border-radius: 0 10px 10px 0;
+	background: #5da8fa;
+}
+.mui-icon.mui-icon-search:hover{
+	background: #C8C7CC;
+}
+/* 月份样式*/
+.search-terms-months {
+	height: 30px;
+	overflow: hidden;
+}
+.search-terms-months{
+	text-align: center;
+}
+.serch-months{
+	height: 30px;
+	line-height: 30px;
+	background: #FFFFFF;
+}
+.serch-months-year,
+.serch-months-item.active{
+	color: #FFFFFF;
+	background: #007AFF;
+}
+.serch-months-item.active{
+	color: #FFFFFF;
+	background: #5FAFFF;
+}
+
+.serch-months-prev,
+.serch-months-item{
+	border-right: 1px dashed #5FAFFF ;
+}
+.mui-table-view{
+	background: none;
+}
+.contentlist.mui-table-view:before,
+.contentlist.mui-table-view:after{
+	height: 0;
+}
+.contentlist.mui-table-view{
+	margin:0;
+	margin-bottom:30px;
+	padding: 0 !important;
+}
+.contentlist.mui-table-view li{
+	margin-bottom: 3px;
+	padding-top:5px;
+	border-bottom: 1px dashed #20B2AA ;
+}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id='J_pageTitle'>流向总账</h1>
+		</header>
+		<div class="mui-content">
+		   <div class="vrac203 vrac203-search vrac203-search-terms">
+		   		<div class="mui-row" > 
+		   			<div class="mui-col-xs-9">
+		   				<div class="search-terms-depts">
+				   			<div class="mui-input-row">
+								<label>选择部门:</label>
+								<input id="J_deptName" type="text" class="requiredInput" placeholder="点击选择条件">
+								<span id="J_sDeptBtn" class="mui-icon mui-icon-search"></span>
+							</div>
+				   		</div>
+				   		<div class="search-terms-clients">
+				   			<div class="mui-input-row">
+								<label>选择客户:</label>
+								<input id="J_client" type="text" class="requiredInput" placeholder="录入客户厂编或名称">
+								<span id="J_sClientBtn" class="mui-icon mui-icon-search"></span>
+							</div>
+				   		</div>
+		   			</div>
+		   			<span class="mui-col-xs-3" id="J_searchBtn" style="padding:20px;box-sizing: border-box !important;">
+						<button class="mui-btn-primary mui-btn-outlined">查询</button>
+					</span>
+		   		</div>
+		   		<div class="search-terms-months">
+		   			<div class="mui-row">
+		   				<a class="mui-col-xs-2 serch-months serch-months-year" href="#topPopover" id="J_fiscalYear">2019年</a>
+		   				<div class="mui-col-xs-10 mui-row  serch-months-items">
+		   					<!--<span class="mui-col-xs-2 serch-months serch-months-prev"> << </span>-->
+		   					<div class="mui-col-xs-12 serch-months serch-months-item-box">
+		   						<div id="slider" class="mui-slider">
+									<div class="mui-slider-group">
+										<div class="mui-slider-item mui-row">
+											<span class="mui-col-xs-2 serch-months-item"><span class='num'>1</span><span>月</span></span>
+										    <span class="mui-col-xs-2 serch-months-item"><span class='num'>2</span><span>月</span></span>
+										    <span class="mui-col-xs-2 serch-months-item"><span class='num'>3</span><span>月</span></span>
+										    <span class="mui-col-xs-2 serch-months-item"><span class='num'>4</span><span>月</span></span>
+										    <span class="mui-col-xs-2 serch-months-item"><span class='num'>5</span><span>月</span></span>
+										    <span class="mui-col-xs-2 serch-months-item"><span class='num'>6</span><span>月</span></span>
+										</div>
+										<div class="mui-slider-item mui-row">
+											<span class="mui-col-xs-2 serch-months-item"><span class='num'>7</span><span>月</span></span>
+											<span class="mui-col-xs-2 serch-months-item"><span class='num'>8</span><span>月</span></span>
+											<span class="mui-col-xs-2 serch-months-item"><span class='num'>9</span><span>月</span></span>
+											<span class="mui-col-xs-2 serch-months-item"><span class='num'>10</span><span>月</span></span>
+											<span class="mui-col-xs-2 serch-months-item"><span class='num'>11</span><span>月</span></span>
+											<span class="mui-col-xs-2 serch-months-item"><span class='num'>12</span><span>月</span></span>
+										</div>
+									</div>
+								</div>
+		   					</div>
+		   					<!--<span class="mui-col-xs-2 serch-months serch-months serch-months-next"> >> </span>-->
+		   				</div>
+		   			</div>
+		   		</div>
+		   </div>
+		   <div id="report02" class="mui-row" style="width:100%;background:#20B2AA;padding:0;text-align: center;height: 30px;line-height: 30px;margin-left:0px;color:#fff;font-size:12px;">
+				<span class="mui-col-xs-4" id="title1" style="text-align: left;padding-left: 10px;background:;font-size:10px;">_</span>
+				<span class="mui-col-xs-2" id="title2" style="text-align: center;font-size:10px;">_</span>
+				<span class="mui-col-xs-2" id="title3" style="text-align: center;font-size:10px;">_</span>
+				<span class="mui-col-xs-2" id="title4" style="text-align: center;font-size:10px;">_</span>
+				<span class="mui-col-xs-2" id="title5" style="text-align: center;font-size:10px;">_</span>
+			</div>
+			<!--下拉刷新容器-->
+			<div id="pullrefresh" class="vrac203-search vrac203-search-resluts"style="background:;margin:0;">
+				<div style="position: relative;">
+					<div id="J_noData" class="mui-h5" style="padding:100px;height:300px;text-align: center;background: ;display:block;border: transparent;background: ;">
+						<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+						<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+						<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+					</div>
+					<div id="J_searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:none;">
+						<p class="mui-icon mui-icon-search" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+						<p style="font-size:12px;">正在搜索中......</p>
+					</div>
+					<div id="J_showError" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:none;border: transparent;">
+						<span class="icon iconfont icon-kulian" style="color:;font-size:100px;"></span>
+						<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">出错啦~</p>
+						<p style="font-size:10px;border-bottom: transparent;">请稍后再试</p>
+					</div>
+				</div>
+				<div class="mui-scroll" id="content" style="background:;margin:0"></div>
+
+				<script id="tmpl" type='text/template'>				
+					<ul class="mui-table-view mui-table-view-chevron contentlist tmplul">
+						<% for ( var i = 0; i < data.length; i ++){ var item = data[i];%>
+							<li style='background:#fff;'>
+							<div class="mui-row" style="padding:0;font-size: 12px;text-align: center;">
+							<div  class="mui-col-xs-4" style="padding-left:10px;">
+								<h4 id="" style="margin:0;text-align:left;font-size:14px;padding-top:1px;font-weight:normal;"><%=item['图片']%></h4>
+								<p style="margin:0;float:left;font-size:12px;"><%=item['指令']%></p>
+							</div>
+							<span class="mui-col-xs-2" style="background:;"><%=item['标题']%></span>
+							<span class="mui-col-xs-2" style="background:;"><%=item['内容']%></span>
+							<span class="mui-col-xs-2" style="background:;"><%=item['数量']%></span>
+							<span class="mui-col-xs-2" style="background:;"><%=item['金额']%></span>
+							</div>
+							</li>
+						<% } %>
+					</ul>
+				</script>
+			</div>
+			<div id="topPopover" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell"><a href="#"><span class="num">2019</span><span>年</span></a></li>
+						<li class="mui-table-view-cell"><a href="#"><span class="num">2018</span><span>年</span></a></li>
+						<li class="mui-table-view-cell"><a href="#"><span class="num">2017</span><span>年</span></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<script src="../../js/mui.min.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/arttmpl.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/jquery-2.1.0.js" 	type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/index.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/index.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="../../js/vrac203list.js" 	type="text/javascript" charset="utf-8"></script>-->
+		<script>
+		;(function(){	
+			// 初始化mui
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style:'circle',
+						callback: pulldownRefresh
+					},
+					up: {
+						auto:false,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			var totalPage = 0,
+			count = 1,
+			pageSize = 10,
+			userNew = null,
+			sys = null,
+			lib = null,
+			slider = mui("#slider"),
+			ajaxParam = null,
+			// 
+			today = new Date(),
+			sYear = today.getFullYear(),
+			sNowMonth = today.getMonth(),
+			sMonth = sNowMonth - 1, //  默认查上个月的
+			// 渲染页面的数据
+			oRenderdata = {'data':[],'pager':{}},
+			billtask = 'VR_query_vdac203_01',
+			lastTitle = '';
+			var teamBillCom,teamBillComName,userbillNo,userName,loginCom,loginComName,privileges,commonParams,fbill_no,fbillnoName,fromPage,pageTitle,dataInfo;
+			// 初始化 页面
+			// 设置
+			jQuery('.mui-slider-item .serch-months-item').eq(sMonth).addClass('active');
+			// 如果月份是大于6月，则自动轮播到第二页
+			if (sMonth >= 6) {
+					slider.slider({
+						interval: 500
+					});
+			} else{
+				slider.slider({
+					interval: 0
+				});
+			}
+			sMonth += 1;
+			mui.plusReady(function(){
+				userNew = JSON.parse(vlUtils.getStorage("user"));
+				sys = userNew.com_linkvd_userCom;
+				var self = plus.webview.currentWebview();
+				teamBillCom 	= self.teamBillCom;
+				teamBillComName = self.teamBillComName;
+				userbillNo 		= self.userbillNo;
+				userName 		= self.userName;
+				loginCom 			= self.loginCom;
+				loginComName 	= self.loginComName;
+				privileges 		= vlUtils.getStorage("newPrivileges");
+				commonParams 	= self.commonParams;
+				fbill_no			= self.fbill_no;
+				fromPage 			= self.fromPage;
+				pageTitle   		= self.pageTitle;
+				fbillnoName 		= self.fbillnoName;
+				dataInfo 			= self.dataInfo; 
+
+				
+				document.getElementById('J_pageTitle').innerHTML = pageTitle;
+				// 绑定事件
+				bindEvent();
+			});
+			function pullupRefresh() {
+				setTimeout(function() {
+					count++
+//						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > totalPage)); //参数为true代表没有更多数据了。
+						if((count > totalPage)){
+						 	mui.toast('没有更多数据了～');
+						}else{
+						 	ajaxParam = getParam(count);
+							ajaxRequest(ajaxParam.opt,ajaxParam.param,ajaxParam.sCB,ajaxParam.eCB);
+						 }
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+				}, 1500);
+			}
+			
+			function addData() {
+//				var oTmlul = jQuery('ul.tmplul').empty();
+				oRenderdata.data = [];
+				count = 1;
+				document.getElementById('J_searching').style.display = 'block';
+				document.getElementById('J_noData').style.display = 'none';
+				document.getElementById('J_showError').style.display = 'none';
+				ajaxParam = getParam(count);
+				ajaxRequest(ajaxParam.opt,ajaxParam.param,ajaxParam.sCB,ajaxParam.eCB);
+			}
+			// 下拉刷新具体业务实现
+			function pulldownRefresh() {
+				setTimeout(function() {
+					eSearch()
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(true);
+				}, 1500);
+			}
+			// 绑定事件
+			function bindEvent(){
+				// 自动轮播，只执行一次，执行一次之后的不再自动轮播
+				document.querySelector('.mui-slider').addEventListener('slide', eSlide);
+				// 切换月份
+				mui(".mui-slider-item ").on('tap', '.serch-months-item', ePickMonth);
+				// 切换年份
+				mui(".mui-table-view ").on('tap', '.mui-table-view-cell', ePickYear);
+				// 部门查询
+				document.getElementById("J_sDeptBtn").addEventListener("tap",ePickDept);
+				document.getElementById("J_searchBtn").addEventListener("tap",eSearch);
+			}
+			// 滑动事件
+			function eSlide() {
+				slider.slider({
+					interval: 0
+				});
+			}
+			// 选择月份
+			function ePickMonth(){
+				jQuery(this).addClass('active').siblings().removeClass('active');
+				sMonth = Number(jQuery(this).children('.num').html());
+			}
+			// 选择年份
+			function ePickYear() {
+				var _selectYear = jQuery(this).find('.num').html();
+				document.getElementById('J_fiscalYear').innerHTML = _selectYear  + '年';
+				sYear = _selectYear;
+				mui('#topPopover').popover('hide');
+			}
+			// 按部门查询
+			function ePickDept(){
+				var bflow = '',
+				btitle = document.getElementById("J_deptName").value;
+				if(privileges === "ROOT" && sys === '企业'){
+					bflow = "管理员";
+				}
+				if(btitle === lastTitle){
+					deptData(dataInfo);
+				}else{
+					var deptparmas = {
+						name: 'msvr',
+						bill_task: "VR_find_vdvc103_02", // 查询的指令
+						bill_com: teamBillCom, 				// 当前单位
+						bill_user: userbillNo, // 当前登陆人
+						bill_dept: fbill_no,	// 查询
+						bill_bflow:bflow,
+						bill_title:btitle,
+						bill_name: fbillnoName,	// 查询
+						currentPage: 1,
+						pageSize: 30,
+						paramText: ""
+					};
+
+				rqsDataAjax(deptparmas, '/Find/Ddata/activity', deptData, '../login.html',true);
+				}
+			}
+			// 
+			function eSearch(){
+				var _deptname = document.getElementById('J_deptName').value;
+				if( _deptname === ''){
+					return plus.nativeUI.toast("请先选择部门~",{"verticalAlign":"middle"});
+				}
+				if(sMonth === (sNowMonth + 1)){
+					settle();
+				}else{
+					addData();
+				}
+			}
+			// 更换 表头
+			function deptData(data, type) {
+
+				var reportArr = [];
+				if(type){
+						// 获取数组
+						for(var i = 0; i < data.data.length; i++) {
+							reportArr[i] = {
+								"title": data.data[i]["标题名称"]
+							};
+						}
+				}else{
+					reportArr = data;
+				}
+				if(reportArr.length  !== 0){
+					// 弹框
+					plus.nativeUI.actionSheet({
+						title: "切换部门",
+						cancel: "取消",
+						buttons: reportArr
+					}, function(e) {
+						//商品类型find赋值
+						if((e.index - 1) != -1){
+							document.getElementById("J_deptName").value = reportArr[(e.index - 1)].title;
+						}
+					});
+				
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					mui.toast("没有查到相应的部门哟~")
+				}
+			} // deptData
+			/**
+			 * 
+			 */
+			// 查询的ajax 
+			function ajaxRequest(opt,params,sCB,eCB){
+				mui.ajax(systemURL + opt.port, {
+					data: params,
+					beforeSend: function() {
+						var network = true;
+						checkNetState(); // 检查网络链接状态
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 60000, //超时时间设置为10秒；
+					contentType: "application/json; charset=utf-8",
+					success: sCB,
+					error: eCB
+				});		
+			}
+			function getParam(curPage){
+				return {
+					opt : {port:'/Find/Ddata/activity'},
+					param: {
+						name: 'msvr',
+						bill_task	: commonParams, // 查询的指令
+						bill_com		: teamBillCom, // 当前单位
+						bill_name	: document.getElementById('J_client').value, // 当前单位
+						bill_title	: document.getElementById('J_deptName').value, // 当前单位
+						bill_user	: userbillNo, // 当前登陆人
+						fiscal_period:getFperiod(),
+						currentPage	: curPage,
+						pageSize		: pageSize,
+						paramText	: ""
+					},
+					sCB : function (data){
+						document.getElementById('J_searching').style.display = 'none';
+						document.getElementById('J_noData').style.display = 'none';
+						document.getElementById('J_showError').style.display = 'none';
+						
+						oRenderdata.pager = data.page;
+						totalPage = data.page.totalPage;
+						if(data.data.length > 0){
+							for(var i = 0; i < data.data.length; i++) {
+								var newdataArr = {};
+								for(var k in data.data[i]) {
+									newdataArr[k.slice(0, 2)] = data.data[i][k];
+								}
+								if(i === 0 ){
+									var _title = {};
+									for(var k in data.data[i]) {
+										_title[k.slice(0,2)] = k.slice(2);
+									}
+									document.getElementById("title1").innerHTML = _title["图片"];
+									document.getElementById("title2").innerHTML = _title["标题"];
+									document.getElementById("title3").innerHTML = _title["内容"];
+									document.getElementById("title4").innerHTML = _title["数量"];
+									document.getElementById("title5").innerHTML = _title["金额"];
+								}
+								oRenderdata.data.push(newdataArr);
+							}
+						}else{
+							document.getElementById('J_searching').style.display = 'none';
+							document.getElementById('J_noData').style.display = 'block';
+							document.getElementById('J_showError').style.display = 'none';
+						}
+						var html = template('tmpl',oRenderdata);
+						document.getElementById('content').innerHTML = html;
+					},
+					eCB: function (data){
+						document.getElementById('J_searching').style.display = 'none';
+						document.getElementById('J_noData').style.display = 'none';
+						document.getElementById('J_showError').style.display = 'block';
+					}
+				}
+			}
+			//
+			function settle(){
+				var params = {
+					name			 : 'msvr',
+					bill_task	 : "VE_vdac203_settle",
+					bill_no		 : getDataCode("vdac203"),
+					fiscal_period: getFperiod(), // 当前登陆人
+					bill_com	 : teamBillCom, // 当前单位
+					bill_date	 : vlUtils.dateToString(new Date())
+				};
+				CRUDajax(params,'../login.html',settleSCB);		
+
+			}
+			function settleSCB(data){
+				addData();
+			}
+			function getFperiod(){
+				var _sM = String(sMonth),
+					_Month = _sM.length === 1 ? '0' + _sM : _sM,
+					_fiscal = sYear + _Month;
+				return _fiscal;
+			}
+		})();
+		</script>
+	</body>
+
+</html>

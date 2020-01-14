@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/index.css" />
+		
+		<style>
+			body{
+				font-size: 12px;
+			}
+			.bottomLine{
+				border-bottom: 1px solid #8f8f94;
+				position:relative;
+				margin: 25px 50px;
+			}
+			.end{
+				position:absolute;
+				top:-8px;
+				left:32%;
+				background: #efeff4;
+				padding:0 10px;
+				z-index:111;
+				font-size: 10px;
+			}
+			ul{
+				margin:10px !important;
+				padding-right:5px; 
+				border-radius:10px;
+			}
+			ul li{
+				height: 50px !important;
+				line-height:30px;
+				/*background: #0062CC;*/
+			}
+			.mui-table-view:after, .mui-table-view:before{
+				height: 0;
+			}
+			
+		</style>
+	</head>
+	<body> 
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 75px;" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>	
+			<h1 class="mui-title headText" id="header">系统管理员</h1>
+		</header>
+		<div class="mui-content" style="margin-top:30px;">
+		    <ul id="contList" class="mui-table-view">
+			    <li class="mui-table-view-cell" data-title="出库单扫码报表" data-task="VR_report" data-href='vlvdst/vdst212_report.html'>
+			        <a class="mui-navigate-right">
+			        	<span class="mui-icon mui-icon-download"></span>
+			        	出库单扫码报表
+			        </a>
+			    </li>
+			    <li class="mui-table-view-cell" data-title="新增客户及用户报表" data-task="VR_report_vdvc101" data-href='vlvdst/vdst212_report.html' >
+			        <a class="mui-navigate-right">
+			        	<span class="mui-icon mui-icon-download"></span>
+			        	新增客户及用户报表
+			        </a>
+			    </li>
+			</ul>
+			<ul class="mui-table-view" style="">
+			    <li class="mui-table-view-cell" data-title="" data-href='vlvdst/vdst212_findone.html'>
+			        <a class="mui-navigate-right">
+			        	<span class="mui-icon mui-icon-search"></span>
+			        	出库单查询
+			        </a>
+			    </li>
+			</ul>
+		    <div class="bottomLine" style="">
+				<p class="end" style="">没有更多啦~！</p>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/jquery-2.1.0.js"></script>
+	
+	<script type="text/javascript" charset="utf-8" src="../js/vlindex.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../js/immersed.js"></script>
+	<script type="text/javascript">
+		mui.init();
+        mui.plusReady(function() {
+        	// 获取上个页面传过来的参数
+        	var self = plus.webview.currentWebview();
+			var teamBillCom = self.teamBillCom;
+			var teamBillComName = self.teamBillComName;
+			var userbillNo = self.userbillNo;
+			var loginCom = self.loginCom;
+			var loginComName = self.loginComName;
+			var fromPage = self.fromPage;
+			var privileges = self.privileges;
+			// 
+			mui("ul").on('tap', 'li', function(e) {
+				var e = this;
+				var li = e;
+				var dataHref = li.getAttribute("data-href"); // 连接页面 
+				var dataTask = li.getAttribute("data-task"); // 连接页面 
+				var dataTitle = li.getAttribute("data-title"); // 连接页面 
+				if(dataHref == "" || dataHref == undefined || dataHref == null){
+					plus.nativeUI.toast("～敬请期待～", {
+						'verticalAlign': "top"
+					});
+					return;
+				}
+				var scanpage = plus.webview.getWebviewById(dataHref.slice(8));
+				if(!VlUtils.isnull(scanpage)){
+					plus.webview.hide(scanpage);
+					plus.webview.close(scanpage);
+				}
+				// 打开页面
+				mui.openWindow({
+					url:dataHref,
+					id: dataHref.slice(8),
+					createNew:true,
+					extras:{
+						teamBillCom 	: teamBillCom ,
+						teamBillComName : teamBillComName,
+						userbillNo 		: userbillNo,
+//						userName 		: userName,
+						loginCom 		: loginCom,
+						loginComName 	: loginComName,
+						privileges 		: privileges,
+//						userRole		: userRole,
+						dataTask		: dataTask,
+						dataTitle		: dataTitle,
+				    },
+				});
+
+			});
+        });  // plusready
+ 				
+    </script>  
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+		<title>扫码</title>
+		<link rel="stylesheet"  type="text/css"  href="css/common/mui.css"/>
+		<link rel="stylesheet" type="text/css" href="css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<style type="text/css">
+			body {
+				backface: #000000;
+			}
+#bcid {
+	width: 100%;
+	height: 83%;
+	position: absolute;
+	top: 60px;
+	bottom: 60px;
+	text-align: center;
+	background: #000000;
+}
+
+.tip {
+	color: #FFFFFF;
+	font-weight: bold;
+	text-shadow: 0px -1px #103E5C;
+}
+
+footer {
+	width: 100%;
+	height: 50px;
+	position: absolute;
+	bottom: 0px;
+	line-height: 44px;
+	text-align: center;
+	color: #FFF;
+	z-index: 999;
+}
+
+.fbt {
+	width: 50%;
+	height: 100%;
+	background-color: #000000;
+	float: left;
+}
+
+.fbt:active {
+	-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+	box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+#bcid {
+	margin: 0 auto;
+	position: absolute;
+	top: 60px;
+}
+#Code{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height:30px;
+	line-height: 30px;
+	background:#fff;
+	color: #0062cc;
+}
+	
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height:60px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>	
+			<h1 class="mui-title headText" id="title">扫码(<span id="num">0</span>)</h1>
+		</header>
+		<div id="bcid">
+			<p  id="Code"style="">当前码：<span id="innerCode" style="color:#0062cc;font-size: 18px;"></span></p>
+			<div style="height:40%"></div>
+			<p class="tip">...载入中...</p>
+		</div>
+		<footer>
+			<div class="fbt" id="scan1">新增扫描</div>
+			<div class="fbt" id="scan2">手电筒</div>
+		</footer>
+
+	</body>
+	<script src="js/md5.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/jquery-2.1.0.js"></script>
+	<script src="js/index.js"></script>
+	<script src="js/immersed.js"></script>
+	<script type="text/javascript">
+		var ws = null,
+			wo = null;
+		var scan = null,
+			domready = false;
+		var count = 0; //扫码计数
+		var oldlens = 0; //扫码计数
+		var scantype = ""; //接收扫描成功的参数 
+		var scanresult = ""; //接收扫描成功的参数 
+		var scanfile = ""; //接收扫描成功的参数 
+		var scantype2 = null; //扫描的类型
+		var resultarr = []; //用于检测扫描码是否存在// 把每一次的扫描的结果推入该数组
+		var resultArr = []; //返回一个列表 // 0119
+		var nums = 0;
+		var fromPage = "";
+		if(window.plus) {
+			carcode();
+		} else {
+			document.addEventListener('plusready', carcode, false);
+		}
+		document.addEventListener('DOMContentLoaded', function() {
+			domready = true;
+			//			plusReady();
+		}, false);
+		// 
+		function carcode() { //识别二维码 和其他plus操作
+			// 获取窗口对象
+			ws = plus.webview.currentWebview();
+			fromPage = ws.fromPage;
+			wo = ws.opener();
+			//
+			if(vlUtils.getStorage("scanNum")){
+				document.getElementById("num").innerHTML = vlUtils.getStorage("scanNum");
+			}
+			// 开始扫描
+			ws.addEventListener('show', function() {
+				scan = new plus.barcode.Barcode('bcid',[0,1]);
+				scan.onmarked = onmarked;
+				scan.start({
+					conserve: true,
+					filename: '_doc/barcode/'
+				});
+			}, false);
+			// 显示页面并关闭等待框
+			ws.show('pop-in');
+			//			wo.evalJS('closeWaiting()');
+
+			scantype2 = ws.dir;
+			//
+			if(scantype2 == "reversescan") { // 如果是反扫则下面显示当前状态为反扫
+				document.querySelector('#scan1 ').innerHTML = "反扫";
+			}
+			//识别二维码
+			function onmarked(type, result, file) { //回调
+				var innercode = result;
+				if(/([^\/]+)$/.test(innercode)){
+				  	innercode=RegExp.$1;
+				}
+				document.getElementById("innerCode").innerHTML =innercode;
+				ws = plus.webview.currentWebview();
+				wo = ws.opener();
+				result = result.replace(/\n/g, '');
+				scantype = type;
+				scanresult = result;
+				scanfile = file;
+				resultArr.push(result); //0119
+				var num = wo.evalJS("scaned('" + type + "','" + result + "','" + file + "','" + scantype2 + "','" + resultArr + "');");
+		
+				var headerH1 = document.getElementById('header_h1');
+				if(oldlens == 0) {
+					oldlens = ws.liLens;
+					count = ws.liLens;
+				}
+				scantype2 = ws.dir;
+		
+				//正扫数字增加
+				if(scantype2 == "positivescan") {
+					var flag1 = false;
+					// 判断数组中是否存在，存在则返回
+					for(var i = 0; i < resultarr.length; i++) {
+						if(resultarr[i] == result) {
+							flag1 = true;
+							break;
+						}
+					}
+					// 如果数组中没有则增加
+					if(!flag1) {
+						// 把结果推入数组
+						resultarr.push(result);
+						count++;
+						nums++;
+					}
+					//				count++;
+					oldlens++;
+				} else { //反扫数字减少
+					// 判断数组中是否存在，存在则返回
+					for(var i = 0; i < resultarr.length; i++) {
+						resultarr.splice(0, 1);
+						if(resultarr[i] == result) {
+							count--;
+							nums--;
+							document.getElementById("num").innerHTML = nums;
+							break;
+						}
+					}
+				}
+				oldresult = result;
+				if(ws.dir == "positivescan") {
+					setTimeout(function() {
+						document.getElementById("num").innerHTML = vlUtils.getStorage("scanNum");
+					}, 300)
+					setTimeout(function() {
+						scan.start({
+							conserve: true,
+							sound: "default"
+						});
+					}, 1000)
+				} else { //如果是反扫则扫描结束后关闭扫描空间并返回上一页
+					scan.close();
+					if(ws.fromPage == "vdsa133_edit.html"){
+						var webview = plus.webview.getWebviewById('vdsa133_edit.html'); 
+				    		webview.show();
+					}
+					if(fromPage == "work"){
+						plus.webview.getWebviewById('tab-webview-subpage-work').show();
+					}
+					plus.webview.currentWebview().close();
+				}
+			}
+			// 
+			scan = new plus.barcode.Barcode('mask');
+			scan.onmarked = onmarked;
+			scan.start({
+				conserve: true,
+				sound: "default"
+			});
+			//监听back安卓
+			plus.key.addEventListener("backbutton", function() {
+				scan.close();
+				plus.webview.currentWebview().close();
+				if(fromPage == "work"){
+					plus.webview.getWebviewById('tab-webview-subpage-work').show();
+				}
+			});
+}
+		document.getElementById("goBack").addEventListener('click', function() { //点击back箭头
+			scan.close();
+			plus.webview.currentWebview().close();
+			if(fromPage == "work"){
+				plus.webview.getWebviewById('tab-webview-subpage-work').show();
+			}
+		})
+		var openFlag = false;
+		document.querySelector('#scan2').addEventListener('click', function() { //开启手电筒
+			openFlag = !openFlag;
+			if(openFlag) {
+				scan.setFlash(true);
+			} else {
+				scan.setFlash(false);
+			}
+		})
+	</script>
+
+</html>

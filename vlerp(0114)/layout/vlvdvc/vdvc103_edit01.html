@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		
+		<!--三级联动-->
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			.mui-row.topNav{
+				padding:0px;
+			}
+			.mui-row.topNav p a {
+				padding:3px;
+			}
+			.mui-row.topNav p span{
+				font-size:12px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.mui-input-row.lastInput:after{
+				/*display: none;*/
+				height:0;
+			}
+			.list_sts{
+				font-size: 12px;
+				line-height: 14px;
+				color:#f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border:1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:80px;line-height: 100px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" style="line-height:40px;color:white;"></a>
+			<h1 class="mui-title" id="header" style="color:white;background-color:;"></h1>
+			<!--<h1 class="mui-title" id="" style="color:white;">
+				<p style="color: #fff !important;margin-bottom: -16px !important;font-size: 16px;height:30px;line-height: 30px;" id="title"></p>
+				<span id="header" style="font-size: 12px;display: inline-block;padding-top:0px;"></span>	
+			</h1>-->
+		</header>
+		<div class="mui-content" style="padding-top:;margin-top:43px;color: #8f8f94;">
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<h5 class="mui-col-xs-8 spn">变更前：</h5>
+					<!--<span class="mui-col-xs-4 spn"  id=""></span>-->
+				</div>
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn" >上级部门名称：</span>
+					<span class="mui-col-xs-8 spn" id="formerDeptName"></span>
+				</div>
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn" >上级部门代码：</span>
+					<span class="mui-col-xs-8 spn" id="formerDeptCode"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<h5 class="mui-col-xs-9 spn">变更后：</h5>
+					<!--<span class="mui-col-xs-8 spn"  id=""></span>-->
+					<button type="buttton" class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-3" id="btn" style="height: 24px;padding:0;margin:0;">选择 &gt;</button>
+				</div>
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn" >上级部门名称：</span>
+					<span class="mui-col-xs-8 spn" style="color: #000;" id="changeDeptName"></span>
+				</div>
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn" >上级部门代码：</span>
+					<span class="mui-col-xs-8 spn" style="color: #000;" id="changeDeptCode"></span>
+				</div>
+			</div>
+			<div class="mui-row" style="background: #ffffff;"> 
+				<button type="buttton" class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-12" id="saveBtn" style="text-align: center;margin-right:;border:none;" >确&nbsp; &nbsp; &nbsp;定</button>	
+			</div>
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = "";
+		var hadSend = false;  // 用于判断是否送审
+		var flagsave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		var deptname = "";
+		mui.plusReady(function() {
+
+			// 接收传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录人的代码
+			loginComName 	= self.loginComName;	// 5.登录人的名称
+			userbillNo 		= self.userbillNo;		// 6.登录单位代码
+			userName 		= self.userName;		// 7.登录单位名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			// 其他
+			deptname 		= self.deptname;
+			detailInfo 		= self.detailInfo;
+			// 103find找到部门带回来
+			window.addEventListener('103findselectedDept', function(event){
+				deptName = event.detail.deptName;
+				deptCode = event.detail.deptCode;
+				// 获取dom
+				var changeDeptCode = document.getElementById("changeDeptCode");  
+				var changeDeptName = document.getElementById("changeDeptName");
+				// 将选择的代码和名称分别赋值
+			  	if(deptName){ 
+				 	changeDeptName.innerHTML= deptName; 
+					changeDeptCode.innerHTML= deptCode;
+			  	} 
+			  	if(deptName == ""){ 
+			  		// 如果什么都不选
+			  		// 上级代码设为ROOT
+			  		// 上级单位名称设为登录单位
+				  	changeDeptName.innerHTML = loginComName;
+				  	changeDeptCode.innerHTML = "ROOT"; 
+				}
+			})
+	
+			document.getElementById("header").innerHTML = detailInfo.bill_name;
+			  
+			//
+			document.getElementById("formerDeptCode").innerHTML = fbill_no; 
+			document.getElementById("changeDeptCode").innerHTML = fbill_no;  
+			// 
+			if(fbill_no == "ROOT"){ // detailInfo.bill_comName
+				document.getElementById("formerDeptName").innerHTML = detailInfo.bill_comName; 
+				document.getElementById("changeDeptName").innerHTML = detailInfo.bill_comName;  
+			}else {
+				document.getElementById("formerDeptName").innerHTML = teamBillComName;
+				document.getElementById("changeDeptName").innerHTML = teamBillComName;  
+			}
+	
+			document.getElementById("btn").addEventListener("tap",function(){
+				mui.openWindow({
+					url:"vdvc103_find.html",
+					id :"vdvc103_find",
+					createNew: true,
+					extras:{
+						teamBillComName : teamBillComName,
+		                teamBillCom:teamBillCom,
+		                userbillNo:userbillNo,
+		                loginCom:loginCom,
+		                loginComName:loginComName,
+						deptname :deptname,
+						choice:"single",
+						fromPage :"vdvc103edit01"
+					}
+				})
+			})
+			
+			//控制返回
+//			document.getElementById("goBack").addEventListener("tap",function(){
+//				var oldBack = mui.back;
+//				mui.back = function(){
+//				    var webview = plus.webview.getWebviewById('vdvc103_node.html'); //假设第一个Webview的id是home
+//				    webview.show();
+//				}; 
+//			}) 
+		
+			//发送ajax提交变更后的数据（变的就是个 "fbill_no"）
+			//保存
+			document.getElementById("saveBtn").addEventListener("tap",saveBtn); 
+			function saveBtn(){
+				var  changeDeptCode = document.getElementById("changeDeptCode").innerHTML;
+				var  changeDeptName = document.getElementById("changeDeptName").innerHTML;
+				changeData = [
+					{
+						fbill_no:detailInfo.fbill_no,
+						bill_text:""
+					},
+					{
+						fbill_no:changeDeptCode,
+						bill_text:""
+					}
+				];
+				//提交的数据
+//				rqsData = {
+//					bill_id: detailInfo.bill_id,
+//					cc_user: detailInfo.cc_user,
+//					bill_title: detailInfo.bill_title,
+//					bill_no: detailInfo.bill_no,
+//					bill_task:"d_save" ,
+//	//				fbill_no: detailInfo.fbill_no,	// 修改的时候要传吗
+//					bill_user: userbillNo, // 登陆人
+//					bill_com: teamBillCom, //登录人单位
+//					bill_dept:detailInfo.bill_dept,
+//					link_next:detailInfo.link_next,
+//					node_qty:detailInfo.node_qty,
+//					bill_ipaddr:detailInfo.bill_ipaddr,
+//					bill_gpsaddr:detailInfo.bill_gpsaddr,
+//					bill_context: detailInfo.bill_context,
+//					bill_name: detailInfo.bill_name,
+//					bill_date:vlUtils.dateToString(date),
+//					bill_text:JSON.stringify(changeData)
+//				};
+				detailInfo.bill_task = "d_save";
+				if(typeof(detailInfo.cc_user) != string){
+					detailInfo.cc_user = JSON.stingify(detailInfo.cc_user);
+				}
+				detailInfo.bill_text = JSON.stringify(changeData); 
+				saveAjax(detailInfo)
+//				saveAjax(rqsData) 
+			}
+			function saveAjax(params){
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async:false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message)
+							mui("#saveBtn").button('reset');
+		
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							// 释放按钮
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+		
+					}
+				});
+			}
+			
+			
+		}); // plusReady
+		
+	</script>
+
+</html>

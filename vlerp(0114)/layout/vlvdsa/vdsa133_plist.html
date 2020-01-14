@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>防窜管理</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css">
+		<link rel="stylesheet" type="text/css" href="../../css/icons-extra.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.topNav {
+				text-align: center;
+				padding: 0;
+				position: relative;
+				top: 0;
+				height: 40px;
+				color: #353b42;
+			}
+			
+			.active {
+				color: #ea6d10;
+				border-bottom: 2px solid #ea6d10;
+				/*background:pink;*/
+			}
+			
+			.mui-bar .mui-icon:active {
+				background: #0062cc!important;
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>	
+			<h1 class="mui-title headText" id="header">窜号列表</h1>
+			<a class="mui-icon mui-icon-extra mui-icon-extra-sweep mui-pull-right" id="toEdit"></a>	
+			<!--<a class="mui-pull-right mui-icon-extra mui-icon-extra-sweep" id="toEdit" style="color:white;height:60px;width:40px;line-height:85px;font-size:19px;text-align:center;"></a>-->
+			<div class="mui-row">
+				<div class="mui-row" style="position: fixed;top:70px;left:0px;width:100%;height:40px;line-height: 40px;background:#F7F7F7;" id="topNav">
+					<p class="mui-col-xs-4 topNav active" data-active="active" data-type="002">待处理</p>
+					<p class="mui-col-xs-4 topNav" data-type="004">全部</p>
+					<p class="mui-col-xs-4 topNav" data-type="001">抄送</p>
+				</div>
+			</div>
+		</header>
+		<nav class="mui-bar mui-bar-tab">
+			<button type="button" id="positiveScan" class="mui-btn mui-btn-primary bottomBton" style="width:100%;">防窜扫描</button>
+		</nav>
+		<div class="mui-content">
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdsa133_list.html',
+				id: 'vdsa133_list.html',
+				styles: {
+					top: '110px',
+					bottom: '50px',
+				}
+			}]
+		});
+
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vdsa133_list').pullRefresh().scrollTo(0,0,100)");
+		});
+
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			//			jQuery(".topNav:first").addClass("active").siblings().removeClass("active");
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			var teamBillCom = self.teamBillCom;
+			var teamBillComName = self.teamBillComName;
+			var userbillNo = self.userbillNo;
+			var loginCom = self.loginCom;
+			var loginComName = self.loginComName;
+
+			// 更改header的显示信息
+			document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+			document.getElementById("header").setAttribute("teamBillCom", teamBillCom);
+			document.getElementById("header").setAttribute("userbillNo", userbillNo);
+			document.getElementById("header").setAttribute("loginCom", loginCom);
+			document.getElementById("header").setAttribute("loginComName", loginComName);
+
+			//跳转到编辑页面
+			document.getElementById("toEdit").addEventListener("tap", function() {
+				var extras = {
+					teamBillCom: teamBillCom,
+					teamBillComName: teamBillComName,
+					userbillNo: userbillNo,
+					loginCom: loginCom,
+					loginComName: loginComName,
+					flagNew: "Y"
+				};
+				var styles = "";
+				plus.webview.create("vdsa133_edit.html", "vdsa133_edit.html", styles, extras);
+			})
+
+			//跳转到编辑页面
+			document.getElementById("positiveScan").addEventListener("tap", function() {
+				var extras = {
+					teamBillCom: teamBillCom,
+					teamBillComName: teamBillComName,
+					userbillNo: userbillNo,
+					loginCom: loginCom,
+					loginComName: loginComName,
+					flagNew: "Y"
+				};
+				var styles = "";
+				plus.webview.create("vdsa133_edit.html", "vdsa133_edit.html", styles, extras);
+			})
+
+			// nav
+			mui("#topNav").on("tap", "p", function() {
+				var self = this;
+				jQuery(this).addClass("active").siblings().removeClass("active");
+				//触发详情页面的newsId事件
+				mui.fire(plus.webview.getWebviewById('vdsa133_list.html'), 'subpage133list', {
+					active: self.getAttribute("data-type")
+				});
+			})
+		})
+	</script>
+
+</html>

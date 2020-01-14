@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common/mui.poppicker.css" />
+		<style>
+		.qrbox div{
+			height:50px;display:none;background:;margin-bottom:2px;
+		}
+		.qrbox span{
+			height:100%;color: #000000;font-size: 14px;background: ;line-height: 50px;
+		}
+		.qrbox a{
+			font-size:30px;height: 100%;background: ;line-height: 50px;
+		}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 70px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">个人信息管理</h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit" style="display: none;"></a>
+		</header>
+		<!---->
+		<div class="mui-content mainBody nodeBody" style="padding-top:75px !important;">
+			<div class="mui-input-group groupInfo" style="color:gray;">
+				<div>
+					<span style="font-size:14px;">当前单位：</span>
+					<span class="mui-icon mui-icon-home"></span>
+					<span id="userComName" style="padding-left:3px;font-size:14px;"></span>
+				</div>
+				<div>
+					<span style="font-size:14px;">当前身份：</span>
+					<span class="mui-icon mui-icon-contact"></span>
+					<span id="userComRole"style="padding-left:3px;font-size:14px;"></span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo qrbox" style="display: none;">
+				<div class="mui-row infoItem" id="selfCode" data-code="vdvc001q1">
+					<span class="mui-col-xs-10">个人信息码</span>
+					<a class="mui-col-xs-2 icon iconfont icon-erweima"></a>
+				</div>
+				<div class="mui-row infoItem" id="comCode" data-code="vdvc101q1">
+					<span class="mui-col-xs-10">我的单位码</span>
+					<a class="mui-col-xs-2 icon iconfont icon-erweima"></a>
+				</div>
+				<div class="mui-row infoItem" id="clientCode" data-code="vdvc31101">
+					<span class="mui-col-xs-10">新建客户码</span>
+					<a class="mui-col-xs-2 icon iconfont icon-erweima"></a>
+				</div>
+				<div class="mui-row infoItem lastItem" id="userCode" data-code="">
+					<span class="mui-col-xs-10">新建用户码</span>
+					<a class="mui-col-xs-2 icon iconfont icon-erweima"></a>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo" style="display:;">
+				<div class="mui-row infoItem " id="authentication" style="height:50px;line-height: 50px;">
+					<span class="mui-col-xs-4" style="color: #000000;font-size: 14px;">身份认证</span>
+					<span class="mui-col-xs-5" id="userName" style="text-align: right;padding-right:2px;"></span>
+					<span class="mui-col-xs-2 dataState" id="" style="margin:0;margin-top:15px;">未认证</span>
+					<span class="mui-col-xs-1 mui-icon mui-icon-arrowright" style="font-size: 14px;line-height: 50px;"></a>
+				</div>
+				<div class="mui-row infoItem" id="bankCard" style="height:50px;line-height: 50px;">
+					<span class="mui-col-xs-4" style="color: #000000;font-size: 14px;">银行卡管理</span>
+					<span class="mui-col-xs-7" id=""></span>
+					<span class="mui-col-xs-1 mui-icon mui-icon-arrowright" style="font-size: 14px;line-height: 50px;"></a>
+				</div>
+				
+				<div class="mui-row infoItem lastItem" id="reciveAddr" style="height:50px;line-height: 50px;">
+					<span class="mui-col-xs-4" style="color: #000000;font-size: 14px;">收货地址管理</span>
+					<span class="mui-col-xs-7" id=""></span>
+					<span class="mui-col-xs-1 mui-icon mui-icon-arrowright" style="font-size: 14px;line-height: 50px;"></a>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/jquery-2.1.0.js"></script>
+	
+	<script src="../js/md5.js"></script>
+	<script src="../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var deptname;
+		var userRole;
+			
+		mui.plusReady(function() {
+			plus.screen.lockOrientation("portrait-primary");  // 禁止横屏显示
+			var user = JSON.parse(vlUtils.getStorage('user'));//获取登入信息
+			var system = user.com_linkvd_userCom;
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			userRole		= self.userRole;
+ 			document.getElementById("userName").innerHTML = userName;
+ 			// 接收页面
+			var reciveParams = "1.管理单位:\n→"	+ teamBillCom		+"\n→" + teamBillComName +"\n";
+			document.getElementById("userComName").innerHTML = teamBillComName;
+			document.getElementById("userComRole").innerHTML = userRole;
+			// 【二维码部门】
+			/*
+			 * 权限：
+			 * 0. 系统		userRole	selfCode	comCode		clientCode		userCode	
+			 * 1. 业务		所有人		x			x			x				(10501)
+			 * 2. 经销商		负责人		x			(101q1)		(31101)			(10502)
+			 * 3. 经销商		配送员		x			(101q1)		(31101)			x
+			 * 4. 终端		负责人		x			(101q1)		x				(10503)
+			 * 5. 终端		服务员		x			(101q1)		x				x	
+			 */
+			if(system == "企业"){
+				document.getElementById("userCode").style.display = "block";
+			}else if(system == "经销商"){
+				document.getElementById("comCode").style.display = "block";
+				document.getElementById("clientCode").style.display = "block";
+				if(userRole == "负责人" || userRole == "管理员"){
+					document.getElementById("userCode").style.display = "block";
+				}
+			}else if(system == "终端"){
+				document.getElementById("comCode").style.display = "block";
+				if(userRole == "负责人"){
+					document.getElementById("userCode").style.display = "block";
+				}
+			}
+			
+			// 个人信息码
+			document.getElementById("selfCode").addEventListener("tap",function(e){
+				openQRcode("个人信息码","vdvc001q1");
+			});
+			// 我的单位码
+			document.getElementById("comCode").addEventListener("tap",function(e){
+				openQRcode("我的单位码","vdvc101q1");
+			});
+			// 新建客户码
+			document.getElementById("clientCode").addEventListener("tap",function(e){
+				openQRcode("新建客户码","vdvc101q1");
+			});
+			// 新建用户码
+			document.getElementById("userCode").addEventListener("tap",function(e){
+				if(system == "经销商"){
+					openQRcode("新建配送员","vdvc10502");
+				}else if(system == "终端"){
+					openQRcode("新建服务员","vdvc10503");
+				}else if(system == "业务"){
+					var ws311find = plus.webview.getWebviewById("vdvc311_select.html");
+					if(!vlUtils.isnull(ws311find)){
+						plus.webview.close(ws311find);
+					}
+					mui.openWindow({
+						url:"vlvdvc/vdvc311_select.html",
+						id:"vdvc311_select.html",
+						extras:{
+							teamBillCom 	: teamBillCom ,
+							teamBillComName : teamBillComName,
+							userbillNo 		: userbillNo,
+							userName 		: userName,
+							loginCom 		: loginCom,
+							loginComName 	: loginComName,
+							privileges 		: privileges,
+							userRole		: userRole,
+							fbill_no 		: "ROOT",
+							fromPage 		: "vdsa402_plist.html",
+							data_info		: "新建一级经销商负责人",
+							data_code		: "vdvc10501"
+						}
+					})
+				}
+			});
+			// 【身份认证】
+			document.getElementById("authentication").addEventListener("tap",function(){
+				mui.toast("敬请期待～");
+				return;
+			});
+			
+			// 【银行卡管理】
+			document.getElementById("bankCard").addEventListener("tap",function(){
+				mui.openWindow({
+					url:"vlvdvc/vdvc811_plist.html",
+					id:"vdvc811_plist.html",
+					extras:{
+						teamBillCom : teamBillCom ,
+						teamBillComName : teamBillComName,
+						userbillNo : userbillNo,
+						userName : userName,
+						loginCom : loginCom,
+						loginComName : loginComName,
+						privileges : privileges,
+						fbill_no :"ROOT",
+						fromPage : "PIM"
+					}
+				})
+			});
+			// 【收货地址管理】
+			document.getElementById('reciveAddr').addEventListener("tap", function() {
+				plus.nativeUI.toast("敬请期待~",{"verticalAlign":"middle"});
+				return;
+			},false);
+			//
+			//【】
+			function openQRcode(txt,code){
+				var wsCode = plus.webview.getWebviewById("CodeCard.html");
+				if(!vlUtils.isnull(wsCode)){
+					plus.webview.close(wsCode);
+				}
+				mui.openWindow({
+					url:"CodeCard.html",
+					id:"CodeCard.html",
+					extras:{
+						teamBillCom 	: teamBillCom ,
+						teamBillComName : teamBillComName,
+						userbillNo 		: userbillNo,
+						userName 		: userName,
+						loginCom 		: loginCom,
+						loginComName 	: loginComName,
+						privileges 		: privileges,
+						userRole		: userRole,
+						fbill_no 		: "ROOT",
+						fromPage 		: "PIM.html",
+						data_info		: txt,
+						data_code		: code
+					}
+				})
+			}
+		}); // plusReady
+	</script>
+
+</html>

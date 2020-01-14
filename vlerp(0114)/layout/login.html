@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+		<title>登录</title>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/md5.js"></script>
+		<script src="https://cdn1.lncld.net/static/js/av-mini-0.5.5.js"></script>
+		<link href="../css/common/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../css/fonts/iconfont.css" />
+		<style>
+			body,
+			.mui-content {
+				background-color: #fff;
+				font-size: 14px;
+				color: #222;
+				margin-top: 60px;
+			}
+			
+			.head {
+				line-height: 60px;
+				font-weight: normal;
+			}
+			
+			.mui-content .avatar {
+				position: fixed;
+				top: 25px;
+				left: 20px;
+				z-index: 999;
+				width: 50px;
+				height: 50px;
+			}
+			
+			.mui-content .avatar img {
+				width: 50px;
+				height: 50px;
+				vertical-align: middle;
+			}
+			
+			.mui-content .mui-input-group .register{
+				padding-right: 20px;
+				color: #0070c0;
+				font-size: 14px;
+				height: 20px;
+			}
+			
+			.mui-content .mui-input-group .register a {
+				display: block;
+			}
+			
+			.mui-content .mui-input-group {
+				width: 96%;
+				position: relative;
+			}
+			
+			.mui-content .mui-input-group .login-password:after {
+				background-color: #e75c01;
+			}
+			
+			.mui-content .mui-input-group .mui-input-row input {
+				text-align: left;
+			}
+			.mui-content .mui-input-group:before,
+			.mui-content .mui-input-group:after,
+			.mui-content .mui-input-group .remember:after {
+				height: 0;
+			}
+			
+			.mui-content .mui-input-group .remember {
+				font-size: 14px;
+			}
+			
+			.mui-content .mui-input-group .remember label {
+				padding-left: 48px;
+			}
+			
+			.mui-content .mui-input-group .remember input {
+				top: 7px;
+				right: 30px;
+			}
+			
+			.mui-content .mui-input-group .remember input:before {
+				font-size: 20px;
+			}
+			.mui-content .mui-input-group .login-btn {
+				/*background-color: #2A99FA;/*yw:FE0137;ps:FDB23F;cx:2A99FA;ys:e75c01*/
+				color: #fff;
+				border: none;
+				width: calc(100% - 20px);
+				margin-left: 20px;
+			}
+			
+			.mui-input-row.login input[placeholder] {
+				font-size: 14px;
+				padding-left: 20px;
+				position: relative;
+			}
+			
+			input.auto:-webkit-autofill {
+				-webkit-box-shadow: 0 0 0px 1000px white inset;
+			}
+			
+			.mui-input-group .mui-icon-arrowdown,
+			.mui-input-group .mui-icon-arrowup {
+				position: absolute;
+				right: 25px;
+				width: 40px;
+				height: 40px;
+				color: #888;
+				font-weight: bold;
+				text-align: center;
+				line-height: 40px;
+				font-size: 20px;
+				border-radius: 10px;
+			}
+			.mui-icon-arrowup:hover,
+			.mui-icon-arrowdown:hover{
+				background: #eee;
+				color: #007AFF;
+			}
+			/* 用户列表*/
+			.accts-box{
+				position: absolute;
+				z-index: 10;
+				max-height: 300px;
+				width: 98%;
+				margin:0 0 0 10px;
+				padding:2px;
+				border: 1px solid #E6E4E0;
+				border-radius: 10px;
+				background: #eee;
+				overflow-y: scroll;
+			}
+			.accts-box ul{
+				margin: 3px;
+				padding: 3px;
+			}
+			.accts-box ul li{
+				list-style: none;
+				line-height: 30px;
+				border-bottom: 1px dashed #C7C7CC;
+			}
+			.accts-box ul li:hover,
+			.accts-box .mui-icon-close:hover{
+				background: #fff;
+			}
+			.accts-box ul li a{
+				text-align: center;
+			}
+			.mui-slider-item,.current-system {
+				color: #fff;
+				font-size: 18px !important;
+				text-align: center;
+			}
+			
+			.mui-slider {
+				margin-left: 20px;
+			}
+			
+			i {
+				display: none;
+				width: 20px;
+				height: 16px;
+				color: #f40;
+				text-indent: 2500px;
+			}
+			/*190318*/
+			#singUp{
+				text-align:center;width:100%;margin-top:30px;
+			}
+			#singUp a{
+				border:none;margin:0;padding:0;
+			}
+			h6{text-align:center;width:100%;margin-top:30px;}
+			#forgetPW{
+				float:right;margin-top:7px
+			}
+			.htitle{
+				left:0 !important;
+				right:0 !important;
+				top:0 !important;
+				bottom:0 !important;
+				line-height: 105px;
+			}
+			.hide{display: none;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav header" id="header" style="height:80px;line-height: 110px;"></header>
+		<div class="mui-content">
+			<div class="avatar">
+				<img src="../images/logo/vllogo-trans.png" alt="" />
+			</div>
+			<form class="mui-input-group">
+				<div class="mui-input-row login">
+					<label class="text-right">账&nbsp;&nbsp;&nbsp;&nbsp;号：</label>
+					<input id="username" type="text" class="mui-input-clear auto" placeholder="请输入账号" autocomplete="on" name="username">
+					<span class="mui-icon mui-icon-arrowdown arrow" id="J_btn_arrow" style=""></span>
+				</div>
+				<!--隐藏下拉账号框-->
+				<div class="accts-box hide" id="J_list_accts">
+				</div>
+				<script id="J_temp_accts" type="text/template">
+					<ul>
+						<% for(var i in name){ var n=name[i],p=pw[i]; %>
+							<li class="mui-row" data-name="<%=(n)%>" data-pw="<%=(p)%>">
+								<a class="mui-col-xs-1 mui-icon mui-icon-person"></a>
+								<span class="mui-col-xs-9"><%=(n)%></span>
+								<a class="mui-col-xs-2 mui-icon mui-icon-close" data-name="<%=(n)%>"></a>
+							</li>
+						<% } %>
+					</ul>
+				</script>
+				<div class="mui-input-row login-password login">
+					<label class="text-right">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+					<input id="password" type="password" class="mui-input-clear" placeholder="请输入密码">
+				</div>
+				<div class="mui-button-row register" id="forgetPW" data-href="">
+					<a href="javascript:;" class="mui-pull-right">忘记密码？</a>
+				</div>
+				<div class="mui-input-row mui-checkbox mui-left remember">
+					<label>记住我的选择</label>
+					<input name="rememberme" value="" id="rememberme" type="checkbox" checked="checked">
+				</div>
+				<div class="mui-button-row">
+					<button type="button" class="mui-btn login-btn" data-loading-text="登录中" onclick='return false;' id="loginBtn">确认</button>
+				</div>
+			</form>
+			<div class="" id="singUp">
+				<a class="singup"  style=""><u>还没有账号？去注册</u></a>
+			</div>
+			<h6 style="">当前版本：<span id="currentVersion"></span></h6>
+			<h6 style="margin-top:10px;" id="IP"></h6>
+			<div class="" id="progressbarBox" style="display: none;padding: 10px;">
+				<div class="" id="progressbarNum" style="text-align:right;padding-right:10px;"></div>
+				<div class="" id="progressbar" style="margin:15px;display:;">
+					<div id="demo1" class="mui-progressbar" style="height: 10px;">
+						<span></span>
+					</div>
+				</div>
+				<div  style="padding-right:10px;margin-top:10px;text-align:center;">
+					<div>正在下载中,请耐心等待</div>
+					<div>下载完成后会自动打开安装页面</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/template" id="J_temp_carousel">
+			<div class="mui-slider" style="display: block;">
+				<ul class="mui-slider-group mui-slider-loop">
+					<li class="mui-slider-item mui-slider-item-duplicate">业务管理系统</li>
+					<li class="mui-slider-item current-system">终端管理系统</li>
+					<li class="mui-slider-item">物流配送系统</li>
+					<li class="mui-slider-item">业务管理系统</li>
+					<li class="mui-slider-item mui-slider-item-duplicate">终端管理系统</li>
+				</ul>
+			</div>
+		</script>
+		<script type="text/template" id="J_temp_headerTitle">
+			<h1 class="mui-title htitle current-system" style="background:;color:#FFFFFF;"><%=txt%></h1>
+		</script>
+	</body>
+</html>
+<script type="text/javascript" charset="utf-8" src="../js/jquery-2.1.0.js"></script>
+<!--<script type="text/javascript" charset="utf-8" src="../js/index.js"></script>-->
+<script type="text/javascript" charset="utf-8" src="../js/vlindex.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/arttmpl.js"></script>
+<script type="text/javascript-" charset="utf-8" src="../js/vl-websocket.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/vljs/createimdirctory.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/vljs/account.js"></script>
+<script type="text/javascript">
+	
+	mui.init();
+	// 初始化值
+	var newUser = false;
+	var curSys = "业务管理系统", // 当前系统
+		canScan = false, // 是否可以打开扫描页
+		sysColor = '#FE0137',
+		sysAlias = "企业";
+	var oHeader = document.getElementById("header"),
+		loginBtn = document.getElementById("loginBtn"),
+		toScan = document.getElementById("singUp"),
+		curLi,slider;
+	var oSysInit = {
+	    "业务管理系统" :  {
+	        name : "业务管理系统",
+	        alias : "企业",
+	        app : "vlerp",
+	        color : "#FE0137",
+	        scan  : "none",
+	        page : "index.html",
+	    },
+	    "物流配送系统" :  {
+	        name : "物流配送系统",
+	        alias : "经销商",
+	        app : "clerp",
+	        color : "#FDB23F",
+	        scan  : "block",
+	        page : "index.1.html",
+	    },
+	    "终端管理系统" :  {
+	        name : "终端管理系统",
+	        alias : "终端",
+	        app : "tlerp",
+	        color : "#2A99FA",
+	        scan  : "block",
+	        page : "index.1.html",
+	    },
+	};
+	mui.plusReady(function() {
+		// console.log("启动时-检测前："+VlCooike.getSessionId());
+		VlCooike.setSessionId();
+		// console.log("启动时-检测后："+VlCooike.getSessionId());
+		// 初始化
+		plus.screen.lockOrientation("portrait-primary");  	// 禁止横屏显示
+		plus.navigator.setStatusBarStyle('dark'); 	// 沉浸式菜单颜色
+		initHeader(); // 设置系统颜色/系统
+		iniReadDefaultUser(); // 显示默认用户
+		openLunchPage();  // 启动打开对应的主页
+		iniShowVersion(); // 显示版本号
+		
+		var self = plus.webview.currentWebview();
+		var previous_webview = plus.webview.getWebviewById(self.previous_webview_id);
+		bindEvent();
+	});// plausReady
+	function initHeader(){
+		var _v = plus.runtime.appid;
+		var oSysTitle = {
+		    "vlerp001" : "业务管理系统",
+		    "vlerp101" : "物流配送系统",
+		    "vlerp102" : "终端管理系统",
+		    "vlerpfc" : "业务管理系统",
+		    "vdvc20100_20170801_0101v001" : "业务管理系统",
+		    "vdvc20100_20170801_0101v101" : "物流配送系统",
+		    "vdvc20100_20170801_0101v102" : "终端管理系统",
+		}
+		var _tmpl = oSysTitle[_v] ? "J_temp_headerTitle" : "J_temp_carousel";
+		mui('#header')[0].innerHTML = template(_tmpl, {"txt" : oSysTitle[_v]});
+		curLi = oHeader.getElementsByClassName("current-system")[0];
+		initLogin(curLi);
+		if(mui('#header .mui-slider') !== ""){slider = mui('#header .mui-slider').slider();}
+	}
+	// 跳转到注册页面
+	mui.back = function() {
+		plus.runtime.quit();
+	};
+	function bindEvent(){
+		document.getElementById("forgetPW").addEventListener("tap",eForgetPW,false);
+		document.getElementById("singUp").addEventListener("tap",eSignup,false);
+		document.getElementById("loginBtn").addEventListener("tap", loginfun, false);
+		mui('#J_btn_arrow')[0].addEventListener('tap',eShowAccts,false);
+		mui(".accts-box").on("click", "li", function(e) { eAcctsLi(this) });
+		mui(".accts-box").on("click", ".mui-icon-close", function(e) {
+			e.stopPropagation();
+			eAcctsClear(this);
+		});
+		jQuery("#username").focus(function(){
+			mui('#J_btn_arrow')[0].className = 'mui-icon mui-icon-arrowdown'
+			mui('.accts-box')[0].className = 'accts-box hide';
+		});
+		if(mui('#header .mui-slider') !== ""){
+			document.querySelector('#header .mui-slider').addEventListener('slide', function(event) {
+			  //注意slideNumber是从0开始的；
+			  var _idx = event.detail.slideNumber+1
+			  jQuery(".mui-slider-item").eq(_idx).addClass("current-system").siblings().removeClass("current-system");
+			  curLi = oHeader.getElementsByClassName("current-system")[0];
+			  initLogin(curLi);
+			  localStorage.setItem("sysColor",sysColor);
+			});
+		}
+	}
+	function iniShowVersion(){
+		document.getElementById("currentVersion").innerHTML = plus.runtime.version;
+		document.getElementById("IP").innerHTML=VlCfg.DBname;
+	}
+	function initLogin(oSys){
+		curSys = oSys.innerHTML || "业务管理系统";
+		var _config = oSysInit[curSys];
+		
+		sysColor = _config['color']; 			// 系统颜色
+		sysAlias = _config['alias'];			// 系统简称
+		loginBtn.style.background = sysColor;	// 登录按钮颜色
+		oHeader.style.background = sysColor;	// 页头颜色	
+		toScan.style.display = _config['scan'];	// 扫描连接显示状态
+	}
+	function eForgetPW() {
+		mui.openWindow({
+			url: 'updatePW.html',
+			id: 'updatePW.html',
+			extras : {
+				type : "forget",
+				tel : "",
+			}
+		})
+	}
+	function eShowAccts() {
+		if(this.className.indexOf('down') !== -1){
+			this.className = 'mui-icon mui-icon-arrowup'
+			mui('.accts-box')[0].className = 'accts-box';
+			var acctStore = localStorage.getItem("acctsList");
+			var _list = acctStore ? JSON.parse(acctStore) : {"name":[],"pw":[]};
+			mui('#J_list_accts')[0].innerHTML = template('J_temp_accts', _list);
+		}else{
+			this.className = 'mui-icon mui-icon-arrowdown'
+			mui('.accts-box')[0].className = 'accts-box hide';
+		}
+	}
+	
+	function eAcctsLi(self){
+		// 获取当前的账号和密码
+		var _name = self.getAttribute('data-name');
+		var _pw = self.getAttribute('data-pw');
+		var _user = {"name":_name,"pw":_pw};
+		var _list = JSON.parse(localStorage.getItem("acctsList"));
+
+		var accts = new AcctList(_list, _user);
+		accts.update();
+		var _acctStore = localStorage.setItem("acctsList",JSON.stringify(_list));
+		// 
+		mui('#username')[0].value = _name;
+		mui('#password')[0].value = (_pw === "") ? "" : "vlerpvlerp" ;
+		mui('#password')[0].setAttribute('data-pw',_pw);
+		mui('#J_btn_arrow')[0].className = 'mui-icon mui-icon-arrowdown'
+		mui('.accts-box')[0].className = 'accts-box hide';
+			// 渲染列表...
+	}
+	function eAcctsClear(self){
+		var _name = self.getAttribute('data-name');
+		var _user = {"name":_name,"pw":''};
+		var _list = localStorage.getItem("acctsList")? JSON.parse(localStorage.getItem("acctsList")) : {"name":[],"pw":[]};
+		//删除文件
+		var accts = new AcctList(_list, _user);
+		accts.del();
+
+		var _acctStore = localStorage.setItem("acctsList",JSON.stringify(_list));
+		// 渲染或者移除自己
+	}
+	// 读取本地用户
+	function iniReadDefaultUser(){
+		var _acctStore = localStorage.getItem("acctsList");
+		if(_acctStore){
+			var _list = JSON.parse(_acctStore);
+			mui('#username')[0].value = _list['name'][0];
+			mui('#password')[0].value = _list['pw'][0] === "" ? "" : "vlerpvlerp";
+			mui('#password')[0].setAttribute('data-pw', _list['pw'][0]);
+		}
+	}
+	// 打开系统主页
+	function openLunchPage(){
+		// 首次登陆或者主动退出的情况都留在login页面
+		var launchFlag = VlStore.pGet("launchFlag"); // 未登陆过undefined
+		var outLogin = VlStore.pGet("outLogin");
+		var user = VlStore.pGet("user");
+
+        if(launchFlag && user) { // 登陆过并且有user信息
+            var userInfo = JSON.parse(user);
+			var oPage = {
+				"经销商" : "index.1.html",
+				"终端" : "index.1.html",
+				"企业" : "index.html"
+			}
+            var openPage = oPage[userInfo.com_linkvd_userCom] || "index.html";
+            // 直接进index页面
+            mui.openWindow({
+                url: "../"+openPage,
+                // url: "../index.html",
+                id: "index.html",
+				extras:{
+					sys : userInfo.com_linkvd_userCom,
+				},
+                show:{
+			      	autoShow:true,
+			      	aniShow:"fade-in",
+			      	duration:"100ms"
+			    }
+            });
+            plus.webview.hide(plus.webview.currentWebview());
+        } else { // 登陆过没有user信息 // 没有登陆过
+            plus.storage.setItem("launchFlag", "true");
+            // 设置系统主色调
+			localStorage.setItem("sysColor",sysColor);
+        }
+	}
+	// 打开扫描页面
+	function eSignup(){
+		VlPage.beforeOpen("scan_signup.html")
+		if(curSys == "业务管理系统") {
+			plus.nativeUI.toast("该系统暂不支持扫码注册~",{"verticalAlign":"middle"})
+		}else{
+			mui.openWindow({
+				url:"vlvdsu/scan_signup.html",
+				id:"scan_signup.html",
+				extras:{
+					system:curSys
+				}
+			})
+		}
+	}
+	function updatedVersion() {
+		var fileName = plus.runtime.appid === "vlerpfc" ? "flerp" : oSysInit[curSys]["app"];
+		var downloadPath = VlCfg.SYSURL + "File/versionUpgrade?fileName=" + fileName;
+		// 版本更新 
+		// var dtask = plus.downloader.createDownload(VlCfg.SYSURL + "File/versionUpgrade?fileName="+fileName, {}, function(d, status) {
+		var dtask = plus.downloader.createDownload(downloadPath, {}, function(d, status) {
+			if(status == 200) {
+				var path = d.filename;
+				// var path = plus.io.convertLocalFileSystemURL(d.filename)
+				plus.runtime.install(path,{},function(e){
+					mui.toast("正在打开安装界面~");
+					console.log("正在打开安装界面");
+				},function(e){
+					alert("安装失败："+JSON.stringify(e));
+					console.log("安装失败");
+				});
+				document.getElementById("progressbarBox").style.display = "none";
+			} else {
+				mui.alert('版本更新失败:' + status);
+			}
+
+		});
+		dtask.start();
+		dtask.addEventListener("statechanged", onStateChanged);
+		
+	}
+	// 登录方法
+	function loginfun(){
+		mui(this).button('loading');
+		var username = mui("#username")[0].value;
+		var passwords = mui("#password")[0].value; 
+		if(username == "") {
+//			plus.nativeUI.toast("请输入用户名",{'verticalAlign':"top"});
+			VlTools.toast("请输入用户名", "top");
+			mui("#loginBtn").button('reset');
+			return;
+		} else if(passwords == "") {
+//			plus.nativeUI.toast("请输入密码",{'verticalAlign':"top"})
+			VlTools.toast("请输入密码", "top");
+			mui("#loginBtn").button('reset');
+			return;
+		}
+		//当用户名跟密码不是空的时候 返回来的格式正确  然后执行
+		if(username != "" && passwords != "") {
+			//加密
+			if(passwords === 'vlerpvlerp'){
+				passwords = mui('#password')[0].getAttribute('data-pw')
+			}else{
+				passwords = hex_md5(passwords);
+			}
+			var now = new Date();
+			var dateStr = VlDate.get(now, "_ymdhms");
+			var dateMd5 = hex_md5(dateStr);
+			var pwMd5 = passwords;
+			ss = pwMd5 + dateMd5;
+			
+			sysAlias = oSysInit[curSys]["alias"];
+			if(plus.runtime.version.slice(0,1) == "8" || plus.runtime.version.slice(0,1) == 8) {
+				var wgtVer = plus.runtime.version; // 展示当前版本号
+			} else {
+				var wgtVer = "8.2045";
+			}
+			var mobile =plus.os.name;	//Apple/null/Android 获取当前设备信息
+			var loginParam = {
+				username: username,
+				password: ss,
+				dateTime: dateStr,
+				code	: "2",
+				version	: wgtVer,
+				mobile	: mobile,
+				system	: sysAlias
+			} 		
+
+			VlStore.pSet("phones",username)
+			VlStore.pSet("stst",sysAlias)
+			VlStore.pSet("apps",oSysInit[curSys]["app"])
+//			console.log(JSON.stringify(loginParam))
+			// 提交登陆的请求
+			VlAjax.post({
+				"port"	  : "login",
+				"headers" : "form",
+			},loginParam,cbSLogin0,cbELogin,cbSLogin1);
+		}
+	}
+	function cbSLogin1(res){
+		// console.log(JSON.stringify(res));
+		
+		var _tip = res.error_description;
+		switch (res.error_code){
+			case "409": 
+				askToUpdateApp(_tip, notUpdate);
+				function notUpdate(){
+					setTimeout(function() {
+						mui.swipeoutClose();
+					}, 0);
+				}
+				break;
+			case "414":
+				askToUpdatePW(_tip);
+				break;
+			default:
+				mui.toast(_tip || "code1：出错了~");
+				break;
+		}
+		// 检查是否为最新版本
+		// mui.toast(res && res.error_description);
+		// if(res && res.error_description == "当前版本过低,请使用最新版本登录") {
+			
+		// }
+		// 释放按钮
+		mui("#loginBtn").button('reset');
+		return;
+	}
+	function cbELogin (XMLHttpRequest, textStatus, errorThrown){
+		console.log("eCB"+JSON.stringify(XMLHttpRequest));
+		console.log("eCB" + errorThrown);
+		console.log("eCB" + textStatus);
+		mui("#loginBtn").button('reset');
+		mui.toast("服务出错!");
+	}
+	// login
+	function cbSLogin0(res){
+//		 console.log("登陆成功时："+VlCooike.getSessionId());
+		VlCooike.saveSessionId();
+//		 console.log(JSON.stringify(res))
+		// 登陆状况检查
+		if(res.data == "INTERNAL_SERVER_ERROR") {
+			mui.toast(res.data);
+			plus.nativeUI.toast(res.data,{'verticalAlign':"top"})
+			mui("#loginBtn").button('reset');
+			plus.nativeUI.toast("请稍后再试~！", {
+				'verticalAlign': "top"
+			});
+			return;
+		}else if(res.data != "INTERNAL_SERVER_ERROR") {
+			// 先检查系统(转为后台判断，返回在code1里面)
+			// var isRightSys = isRightSys(res);
+			// if(!isRightSys){return}
+			// 先检是否为最新版本
+			var _versionTip = res.data[0].versionNews;
+			if(plus.runtime.appid == "vlerpfc"){
+				enterSys(res);
+			}else{
+				switch (_versionTip){
+					case "":
+					case "当前版本已经是最新版本":
+						enterSys(res);
+						break;
+					default:
+						askToUpdateApp(_versionTip, enterSys, res);
+						break;
+				}
+			}
+		}
+	}
+	function askToUpdateApp(tip, fun, p){
+		var btnArray = ['是', '否'];
+		mui.confirm(tip, '是否更新版本', btnArray, function(e) {
+			if(e.index == 0) {
+				mui.toast("正在准备环境，请稍后！");
+				updatedVersion();
+			} else {
+				fun(p);
+			}
+		});
+	}
+	function askToUpdatePW(tip){
+		var btnArray = ['是', '否'];
+		mui.confirm(tip, '是否更改密码', btnArray, function(e) {
+			if(e.index == 0) {
+				mui.openWindow({
+					url: 'updatePW.html',
+					id: 'updatePW.html',
+					extras : {
+						type : "update",
+						tel : mui("#username")[0].value,
+					}
+				})
+			} else {
+				setTimeout(function() {
+					mui.swipeoutClose();
+				}, 0);
+			}
+		});
+	}
+	function isRightSys(res){
+		for(var i = 0; i < res.data.length; i++) {
+			if(res.data[i].com_linkvd_userCom != sysAlias){
+				plus.nativeUI.toast("暂无权限登录此系统！", {
+					'verticalAlign': "top"
+				});
+				mui("#loginBtn").button('reset');
+				var wvs = plus.webview.all();
+				plus.storage.removeItem("user");
+				for(var i = 0; i < wvs.length; i++) { 
+					if((wvs[i].id )!="HBuilder" && (wvs[i].id )!="login.html"){
+						plus.webview.close(wvs[i],"none");
+					}			
+				}
+				return false;
+			}
+		}
+		return true;
+	}
+	function enterSys(res) {
+		setTimeout(function() {
+			mui.swipeoutClose();
+			storeUserInfo(res); // 将用户信息存储在本地
+			updateUserList(); // 账号存储导历史列表
+			mui.toast(res.message); // 弹出登录返回值“登录成功”
+			mui("#loginBtn").button('reset');
+			// 打开系统主页
+			var pageurl = "../" + oSysInit[curSys]['page'];
+			mui.openWindow({
+				url: pageurl,
+				id: oSysInit[curSys]['page'],
+				createNew: false
+			})
+			storeImDb(res.data[0].bill_no); // 建立聊天数据库
+		}, 0);
+	}
+	function storeUserInfo(res){
+
+		var dataMsgs = res.data[0];
+//		createUserDir(dataMsgs.bill_no); //创建user的目录
+//		createUserFile(dataMsgs.bill_no, "vdvc00100_20170707_0707A006"); //创建和谁聊天的文件
+		// 存储
+		var bill_no = dataMsgs.bill_no; //唯一编号
+		var linkbd_username = dataMsgs.linkbd_username; //用户名
+		var linkbd_usertel = dataMsgs.linkbd_usertel;
+		var linkbd_comname = dataMsgs.linkbd_comname; //公司名称
+		var linkvd_userCom = dataMsgs.com_linkvd_userCom; //公司唯一编号
+		var _pw = document.getElementById("password").value
+		if(_pw === 'vlerpvlerp'){
+			_pw = mui('#password')[0].getAttribute('data-pw')
+		}else{
+			_pw = hex_md5(_pw);
+		}
+		dataMsgs.pwMd5 = _pw;
+		dataMsgs.usertel = document.getElementById("username").value;;
+	
+		// 多个单位、多个权限、多个身份
+		dataMsgs.comArr = [];
+		dataMsgs.comArr_id = [];
+		dataMsgs.privilegesArr = [];
+		dataMsgs.userRoleArr = [];
+		dataMsgs.bcoppoArr = [];
+		if(res.data.length > 1) {
+			var isRepeat = false;
+			for(var i = 0; i <= res.data.length - 1; i++) {
+				for(var j = 0; j <= dataMsgs.comArr.length - 1; j++) {
+					if(res.data[i].com_bill_comName == dataMsgs.comArr[j]) {
+						isRepeat = true;
+						continue;
+					}
+				}
+				if(isRepeat == false) {
+					dataMsgs.comArr.push(res.data[i].com_bill_comName);
+					dataMsgs.comArr_id.push(res.data[i].com_billCom);
+					dataMsgs.privilegesArr.push(res.data[i].privileges);
+					dataMsgs.userRoleArr.push(res.data[i].bill_bflow);
+					dataMsgs.bcoppoArr.push(res.data[i].bill_coppo);
+				}
+	
+			}
+		}
+		// 用户信息存入本地
+		VlStore.pSet("user", JSON.stringify(dataMsgs));
+	}
+	function updateUserList(){
+		var _name = mui("#username")[0].value;
+		var _pw = "";
+		var rmStatus = jQuery("#rememberme").is(":checked");// 获取“记住密码”的状态
+		// 如果“记住密码”则获取密码
+		if(rmStatus) {
+			_pw = mui("#password")[0].value;
+			if(_pw === 'vlerpvlerp'){
+				_pw = mui('#password')[0].getAttribute('data-pw')
+			}else{
+				_pw = hex_md5(_pw);
+			}
+		}
+		var _user = {"name":_name,"pw":_pw};
+		var _acctStore = localStorage.getItem("acctsList");
+		var _list = _acctStore ? JSON.parse(_acctStore) :  {"name":[],"pw":[]};
+		var accts = new AcctList(_list, _user);
+		accts.update();
+		localStorage.setItem("acctsList",JSON.stringify(_list));
+	}
+	function storeImDb(billno){
+		return;
+		createUserDir(billno); //创建user的目录
+		createUserFile(billno, "vdvc00100_20170707_0707A006"); //创建和谁聊天的文件
+		//	var wsUrl = "ws://192.168.3.149:8808/vl8-web/im/"+useName;
+		//	var wsUrl = "ws://101.201.238.199:8080/vl8-web/im/" + useName;
+		//	createWebSocket(wsUrl);
+		// 加im
+		//	oprUserDB.create(useName);	// 0115放开
+		var usersDB = openDatabase(billno, '1.0', 'usersDB', 2 * 1024 * 1024);
+		//	var keys = "(bill_no, fbill_no, cc_user, bill_user, bill_context, bill_date, bill_dept, bill_title, link_lnext,bill_com)";
+		// 创建表格
+		usersDB.transaction(function(tx) {
+			//	return; // 客户版本需要放开
+			tx.executeSql('CREATE TABLE IF NOT EXISTS vdim101 (bill_no unique, fbill_no, cc_user, bill_user, bill_context, bill_date datetime, bill_dept, bill_title, link_lnext, bill_com)');
+			tx.executeSql('CREATE TABLE IF NOT EXISTS vdim102 (bill_no unique, bill_user, bill_name, fbill_no, bill_title, cc_user, bill_context, bill_com, bill_date datetime, bill_task, node_qty, bill_dept, link_next,  bill_ipaddr, bill_gpsaddr, bill_text )');
+		});
+		// 加im结束
+	}
+	//监听器，用来显示实时显示下载信息 
+			function onStateChanged(task, status) {
+				switch(task.state) {
+					case 1: // 开始
+						mui.toast("开始下载...");
+						break;
+					case 2: // 已连接到服务器
+						mui.toast("链接到服务器...");
+						document.getElementById("loginBtn").setAttribute("disabled", true);
+						document.getElementById("progressbarBox").style.display = "block";
+						break;
+					case 3: // 已接收到数据
+						var progressVal = (task.downloadedSize / task.totalSize) * 100;
+							jQuery("#progressbarNum").html(progressVal.toFixed(0) + '/' + '100');
+							if((progressVal.toFixed(0)*1 % 5) === 0){
+								mui('#demo1').progressbar({
+									progress: progressVal
+								}).show();
+							}
+							
+						break;
+					case 4: // 下载完成
+						//mui.toast("下载完成！");
+						stop();
+						document.getElementById("loginBtn").removeAttribute("disabled");
+						break;
+				}
+			}
+ 
+             /*文件大小转换*/
+			function changeSize(size) {
+				var num;
+				if((size / 1024) <= 1024) {
+					num = size / 1024;
+					return num.toFixed(2) + 'KB';
+				}
+				if((size / 1024) > 1024 && (size / 1024) <= (1024 * 1024)) {
+					num = (size / 1024) / 1024;
+					return num.toFixed(2) + 'M';
+				}
+				if((size / 1024) > (1024 * 1024)) {
+					num = ((size / 1024) / 1024) / 1024
+					return num.toFixed(2) + 'G';
+				}
+			}
+</script>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>员工列表</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			/* list内容*/
+			
+			.list_font {
+				font-size: 10px;
+				line-height: 12px;
+				height: 24px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+			}
+			
+			.list_h5 {
+				font-size: 13px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+			.mui-table-view:after,.mui-table-view-cell:after,.mui-table-view:before {
+				height: 0 !important;
+			}
+			.mui-scroll-wrapper{
+				z-index:1;
+			}
+			#contList{
+				position: relative;
+				z-index:2;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="vdvc105_list" class="mui-content mui-scroll-wrapper">
+			<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+				<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+			</div>
+			<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+				<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+				<p style="font-size:12px;">正在搜索中......</p>
+			</div>
+			<div class="mui-scroll" style="border: transparent;">
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-bottom:50px;background:none;">
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vdvc105_list',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		var startIndex = 1; // 起始页码
+		var pageSize = 10; // 每页显示几条信息
+		var search = ''; // 要查询的内容，paramText的value
+		var fbill_no = ""; // 查询的fbill_no
+		var detailInfo = {}; // 把查询到的东西放到数组里面
+		var openlock = false; // 用于区分是首次进入页面还是搜索页面
+		var queryparmas = {}; //查询参数
+		var pager = {}; //分页
+		// 定义变量
+		var teamBillCom; 	// 1.管理单位代码
+		var teamBillComName;// 2.管理单位名称
+		var loginCom;		// 4.登录单位代码
+		var loginComName;	// 5.登录单位名称
+		var userbillNo;		// 6.登录人的代码
+		var userName;		// 7.登录人的姓名
+		var privileges;		// 8.当前的权限是
+		var fromPage;		// 9.从哪个页面来
+		var business;
+		mui.plusReady(function() {
+			mui.currentWebview.show();
+			var self = plus.webview.currentWebview().parent();
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			// 其他
+			business 		= self.business;
+			
+			//在103业务下
+			if(business == "103"){
+				teamBillCom = loginCom;
+			}
+			
+			document.addEventListener('subpage105list', function(event) {
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("searching").style.display = "block";
+				document.getElementById("showHint").style.display = "none";
+				var guid = event.detail.active;
+				if(guid == "001") { //已冻结
+					queryparmas = {
+						name: 'vdvc105',
+						bill_com: teamBillCom,		
+						bill_task: "YF",
+						currentPage: startIndex,
+						pageSize: pageSize,
+						paramText: search,
+						fbill_no: fbill_no,
+					}
+				}else if(guid == "002") { //待处理L
+					queryparmas = {
+						name: 'vdvc105',
+						bill_com: teamBillCom,		
+						bill_user: userbillNo,  //员工id登录人
+						bill_task: "L,S",
+						currentPage: startIndex,
+						pageSize: pageSize,
+						paramText: search,
+						fbill_no: fbill_no
+					}
+				}else if(guid == "003") { //待审核S
+					queryparmas = {
+						name: 'vdvc105',
+						bill_com: teamBillCom,		
+						bill_user: userbillNo,  //员工id登录人
+						bill_task: "S",
+						currentPage: startIndex,
+						pageSize: pageSize,
+						paramText: search,
+						fbill_no: fbill_no
+					}
+				}else if(guid == "004") { //全部Y
+					queryparmas = {
+						name: 'vdvc105',
+						bill_com: teamBillCom,		
+						bill_task: "Y",
+						currentPage: startIndex,
+						pageSize: pageSize,
+						paramText: search,
+						fbill_no: fbill_no
+					}
+				}
+
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas,'Business/allocated', pendingData, '../login.html',true);
+			});
+			queryparmas = { // 默认全部004
+				name: 'vdvc105',
+				bill_com: teamBillCom,		
+				bill_task: "Y", 		//默认004
+				currentPage: startIndex,
+				pageSize: pageSize,
+				paramText: search,
+				fbill_no: fbill_no
+			}
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+
+			rqsDataAjax(queryparmas,'Business/allocated', pendingData, '../login.html',true);
+			// 注册事件*************************************
+			//点进去编辑
+			mui("#contList").on('tap', 'li', function(e) {
+				var e = this;
+				var li = e;
+				var dataRow = li.getAttribute("data-row");
+				var dataRow = JSON.parse(dataRow)
+				var teamBillCom = dataRow.bill_com;
+				if(fromPage == "311edit") {
+					//触发详情页面的newsId事件
+					mui.fire(plus.webview.getWebviewById('vdvc311_edit.html'), 'vdvc105ToVdvc311', {
+						teamBillCom: teamBillCom,
+						teamBillComName: teamBillComName,
+						userbillNo: userbillNo,
+						loginCom: loginCom,
+						loginComName: loginComName,
+						detailInfo: dataRow
+					});
+					//打开详情页面          
+					mui.openWindow({
+						id: 'vdvc311_edit.html'
+					});
+				} else if(fromPage == "133edit") {
+
+					//触发详情页面的newsId事件
+					mui.fire(plus.webview.getWebviewById('vdsa133_edit.html'), 'vdsa133', {
+						teamBillCom: teamBillCom,
+						teamBillComName: teamBillComName,
+						userbillNo: userbillNo,
+						loginCom: loginCom,
+						loginComName: loginComName,
+						detailInfo: dataRow
+					});
+					//打开详情页面          
+					mui.openWindow({
+						id: 'vdsa133_edit.html'
+					});
+				} else {
+					mui.openWindow({
+						id: 'vdvc105_node.html',
+						url: 'vdvc105_node.html',
+						createNew: true,
+						extras: {
+							teamBillCom: teamBillCom,
+							teamBillComName: teamBillComName,
+							userbillNo: userbillNo,
+							loginCom: loginCom,
+							loginComName: loginComName,
+							detailInfo: dataRow,
+							business : business,
+							fromPage: "105list"
+						}
+					});
+				}
+			});
+			// 【收回】
+			mui("#contList").on('tap', '.mui-btn-royal', function(e) {
+				var e = this;
+				var li = e.parentNode.parentNode;
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow);
+				var search = ''; // 搜索内容
+				var startIndex = 1; // 搜索的页数
+				//
+				//
+				mui.confirm('确认收回该用户？', '删除收回', ["确认","取消"], function(e) {
+					if (e.index == 0) {
+						var date = new Date();
+						var delparams = JSON.parse(JSON.stringify(sendTaskData));
+						delparams.bill_no 	 = rowObj.bill_no;
+						delparams.bill_task = "b_back";
+						delparams.fbill_no = "ROOT";
+						delparams.bill_user = userbillNo;
+						delparams.bill_com	 = rowObj.bill_com;
+						delparams.bill_date = vlUtils.dateToString(date);
+						delparams.bill_oppo = rowObj.bill_oppo
+						li.parentNode.removeChild(li);
+//						console.log(JSON.stringify(delparams))
+						CRUDajax(delparams,"../login.html",delSuccess);//删除方法 
+					} else {
+						setTimeout(function() {
+							mui.swipeoutClose(li);
+						}, 0);
+					}
+				});
+			});
+			// 【删除】
+			mui("#contList").on('tap', '.mui-btn-red', function(e) {
+				var e = this;
+				var li = e.parentNode.parentNode;
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow);
+				var search = ''; // 搜索内容
+				var startIndex = 1; // 搜索的页数
+				mui.confirm('确认删除该用户？', '删除确认', ["确认","取消"], function(e) {
+					if (e.index == 0) {
+						var date = new Date();
+						var delparams = JSON.parse(JSON.stringify(sendTaskData));
+						delparams.bill_no 	 = rowObj.bill_no;
+						delparams.bill_task = "d_delete";
+						delparams.fbill_no = "ROOT";
+						delparams.bill_user = userbillNo;
+						delparams.bill_com	 = rowObj.bill_com;
+						delparams.bill_date = vlUtils.dateToString(date);
+						//
+						li.parentNode.removeChild(li);
+						CRUDajax(delparams,"../login.html",delSuccess);//删除方法 
+					} else {
+						setTimeout(function() {
+							mui.swipeoutClose(li);
+						}, 0);
+					}
+				});
+			});
+		}); // plusready
+		//下拉刷新
+		function pulldownRefresh() {
+			mui.toast("加载中...");
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			//
+			queryparmas.currentPage = 1;
+			queryparmas.pageSize = pageSize;
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas,'Business/allocated', pendingData, '../login.html',true);
+			mui('#vdvc105_list').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+		}
+
+		/*上拉加载具体业务实现 */
+		function pullupRefresh() {
+			if(queryparmas.currentPage < pager.totalPage) {
+				queryparmas.currentPage = queryparmas.currentPage + 1;
+				queryparmas.pageSize = pageSize;
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas,'Business/allocated', pendingData, '../login.html',false);
+				mui('#vdvc105_list').pullRefresh().endPullupToRefresh();
+			} else {
+				plus.nativeUI.toast("~没有更多啦~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdvc105_list').pullRefresh().endPullupToRefresh();
+				return;
+			}
+		}
+		function pendingData(data,type) {
+			pager = data.page[0];
+			var totalRecord = data.page[0]["totalRecord"];
+			mui.fire(plus.webview.currentWebview().parent(), 'sizetoplist', { 
+					totalRecord :totalRecord
+			});
+			document.getElementById("showHint").style.display = "none";
+			var comImgid = vlUtils.uuid('comImg', 4, 10);
+			if(data.data.length != 0) {
+				for(var i = 0; i < data.data.length; i++) {
+					var contList = document.getElementById("contList");
+					//
+					datas= data.data;
+					if(type&&i==0){
+						contList.innerHTML = "";
+					}
+					var text = "";
+//					if(datas[i].bill_task == "S") {
+//						var bill_task = "待审核";
+//					}else if(datas[i].bill_task == "Y") {
+//						var bill_task = "已审核";
+//					}else if(datas[i].bill_task == "L") {
+//						var bill_task = "待送审";
+//					}else if(datas[i].bill_task == "YF") {
+//						var bill_task = "已冻结";
+//					}
+					var _status = {"L": "待送审","S": "待审核","Y": "已审核","YF": "已冻结"};
+					var sRowStatus = datas[i].bill_task;
+				
+					bill_task = _status[sRowStatus] ? _status[sRowStatus] : "";
+//					if(datas[i]["bill_context"] == '') {
+//						datas[i]["bill_context"] = '【说明】';
+//					}
+					// 身份
+					if(vlUtils.isnull(datas[i]["bill_bflow"])&&vlUtils.isnull(datas[i]["link_next"])) {
+						var billbflow = "";
+					}else if(vlUtils.isnull(datas[i]["bill_bflow"])&& !vlUtils.isnull(datas[i]["link_next"])){
+						var billbflow = "["+datas[i]["link_next"]+"]";
+					}else if(!vlUtils.isnull(datas[i]["bill_bflow"])){
+						var billbflow = "["+datas[i]["bill_bflow"]+"]";
+					}
+					// 用户编码
+					if(datas[i]["bill_id"] == ""){
+						datas[i]["bill_id"] = datas[i]["bill_text"][0]["linkbd_clerkid"]
+					}
+					
+					var li = document.createElement("li");
+					li.setAttribute("data-row",JSON.stringify(datas[i]));
+					li.setAttribute("num",i);
+					li.setAttribute("class", "mui-table-view-cell");
+					li.style.padding = "10px";
+					li.style.height = "70px";
+					li.style.marginBottom = "3px";
+					li.style.background = "#ffffff";
+					if(datas[i].bill_task == "Y"){
+						text += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-royal">收回</a></div>';
+					}else if(datas[i].bill_task == "L") {
+						text += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+					}
+					text += '<div class="mui-slider-cell  mui-slider-handle">';
+					text += '<div class="mui-row">';
+					text += '<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;width:55px;">';
+					text += '<img class="vdvc105 mui-col-xs-12" src="../../images/icon/default.png" id="' + datas[i].bill_no + '"/>';
+					text += '</div>';
+					text += '<div class="mui-col-xs-7 mui-row" style="background:;height:50px;">';
+					text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;padding-top:1px;">' + datas[i]["bill_name"] + '<span class="">' +  billbflow  + '</span></h5>';
+					text += '<p class="list_font mui-col-xs-12">' + datas[i]["bill_context"] + '</p>';
+					text += '</div>';
+					text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;">';
+					text += '<p class="list_fonts mui-col-xs-12" style="float:right;">' + datas[i]["bill_id"] + '</p>';
+					text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;">' + (datas[i]["bill_date"]).slice(5, 16) + '</p>';
+					text += '<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">' + bill_task + '</p>';
+					text += '</div>';
+					text += '</div>';
+					text += '</div>';
+					if(type&&i==0){
+						document.getElementById("searching").style.display = "none";
+					}
+					li.innerHTML = text;
+					contList.appendChild(li);
+					vlUtils.downloadicon(datas[i].bill_text[0].linkvd_linkuser, datas[i].bill_no);
+				}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("searching").style.display = "none";
+				document.getElementById("showHint").style.display = "block";
+			}
+			plus.nativeUI.closeWaiting();
+		}
+		function delSuccess(){
+		}
+	</script>
+
+</html>

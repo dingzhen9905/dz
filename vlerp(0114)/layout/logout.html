@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../css/common/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common/app.css">
+		<link rel="stylesheet" type="text/css" href="../css/fonts/iconfont.css" />
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+				/*background-color: #fff !important;*/
+			}
+			
+			.mui-views,
+			.mui-view,
+			.mui-pages,
+			.mui-page,
+			.mui-page-content {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #efeff4;
+			}
+			
+			.mui-pages {
+				top: 46px;
+				height: auto;
+			}
+			
+			.mui-scroll-wrapper,
+			.mui-scroll {
+				background-color: #efeff4;
+			}
+			
+			.mui-page.mui-transitioning {
+				-webkit-transition: -webkit-transform 300ms ease;
+				transition: transform 300ms ease;
+			}
+			
+			.mui-page-left {
+				-webkit-transform: translate3d(0, 0, 0);
+				transform: translate3d(0, 0, 0);
+			}
+			
+			.mui-ios .mui-page-left {
+				-webkit-transform: translate3d(-20%, 0, 0);
+				transform: translate3d(-20%, 0, 0);
+			}
+			
+			.mui-navbar {
+				position: fixed;
+				right: 0;
+				left: 0;
+				z-index: 10;
+				height: 44px;
+				background-color: #f7f7f8;
+			}
+			
+			.mui-navbar .mui-bar {
+				position: absolute;
+				background: transparent;
+				text-align: center;
+			}
+			
+			.mui-android .mui-navbar-inner.mui-navbar-left {
+				opacity: 0;
+			}
+			
+			.mui-ios .mui-navbar-left .mui-left,
+			.mui-ios .mui-navbar-left .mui-center,
+			.mui-ios .mui-navbar-left .mui-right {
+				opacity: 0;
+			}
+			
+			.mui-navbar .mui-btn-nav {
+				-webkit-transition: none;
+				transition: none;
+				-webkit-transition-duration: .0s;
+				transition-duration: .0s;
+			}
+			
+			.mui-navbar .mui-bar .mui-title {
+				display: inline-block;
+				width: auto;
+			}
+			
+			
+			.mui-navbar-inner.mui-transitioning,
+			.mui-navbar-inner .mui-transitioning {
+				-webkit-transition: opacity 300ms ease, -webkit-transform 300ms ease;
+				transition: opacity 300ms ease, transform 300ms ease;
+			}
+			
+			.mui-page {
+				display: none;
+			}
+			
+			.mui-pages .mui-page {
+				display: block;
+			}
+			
+			.mui-page .mui-table-view:first-child {
+				margin-top: 15px;
+			}
+			
+			.mui-page .mui-table-view:last-child {
+				margin-bottom: 30px;
+			}
+			
+			.mui-table-view {
+				margin-top: 20px;
+			}
+			
+			.mui-table-view span.mui-pull-right {
+				color: #999;
+			}
+			
+			.mui-table-view-divider {
+				background-color: #efeff4;
+				font-size: 14px;
+			}
+			
+			.mui-table-view-divider:before,
+			.mui-table-view-divider:after {
+				height: 0;
+			}
+			
+			.head {
+				height: 40px;
+			}
+			
+			#head {
+				line-height: 40px;
+			}
+			
+			.mui-fullscreen {
+				position: fixed;
+				z-index: 20;
+				background-color: #000;
+			}
+			
+			.mui-ios .mui-navbar .mui-bar .mui-title {
+				position: static;
+			}
+			/*问题反馈在setting页面单独的css*/
+			
+			#feedback .mui-popover {
+				position: fixed;
+			}
+			
+			#feedback .mui-table-view:last-child {
+				margin-bottom: 0px;
+			}
+			
+			#feedback .mui-table-view:first-child {
+				margin-top: 0px;
+			}
+			.mui-pages {
+			    top: 60px;
+			    height: auto;
+			}
+			.version-info{
+				margin-top:20px;
+				font-size:14px;
+				text-align: center;
+			}
+			.version-info img{
+				widows: 50px;
+				height: 50px;
+				border-radius: 5px;
+			}
+			.update {
+				font-style: normal;
+				color: #999999;
+			}
+			/*问题反馈在setting页面单独的css==end*/
+		</style>
+		<link rel="stylesheet" type="text/css" href="../css/feedback.css" />
+	</head>
+
+	<body class="mui-fullscreen">
+		<!--页面主结构开始-->
+		<div id="app" class="mui-views">
+			<div class="mui-view">
+				<div class="mui-navbar">
+				</div>
+				<div class="mui-pages">
+				</div>
+			</div>
+		</div>
+		<!--页面主结构结束-->
+		<!--单页面开始-->
+		<div id="setting" class="mui-page">
+			<!--页面标题栏开始-->
+			<div class="mui-navbar-inner mui-bar mui-bar-nav" style="height:60px;background: #f7f7f8;">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav" style="line-height: 80px;"></span>
+				</button>
+				<h1 class="mui-center mui-title" style="line-height: 80px;">设置</h1>
+			</div>
+			<!--页面标题栏结束-->
+			<!--页面主内容区开始-->
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view mui-table-view-chevron">
+							<li class="mui-table-view-cell">
+								<a href="#account" class="mui-navigate-right">账号与安全</a>
+							</li>
+							<li class="mui-table-view-cell" id="j-clearPics">
+								<a href="javascript:;" class="mui-navigate-right">清理图片</a>
+							</li>
+						</ul>
+						<ul class="mui-table-view mui-table-view-chevron">
+							<li class="mui-table-view-cell">
+								<a href="#about" class="mui-navigate-right">关于Vlerp </a>
+							</li>
+						</ul>
+						<ul class="mui-table-view">
+							<li id="clickOut" class="mui-table-view-cell" style="text-align: center;">
+								<a id="clickOut">退出登录</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!--页面主内容区结束-->
+		</div>
+		<!--单页面结束-->
+		<div id="account" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav" style="height:60px; background: #F7F7F7;">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left" style="line-height: 80px;">
+					<span class="mui-icon mui-icon-left-nav"></span>设置
+				</button>
+				<h1 class="mui-center mui-title"  style="line-height: 80px;">账号与安全</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<a href="update_password.html">修改密码<span class="mui-pull-right">点击修改账号密码</span></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="about" class="mui-page" style="">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav" style="height:60px; background: #F7F7F7;">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left" style="line-height: 80px;">
+					<span class="mui-icon mui-icon-left-nav"></span>设置
+				</button>
+				<h1 class="mui-center mui-title" style="line-height: 80px;">关于Vlerp</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class='version-info'>
+							<img id="logoImg" src="../images/logo/vllogo.png" alt="vlerp" />
+							<div>当前版本：<i class="update" id="currentVersion"></i></div>
+							<div>发布时间：<i class="update" id="releaseDate"></i></div>
+						</div>
+						<ul class="mui-table-view">
+							<!--<li id="check_update" class="mui-table-view-cell mui-plus-visible" style="display:none;">
+								<a id="update" class="mui-navigate-right">检查更新</a>
+							</li>-->
+							<li id="historyBox" class="mui-table-view-cell mui-plus-visible">
+								<a id="history" class="mui-navigate-right">历史更新</a>
+							</li>
+						</ul>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+
+		<!-- 点击退出时底部弹出-->
+		<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<!-- 可选择菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" id="sureOut">
+					<!--<a href="layout/login.html">确认</a>-->
+					<a>确认</a>
+				</li>
+			</ul>
+			<!-- 取消菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#sheet1"><b>取消</b></a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="../js/mui.min.js "></script>
+	<script src='../js/feedback.js'></script>
+	<script src="../js/mui.view.js "></script>
+	<script src="../js/md5.js"></script>
+	<script src="../js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" src="../js/vlindex.js"></script>
+	<script src="../js/immersed.js"></script>
+	<script>
+		mui.init();
+		var viewApi = mui('#app').view({defaultPage: '#setting'}); //初始化单页view
+		mui('.mui-scroll-wrapper').scroll(); //初始化单页的区域滚动
+		
+		var oMobileType = {"Apple" : "none","iOS"	: "none","null" : "none","Android" : "block"};
+		var _sysJson = {"企业"	: "vllogo.png",	"经销商"	: "cllogo.png","终端"	: "tllogo.png"};
+		var userbillNo,teamBillCom,teamBillComName,loginCom,loginComName,mobile,userNew;
+		mui.plusReady(function() {
+			// console.log("xxxx")
+			var view = viewApi.view;
+			(function($) {
+				//处理view的后退与webview后退
+				var oldBack = $.back;
+				$.back = function() {
+					if(viewApi.canBack()) { //如果view可以后退，则执行view的后退
+						viewApi.back();
+					} else { //执行webview后退
+						oldBack();
+					}
+				};
+			})(mui);
+	
+			if(mui.os.stream) {
+	//			document.getElementById("check_update").display = "none";
+			}
+			plus.screen.lockOrientation("portrait-primary");  // 禁止横屏显示
+			var self = plus.webview.currentWebview();
+			userbillNo 		= self.userbillNo;
+			teamBillCom		= self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			loginCom 		= self.loginCom;
+			loginComName 	= self.loginComName;
+			//
+			userNew 		= JSON.parse(VlStore.pGet("user"));
+			mobile 			= plus.os.name;	//Apple/null/Android 获取当前设备信息
+					
+			document.getElementById("history").style.display = oMobileType[mobile] || "none";
+			document.getElementById('logoImg').setAttribute('src',('../images/logo/'+_sysJson[userNew.com_linkvd_userCom]));
+			
+			document.getElementById('currentVersion').innerHTML = plus.runtime.version; // 展示当前版本号
+			document.getElementById("releaseDate").innerHTML = VlCfg.version.split("_")[0];
+			
+			document.getElementById('j-clearPics').addEventListener("tap", eClearPics, false);
+			document.getElementById("sureOut").addEventListener("tap", eSureOut, false); // 弹出底部菜单之后，点击确认
+			document.getElementById('history').addEventListener('tap', eHistory, false);
+			// 按下“退出登录”弹出底部菜单
+			document.getElementById("clickOut").addEventListener("tap", function() {
+				mui('#sheet1').popover('show', document.getElementById("clickOut"));
+			}, false);
+		});// plusready
+		function eClearPics(){
+			var con = confirm("确认要清除图片吗？");
+			if(con){
+				plus.nativeUI.showWaiting("正在删除图片...\n\r可能需要数分钟");
+				var local_vdsa402newPath = '_doc/Vlbfile'; // 
+				var local_vdsa402oldPath = '_documents/Vlbfile'; //
+				clear(local_vdsa402newPath, true);
+				clear(local_vdsa402oldPath);
+				function clear(path, tip){
+					plus.io.resolveLocalFileSystemURL(path, function(entry) {
+						entry.removeRecursively( function ( entry ) {
+							plus.nativeUI.closeWaiting();
+							if(tip){alert("清理成功!");}
+						}, function ( e ) {
+							alert( e.message );
+						} );
+					},function ( e ) {
+						if(tip){mui.toast('已清理成功！');}
+						plus.nativeUI.closeWaiting();
+					});
+				}
+			}
+		}
+		function eSureOut(e){
+			// var a =plus.navigator.getCookie( "http://101.201.238.199:8080/vl8-web/" )
+			// console.log("退出登录之前："+a)
+			var _data = {
+				userName:userbillNo,
+				bill_com:teamBillCom
+			};
+			VlAjax.post({"port" : "logout","headers": "form2"}, _data, sCBLogout, undefined, outToLogin);
+		}
+		function sCBLogout(data){
+			// var a =plus.navigator.getCookie( "http://101.201.238.199:8080/vl8-web/" )
+			// console.log("退出登录成功回调："+a)
+			mui.toast(data.message);
+			mui("#toBtn").button('reset');
+			outToLogin();
+		}
+		function eHistory(){
+			mui.openWindow({
+				url: "update_record.html",
+				id: "update_record.html",
+			})
+		}
+		function outToLogin(){
+			VlAjax.backLoginPage(true, "login.html");
+			// mui.openWindow({
+			// 	url: "login.html",
+			// 	id: "login.html",
+			// })
+		}
+	</script>
+
+</html>

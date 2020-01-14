@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>chat</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/common/mui.css">
+		<link rel="stylesheet" type="text/css" href="css/fonts/iconfont.css" />
+		<style>
+			body{background:#F6F6F6;}
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.oa-contact-cell.mui-table .mui-table-cell {
+				padding: 3px 0;
+				vertical-align: middle;
+			}
+			
+			.oa-contact-cell.mui-table .mui-table-middle {
+				padding: 3px 0;
+				vertical-align: middle;
+			}
+			
+			.oa-contact-cell {
+				position: relative;
+				margin: -11px 0;
+			}
+			
+			.oa-contact-avatar {
+				width: 75px;
+			}
+			
+			.oa-contact-avatar img {
+				width: 70%;
+			}
+			
+			.oa-contact-content {
+				width: 100%;
+			}
+			
+			.oa-contact-name {
+				margin-right: 20px;
+				color: #000000;
+				font-size: 15px;
+				font-weight: bold;
+			}
+			
+			.oa-contact-name {
+				float: left;
+			}
+			
+			.oa-contact-position {
+				float: right !important;
+			}
+			
+			.oa-contact-email {
+				font-size: 13px;
+			}
+			ul.mui-table-view:after,.mui-table-view:before{
+				height: 0;
+			}
+			.mui-content{
+				background: none !important;
+			}
+			ul {
+				background: none !important;
+			}
+			li {
+				background: none;
+			}
+			#noInfo{
+				color: #666;
+				font-size: 14px;
+				text-align: center;
+				margin-top:35%;
+			}
+			.mui-icon-chat{
+				color: #E0E0E0;
+				font-size: 80px;
+				display: block;
+			}
+			.info{
+				
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content mui-scroll-wrapper" id="refreshContainer">
+			<div class="mui-scroll">
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+					<li>
+						<div id="noInfo">
+							<span class="mui mui-icon mui-icon-chat"></span>
+							<span class="info">暂无消息～</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+	<script src="js/md5.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/vl-websocket.js"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				down: {
+					auto: true, //可选,默认false.首次加载自动下拉刷新一次
+					style: 'circle',
+					color: '#2BD009'
+				},
+				up: {
+					auto: true //可选,默认false.首次加载自动上拉加载一次
+				}
+			}
+		});
+		mui.plusReady(function() {
+			plus.screen.lockOrientation("portrait-primary");  // 禁止横屏显示
+			// 重写mui.back, 手机上的返回键默认跟随mui.back
+			//备份mui.back，mui.back已将窗口关闭逻辑封装的比较完善（预加载及父子窗口），因此最好复用mui.back
+			var oldBack = mui.back;
+			mui.back = function(){
+			  	plus.runtime.quit();
+			  	return;
+			}
+			// ================================
+			// 获取上个页面传过来的参数
+			var teamBillCom 	= vlUtils.getStorage("newTeamBillCom");
+			var teamBillComName = vlUtils.getStorage("newTeamBillComName");
+			var userbillNo 		= vlUtils.getStorage("userbillNo");
+			var userName 		= vlUtils.getStorage("userName");
+			var loginCom 		= vlUtils.getStorage("newLoginCom");
+			var loginComName 	= vlUtils.getStorage("newLoginComName");
+			var privileges 		= vlUtils.getStorage("newPrivileges");
+			var userRole 		= vlUtils.getStorage("newUserRole");
+ 			// 打开链接
+   			var wsUrl = "ws://101.201.238.199:8080/vl8-web/im/" + userbillNo;
+// 			var wsUrl = "ws://192.168.11.204:8808/vl8-web/im/"+userbillNo;
+// 			var wsUrl = "ws://192.168.3.39:8808/vl8-web/im/"+userbillNo;
+// 			createWebSocket(wsUrl);	// 客户版本需要注释//0312
+//			ready();
+   			// 结束连接
+			// 发送信息
+			var $$ = jQuery.noConflict();
+			$$(document).ready(function() {
+				$$("body").on("tap", ".news", function() {
+					var fgroupCode = $$(this).children("input").val();
+					var chatpeople=$$(this).find("span").first().text();
+					mui.openWindow({
+						url: 'layout/vlvdim/vdim102_list.html',
+						id:"vdim102_list.html",
+						createNew:true,
+						extras: {
+							teamBillCom : vlUtils.getStorage("newTeamBillCom"),
+							teamBillComName : vlUtils.getStorage("newTeamBillComName"),
+							userbillNo : vlUtils.getStorage("userbillNo"),
+							userName : vlUtils.getStorage("userName"),
+							loginCom : vlUtils.getStorage("newLoginCom"),
+							loginComName : vlUtils.getStorage("newLoginComName"),
+							fsend_group : fgroupCode,//fill_no
+							chatMen : chatpeople,//
+							fbill_no : "kong",
+							cc_user : "kong",
+							fromPage : "subpageChat"
+						}
+					})
+				})
+			});
+
+			var user = JSON.parse(vlUtils.getStorage('user'));
+			var useName = user.bill_no;
+			// 读数据库查到对应的用户的聊天信息，并展示出来
+			var usersDB = openDatabase(useName, '1.0', 'usersDB', 2 * 1024 * 1024);
+//			usersDB.transaction(function (tx) {
+////			return; // 客户版本需要放开
+//			    tx.executeSql('CREATE TABLE IF NOT EXISTS vdim101 (bill_no unique, fbill_no, cc_user, bill_user, bill_context, bill_date datetime, bill_dept, bill_title, link_lnext, bill_com)');
+//			    tx.executeSql('CREATE TABLE IF NOT EXISTS vdim102 (bill_no unique, bill_user, bill_name, fbill_no, bill_title, cc_user, bill_context, bill_com, bill_date datetime, bill_task, node_qty, bill_dept, link_next,  bill_ipaddr, bill_gpsaddr, bill_text )');
+//			});
+			usersDB.transaction(function (tx) {
+//				return;	// 客户版本需要放开
+				tx.executeSql('SELECT * FROM vdim101 WHERE bill_user = "'+useName+'"', [], function (tx, results) {
+					var text = " ";
+					for(var i = 0; i < results.rows.length; i++) {
+						var selfUesrName = results.rows[i]["bill_user"];
+						var bill_no = results.rows[i]["fbill_no"];
+//						if((useName == selfUesrName) || ((useName == results.rows[i]["cc_user"] ) && (selfUesrName == bill_no))) {
+//						if(useName == selfUesrName ) {
+							var contList = document.getElementById("contList");
+							text += '<li class="mui-table-view-cell news">';
+							text += '<input value = ' + results.rows[i]["fbill_no"] + ' style="display: none;">'
+							text += '<div class="mui-slider-cell">';
+							text += '<div class="oa-contact-cell mui-table">';
+							text += '<div class="oa-contact-avatar mui-table-cell">';
+	//						var imgadrr = "../../images/" + bill_no + ".jpg";
+//							var filename=bill_no+".png";
+//							var relativePath = "_downloads/Vldicon/" + filename;
+//							var sd_path = plus.io.convertLocalFileSystemURL(relativePath);
+							text += '<img id="' + bill_no + '" style="width:50px;height:50px; border-radius:10%;" /></div>';
+							text += '<div class="oa-contact-content mui-table-cell "><div class="mui-clearfix oa-maging">';
+							text += '<span class="oa-contact-name">' + results.rows[i]["bill_title"] + '</span>';
+							text += '<span class="oa-contact-position mui-h6">' + results.rows[i]["bill_date"] + '</span></div>';
+							// 如果是图片/音频这样显示
+							if(results.rows[i]["bill_context"].substr(0,7) == "file://"){
+								var context = "[图片]";
+							}else if(results.rows[i]["bill_context"].substr(0,11) == "_doc/audio/"){
+								var context = "[语音]";
+							}else {
+								var context = results.rows[i]["bill_context"];
+							}
+							
+//							text += '<p class="oa-contact-email mui-h6">' + results.rows[i]["bill_context"] + '</p></div></div></div></li>';
+							text += '<p class="oa-contact-email mui-h6">' + context + '</p></div></div></div></li>';
+							contList.innerHTML = text; 
+							vlUtils.downloadicon(bill_no, bill_no); 
+//						}
+					}
+					
+				}, null);
+			});
+			
+	}); // mui.plusReady
+
+		// 扩展API加载完毕，现在可以正常调用扩展API
+		
+		function onPlusReady() {
+//			console.log("更新啦！");
+			var user = JSON.parse(vlUtils.getStorage('user'));
+			var useName = user.bill_no;
+			// 读数据库查到对应的用户的聊天信息，并展示出来
+			var usersDB = openDatabase(useName, '1.0', 'usersDB', 2 * 1024 * 1024);
+			usersDB.transaction(function (tx) {
+//				tx.executeSql('SELECT * FROM vdim101 ', [], function (tx, results) {console.log("读vdim101的结果："+JSON.stringify(results.rows));})
+				tx.executeSql('SELECT * FROM vdim101 WHERE bill_user = "'+useName+'"', [], function (tx, results) {
+//					console.log("chat准备读vdim101-vdim101里有几条数据："+results.rows.length);
+					
+					var text = " ";
+					for(var i = 0; i < results.rows.length; i++) {
+						var selfUesrName = results.rows[i]["bill_user"];
+						var bill_no = results.rows[i]["fbill_no"];
+//						if((useName == selfUesrName) || ((useName == results.rows[i]["cc_user"] ) && (selfUesrName == bill_no))) {
+//						if(useName == selfUesrName ) {
+							var contList = document.getElementById("contList");
+							text += '<li class="mui-table-view-cell news">';
+							text += '<input value = ' + results.rows[i]["fbill_no"] + ' style="display: none;">'
+							text += '<div class="mui-slider-cell">';
+							text += '<div class="oa-contact-cell mui-table">';
+							text += '<div class="oa-contact-avatar mui-table-cell">';
+	//						var imgadrr = "../../images/" + bill_no + ".jpg";
+//							var filename=bill_no+".png";
+//							var relativePath = "_downloads/Vldicon/" + filename;
+//							var sd_path = plus.io.convertLocalFileSystemURL(relativePath);
+							text += '<img id="' + bill_no + '" style="width:50px;height:50px; border-radius:10%;" /></div>';
+							text += '<div class="oa-contact-content mui-table-cell "><div class="mui-clearfix oa-maging">';
+							text += '<span class="oa-contact-name">' + results.rows[i]["bill_title"] + '</span>';
+							text += '<span class="oa-contact-position mui-h6">' + results.rows[i]["bill_date"] + '</span></div>';
+							if(results.rows[i]["bill_context"].substr(0,7) == "file://"){
+								var context = "[图片]";
+							}else if(results.rows[i]["bill_context"].substr(0,11) == "_doc/audio/"){
+								var context = "[语音]";
+							}else {
+								var context = results.rows[i]["bill_context"];
+							}
+							
+//							text += '<p class="oa-contact-email mui-h6">' + results.rows[i]["bill_context"] + '</p></div></div></div></li>';
+							text += '<p class="oa-contact-email mui-h6">' + context + '</p></div></div></div></li>';
+							contList.innerHTML = text; 
+							vlUtils.downloadicon(bill_no, bill_no); 
+//						}
+					}
+					
+				}, null);
+			});
+		}
+		//驱动函数
+		function quDong() { 
+//			console.log("调qudong");
+			onPlusReady();
+		}
+ 
+	</script>
+
+</html>

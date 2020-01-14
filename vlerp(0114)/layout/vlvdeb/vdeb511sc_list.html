@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+
+			.mui-table-view:after,
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+			/*购物车列表样式*/
+			.goods-li{position: relative;background : #fff;width : 47%;margin : 4px 2px 4px 4px;padding : 0px;float : left;border-radius:5%;}
+			.goods-img{position: relative;top:0;left:0;width: 100%;height: 120px;border-radius:10% 10% 0 0;margin-bottom: 5px;}
+			.goods-img img{border-radius:5% 5% 0 0;}
+			.goods-info{position:relative;height:128px;padding:3px 5px;font-size:12px;color:#9D9D9D;line-height: 16px;}
+			.goods-info-row{margin-bottom: 3px;}
+			.goods-title{height:35px;font-size:14px;color:#242424;}
+			.goods-info-left{margin:0;text-align:left;}
+			.goods-info-right{padding-right:2px;text-align:right;font-size:10px;color:;}
+			.goods-info-bottom{position:absolute;bottom:0;left:0;right:0;}
+			.goods-info-price:before{content: '￥';padding: 0 3px 0 5px;color: #FF4400;font-size:10px;}
+			.goods-info-price{font-size:18px;font-weight:;color:#FF4400;}
+			.goods-more{padding-right:10px;font-weight: bold;font-size:18px;}
+			.goods-info-center{text-align: center; font-size: 10px;color:crimson;}
+			.goods-suggest{color:#20B2AA}
+			.hide{display: none;}
+		</style>
+	</head>
+
+	<body>
+		<div id="vdeb511_list" class="mui-content  mui-scroll-wrapper">
+			<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+				<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+			</div>
+			<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+				<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+				<p style="font-size:12px;">正在搜索中......</p>
+			</div>
+			<div class="mui-scroll">
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed"></ul>
+			</div>
+		</div>
+		<script type="text/template" id="listTmpl">
+			<li class="goods-li" data-type="point">
+			     <div class="data-row hide"><%=rowdata%></div>
+			     <div class="goods-box">
+			          <div class="goods-img">
+			               <img src="<%=liImgSrc%>" onerror="this.src='../../images/icon/default.png'" alt="物品" width="100%" height="100%" />
+			          </div>
+			          <div class="goods-info">
+			               <div class="goods-info-row mui-row">
+			                    <span class="mui-col-xs-12 goods-info-center">>><%=liLeftT%><<</span>
+			               </div>
+			               <div class="goods-title"><%=liTitle%></div>
+			               <div class="goods-info-row mui-row">
+			                    <span class="mui-col-xs-12"><%=liRightT%></span>
+			                    <span class="mui-col-xs-12"><%=liRightM%></span>
+			                    <span class="mui-col-xs-12 '+(rowdata.liRightB>0?'goods-suggest':'')%>"><%=liRightB%></span>
+			               </div>
+			               <div class="mui-row goods-info-row goods-info-bottom">
+			                    <span class="mui-col-xs-8 goods-info-left hide"><span class="goods-info-price"><%=liLeftB%></span></span>
+			                    <span class="mui-col-xs-12 goods-info-right goods-more">...</span>
+			               </div>
+			          </div>
+			     </div>
+			</li>
+		</script>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/arttmpl.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vdeb511_list',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					height: 70,
+					contentnomore: '没有更多数据了',
+					offset: '10px',
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+
+		var startIndex = 1;
+		var pageSize = 10;
+		var fbill_no = "ROOT";
+		var queryparmas = {}; //查询参数
+		var pager = {};
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var fromPage = "";
+		var activeType='001',
+			activeTask = "",
+			activeSearch = "",
+			activePort = "active";
+		var _task ={
+			"终端" : "VR_vdsa210_find_03",
+			"经销商" : "VR_vdsa210_find_05",
+		 }
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview().parent();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			fromPage = self.fromPage;
+			fbill_no = self.fbill_no;
+			curSys=self.curSys
+			var user = JSON.parse(VlStore.pGet('user'));
+			activeTask = _task[user.com_linkvd_userCom]
+			queryparmas = getParams();
+			VlAjax.post({"port":activePort,"headers":"json","isFirst":true}, queryparmas, sCBfind);
+//			console.log(JSON.stringify(self))
+			document.addEventListener('differentStatesRefresh511list', eChangeNav, false);
+			mui("#contList").on('tap', 'li', function(e) { eaTapli(e, this)});
+
+		});
+		function eChangeNav(event){
+			var _data = event.detail;
+			activeType 	= _data.activeType;
+			activeSearch = _data.activeSearch;
+			activePort 	= _data.activePort;
+			activeTask 	= _data.activeTask;
+				
+			document.getElementById("contList").innerHTML 	  = '';
+			document.getElementById("showHint").style.display = "none"; 
+			document.getElementById("searching").style.display = "block";
+			//
+			queryparmas = getParams();
+			plus.nativeUI.showWaiting("正在查询数据...");
+			VlAjax.post({"port":activePort,"headers":"json","isFirst":true}, queryparmas, sCBfind);
+		}
+		function eaTapli(e, self){
+			var dataRow = jQuery(self).find(".data-row").html();
+			var rowObj = JSON.parse(dataRow);
+			mui.openWindow({
+				id: 'vdeb511sc_node.html',
+				url: 'vdeb511sc_node.html',
+				createNew: true,
+				extras: {
+					teamBillCom: teamBillCom,
+					teamBillComName: teamBillComName,
+					userbillNo: userbillNo,
+					loginCom: loginCom,
+					loginComName: loginComName,
+					fbll_no: fbill_no,
+					detailInfo: rowObj,
+					fromPage: "vdeb511sc_list.html",
+					type : activeType,
+					curSys  : curSys
+				}
+			});
+		}
+		function sCBfind(data,type){
+			// console.log(JSON.stringify(data))
+			pager = mui.type(data.page) === 'array' ? data.page[0] : data.page;
+			document.getElementById("showHint").style.display = "none";
+			var contList = document.getElementById("contList");
+			if(data.data.length != 0) {
+				var html = '';
+				for(var i = 0; i < data.data.length; i++) {
+					var _rowd = dataAdapter(data.data[i]);
+					var source = document.getElementById('listTmpl').innerHTML;
+					var render = template.compile(source);
+					html += render(_rowd);
+					if(type&&i==0){
+						contList.innerHTML="";
+						document.getElementById("searching").style.display = "none";
+					}
+				}
+				jQuery("#contList").append(html);
+			} else { // 如果没有长度说明没有数据，提示没有数据
+//				mui.toast("未查询到数据~")
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("searching").style.display = "none";
+				document.getElementById("showHint").style.display = "block";
+			}
+			plus.nativeUI.closeWaiting();
+		}
+		//下拉刷新
+		function pulldownRefresh() {
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			//
+			queryparmas.currentPage = 1;
+			plus.nativeUI.showWaiting("正在查询数据...");
+			VlAjax.post({"port":activePort,"headers":"json","isFirst":true}, queryparmas, sCBfind);
+			mui('#vdeb511_list').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+
+		}
+		function pullupRefresh() {
+			if(queryparmas.currentPage < pager.totalPage) {
+				queryparmas.currentPage = queryparmas.currentPage + 1;
+			} else {
+				plus.nativeUI.toast("~没有更多啦~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdeb511_list').pullRefresh().endPullupToRefresh();
+				return;
+			}
+			VlAjax.post({"port":activePort,"headers":"json","isFirst":false}, queryparmas, sCBfind);
+			mui('#vdeb511_list').pullRefresh().endPullupToRefresh();
+		}
+		function getParams(task){
+			var _param = {
+				name: 'msvr',
+				bill_task	: activeTask,
+				bill_com	: teamBillCom,
+				bill_user	: userbillNo,
+				bill_title	: activeSearch,
+				currentPage	: 1,
+				pageSize	: pageSize,
+				paramText	: ''
+			}
+			return _param;
+		}
+		var _oNum = {
+			"安全库存": "",
+			"订货批量": "",
+			"当前库存": "",
+			"采购在途": "",
+			"销售在途": "",
+			"单价": ""
+		}
+		var _oContent = {
+			"规格型号": "",
+			"条码": "",
+			"供应商名称": "",
+			"供应商代码": "",
+			"政策标识": "",
+			"生产厂商名称": "",
+			"生产厂商代码": "",
+			"单位": "",
+			"开始日期": "",
+			"截止日期": ""
+		}
+		function dataAdapter(data) {
+        	var _obj = {};
+			for(var k in data) {
+				_obj[k.slice(0, 2)] = data[k];
+			}
+			var _num = _obj['数量'].indexOf('{') > -1 ? JSON.parse(_obj['数量']) : _oNum;
+			var _content = _obj['内容'].indexOf('{') > -1 ? JSON.parse(_obj['内容']) : _oContent;
+			var _json = {
+				"001" : {
+					"rowdata" 	: JSON.stringify(_obj),
+					"liTitle" 	: ('[' + _obj['参数']+']'+_obj["标题"]),
+					"liDate" 	: "",
+					"liStatus" 	: "",
+					"liImgSrc" : VlAjax.getImgPath(_obj['金额']),
+					
+					"liLeftT" 	: _content['供应商名称'],
+					"liLeftM" 	: '',
+					"liLeftB" 	: _obj['数量'],
+					
+					"liRightT" 	: _content['规格型号'] ,
+					"liRightM" 	: "",
+					"liRightB" 	: "",
+				},
+				"002" : {
+					"rowdata" 	: JSON.stringify(_obj),
+					"liTitle" 	: ('[' + _obj['参数']+']'+_obj["标题"]),
+					"liDate" 	: '',
+					"liStatus" 	: '',
+					"liImgSrc" : VlAjax.getImgPath(_obj['图片']),
+					
+					"liLeftT" 	: _content['供应商名称'],
+					"liLeftM" 	: '',
+					"liLeftB" 	: _obj['单价'],
+					
+					"liRightT" 	: ('安全库存：'+_oNum['安全库存']) ,
+					"liRightM" 	: ('当前库存：'+_oNum['当前库存']),
+					"liRightB" 	: ('建议采购：'+_obj['金额']),
+				}
+			}
+	        return _json[activeType];
+	    }
+	</script>
+
+</html>

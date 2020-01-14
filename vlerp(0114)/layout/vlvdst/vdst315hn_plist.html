@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>配送管理hn</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.top-nav {
+				text-align: center;
+				position: relative;
+				margin-bottom: 0px;
+				height: 35px;
+				color: #353b42;
+			}
+			
+			.active {
+				color: #ea6d10;
+				border-bottom: 2px solid #ea6d10;
+				/*background:pink;*/
+			}
+			
+			.mui-bar .mui-icon:active {
+				background: #0062cc!important;
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			.price{
+				color:#FF5053;
+				font-size: 20px;
+			}
+			.money{
+				margin-top:15px;
+				font-size: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head" style="height: 136px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" ></a>
+			<div class="mui-title plistTitle">
+				<p id="">配送单列表</p>
+				<h1 id="header" ></h1>	
+			</div>
+			<div class="mui-row navBar topNavRow" id="topNavOut">
+				<p class="mui-col-xs-4 top-nav active" data-task='VR_vdvc312_query_04' data-type="001">附近的店</p>
+				<p class="mui-col-xs-4 top-nav" data-task='VR_query_vdst315_02' data-type="002">待送货</p>
+				<p class="mui-col-xs-4 top-nav" data-task='VR_query_vdst315_01' data-type="003">已送货</p>
+			</div>
+			<div class="mui-row searchBar">
+				<div class="mui-col-sm-10 mui-col-xs-10">
+					<div class="mui-input-row mui-search">
+						<input type="search" id="searchBox" class="mui-input-clear" onkeyup="enterSearch(event)" placeholder="">
+					</div>
+				</div>
+				<div class="mui-col-sm-2 mui-col-xs-2">
+					<button type="button" id="searchBtn" class="mui-btn">搜索</button>
+				</div>
+			</div>
+		</header>
+		<div class="mui-content" ></div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdst315hn_list.html',
+				id: 'vdst315hn_list.html',
+				styles: {
+					top: '140px',
+					bottom: '0px',
+				}
+			}]
+		});
+
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vdst315hn_list').pullRefresh().scrollTo(0,0,100)");
+		});
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			var teamBillCom = self.teamBillCom;
+			var teamBillComName = self.teamBillComName;
+			var userbillNo = self.userbillNo;
+			var userName = self.userName;
+			var loginCom = self.loginCom;
+			var loginComName = self.loginComName;
+			var fbill_no = self.fbill_no;
+			var privileges = self.privileges;
+			var fromPage = self.fromPage;
+			var userNew = JSON.parse(vlUtils.getStorage("user")); 
+		    // 返回
+		    var oldBack = mui.back;
+		    mui.back = function(){
+		    	if(fromPage != "vdst315hn_edit.html"){
+		    		oldBack();
+		    		return;
+		    	}
+		    	var webview = plus.webview.getWebviewById("index-ps.html");
+		    	var childView = plus.webview.getWebviewById("tab-webview-subpage-work.html");
+		    	webview.show();
+		    	childView.show();
+		    }
+			document.getElementById("header").innerHTML = teamBillComName; 
+
+			// nav
+			mui("#topNavOut").on("tap", "p", function(e) { eaTapNav(e, this)});
+			document.getElementById("searchBtn").addEventListener("tap", eBtnSearch, false);
+		});
+		function eaTapNav(e,self) {
+			document.getElementById("searchBox").value = "";
+			jQuery(self).addClass("active").siblings().removeClass("active");
+			
+			definedCustomEvent(self);
+		}
+		function definedCustomEvent(self){
+			var search = document.getElementById("searchBox").value;
+			document.getElementById("searchBox").blur();
+			console.log(self.getAttribute("data-task"))
+			mui.fire(plus.webview.getWebviewById('vdst315hn_list.html'), 'subpage133list',  {
+				activeType: self.getAttribute("data-type"),
+				activeTask: self.getAttribute("data-task"),
+				activeText: self.innerText,
+				activeSearch : search
+			});
+		}
+		function enterSearch(e) {
+			if(e.keyCode == 13) {
+				var self = jQuery("#topNavOut").children(".active")[0];
+				definedCustomEvent(self);
+			}
+		}
+		function eBtnSearch(e){
+			var self = jQuery("#topNavOut").children(".active")[0];
+			definedCustomEvent(self);
+		}
+	</script>
+
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/icons-extra.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+
+		<!--三级联动-->
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			body {
+				font-size: 12px;
+				color: #666;
+			}
+			
+			ul,
+			li {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			ul li {
+				list-style: none;
+			}
+			
+			.list_font {
+				color: #000000;
+				font-size: 11px;
+				line-height: 12px;
+				height: 12px;
+				margin-bottom:5px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			.list_font span{
+				color:gray;
+			}
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+			/*开始list*/
+			
+			.detail {
+				border-bottom: 1px solid #20b2aa;
+				margin-bottom: 10px;
+			}
+			
+			.detail li {
+				/*background:#2187E7;*/
+				border-bottom: 1px dashed #eee;
+				height: 25px;
+				line-height: 25px;
+				padding: 0px 15px;
+				font-size: 11px;
+				color: #242424;
+			}
+			
+			.mui-slider-cell,
+			.mui-slider-handle {
+				/*background: #EFEFF4;*/
+				/*background: #f4e7b3;*/
+			}
+			
+			.outLi {
+				margin-bottom: 10px;
+				/*background: #0062CC;*/
+			}
+			
+			.fs {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			p.fs{
+				font-size: 10px;
+				margin: 0px !important;
+				padding: 0px !important;
+				text-align: left;
+				color: #000;
+			}
+			
+			p.fs span {
+				color: #20B2AA;
+				margin: 0;
+				padding:0;
+				line-height: 12px;
+			}
+			
+			.mui-input-group:after {
+				background-color: #c8c7cc !important;
+			}
+			.mui-table-view-cell:after{height: 0;}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">流程详情</h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit"></a>		
+			<div class="mui-row  navBar nodeTopNav">
+				<p class="mui-col-xs-12" id="bBackBtn">
+					<a class="mui-icon mui-icon-paperclip"  id="bBackIcon"></a>
+					<span>收回单据</span>
+				</p>
+			</div>
+		</header>
+		<div class="mui-content mainBody nodeBody">
+			<div class="mui-slider-cell  mui-slider-handle " style="background:#fff;padding:10px 20px 3px 15px;">
+				<div class="">
+					<div class="mui-row" style="height: 30px;overflow: hidden;">
+						<div class="mui-col-xs-6" id="bill_context" style="font-size:14px;line-height: 30px;color:#000000;font-weight: bold;"></div>
+						<div class="mui-col-xs-6 mui-row" >
+							<p class="mui-col-xs-3 mui-row" style="border:1px solid #20B2AA;box-sizing: border-box;color: #20B2AA;border-radius: 50%;padding:1px 0px;float:;margin-left:3px;text-align: center;" >
+								<span id="bill_flag" style="font-size: 10px;"></span>
+							</p>
+							<p class="mui-col-xs-3 mui-row" style="border:1px solid #20B2AA;box-sizing: border-box;color: #20B2AA;border-radius: 50%;padding:1px 0px;float:;margin-left:3px;text-align: center;" >
+								<span id="bill_nflag" style="font-size:10px;"></span>
+							</p>
+							<p class="list_sts mui-col-xs-3 mui-pull-right" style="width:auto;padding:1px 5px;float:right;margin:3px 0;overflow:hidden;" id="bill_task"></p>
+						</div>
+					</div>
+					<div class="mui-row" style="border-bottom: 1px dotted #FFEBCD;border-top: 1px dotted #FFEBCD;padding:5px 0;overflow: hidden;">
+						<div class="mui-col-xs-2 mui-row" style="text-align: left;">
+							<img class="vdvc204 mui-col-xs-11" src="../../images/icon/default.png" />
+						</div>
+						<div class="mui-col-xs-5 mui-row" >
+							<p class="list_font mui-col-xs-12">对应业务：<span id="bill_oppo"></span></p>
+							<p class="list_font mui-col-xs-12">三级流程：<span id="bill_bflow"></span></p>
+							<p class="list_font mui-col-xs-12" style="display: none;">部门类型：<span id="depType"></span></p>
+							<p class="list_font mui-col-xs-12">部门标签：<span id="bill_coppo"></span></p>
+						</div>
+						<div class="mui-col-xs-5 mui-row list_three" >
+							<p class="list_font mui-col-xs-12">制单时间：<span id="bill_date"></span></p>
+							<p class="list_font mui-col-xs-12">四级流程：<span id="bill_wflow"></span></p>
+							<p class="list_font mui-col-xs-12" style="display: none;">用户类型：<span id="userType"></span></p>
+							<p class="list_font mui-col-xs-12">岗位标签：<span id="bill_doppo"></span></p>
+						</div>
+					</div>
+					<div class="mui-row" style="min-height: 16px;line-height: 16px;margin-top:5px;">
+						<div class=" mui-col-xs-2" style="padding-left: 0px;text-align: center;"> 
+							<p class="list_font"  >流程标签:</p>
+						</div>
+						<div class=" mui-col-xs-10" style="padding-left:0px;"> 
+							<p class="list_font">
+								<span id="bill_label"></span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group rel_div"  style="padding:5px 15px 5px 8px;margin-top:5px;background: #20B2AA;color:#fff">
+				<div class="mui-row" style="width:100%;">
+					<span class="mui-col-xs-1" style="text-align:left;">步骤</span>
+					<span class="mui-col-xs-3" style="text-align: center;">步骤名称</span>
+					<span class="mui-col-xs-4" style="text-align: center;">备注</span>
+					<span class="mui-col-xs-4" style="text-align: center;">条件</span>
+				</div>
+			</div>
+			<ul id="details" style="background:none;">
+			</ul>
+
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var bill_user;
+		mui.plusReady(function() {
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom 	= self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no 		= self.fbill_no; // 3.fbill_no是
+			loginCom 		= self.loginCom; // 4.登录单位代码
+			loginComName 	= self.loginComName; // 5.登录单位名称
+			userbillNo 		= self.userbillNo; // 6.登录人的代码
+			userName 		= self.userName; // 7.登录人的姓名
+			privileges 		= self.privileges; // 8.当前的权限是 
+			fromPage 		= self.fromPage; // 9.从哪个页面来	
+			if(fromPage == "vdvc204list") {
+				detailInfo = self.detailInfo;
+				mainInfo = self.mainInfo;
+				document.getElementById("bill_bflow").innerHTML =  detailInfo.values.main.bill_bflow; //流程说明
+				document.getElementById("bill_wflow").innerHTML =  detailInfo.values.main.bill_wflow; //流程说明
+				document.getElementById("bill_context").innerHTML = detailInfo.values.main.bill_context; //流程说明
+			}
+
+			if(fromPage == "vdvc204edit") {
+				detailInfo = self.rqsData;
+			}
+			document.getElementById("bill_context").innerHTML = detailInfo.values.main.bill_context; //单据类型
+			document.getElementById("bill_label").innerHTML = detailInfo.values.main.bill_label; //单据类型
+			if(detailInfo.values.main.bill_text[0]["linkvd_deptype"] != undefined) {
+				document.getElementById("depType").innerHTML = detailInfo.values.main.bill_text[0]["linkvd_deptype"]; //部门类型
+			} else {
+				document.getElementById("depType").innerHTML = ''; //部门类型
+
+			}
+
+			if(detailInfo.values.main.bill_text[0]["linkvd_linkpost"] != undefined) {
+				document.getElementById("userType").innerHTML = '' + detailInfo.values.main.bill_text[0]["linkvd_linkpost"]; //用户类型
+
+			} else {
+				document.getElementById("userType").innerHTML = ''; //用户类型
+
+			}
+			document.getElementById("bill_date").innerHTML = detailInfo.values.main.bill_date.slice(2, 16); //活动时间
+			document.getElementById("bill_oppo").innerHTML = detailInfo.values.main.bill_oppo; //对应业务
+			document.getElementById("bill_coppo").innerHTML = detailInfo.values.main.bill_coppo; //对应业务
+			document.getElementById("bill_doppo").innerHTML = detailInfo.values.main.bill_doppo; //对应业务
+			billstate(detailInfo.values.main.bill_task);
+			document.getElementById("toEdit").addEventListener("tap",toEdit);
+			if(detailInfo.values.main.bill_flag == "Y"){
+				document.getElementById("bill_flag").innerHTML = "已生效";
+			}else if(detailInfo.values.main.bill_flag == "N" || detailInfo.values.main.bill_flag == ""){
+				document.getElementById("bill_flag").innerHTML = "未生效";
+			}
+			if(detailInfo.values.main.bill_nflag == "Y"){
+				document.getElementById("bill_nflag").innerHTML = "已启用";
+			}else if(detailInfo.values.main.bill_nflag == "N" || detailInfo.values.main.bill_nflag == ""){
+				document.getElementById("bill_nflag").innerHTML = "未启用";
+			}
+			var details = document.getElementById("details");
+			var text = "";
+			for(var j = 0; j < detailInfo.values.detail.length; j++) {
+				var li = document.createElement("li");
+				li.setAttribute("data-row",JSON.stringify(detailInfo.values.detail[j]));
+				li.setAttribute("class", "mui-table-view-cell");
+				li.style.paddingLeft = "10px";
+				li.style.background = "#fff";
+				li.style.borderBottom = "1px dashed #eee";
+				li.style.marginBottom = "3px";
+				var linkvd_linkuser = detailInfo.values.detail[j].cc_user;
+				var linkuser = "";
+				for(var s in linkvd_linkuser) {
+					linkuser += linkvd_linkuser[s] + " ";
+				}
+				var text = "";
+				text += '<div class="mui-row" style="border-bottom: 1px dotted #FFEBCD;">';
+				text += '<div class="mui-col-xs-1" style="line-height: 60px;"><span class="mui-badge mui-badge-purple" id="number">'+detailInfo.values.detail[j].bill_id+'</span></div>';
+				text += '<span class="mui-col-xs-3" style="text-align:center;padding-top:10px;" >'+detailInfo.values.detail[j].bill_name+'</span>';
+				text += '<div class=" mui-col-xs-4" style="padding-left: 15px;"> ';
+				text += '<p class="fs">审批类型：<span>'+detailInfo.values.detail[j].bill_title+'</span></p>';
+				text += '<p class="fs">部门标签：<span>'+detailInfo.values.detail[j].bill_coppo+'</span></p>';
+				text += '<p class="fs">用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户：<span>'+linkuser+'</span></p>';
+				text += '</div>';
+				text += '<div class=" mui-col-xs-4" style="padding-left: 15px;"> ';
+				text += '<p class="fs">流程类型：<span>'+detailInfo.values.detail[j].bill_unit+'</span></p>';
+				text += '<p class="fs">岗位标签：<span>'+detailInfo.values.detail[j].bill_doppo+'</span></p>';
+				text += '<p class="fs">部门匹配：<span>'+detailInfo.values.detail[j].bill_spec+'</span></p>';
+				text += '</div>';
+				text += '</div>';
+				text += '<div class="mui-row" style="min-height: 16px;line-height: 16px;margin-top:3px;">';
+				text += '<div class="mui-col-xs-2" style="padding-left: 0px;text-align: center;"> ';
+				text += '<p class="fs">环节标签:</p>';
+				text += '</div>';
+				text += '<div class=" mui-col-xs-10" style="padding-left:0px;"> ';
+				text += '<p class="fs"><span>'+detailInfo.values.detail[j].bill_label+'</span></p>';
+				text += '</div>';
+				text += '</div>';
+				li.innerHTML = text;
+				details.appendChild(li);
+			}
+			// 点击返回按钮
+			document.getElementById("goBack").addEventListener("tap", function() {
+				var oldBack = mui.back;
+				mui.back = function() {
+					var webview = plus.webview.getWebviewById('vdvc204_plist.html');
+					webview.show();
+				}
+				mui.back();
+			})
+
+			// 点击进入204_edit编辑
+			document.getElementById("toEdit").addEventListener("tap", function() {
+				var billUser = detailInfo.values.main.bill_user;
+				var privileges = vlUtils.getStorage("newPrivileges");
+				if(billUser == userbillNo || privileges == "ROOT") {
+					var ws = plus.webview.getWebviewById("vdvc204_edit.html");
+					if(!vlUtils.isnull(ws)){
+						plus.webview.close(ws);
+					}
+					mui.openWindow({
+						url: 'vdvc204_edit.html',
+						id: "vdvc204_edit.html",
+						createNew: true,
+						extras: {
+							teamBillCom: teamBillCom, // 1.管理单位代码 	// 不变 
+							teamBillComName: teamBillComName, // 2.管理单位名称	// 不变 
+							fbill_no: fbill_no, // 3.fbill_no是		// 不变
+							loginCom: loginCom, // 4.登录单位代码
+							loginComName: loginComName, // 5.登录单位名称
+							userbillNo: userbillNo, // 6.登录人的代码
+							userName: userName, // 7.登录人的姓名
+							privileges: privileges, // 8.当前的权限是
+							fromPage: "vdvc204node", // 9.从哪个页面来
+							detailInfo: detailInfo,//10.整条数据
+							hadSave: true //11.N为修改
+						},
+					    waiting:{
+							autoShow:true,//自动显示等待框，默认为true
+							title:'正在打开页面...',//等待对话框上显示的提示内容
+						}
+					})
+				} else {
+					mui.toast("仅制单人或管理员有此权限！");
+				}
+			});
+			// 收回指令
+			function bBackBtn(){ 
+				var date = new Date();
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				params.bill_com	 = loginCom;
+				params.fbill_no	 = detailInfo.values.main.fbill_no;
+				params.bill_no 	 = detailInfo.values.main.bill_no;
+				params.bill_user = userbillNo;
+				params.bill_date = vlUtils.dateToString(date);
+				params.bill_task = "b_back";
+				//
+				CRUDajax(params,'../login.html',reloadnode)
+			}
+			function reloadnode(){
+				document.getElementById("bill_task").innerHTML= "待送审";
+				detailInfo.values.main.bill_task = "L";
+				jQuery("#bBackIcon").addClass("unclickable");
+				document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn);
+				document.getElementById("toEdit").style.display = "block";
+			}
+			function billstate(task){
+				if(task == "S") {
+					jQuery("#bBackIcon").removeClass("unclickable");
+					document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn)
+					document.getElementById("bill_task").innerHTML = "待审核";
+					document.getElementById("toEdit").style.display = "none";
+				}
+				if(task == "Y") {
+					jQuery("#bBackIcon").removeClass("unclickable");
+					document.getElementById("bBackBtn").addEventListener("tap",bBackBtn)
+					document.getElementById("bill_task").innerHTML = "已审核";
+					document.getElementById("toEdit").style.display = "none";
+				}
+				if(task == "L"){
+					jQuery("#bBackIcon").addClass("unclickable");
+					document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn)
+					document.getElementById("bill_task").innerHTML = "待送审";
+					document.getElementById("toEdit").style.display = "block";
+					
+				}
+				if(detailInfo.values.main.bill_task == "YF") {
+					document.getElementById("bBackBtn").addEventListener("tap",bBackBtn);
+					document.getElementById("bill_task").innerHTML = "已冻结"; //活动数量
+					document.getElementById("toEdit").style.display = "none";
+				}
+//				if(detailInfo.values.main.bill_task == "S") {
+//					document.getElementById("bill_task").innerHTML = "待审核"; //活动数量 
+//					document.getElementById("toEdit").style.display = "none";
+//				}
+//				if(detailInfo.values.main.bill_task == "L") {
+//					document.getElementById("bill_task").innerHTML = "待送审"; //活动数量
+//					document.getElementById("toEdit").style.display = "block";
+//				}
+//				if(detailInfo.values.main.bill_task == "Y") {
+//					document.getElementById("bill_task").innerHTML = "已审核"; //活动数量
+//					document.getElementById("toEdit").style.display = "none";
+//				}
+//				if(detailInfo.values.main.bill_task == "YF") {
+//					document.getElementById("bill_task").innerHTML = "已冻结"; //活动数量
+//				}
+			}
+		});// plusReady
+	</script>
+
+</html>

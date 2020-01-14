@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>用户注册</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			
+			.mui-row {
+				padding: 8px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			header.headerMain.editHeader{
+				height:75px !important;
+			}
+			.mui-input-row.lastInput:after{
+				height:0;
+			}
+			.mui-content{
+				padding-top:78px !important;
+			}
+			.blabel{color:#FF4400;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head">
+			<a class=" mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p  id="title">新建用户</p>
+				<h1 id="header"></h1>	
+			</div>
+			<a class=" mui-pull-right rightIcon" id="saveBtn" data-loading-text="提交中" >保存</a>
+		</header>
+		<div class="mui-content">
+			<div class="mui-input-group" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;">
+				<div class="mui-row" style="display:none;">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">标识:</span>
+					<span class="mui-col-xs-8" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">fbill_no:</span>
+					<span class="mui-col-xs-8" id="fbill_no">ROOT</span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">bill_task:</span>
+					<span class="mui-col-xs-8" id="bill_task">d_new</span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人:</span>
+					<span class="mui-col-xs-8" id="bill_user"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单单位:</span>
+					<span class="mui-col-xs-8" id="bill_com"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单时间:</span>
+					<span class="mui-col-xs-8" id="bill_date"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">编码:</span>
+					<span class="mui-col-xs-8" id="linkbd_clerkid"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">部门:</span>
+					<span class="mui-col-xs-8" id="linkvd_dept"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">电话:</span>
+					<span class="mui-col-xs-8" id="bill_bid"></span>
+				</div>
+				<div class="mui-row" >
+					<span class="mui-col-xs-3" style="color:#ACACB4;">用户类型:</span>
+					<span class="mui-col-xs-8" id="bill_bflow"></span>
+				</div>
+			</div>
+			<div class="mui-input-group " style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="padding:0;margin:0;">
+					<div class="mui-input-row mui-col-xs-10" style="">
+						<label><span style="color:crimson;">*</span>客户编码</label>
+						<input id="clerkid" type="text" class="requiredInput" readonly="readonly" placeholder="录入客户编码">
+					</div>
+					<button id="searchBtn" class="mui-icon mui-icon-search mui-col-xs-2" style="display: none;"></button>
+				</div>
+				<div class="mui-input-row lastInput">
+					<label><span style="color:crimson;">*</span>客户名称</label>
+					<input id="clerkname" type="text" class="requiredInput" readonly="readonly" placeholder="自动带出" required="required" value="">
+				</div>
+			</div>
+			<div class="mui-input-group " style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row">
+					<label><span style="color:crimson;">*</span>用户编码</label>
+					<input id="bill_id" type="text" class="mui-input-clear requiredInput" placeholder="录入用户编码">
+				</div>
+				<div class="mui-input-row">
+					<label><span style="color:crimson;">*</span>用户名称</label>
+					<input id="bill_name" type="text" class="mui-input-clear requiredInput" placeholder="录入用户名称" required="required">
+				</div>
+				<div class="mui-input-row">
+					<label><span style="color:crimson;">*</span>注册手机号</label>
+					<input id="linkbd_linktel" type="text" class="requiredInput" readonly="readonly" placeholder="录入注册手机号">
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>说明</label>
+					<input id="bill_context" type="text" class="mui-input-clear " placeholder="说明" required="required">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:8px 18px 5px 32px;margin-bottom:5px;">
+				<label  class="blabel">用户标签<span style="color:#B6B6B6;font-size:10px;">&nbsp;&nbsp;&nbsp;* 多个标签请用<span style="color:crimson;">英文</span>逗号隔开</span></label>
+				<textarea name="" rows="2" cols="2" placeholder="用户标签" id="bill_label" class="" style="border:1px solid #eee;width:100%;margin-top:5px;font-size:12px;line-height: 16px;"></textarea>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../js/index.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		var date = new Date(); 
+		var bill_date = vlUtils.dateToString(date);
+		
+		var rqsData = null; //提交的数据
+		var inputData = null; // 表单里的数据  
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var onlyCode = "";
+		var detailInfo = "";
+		var $$ = jQuery.noConflict();
+		var billcode = "";	// 业务标识
+		var qrCode = "";	// 二维码文本
+		var billbflow = "";
+		var qrData = "";
+		var linktel = "";
+		var system = "";
+		var paramColl = null;
+	
+
+		mui.plusReady(function() {
+			// TODO 1. 页面上的字段========================
+			var  normalData = {
+				h : {
+					bill_no 	:"",	// 唯一标识					
+					fbill_no 	:"",	// 主明细标识	
+					bill_task	:"",	// 状态
+					bill_user 	:"",	// 制单人
+					bill_com 	:"",	// 制单单位				
+					bill_date 	:"",	// 制单时间
+					//
+					bill_bflow	: "",	// 用户类型
+					bill_bid	: "",	// 用户类型
+				},
+				v : {
+				 	bill_id		: "",	// 用户编码
+				 	bill_name	: "",	// 用户姓名
+				 	bill_context: "",	// 说明
+				 	bill_label	: "",	// 标签
+				},
+				c : {
+				}
+			}
+			var testa={
+				h : {
+					linkvd_dept		: "",
+					linkbd_clerkid	: ""
+				},
+				v : {
+					linkbd_linktel	: "",	// 注册手机号
+				},
+				c : {}
+			}
+			// TODO 2. 接收传过来的参数===========================
+			var self = plus.webview.currentWebview();
+			paramColl 	 = self.paramColl;
+			qrCode 	 = paramColl.qrCode;
+			billcode = paramColl.billcode;
+			billbflow = paramColl.billbflow;
+			qrData	 = paramColl.qrData;
+			linktel	= self.linktel;
+			system	= paramColl.system;
+			var username = self.username; // 注册人姓名
+			// TODO 3. 基础设置/赋值 =============================
+			onlyCode = getDataCode("vdvc105"); 	// 生成唯一标识
+			document.getElementById("bill_date").innerHTML 	= vlUtils.dateToString(date);
+			document.getElementById("bill_no").innerHTML 	= onlyCode;
+			document.getElementById("linkbd_linktel").value 	= linktel;
+			document.getElementById("bill_bid").innerHTML 	= linktel;
+			document.getElementById("bill_id").value 	= linktel;
+			document.getElementById("bill_name").value 	= username;
+
+			// 业务标识(vdvc10501) & 用户代码(vdvc001-) & 用户名称 & 用户身份(负责人、配送员、服务员) & 客户代码(vdvc101-) & 客户编码 & 客户名称 & 客户身份(企业、经销商、终端) & 客户负责人 & 客户地址 & 单位代码(燕京101代码)
+			/*  
+			 * 0: 业务标识(vdvc10501)
+			 * 1: 用户代码(vdvc001-) 
+			 * 2: 用户名称 
+			 * 3: 用户身份(负责人、配送员、服务员) 
+			 * 4: 客户代码(vdvc101-) 
+			 * 5: 客户编码 
+			 * 6: 客户名称
+			 * 7: 客户身份(企业、经销商、终端) 
+			 * 8: 客户负责人 
+			 * 9: 客户地址
+			 * 10: 单位代码(燕京101代码)
+			 */
+			// 
+			document.getElementById("bill_user").innerHTML	= qrData.bill_text.split("&")[1];
+			document.getElementById("bill_com").innerHTML 	= qrData.bill_text.split("&")[4];
+			document.getElementById("clerkid").value 		= qrData.bill_text.split("&")[5];
+			document.getElementById("clerkname").value 		= qrData.bill_text.split("&")[6];
+			/*
+			 * 20181213
+			 * 如果业务标识是vdvc10501，则【用户类型】为“负责人”，同时【客户编码】项设为可编辑状态，可通过输入查询出相应的【客户名称】
+			 * 如果业务标识是vdvc10502，则【用户类型】为“配送员”
+			 * 如果业务标识是vdvc10503，则【用户类型】为“服务员”
+			 */
+			if(billcode == "vdvc10501"){
+//				document.getElementById("searchBtn").style.display = "block";
+//				document.getElementById("clerkid").removeAttribute("readonly");
+//				document.getElementById("searchBtn").addEventListener("tap",searchClerkid);
+				document.getElementById("bill_bflow").innerHTML = "负责人";
+				document.getElementById("title").innerHTML 	= "新建一级经销商负责人";
+			}else if(billcode == "vdvc10502"){
+				document.getElementById("bill_bflow").innerHTML = "配送员";
+				document.getElementById("title").innerHTML 	= "新建配送员";
+			}else if(billcode == "vdvc10503"){
+				document.getElementById("bill_bflow").innerHTML = "服务员";
+				document.getElementById("title").innerHTML 	= "新建服务员";
+			}
+			document.getElementById("bill_label").value = document.getElementById("bill_bflow").innerHTML + ","
+			//
+			// TODO 4. 查询
+			
+			// TODO 5. 事件绑定==================================
+			document.getElementById("saveBtn").addEventListener("tap", saveBtn);
+			// TODO 6. 监听自定义事件=============================
+			window.addEventListener('selectedClientid', function(event) {
+				var linkName = event.detail.linkName;
+				var dataRow = event.detail.dataRow;
+				if(typeof(dataRow)=="string"){
+					dataRow = JSON.parse(dataRow);
+				}
+				document.getElementById("clerkname").value  = linkName;
+				document.getElementById("clerkid").value  = dataRow[0].bill_id;
+				document.getElementById("bill_com").innerHTML  = dataRow[0].bill_no;
+				
+			});
+			// TODO 7. 事件/方法=================================
+			//	【保存】按钮事件
+			function saveBtn(){ 
+ 				mui("#saveBtn").button('loading'); 
+ 				// 检查电话号码是否符合规范
+				var phoneNum = checkMobile(document.getElementById("linkbd_linktel").value);
+				if(phoneNum == '' || phoneNum == false || typeof(phoneNum) == Number) {
+					mui.toast("请填写正确的号码~");
+					mui("#saveBtn").button('reset');
+					return false;
+				}
+				// 检查客户信息
+				var clerkid = document.getElementById("clerkid").value;
+				var clerkname = document.getElementById("clerkname").value;
+				var clerkcode = document.getElementById("bill_com").innerHTML;
+				if(vlUtils.isnull(clerkid) || vlUtils.isnull(clerkname) || vlUtils.isnull(clerkcode) ) {
+					mui.toast("请先填写客户信息~");
+					mui("#saveBtn").button('reset');
+					return false;
+				}
+				var checkResults = checkRequiredItems();//验证是否为必填字段  
+				if(checkResults == false){
+					plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+					return false;
+				}
+				rqsData = getValue(normalData,true,true,testa); //获取每一个输入框的值的方法
+				rqsData.bill_label = rqsData.bill_label.replace(/，/g,',');
+				plus.nativeUI.showWaiting("正在处理\n请耐心等待~");
+				CRUDajaxsu105(rqsData,"../login.html",successFn);
+			}
+			function searchClerkid(){
+//				return;
+//				var parmas = {
+//					name	: 'vdvc101',
+//					bill_id	: document.getElementById("clerkid").value,
+//					bill_com: qrData.bill_text.split("&")[10],
+//				}
+//				rqsDataAjax(parmas,'Api/unauthOperation/query', clientData, '../login.html',true);
+				mui.openWindow({
+					url:"vdsu101_find.html",
+					id:"vdsu101_find.html",
+					createNew:true,
+					extras:{
+						teamBillCom	:qrData.bill_text.split("&")[10],
+						fromPage 	: "vdsu105_edit.html",			// 9.从哪个页面来
+						choice		: "single",
+						serialNum	: "",
+						bill_name	: "",
+						bill_task	: "",
+						fromPage 	: "vdsu105_edit.html",
+							
+					}
+				})
+			}
+			function clientData(data,type){
+				if(data.data.length != 0){
+					document.getElementById("clerkname").value = data.data[0].bill_name;
+					document.getElementById("bill_com").innerHTML = data.data[0].bill_com;
+				}else{
+					mui.toast("未查询到相关客户信息~");
+				}
+			}
+			// 【保存】
+			function CRUDajaxsu105(params,urlPath,successFn){
+				mui.ajax(systemURL + 'Api/Task/sendTaskClient', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async:false,    // async : 异步 =>  false: 不异步, true : 异步 
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message);
+							mui.openWindow({
+								url:"../login.html",
+								id:"login.html",
+							});
+//							if(successFn){
+////								successFn();
+//							}
+						}
+						if(data.code == 1) { 
+							ajaxCode1(data.error_code,data.error_description,urlPath)
+						}
+						mui("#saveBtn").button('reset');
+						plus.nativeUI.closeWaiting("正在处理\n请耐心等待~");
+					},
+					error: function(xhr, type, errorThrown) { 
+						console.log("error!");
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+					}
+				});	
+			}
+			// 【保存】成功事件
+			function successFn(){
+			}
+			// 重写【返回】
+			var detailPage = mui.preload({
+				url:'scan_signup.html',
+				id:'scan_signup.html'
+			});
+			document.getElementById("goBack").addEventListener("tap", function() {
+				var oldBack = mui.back;
+				mui.back = function() {
+					var webview = plus.webview.getWebviewById('login.html');
+					webview.show();
+				}
+				mui.back();
+			})
+			mui.back = function(){
+			　　var webview = plus.webview.getWebviewById('login.html');
+				webview.show();
+			}
+//			var oldBack = mui.back;
+//		    mui.back = function(){
+//		    	var scanpage = plus.webview.getWebviewById("scan_signup.html");
+//				if(!vlUtils.isnull(scanpage)){
+//					plus.webview.hide(scanpage);
+//					plus.webview.close(scanpage);
+//				}
+//				mui.openWindow({
+//					url:'scan_signup.html',
+//					id:'scan_signup.html',
+//					createNew:true,
+//					extras:{
+//						system:system,
+//						fromPage:"edit",
+//					}
+//				});
+//				plus.webview.currentWebview().hide();
+//				plus.webview.currentWebview().close();
+//		    }
+		}); // plusReady
+	</script>
+
+</html>

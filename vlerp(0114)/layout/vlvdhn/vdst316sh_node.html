@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>二级出库编辑</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" href="../../css/common/mui.poppicker.css" />
+		<style>
+			body{font-size: 14px;}
+			.mui-table-view-cell:after,
+			.mui-table-view-cell:before,
+			.mui-table-view:after,
+			.mui-table-view:before,
+			.mui-row:before,
+			.mui-row:after{
+				height: 0 !important;
+			}
+			.order-main-li{padding:8px 10px 8px 5px !important;margin-bottom:8px;border-top:1px solid #E0E0E0; box-shadow: 0px 3px 3px #ccc;border-radius: 10px;}
+			.main-info{line-height:5px;}
+			img{border-radius: 5px;}
+			
+			.order-price{color:#000000;}
+			.order-amt{color:#FF5053;}
+			
+			.data-row{word-wrap:break-word;}
+			.hide{display: none;}
+			.changegray{border: 1px dashed #E0E0E0;border-radius: 5px;}
+			.changegray:hover{background: #C7C7CC;border-radius:5px;color:#fff;}
+			.vl-gray{color: gray;}
+			.vl-red{color: crimson;}
+			.vl-dark{color: #000000 !important;}
+			.vl-line{min-height: 20px;margin-top:5px;border-bottom: 1px solid #efeff4;line-height: 20px;}
+			.vl-footer{position:fixed;bottom:0;width:100%;height: 50px;background: #FFFFFF;line-height: 50px;text-align: center;margin-top:10px;}
+			.last-line{border-bottom: none;}
+			/**/
+			.goods-type-box{position:relative;top:0px;padding:0;padding-right:5px;margin:0;border: 0px dashed #E0E0E0;border-radius: 5px;height:24px;line-height:24px;text-align: right;}
+			.order-selecttype{color: #2187E7;}
+			.saletype{color: #000000;}
+			.saletype:hover{background: #C7C7CC;border-radius:5px;color:#fff;}
+			
+			/**/
+			.goods-title {padding-top:1px;font-size: 14px;color:#242424;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+			.goods-table{background:;border: 1px dashed #E0E0E0;border-radius: 5px;text-align: center;}
+			.goods-table-title{background:#F0F0F0;line-height: 24px;}
+			.goods-table-row{line-height: 30px;}
+			.goods-table-rightline{border-right: 1px dashed #E0E0E0;}
+			.goods-table-bottomline{border-bottom: 1px dashed #E0E0E0;}
+			.save-btn{background: #FB6F18;font-size:16px;color: #FFFFFF !important;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head" style="height: 70px;">
+			<a class="mui-action-back mui-pull-left" id="">返回</a>
+			<div class="mui-title plistTitle">
+				<p id="pageTitle">回收单审核详情</p>
+				<h1 id="header"></h1>
+			</div>
+		</header>
+		<div class="mui-content" style="padding-top:75px;margin-top:0px;margin-bottom:30px;">
+			<div class="mui-slider-cell  mui-slider-handle " style="background:#fff;padding:3px 20px 0px 15px;margin-bottom: 3px;">
+				<div class="mui-row" style="height: 30px;overflow: hidden;">
+					<div class="mui-col-xs-1"><a class="mui-icon mui-icon-home" style="font-size:22px;margin:0;padding:0;margin-top:3px;"></a></div>
+					<div class="mui-col-xs-8" id="bill_name" style="font-size:14px;line-height: 30px;color:#000000;font-weight: bold;"></div>
+				</div>
+				<div class="mui-row" style="margin-bottom: 3px;border-bottom: 1px dashed #007AFF;border-top: 1px solid #007AFF;padding:5px 0;overflow: hidden;">
+					<div class="mui-col-xs-2 mui-row" style="text-align: left;">
+						<img id="J_img" class="mui-col-xs-11" src="../../images/icon/chaxun.png" style="border-radius: 5px;" />
+					</div>
+					<div class="mui-col-xs-10 mui-row" >
+						<p class="list_font vl-line last-line">
+							<a class="mui-icon mui-icon-phone" style="font-size:16px;margin:0;padding:0;"></a>
+							<span class="vl-dark mui-col-xs-12" id="linkvd_termcontact"></span>
+						</p>
+						<p class="list_font vl-line last-line">
+							<a class="mui-icon mui-icon-location" style="font-size:16px;margin:0;padding:0;"></a>
+							<span class="vl-dark mui-col-xs-12" id="linkvd_termaddr"></span>
+						</p>
+					</div>
+				</div>
+				<div class="mui-row ">
+					<p class="list_font vl-line ">
+						<span class="vl-gray mui-col-xs-4">经销商：</span>
+						<span class="vl-dark mui-col-xs-8" id="bill_title"></span>
+					</p>
+					<p class="list_font vl-line last-line">
+						<span class="vl-gray mui-col-xs-4">制单时间：</span>
+						<span class="vl-dark mui-col-xs-8" id="bill_date"></span>
+					</p>
+				</div>
+			</div>
+			<div class="mui-input-group" id="selectDlv" style="padding:5px 18px 5px 10px;margin-bottom:5px;height: 40px;line-height: 30px;">
+				<div class="mui-row">
+					<span class="mui-col-xs-5 spn">
+						<a class="mui-icon mui-icon-person" style="font-size:22px;margin:0;padding:0;"></a>
+						<span class="j-user-title">业务员/配送员：</span>
+					</span>
+ 					<span class="mui-col-xs-6 spn" id="bill_nuserName"></span>
+				</div>
+			</div>
+			<div id="" style="overflow: hidden;background:#fff;padding:5px 10px;">
+				<div class="mui-row" style="display:;margin-top:5px;overflow: hidden;background:#fff;font-size:14px;border-bottom: 1px dashed #E0E0E0;margin-bottom:3px;">
+					<!--<p class="mui-col-xs-2" style="margin-bottom:5px;">
+						所有物品
+					</p>-->
+					<div class="mui-col-xs-2" style="">合计：</div>
+					<div class="mui-col-xs-4 vl-dark qty-box" style="">数量：<span id="node_nqty" class="">0</span>件</div>
+					<div class="mui-col-xs-4 mui-pull-right vl-dark">金额：<span id="node_amt" class="vl-red">0</span>元</div>
+				</div>
+				<div class="mui-row gift-goods" id="J_list_goods"></div>
+				<script id="J_temp_goods" type="text/template">
+					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="border-radius:10px;">
+						<% for(var i in data){ var item=data[i]; %>
+							<li class="mui-table-view-cell order-main-li <%=item.liImgId%>" data-no=<%=item.liImgId%>>
+								<div class="data-row hide"><%=item.rowdata%></div>
+								<div class="mui-row main-info">
+									<div class="mui-col-xs-2 mui-row" style="text-align: left;">
+										<img class="mui-col-xs-11" src="../../images/icon/chaxun.png" id=<%=item.liImgId%> style="border-radius: 5px;" />
+									</div>
+									<div class="mui-col-xs-10">
+										<div class="mui-row">
+											<div class="mui-col-xs-12 mui-row order-info-leftbox">
+												<h5 class="goods-title mui-col-xs-8"><%=item.liTitle%></h5>
+												<p class="mui-col-xs-4 goods-type-box">
+													<span class="order-type saletype"><%=item.liLightM%></span>
+												</p>
+											</div>
+											<div class="mui-col-xs-12 mui-row goods-table">
+												<div class="mui-col-xs-12 mui-row goods-table-title goods-table-bottomline" >
+													<div class="mui-col-xs-6 goods-table-rightline" >数量</div>
+													<div class="mui-col-xs-2 goods-table-rightline" >单价</div>
+													<div class="mui-col-xs-4" >金额</div>
+												</div>
+												<div class="mui-col-xs-12 mui-row goods-table-row" >
+													<div class="mui-col-xs-6 goods-table-rightline order-price"><%=item.liRightT%></div>
+													<div class="mui-col-xs-2 goods-table-rightline order-price"><%=item.liRightM%></div>
+													<div class="mui-col-xs-4 order-amt" data-oldamt=<%=item.liRightB%>><%=item.liRightB%></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+						<% } %>
+					</ul>
+				</script>
+				
+				<!--<div class="vl-count">
+					<div class="mui-row" style="color:;line-height:24px;">
+						<div class="mui-col-xs-2" style="border-bottom: 1px dashed #C0C0C0;">合计：</div>
+						<div class="mui-col-xs-5 vl-gray" style="">数量：<span id="node_nqty" class="vl-red">0</span>件</div>
+						<div class="mui-col-xs-5 mui-pull-right vl-gray">金额：<span id="node_amt" class="vl-red">0</span>元</div>
+					</div>
+				</div>-->
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/arttmpl.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.picker.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.poppicker.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		var sBno,activeDlvname,activeDlvno,teamBillCom,teamBillComName,userbillNo,dataRow;
+		var _oContent = {
+			"物品名称": "",
+			"物品编码": "",
+			"单价": "",
+		};
+		var oTask = {
+			"vdst315" : {
+				"query" : "VR_vdst315_query_14",
+				"nqty" : "block",
+				"bill" : "vdst315",
+				"user" : "配送员",
+				"title" : "配送员：",
+				"page" : "回收单审核详情"
+			},
+			"vdst316" : {
+				"query" : "VR_vdst316_query_07",
+				"nqty" : "block",
+				"bill" : "vdst316",
+				"user" : "制单人",
+				"title" : "业务员/配送员：",
+				"page" : "回收单审核详情"
+			},
+		}
+		mui.plusReady(plsReady);
+		function plsReady(){
+
+			var self = plus.webview.currentWebview();
+			dataRow= self.dataRow;
+			teamBillCom= self.teamBillCom;
+			teamBillComName= self.teamBillComName;
+			userbillNo= self.userbillNo;
+			commonParams= self.commonParams;
+			sBno 	= "'" + dataRow["内容"]["单号"] + "'";
+			findData();
+			fillData(dataRow);
+			bindEvent();
+		}
+		
+		function findData(){
+			plus.nativeUI.showWaiting("正在查询数据~");
+			var p = {
+				bill_task : oTask[commonParams]['query'],
+				bill_com : teamBillCom,
+				bill_user : userbillNo,
+				cc_user : sBno,
+				currentPage : 1,
+				pageSize : 30,
+				paramText : "",
+			}
+			VlAjax.post({
+				"port" : "active",
+				"headers" : "json"
+			}, p, sCBFindData)
+		}
+		function sCBFindData(data) {
+			if(data.data.length != 0) {
+				var datas = data.data,
+					aRender = [],
+					i, item, k,
+					num = 0,
+					qty = 0;
+				for(i = 0; i < datas.length; i++ ){
+					var _item = renderAdapter(datas[i]);
+					aRender.push(_item);
+					num += delcommafy(_item["liRightB"]);
+					qty += delcommafy(_item["liRightT"]);
+					VlAjax.dlIcon(_item.liImgName, _item.liImgId, VlTools.setImg);
+				}
+				mui('#J_list_goods')[0].innerHTML = template('J_temp_goods', {"data":aRender});
+				mui('#node_amt')[0].innerHTML = num;
+				mui('#node_nqty')[0].innerHTML = qty;
+				plus.nativeUI.closeWaiting("正在查询数据~");
+			}
+		}
+		function fillData(data) {
+			
+			document.getElementById("pageTitle").innerHTML = [oTask[commonParams]['page']];
+			document.getElementById("bill_nuserName").innerHTML = data["内容"][oTask[commonParams]['user']];
+			document.getElementById("bill_name").innerHTML = data["标题"];
+			document.getElementById("bill_title").innerHTML = data["参数"];
+			document.getElementById("bill_date").innerHTML = data["日期"];
+			document.getElementById("linkvd_termaddr").innerHTML = data["指令"].split(",")[0];
+			document.getElementById("linkvd_termcontact").innerHTML = data["指令"].split(",")[1];
+//			jQuery(".qty-box").css({"display":oTask[commonParams]['nqty']});
+			jQuery(".j-user-title").html(oTask[commonParams]['title']);
+		}
+		function bindEvent(){
+
+		}
+		
+		function renderAdapter(data){
+			var oDatas = {};
+			for(var k in data) {
+				oDatas[k.slice(0, 2)] = data[k];
+			}
+			var _c = oDatas['内容'] =  oDatas['内容'].indexOf('{') > -1 ? JSON.parse(oDatas['内容']) : _oContent;
+			return {
+				"rowdata"	: JSON.stringify(oDatas),
+				"liImgId" 	: VlTools.uuid('comImg', 4, 10),
+				"liImgName" : oDatas['图片'],
+				"liTitle" 	: oDatas['标题'],
+				"liDate"  	: "",
+				"liLeftT" 	: "",
+				"liLeftM" 	: "",
+				"liLeftB" 	: "",
+				"liRightT" 	: oDatas['数量'],
+				"liRightM" 	: oDatas['内容']['单价'],
+				"liRightB" 	: oDatas['金额'],
+			}
+		}
+		function delcommafy(num){
+		  if((num+"").trim()==""){
+		   return 0;
+		  }
+		  num=num.replace(/,/gi,'');
+		  return Number(num);
+		}
+	</script>
+
+</html>

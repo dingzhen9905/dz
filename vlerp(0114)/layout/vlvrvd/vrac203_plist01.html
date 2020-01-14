@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			#topNav {
+				padding: 0;
+			}
+			
+			.topNav {
+				text-align: center;
+				position: relative;
+				margin-bottom: 0px;
+				height: 35px;
+				color: #353b42;
+			}
+			
+			.active {
+				color: #ea6d10;
+				border-bottom: 2px solid #ea6d10;
+				/*background:pink;*/
+			}
+			
+			.mui-bar .mui-icon:active {
+				background: #0062cc!important;
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 135px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>	
+			<h1 class="mui-title headText" id="header"></h1>
+			<div class="mui-row" style="position:fixed;top:70px;left:0px;width:1000px;height:35px;line-height: 35px;background:#f7f7f7;" id="topNavOut">
+			<p class="mui-col-xs-2 topNavOut " id="fiscal_year" style="text-align: center;color: #ea6d10;padding: 0; position: fixed; width:70px;height:35px;background:#C7C7CC"></p>
+			<div style="width:700px;overflow: hidden;margin-left:70px;">
+				<div class="mui-col-xs-10 mui-row topNavOut" id="topNav" style="overflow: hidden;width:700px;">
+					<p class="mui-col-xs-1 topNav" data-active="" id="1">1月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="2">2月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="3">3月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="4">4月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="5">5月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="6">6月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="7">7月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="8">8月</p>
+					<p class="mui-col-xs-1 topNav" data-active="active" id="9">9月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="10">10月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="11">11月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="12">12月</p>
+				</div>
+			</div>
+		</div>
+		<div class="mui-row" style="position:fixed;top:105px;width:100%;background:#20B2AA;padding:0;text-align: center;height: 30px;line-height: 30px;color:#fff;">
+			<span class="mui-col-xs-4" id="title0" style="text-align: left;padding-left: 10px;">-</span>
+			<span class="mui-col-xs-2" id="title1" style="text-align: center;">-</span>
+			<span class="mui-col-xs-2" id="title2" style="text-align: center;">-</span>
+			<span class="mui-col-xs-2" id="title3" style="text-align: center;">-</span>
+			<span class="mui-col-xs-2" id="title4" style="text-align: center;">-</span>
+		</div>
+		</header>
+	<div class="mui-content">
+	</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vrac203_list01.html',
+				id: 'vrac203_list01.html',
+				styles: {
+					top: '140px',
+					bottom: '0px',
+				}
+			}]
+		});
+		var searchName = '';
+		var searchCode = '';
+		var fiscalperiod ='';
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vrac203_list01_subpage').pullRefresh().scrollTo(0,0,100)");
+		});
+		// 头部滑动
+		var startClientX; // 初始位置
+		var dirX; // 横向滑动的距离
+		var nowLeft = 0; // 当前的left值
+		// 开始触摸
+		document.getElementById("topNav").addEventListener("touchstart", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			startClientX = event.touches[0].clientX; // 获取初始位置
+		}, false)
+		// 触摸移动
+		document.getElementById("topNav").addEventListener("touchmove", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			dirX = event.touches[0].clientX - startClientX; // 获取结束位置与初始位置的距离
+			document.getElementById("topNav").style.transform = "translate(" + dirX + "px,0px)";
+		}, false)
+		// 触摸结束
+		document.getElementById("topNav").addEventListener("touchend", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			document.getElementById("topNav").style.transform = "none";
+			nowLeft += dirX; // 获取结束位置
+			if(nowLeft > 0) {
+				document.getElementById("topNav").style.left = "0px";
+			} else {
+				document.getElementById("topNav").style.left = nowLeft + "px"; // 记住结束位置
+			}
+			if(nowLeft < -400) {
+				document.getElementById("topNav").style.left = "-400px";
+			}
+		}, false)
+		// 
+		//获取当前年份
+		var dates = new Date();
+		var year = dates.getFullYear();
+		var curtMonth = dates.getMonth()+1;
+		document.getElementById("fiscal_year").innerHTML = year + "年";
+		// 切换年份
+		document.getElementById("fiscal_year").addEventListener("tap", function() {
+			var actionbuttons = [];
+			for(var i = 0; i < 5; i++) {
+				var listyear = year - i + "年";
+				actionbuttons.push({
+					"title": listyear
+				});
+			}
+			// 判断有几个公司
+			if(actionbuttons.length != 1) {
+				plus.nativeUI.actionSheet({
+					title: "切换年份",
+					cancel: "取消",
+					buttons: actionbuttons
+				}, function(e) {
+					document.getElementById("fiscal_year").innerHTML = actionbuttons[(e.index - 1)].title;
+					// 获取年 月
+					var fiscal_year = parseInt(jQuery("#fiscal_year").html());
+					var fiscal_month = parseInt(jQuery("#topNav").find(".active").html());
+					var fiscal_m = fiscal_month < 10 ? ("0" + fiscal_month) : fiscal_month;
+					fiscalperiod = fiscal_year + '' + fiscal_m;
+//					if(fiscal_month === (curtMonth)+1){
+//						settle()
+//					}else{
+						search()
+//					}
+				});
+			}
+		})
+
+		// 获取当前月份
+		function curtMonths(curtMonth) {
+			document.getElementById(curtMonth).classList.add("active");
+		}
+		curtMonths(curtMonth);
+		//进去显示月份的位置
+		if(curtMonth >= "8") {
+			document.getElementById("topNav").style.left = "-400px";
+		}
+		if(curtMonth < "8" && curtMonth > "4") {
+			document.getElementById("topNav").style.left = "-170px";
+		}
+		if(curtMonth <= "4") {
+			document.getElementById("topNav").style.left = "0px";
+		}
+
+		mui.plusReady(function() {
+			plus.nativeUI.closeWaiting();
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			userName = self.userName;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			privileges = vlUtils.getStorage("newPrivileges");
+			commonParams = self.commonParams;
+			searchCode = commonParams;
+			pageTitle = self.pageTitle
+			// 更改header的显示信息
+			document.getElementById("header").innerHTML = pageTitle; //头部显示发货单位名
+
+			// nav
+			mui("#topNav").on("tap", "p", function() {
+				var self = this;
+				jQuery(this).addClass("active").siblings().removeClass("active");
+				var fiscal_year = parseInt(jQuery("#fiscal_year").html());
+				var fiscal_month = parseInt(jQuery(this).html());
+				var fiscal_m = fiscal_month < 10 ? ("0" + fiscal_month) : fiscal_month;
+				fiscalperiod = fiscal_year + '' + fiscal_m;
+//				if(fiscal_month === (curtMonth)+1){
+//					settle()
+//				}else{
+					search()
+//				}
+				
+			});
+			//接收list页面传过来的数据，进行表头更换
+			window.addEventListener('changeReportPlist', function(event) {
+				data = event.detail.data;
+				reportData(data);
+			});
+			function settle(){
+				var user = JSON.parse(vlUtils.getStorage('user'));
+				var params = {
+					name		 : 'msvr',
+					bill_task	 : "VE_vdac203_settle",
+					bill_no		 : getDataCode("vdac203"),
+					fiscal_period: fiscalperiod, // 当前登陆人
+					bill_com	 : user.bill_coppo, // 当前单位
+					bill_date	 : vlUtils.dateToString(new Date())
+				};
+				CRUDajax(params,'../login.html',settleSCB);		
+				
+			}
+			function settleSCB(data){
+				search();
+			}
+			function search(){
+				mui.fire(plus.webview.getWebviewById('vrac203_list01.html'), 'changeReport', {
+					billtask: searchCode,
+					fiscalperiod: fiscalperiod
+				});
+			}
+			// 更换 表头
+			function reportData(data, type) {
+				var newdataArr = {};
+				if(data.data.length != 0){
+					for(var k in data.data[0]) {
+						newdataArr[k.slice(0, 2)] = k.slice(2);
+					}
+					document.getElementById("title0").innerHTML = newdataArr["图片"];
+					document.getElementById("title1").innerHTML = newdataArr["标题"];
+					document.getElementById("title2").innerHTML = newdataArr["内容"];
+					document.getElementById("title3").innerHTML = newdataArr["数量"];
+					document.getElementById("title4").innerHTML = newdataArr["金额"];
+				}else{
+					mui.toast("未查询到数据!")
+				}
+			} // reportData
+		}); //plusReady
+	</script>
+
+</html>

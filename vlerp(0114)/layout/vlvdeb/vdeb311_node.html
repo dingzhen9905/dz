@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			#linkvd_stcode li {
+				list-style: none;
+			}
+			
+			#linkvd_stcode li::before {
+				content: "+ ";
+				/*color:blue;*/
+				/*font-size:30px;*/
+			}
+			
+			form {
+				margin: 10px 0;
+			}
+			
+			.topInput,
+			.topInput a {
+				/*height:40px;
+				line-height: 40px;*/
+				height: 50px;
+				line-height: 50px;
+			}
+			
+			.topInput a {
+				padding-top: 0;
+				padding-bottom: 0;
+				line-height: 14px;
+			}
+			
+			.topInput a input {
+				padding-top: 0;
+				color: #929292;
+			}
+			
+			.topInput a input#linkvd_term {
+				/*border:1px solid #E0E0E0;*/
+				padding-top: 5px;
+				padding-bottom: 5px;
+				color: #555;
+				height: 28px;
+				width: auto;
+				border-radius: 5px;
+				background-color: #E0E0E0;
+			}
+			
+			.topInput a input[placeholder] {
+				font-size: 14px;
+			}
+			/*ul {
+				margin-top: 5px;
+				margin-bottom: 5px;
+				padding: 5px;
+				background: #fff;
+			}*/
+			
+			.mui-row:before,
+			.mui-row:after {
+				display: none;
+			}
+			
+			.threeBottom {
+				overflow: hidden;
+			}
+			
+			.m {
+				overflow: hidden;
+				margin-top: -28px !important;
+				padding: 0 !important;
+			}
+			
+			.topNav {
+				padding: 0;
+			}
+			
+			.topNav p {
+				height: 35px;
+				line-height: 35px;
+			}
+			/*删除*/
+			
+			#sheet1 ul li:after {
+				height: 0;
+			}
+			
+			p.topitem {
+				padding: 0;
+			}
+			
+			.mui-slider-item {
+				height: 500px !important;
+				overflow: hidden !important;
+			}
+			
+			.imgSpan img {
+				vertical-align: middle !important;
+				margin-top: -5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--头部-->
+		<header class="mui-bar mui-bar-nav" id='head' style="height:60px;border-bottom:0.5px solid #C0C0C0;background-color:;background:white">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" style="color:#4F4F4F;background-color:;height:60px;line-height: 60px;"></a>
+			<h1 class="mui-title" id="header" style="color:#4F4F4F;background-color:;font-weight:normal;height:60px;line-height: 85px;">商品详情</h1>
+			<!--<span class="mui-icon mui-icon-info  mui-pull-right" style="color:#4F4F4F;background-color:;background-color:;height:60px;line-height: 60px;" id="Help"></span>-->
+		</header>
+		<!--展示图片区域-->
+		<div class="mui-slider" style="margin-top:60px;height:400px;width:100%;">
+			<div class="mui-slider-group" style="height:240px !important;" id="images">
+				<div class="mui-slider-item">
+					<a href="#"><img src="../../images/icon/default.png" width="800px" height="240px" id="imgs" /></a>
+				</div>
+			
+			</div>
+		</div>
+		<!--商品介绍区域-->
+		<div style="margin-top:-145px;margin-left:10px;margin-right:10px">
+			<p style="color:#000000" id="node">云南干花花瓶仿真花玻璃干花花束勿忘我满天星情人草水晶草花束</p>
+			<div style="color:red;height:30px">
+				<span style="font-size: 20px;">￥<span id="integral"></span ><span style="font-size:14px;"> 积分</span></span>
+
+			</div>
+			<div>
+				<p style="font-size: 12px;color:#7B7B7B;float:left;">快递：免运费</p>
+				<!--<p style="font-size: 12px;color:#7B7B7B;float:left;margin-left:50px">剩余：<span id="node_qty">2</span>件</p>-->
+				<p style="font-size: 12px;color:#7B7B7B;float:right;" id="address">云南昆明</p>
+			</div>
+		</div>
+		<!--底部导航-->
+		<nav class="mui-bar mui-bar-tab" id="footer" style="display:;height:45px;">
+			<div style="background:#4F4F4F;line-height: 45px;width:100%;text-align: center;color:white;">
+				<span class="imgSpan" style="width:45px;height:45px;margin-right:15px;line-height: 45px;background-color: ">
+					<img src="../../images/vbs.png" alt="" width="20px"/>
+				</span>
+				<span id="money">888</span>积分兑换
+			</div>
+		</nav>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		var $$ = jQuery.noConflict();
+		mui.plusReady(function() {
+			var Footer = document.getElementById("footer"); //点击购买按钮
+			var Integral = document.getElementById("integral"); //售价积分
+			var Money = document.getElementById("money"); //最后售价积分
+			var Node_qty = document.getElementById("node_qty"); //剩余件数
+			var Address = document.getElementById("address"); //发货地
+			var Images = document.getElementById("images"); //展示图片区域
+			var Img = document.getElementById("imgs");//图片
+			var Node = document.getElementById("node"); //产品介绍
+			var self = plus.webview.currentWebview();
+			var userBillNo = self.userbillNo; //登录人唯一的bill_no
+			var teamBillCom = self.teamBillCom; //单位
+			var detailInfo = self.detailInfo;
+			var teamBillComName=self.teamBillComName;
+			if(vlUtils.isnull(detailInfo.node_price)) {
+				detailInfo.node_price = detailInfo.bill_text[0].linkbd_saleprice;
+			}
+			if(detailInfo.node_price == undefined){
+				detailInfo.node_price = "";
+			}
+			Integral.innerHTML = detailInfo.node_price;
+			if(detailInfo.node_price==undefined){
+				detailInfo.node_price="";
+			} 
+			Money.innerHTML = detailInfo.node_price;
+			if(vlUtils.isnull(detailInfo.node_qty)) {
+				detailInfo.node_qty = "1";
+			}
+//			Node_qty.innerHTML = detailInfo.node_qty;
+//			Address.innerHTML = detailInfo.bill_comName;
+			Address.innerHTML="北京市海淀区";
+			Node.innerHTML = detailInfo.bill_id;
+			var comImgid = vlUtils.uuid('comImg', 4, 10);
+			vlUtils.downloadicon(detailInfo.bill_text[0].linkbd_bEANcode, comImgid);
+			Img.id = comImgid;
+
+			Footer.addEventListener("tap", function() {
+				//打开提交订单页面
+				mui.openWindow({
+					id: 'vdeb311_edit.html',
+					url: './vdeb311_edit.html',
+					createNew: true,
+					extras: {
+						userbillNo: userBillNo,
+						teamBillCom: teamBillCom,
+						detailInfo: detailInfo,
+						teamBillComName:teamBillComName
+					}
+
+				})
+			});
+		}); // PlusReady 结束
+	</script>
+
+</html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+
+		<!--三级联动-->
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			
+			.mui-row {
+				padding: 8px;
+			}
+			
+			input[placeholder] {
+				font-size: 12px;
+			}
+			
+			.mui-input-row.lastInput:after {
+				height: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id='head'>
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle">
+				<p id="title"> </p>
+				<h1 id="header"></h1>
+			</div>
+			<a class=" mui-pull-right rightIcon" id="saveBtn" data-loading-text="提交中">保存</a>
+			<div class="mui-row navBar buttonBars">
+				<button type="button" id="deleteBtn" class="mui-col-xs-3">
+					<span class="mui-icon mui-icon-trash" id="deleteIcon" ></span>
+					<span >删除</span>
+				</button>
+				<button type="button" id="bSendBtn" class="mui-col-xs-3 ">
+					<span class="mui-icon mui-icon-upload" id="bSendIcon" ></span>
+					<span >送审</span>
+				</button>
+				<button type="button" id="bBackBtn" class="mui-col-xs-3 ">
+					<span class="mui-icon mui-icon-paperclip" id="bBackIcon"></span>
+					<span >收回</span>
+				</button>
+				<span class="mui-col-xs-2 state" id="billState"></span>
+			</div>
+		</header>
+		<div class="mui-content" style="padding-top:100px;margin-top:10px;margin-bottom:30px;">
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row ">
+					<label>组号</label>
+					<input id="bill_id" class="requiredInput" type="text" style="font-size:12px;" placeholder="录入组号">
+				</div>
+				<div class="mui-input-row ">
+					<label>号码</label>
+					<input id="bill_title" class="requiredInput" type="text" style="font-size:12px;" placeholder="录入号码">
+				</div>
+				<div class="mui-input-row lastInput" style="display: ;">
+					<label>派发单位</label>
+					<input id="linkvd_linkcom" type="text" style="font-size:12px;" placeholder="录入派发单位">
+				</div>
+			</div>
+
+			<!--<div id="commodity" class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px; display:;">-->
+			<!--<div class="mui-input-row">
+					<!-- 不传-->
+			<!--<label>码数</label>-->
+			<!--<input id="node_qty" type="text" class="mui-input-clear red-border requiredInput" required="required" readonly="readonly">-->
+			<!--</div>-->
+			<!--<div class="mui-input-row">
+					<label>商品代码</label>
+					<input id="com_bill_id" type="text" class="mui-input-clear red-border requiredInput" placeholder="录入商品代码" required="required">
+				</div>
+				<div class="mui-input-row">
+					<label>商品数量</label>
+					<input id="node_qty" type="text" class="mui-input-clear red-border requiredInput" placeholder="录入商品数量" required="required">
+				</div>-->
+			<!--</div>-->
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row">
+					<label>添加组码</label>
+					<!--<span id="addBlock" class="mui-icon mui-icon-plusempty" style="margin-left:150px;line-height:40px;font-weight: bold;"></span>-->
+					<!--<input type="file" id="addBlock" accept="text/plain" value="文件名" />-->
+					<input type="file" id="addBlock" accept="text/plain" />
+				</div>
+			</div>
+
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var fbill_no = "";
+		var detailInfo = "";
+		var hadSend = false; // 用于判断是否送审
+		var flagsave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		var deptname = "";
+		var onlyCode = getDataCode("vdvc701");
+		var onlyCodeSave = getDataCode("vdvc801");
+		var name = "";
+		var fd = "";
+		mui.plusReady(function() {
+			// 接收传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no = self.fbill_no; // 3.fbill_no是
+			loginCom = self.loginCom; // 4.登录人的代码
+			loginComName = self.loginComName; // 5.登录人的名称
+			userbillNo = self.userbillNo; // 6.登录单位代码
+			userName = self.userName; // 7.登录单位名称
+			privileges = self.privileges; // 8.当前的权限是
+			fromPage = self.fromPage; // 9.从哪个页面来
+			// 其他
+			flagNew = self.flagNew;
+			deptname = self.deptname;
+
+			document.getElementById("header").innerHTML = teamBillComName;
+			//TODO
+			//伪代码
+			//上传文件
+			//文件元数据先提交vdvc801表,正常提交
+			//再提交701表 
+			//701的bill_no=801的fbill_no 去关联
+			//再两个提交都成功后返回code为0时上传文件
+			var txtSave = "";
+			$$("#addBlock").change(function() {
+				//上传文件的FormData方法
+				fd = new FormData();
+				fd.append(onlyCodeSave + ".txt", $$(this).get(0).files[0]);
+				name = $$(this).get(0).files[0].name;
+				txtSave = textSave();
+				saveAjax801(txtSave);
+			});
+
+			function textSave() {
+				{
+					rqsData = {
+						bill_id: "",
+						cc_user: "",
+						bill_title: "",
+						bill_no: onlyCodeSave,
+						bill_task: 'd_new',
+						fbill_no: onlyCode,
+						bill_user: userbillNo, // 登陆人
+						bill_com: loginCom, //登录人单位  
+						bill_dept: "",
+						link_next: "",
+						node_qty: "",
+						node_price: "",
+						bill_ipaddr: "",
+						bill_gpsaddr: "",
+						bill_context: ".txt",//放文件后缀
+						bill_name: name, //原文件名
+						bill_date: vlUtils.dateToString(date),
+						bill_text: ""
+					}
+					return rqsData;
+				}
+			}
+
+			function textSaveAjax() {
+				$$.ajax({
+					url: systemURL + "File/readCodeTxt",
+					type: "POST",
+					processData: false,
+					contentType: false,
+					data: fd,
+					xhr: function() { // custom xhr  
+						myXhr = $$.ajaxSettings.xhr();
+						if(myXhr.upload) { // check if upload property exists  
+							myXhr.upload.addEventListener('progress', function(evt) {
+								//	$$("#upload_tip").dialog("open");
+								var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+							}, false); // for handling the progress of the upload  
+						}
+						return myXhr;
+					},
+					success: function(data) {
+						alert("上传成功")
+					}
+				});
+			}
+			//			}
+			//保存
+			document.getElementById("saveBtn").addEventListener("tap", saveBtn);
+
+			function saveBtn() {
+				mui(this).button('loading');
+				var verfiedResults = validateRequired(); //验证是否为必填字段  
+				if(verfiedResults == false) {
+					mui("#saveBtn").button('reset');
+					return;
+				}
+				rqsData = getInputValue(); //获取每一个输入框的值的方法   
+
+				if(flagNew == "N") {
+
+
+					rqsData = vlUtils.isUpdateObj(detailInfo, rqsData);
+					rqsData.bill_task = "d_save";
+					rqsData.cc_user = JSON.stringify(rqsData.cc_user);
+				}
+				if(flagNew == "Y") {
+
+				}
+				saveAjax(rqsData);
+			}
+
+			// 按下“删除”后弹出底部菜单
+			document.getElementById("deleteBtn").addEventListener("tap", deleteBtn)
+
+			function deleteBtn() {
+				mui('#sheet1').popover('show', document.getElementById("deleteBtn"));
+
+			}
+			//送审
+			document.getElementById("bSendBtn").addEventListener("tap", bSendBtn);
+
+			function bSendBtn() {
+				var params = {
+					//name: "vdvc103",
+					bill_com: loginCom, //登录人单位  // 0109把teamBillCom改了
+					bill_no: onlyCode,
+					bill_user: userbillNo,
+					bill_task: "b_send",
+					flag_urgent: "Y"
+				}
+				if(flagsave) {
+					auditing(params); //送审方法
+				} else {
+					var verfiedResults = validateRequired(); //验证是否为必填字段  
+
+					if(verfiedResults == false) {
+						mui("#saveBtn").button('reset');
+						return;
+					}
+					rqsData = getInputValue(); //获取每一个输入框的的值的方法   
+					saveAjax(rqsData);
+					auditing(params); //送审方法
+				}
+			}
+			// 收回
+			document.getElementById("bBackBtn").addEventListener("tap", bBackBtn);
+
+			function bBackBtn() {
+				var params = {
+					//	name: "vdvc103",
+					bill_com: loginCom,
+					bill_no: onlyCode,
+					bill_user: userbillNo,
+					bill_task: "b_back",
+					flag_urgent: "Y"
+				}
+				if(hadSend) {
+					takeback(params); //收回方法
+				}
+			}
+			// 判断为新增还是修改
+			if(flagNew == "N") { // 修改  
+				document.getElementById("title").innerHTML = "信息编辑";
+				var detailInfo = self.detailInfo;
+				var privileges = self.privileges;
+				var bill_no = detailInfo.bill_no;
+				onlyCode = detailInfo.bill_no; //bill_no字段  
+				setInputvalue();
+				var bill_task = "d_save";
+				var bill_user = detailInfo.bill_user;
+				flagsave = true;
+				if(detailInfo.bill_task == "L") {
+					hadSend = false;
+				}
+				if(detailInfo.bill_task != "L") {
+					hadSend = true;
+				}
+				rqsData = detailInfo;
+			}
+			if(flagNew == "Y") { // 新增状态 
+				onlyCode = getDataCode("vdvc701"); //bill_no字段
+				var bill_task = "d_new";
+				document.getElementById("title").innerHTML = "号码管理";
+				document.getElementById("billState").innerHTML = "录入中";
+			}
+
+			//验证必填
+			function validateRequired() {
+				var check = true;
+				// 判断必填字段是否填写
+				var blankInputLens = mui(".requiredInput").length;
+				for(var i = 0; i < blankInputLens; i++) {
+
+					if(!mui(".requiredInput")[i].value || mui(".requiredInput")[i].value.trim() == "") {
+						var label = mui(".requiredInput")[i].previousElementSibling;
+						mui.toast(label.innerText + "不允许为空");
+						mui("#saveBtn").button('reset');
+						check = false;
+						return check;
+					}
+				}
+
+				// 
+				return check;
+			}
+			//修改输入框赋值
+			function setInputvalue() {
+				// 赋值
+				document.getElementById("bill_id").value = detailInfo.bill_id; // 部门名称
+				document.getElementById("bill_title").value = detailInfo.bill_title; // 部门编码
+				document.getElementById("linkvd_linkcom").value = detailInfo.bill_text[0].linkvd_linkcom; // 派发单位
+				// 状态
+				if(detailInfo.bill_task == "S") {
+					document.getElementById("billState").innerHTML = "待审核";
+				}
+				if(detailInfo.bill_task == "Y") {
+					document.getElementById("billState").innerHTML = "已审核";
+				}
+				if(detailInfo.bill_task == "L") {
+					document.getElementById("billState").innerHTML = "待送审";
+				}
+				if(privileges != "ROOT" && (detailInfo.bill_task == "Y" || detailInfo.bill_task == "S")) {
+					document.getElementById("bSendIcon").style.color = "#8f8f94";
+					document.getElementById("deleteIcon").style.color = "#8f8f94";
+				}
+				// 删除按钮的状态
+				document.getElementById("deleteBtn").style.display = "block";
+
+			}
+			//获取每个输入框的值
+			function getInputValue() {
+				// 获取每一个输入框的值
+				var bill_id = $$("#bill_id").val();
+				var bill_no = $$("#bill_no").val();
+				var node_qty = $$("#node_qty").val();
+				var linkvd_linkcom = $$("#linkvd_linkcom").val();
+				var bill_title = $$("#bill_title").val();
+				// bill_text提交的数据
+				inputData = [{
+					linkvd_linkcom: linkvd_linkcom
+
+				}]
+				// 提交的数据
+				rqsData = {
+					bill_id: bill_id,
+					cc_user: "",
+					bill_title: bill_title,
+					bill_no: txtSave.fbill_no,
+					bill_task: bill_task,
+					fbill_no: fbill_no,
+					bill_user: userbillNo, // 登陆人
+					bill_com: loginCom, //登录人单位  // 0109把teamBillCom改了
+					bill_dept: "",
+					link_next: "",
+					node_qty: node_qty,
+					node_price: "",
+					bill_ipaddr: "",
+					bill_gpsaddr: "",
+					bill_context: "",
+					bill_name: "",
+					bill_date: vlUtils.dateToString(date),
+					bill_text: JSON.stringify(inputData)
+				}
+				return rqsData;
+			}
+			//送审
+			function auditing(params) {
+
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async: false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							console.log(JSON.stringify(data));
+							mui.toast(data.message);
+							//document.getElementById("bSendIcon").style.color = "#8f8f94";
+							document.getElementById("billState").innerHTML = "已审核";
+							return;
+							mui.openWindow({
+								id: 'vdvc103_node.html',
+								url: 'vdvc103_node.html',
+								createNew: true,
+								extras: {
+									teamBillCom: teamBillCom, // 1.管理单位代码 	// 不变
+									teamBillComName: teamBillComName, // 2.管理单位名称	// 不变
+									fbill_no: fbill_no, // 3.fbill_no是		// 不变
+									loginCom: loginCom, // 4.登录人的代码
+									loginComName: loginComName, // 5.登录人的名称
+									userbillNo: userbillNo, // 6.登录单位代码
+									userName: userName, // 7.登录单位名称
+									privileges: privileges, // 8.当前的权限是
+									fromPage: "vdvc103edit", // 9.从哪个页面来
+									rqsData: rqsData,
+								}
+							});
+							hadSend = true;
+							setButton(detailInfo);
+							if(privileges != "ROOT") {
+								document.getElementById("deleteIcon").style.color = "#8f8f94";
+							}
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+
+					}
+				});
+			}
+			// 收回
+			function takeback(params) {
+
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json',
+					type: 'post',
+					beforeSend: function() {
+						checkNetState();
+					},
+					timeout: 10000,
+					async: false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+
+						if(data.code == 0) {
+							console.log(JSON.stringify(data));
+							mui.toast(data.message);
+							//	document.getElementById("bSendIcon").style.color = "#8f8f94";
+							document.getElementById("billState").innerHTML = "待送审";
+							mui.openWindow({
+								id: 'vdvc103_node.html',
+								url: 'vdvc103_node.html',
+								createNew: true,
+								extras: {
+									teamBillCom: teamBillCom, // 1.管理单位代码	// 不变
+									teamBillComName: teamBillComName, // 2.管理单位名称	// 不变
+									fbill_no: fbill_no, // 3.fbill_no是		// 不变
+									loginCom: loginCom, // 4.登录人的代码
+									loginComName: loginComName, // 5.登录人的名称
+									userbillNo: userbillNo, // 6.登录单位代码
+									userName: userName, // 7.登录单位名称
+									privileges: privileges, // 8.当前的权限是
+									fromPage: "vdvc103edit", // 9.从哪个页面来
+									rqsData: rqsData,
+								}
+							});
+							hadSend = false;
+							setButton(detailInfo);
+						}
+						if(data.code == 1) { 
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+					}
+				});
+			}
+
+			function saveAjax801(params) {
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async: false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message)
+							flagsave = true;
+							mui("#saveBtn").button('reset');
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+
+					}
+				});
+
+			}
+			//保存
+
+			function saveAjax(params) {
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async: false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message)
+							textSaveAjax();
+							flagsave = true;
+							mui("#saveBtn").button('reset');
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+
+					}
+				});
+			}
+			// 删除
+			function deleteAjax(params) {
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+
+						if(data.code == 0) {
+							mui.toast(data.message);
+							deleteSuccess("vdvc103_plist.html", "vdvc103_list.html");
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText)
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+
+					}
+				});
+			}
+
+			function deleteSuccess(parentview, childview) {
+				var listview = plus.webview.getWebviewById(childview);
+				listview.reload();
+				var plistview = plus.webview.getWebviewById(parentview);
+				plistview.reload();
+				var oldBack = mui.back;
+				mui.back = function() {
+					var webview = plus.webview.getWebviewById(parentview);
+					webview.show();
+				}
+				mui.back();
+			}
+		}); // plusReady
+	</script>
+
+</html>

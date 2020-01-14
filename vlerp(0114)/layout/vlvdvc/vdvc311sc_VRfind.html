@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			/* list内容*/
+			
+			.list_font {
+				font-size: 10px;
+				line-height: 12px;
+				height: 24px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+			}
+			
+			.list_h5 {
+				/*margin-top:-3px;*/
+				font-size: 13px;
+				overflow: hidden;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+			}
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			
+			.topNav {
+				text-align: center;
+				padding-top: 10px;
+				color: #353b42;
+				margin-bottom: 0;
+			}
+			
+			.active {
+				color: #ea6d10;
+				border-bottom: 2px solid #ea6d10;
+				/*background:pink;*/
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			
+			#searchBtn {
+				position: relative;
+				top: 4px;
+				padding: 6px 8px;
+				margin-left: 5px;
+			}
+			
+			#searchBox {
+				margin-left: 5px;
+				border-radius: 10px;
+			}
+			
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+			.chosen{
+				background: blanchedalmond !important;
+				border-radius: 3px;
+			}
+			.chosen h5{
+				color: #999 !important; 
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 110px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>	
+			<h1 class="mui-title headText" id="header">选择客户</h1>
+			<a class="mui-pull-right" id="save" style="color:white;background-color:;padding-top:12px;font-size: 18px;padding-right: 10px;position:relative;z-index: 10000;">确认</a>
+			<div class="mui-row" style="position: fixed;top:70px;width:100%; background-color:#efeff4;margin-left:0px;z-index:1000000;" id="topNav">
+				<div class="mui-row">
+					<div class="mui-col-xs-10">
+						<div class="mui-input-row mui-search">
+							<input type="search" id="searchBox" class="mui-input-clear" onkeyup="enterSearch(event)" placeholder="" style='margin-bottom:5px;'>
+						</div>
+					</div>
+					<div class=" mui-col-xs-2">
+						<button type="button" id="searchBtn" class="mui-btn">搜索</button>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div class="mui-content" id="list" style="padding-top: 150px;">
+			<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+				<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+			</div>
+			<div class="mui-input-group" id="sendTo" style="position: fixed;top:115px;z-index:999;width:100%;padding:5px 18px 5px 25px;margin-bottom:5px;">
+				<div class="mui-row">
+					<span class="mui-col-xs-2 spn">选择：</span>
+					<span class="mui-icon mui-icon-close" id="closeIcon" style="float:right;"></span>
+					<span class="mui-col-xs-1 spn" id="dataRow" style="display: none;;"></span>
+					<span class="mui-col-xs-1 spn" id="linkvd_linkcom" style="display: none;"></span>
+					<span class="mui-col-xs-8 spn" id="bill_name" style="color: #18B4ED;"></span>
+				</div>
+			</div>
+			<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-bottom:50px;border: transparent;">
+			</ul>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var choice = "";
+		var fromPage = "";
+		var startIndex = 1; // 起始页码
+		var pageSize = 30; // 每页显示几条信息
+		var search = ''; // 要查询的内容，paramText的value
+		var fbill_no = "ROOT"; // 查询的fbill_no
+		var detailInfo = {}; // 把查询到的东西放到数组里面
+		var queryparmas = {}; //查询参数
+		var pager = {}; //分页
+		var backPageId = "";
+		var loginCom1 = "";
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			choice = self.choice;
+			fromPage = self.fromPage;
+			fbill_no = "ROOT";
+
+			// 更改header的显示信息
+			//			document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+			
+			queryparmas = { // 默认我的客户001
+				name: 'msvr',
+				bill_com: loginCom,
+				bill_user:userbillNo,//员工id登录人
+				bill_task: "VR_find_corr101", // VR_find_pur001 查供货商  // VR_find_corr101 查经销商
+				bill_title: "",
+				currentPage: 1,
+				pageSize: pageSize,
+				paramText: ''
+			}
+			// 默认查询
+			rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData, '../login.html');
+		}) // plusReady
+
+		//点进选择、放入列表中*************************
+		var linkComArr = []; //字符窜转为数组
+		var linkNameArr = [];
+		var ccUserJson = {};
+		mui("#contList").on('tap', 'li', function(e) {
+
+			var e = this;
+			var li = e;
+			var dataRow = li.getAttribute("data-row");
+			dataRow = JSON.parse(dataRow);
+
+			var teamBillCom = dataRow.bill_com;
+			var linkCom = document.getElementById("linkvd_linkcom").innerHTML;
+			var linkName = document.getElementById("bill_name").innerHTML;
+			linkComArr = linkCom.split(","); //字符窜转为数组
+			var isRepeat = false;
+
+			if(choice == "multiple") { // 如果多选
+				//				if(fromPage == "vdeb511plist"){ // 这个应该不可以多选吧
+				//					if(vlUtils.isnull(ccUserName)){ // 为空,没有已选的
+				//						linkName = dataRow.bill_comName;
+				//						linkCom = dataRow.bill_com;
+				//					}else{
+				//	//					// 不为空则判断里面有没有这个值，有则不再增加
+				//	    				for(var j = 0 ; j < ccUserCodeArr.length ; j ++){
+
+				//	    					if( linkCom[j] == bill_com){
+				//		    					isRepeat = true;
+				//		    					break;
+				//		    				}	
+				//	    				}
+				//	    				if(isRepeat == false){	
+				//	    					linkName += "," +  dataRow.bill_comName;
+				//							linkCom += "," + bill_com;
+				//	    				}else{
+				//	    					linkCom.push(linkCom);
+				//	    					linkNameArr.push(linkName);
+				//	    				}
+				//					}
+				//				}else{
+				if(vlUtils.isnull(ccUserName)) { // 为空,没有已选的
+					linkName = dataRow.bill_name;
+					linkCom = dataRow.bill_text[0].linkvd_linkcom;
+				} else {
+					//					// 不为空则判断里面有没有这个值，有则不再增加
+					for(var j = 0; j < ccUserCodeArr.length; j++) {
+
+						if(linkCom[j] == dataRow.bill_text[0].linkvd_linkcom) {
+							isRepeat = true;
+							break;
+						}
+					}
+					if(isRepeat == false) {
+						linkName += "," + dataRow.bill_name;
+						linkCom += "," + dataRow.bill_text[0].linkvd_linkcom;
+					} else {
+						linkCom.push(linkCom);
+						linkNameArr.push(linkName);
+					}
+				}
+				//				}
+			}
+			if(choice == "single") { // 如果单选
+				//
+//				[
+//  "客户代码:vdvc10100_20180420_50000114",
+//  "客户地址:北京市朝阳区朝阳区北京站内",
+//  "联系人:梁艳敏",
+//  "联系电话:13611193323",
+//  "产品供应商代码:vdvc10100_20170801_0101C001",
+//  "产品供应商:北京燕京啤酒股份有限公司"
+//]
+				
+					// 切换选中状态
+//				var chosenStates = Boolean(Number(jQuery(this).attr("data-chosen")));
+//				chosenStates = !chosenStates;
+//				jQuery(this).attr("data-chosen",Number(chosenStates));
+//				if(chosenStates){  // 如果选中
+					jQuery(this).children().addClass("chosen").parent().siblings().children().removeClass("chosen");
+					jQuery(this).addClass("chosen").siblings().removeClass("chosen");
+						if(fromPage == "vdeb511plist") { 
+							linkName = dataRow.bill_comName;
+							linkCom = dataRow.bill_com;
+						} else {
+							linkCom = dataRow["内容"]["客户代码"];
+							linkName = dataRow["标题"];
+
+						}
+//				}else{
+						// 自己移除类
+//					jQuery(this).children().removeClass("chosen");
+//					jQuery(this).removeClass("chosen");
+//					linkName = "";
+//					linkCom  ="";
+//				}
+			}
+
+			document.getElementById("linkvd_linkcom").innerHTML = linkCom;
+			document.getElementById("bill_name").innerHTML = linkName;
+			document.getElementById("dataRow").innerHTML = JSON.stringify(dataRow);
+
+		});
+		// 点进选择、放入列表中============================
+		// 右上角点击返回105_find.html*************************
+		document.getElementById("save").addEventListener("tap", function() {
+			var linkName = document.getElementById("bill_name").innerHTML;
+			var linkCom = document.getElementById("linkvd_linkcom").innerHTML;
+			var dataRow = document.getElementById("dataRow").innerHTML;
+			//触发详情页面的newsId事件
+			mui.fire(plus.webview.getWebviewById(fromPage), '311findselectedCustomer', {
+				teamBillCom: teamBillCom,
+				uteamBillComName: teamBillComName,
+				serbillNo: userbillNo,
+				loginCom: loginCom,
+				loginComName: loginComName,
+				linkName: linkName,
+				linkCom: linkCom,
+				dataRow: dataRow
+			});
+
+			//打开详情页面          
+			mui.openWindow({
+				id: fromPage
+			});
+			plus.webview.currentWebview().clear();
+			plus.webview.currentWebview().close();
+		})
+		// 清空
+		document.getElementById("closeIcon").addEventListener("tap", function() {
+			document.getElementById("linkvd_linkcom").innerHTML = "";
+			document.getElementById("bill_name").innerHTML = "";
+			jQuery("ul li").children().removeClass("chosen");
+			jQuery("ul li").removeClass("chosen");
+		})
+
+		// 
+		function enterSearch(e) {
+			if(e.keyCode == 13) {
+				startIndex = 1;
+				detailInfo.length = 0;
+				document.getElementById("searchBox").blur();
+				var search = document.getElementById("searchBox").value;
+				var loginCom1 = vlUtils.getStorage("newTeamBillCom");
+				document.getElementById("showHint").style.display = "none"; // 先隐藏再判断
+				queryparmas = { // 默认我的客户001
+					name: 'msvr',
+					bill_com: loginCom,
+					bill_user:userbillNo,//员工id登录人
+					bill_task: "VR_find_corr101", // VR_find_pur001 查供货商  // VR_find_corr101 查经销商
+					bill_title: search,
+					currentPage: 1,
+					pageSize: pageSize,
+					paramText: ''
+				}
+				// 默认查询
+				rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData, '../login.html',true);
+			}
+		}
+		// 
+		document.getElementById("searchBtn").addEventListener("tap", function() {
+			var search = document.getElementById("searchBox").value;
+			document.getElementById("showHint").style.display = "none"; // 先隐藏再判断
+			var loginCom1 = vlUtils.getStorage("newTeamBillCom");
+			queryparmas = { // 默认我的客户001
+				name: 'msvr',
+				bill_com: loginCom,
+				bill_user:userbillNo,//员工id登录人
+				bill_task: "VR_find_corr101", // VR_find_pur001 查供货商  // VR_find_corr101 查经销商
+				bill_title: search,
+				currentPage: 1,
+				pageSize: pageSize,
+				paramText: ''
+			}
+			// 默认查询
+			rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData, '../login.html',true);
+		});
+
+		//发送ajax
+		function reportData(data, type) {
+
+			document.getElementById("showHint").style.display = "none";
+			if(data.data.length != 0) {
+				mui.toast("搜索完成，正在加载...");
+				if(!type || type != "up") {
+					document.getElementById("contList").innerHTML = '';
+				}
+				var text = '';
+				for(var i = 0; i < data.data.length; i++) {
+
+					var comImgid = vlUtils.uuid('comImg', 4, 10);
+					var newdataArr = {};
+					for(var k in data.data[i]) {
+						newdataArr[k.slice(0, 2)] = data.data[i][k];
+					}
+					// 312 特有
+							var str = newdataArr["内容"];
+							var arr = str.split("-");
+							var e = {};
+							for (var p = 0; p < arr.length ; p++){
+								var c = arr[p].split("=");
+								e[c[0]] = c[1];
+							}
+							newdataArr["内容"] = e;
+					
+					var contList = document.getElementById("contList");
+					
+					if(type && type == "up") {
+						// 上拉加载
+					} else {
+						text += '<li class="mui-table-view-cell" num="' + i + '" style="padding:10px;height:70px;" data-row=\'' + JSON.stringify(newdataArr) + '\'>';
+					}
+					text += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-yellow"></a></div>';
+					text += '<div class="mui-slider-cell  mui-slider-handle">';
+					text += '<div class="mui-row">';
+					text += '<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;width:55px;">';
+					text += '<img class="vdvc312 mui-col-xs-12" src="../../images/icon/default.png"  id="' + comImgid + '" />';
+					text += '</div>';
+					text += '<div class="mui-col-xs-7 mui-row" style="background:;height:50px;">';
+					text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;padding-top:1px;">' + newdataArr["标题"]+ '</h5>';
+					var addrStr = e["客户地址"];
+					if(e["客户地址"].slice(0,2)=="[{"){
+						var addrObj = JSON.parse(e["客户地址"]);
+						addrStr = addrObj[0].linkbd_linkprov +" "+ addrObj[0].linkbd_linkstreet +" "+ addrObj[0].linkvd_corraddr;
+					}
+					text += '<p class="list_font mui-col-xs-12">' + addrStr + '</p>';
+					text += '</div>';
+					text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;">';
+					text += '<p class="list_fonts mui-col-xs-12" style="float:right;">'+e["联系人"]+'</p>';
+					text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;">'+e["联系电话"]+'</p>';
+//					if(datas[i].bill_text[0].linkvd_linkcom == "") {
+//						text += '<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;color:#dd524d;border-color:#dd524d;">未关联 </p>';
+//					}else{
+						text += '<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;color:#4cd964;border-color:#4cd964;">已关联 </p>';
+//					}
+					text += '</div>';
+					text += '</div>';
+					text += '</div>';
+					text += '</li>';
+					
+					if(type && type == "up") {
+						// 上拉加载
+					} else {
+						text += '</li>';
+					}
+					contList.innerHTML = text;
+					if(vlUtils.isnull(newdataArr["图片"])) {
+						document.getElementById(comImgid).setAttribute("src", "../../images/icon/default.png");
+					} else {
+						vlUtils.downloadicon(newdataArr["图片"], comImgid);
+					}
+				}
+				if(type && type == "down") {
+//					mui('#vrsa001_list').pullRefresh().endPulldown(); // 下拉刷新
+				} else {}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				mui.toast("未查询到数据~")
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("showHint").style.display = "block";
+//				document.getElementById("searching").style.display = "none";
+				if(type && type == "down") {
+//					mui('#vrsa001_list').pullRefresh().endPulldown(); // 下拉刷新
+				} else {}
+			}
+		}
+	</script>
+
+</html>

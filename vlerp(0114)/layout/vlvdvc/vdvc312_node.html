@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/icons-extra.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			
+			.mui-row {
+				padding: 8px;
+			}
+			/*三级联动样式*/
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+			
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			
+			.ui-push {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+				display: none;
+			}
+			/* 灰色*/
+			
+			.gray {
+				color: gray;
+			}
+			
+			.spn {
+				color: gray;
+			}
+			/*关联状态*/
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+			.list_font {
+				padding:1px;
+				padding-left:15px;
+				color: #000000;
+				font-size: 11px;
+				line-height: 12px;
+				height: 12px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id='head'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header"></h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit"></a>
+			<div class="mui-row navBar nodeTopNav">
+				<p class="mui-col-xs-3" id="userManagement">
+					<a class="icon iconfont icon-yonghu"></a>
+					<span>我的用户</span>
+				</p>
+				<p class="mui-col-xs-3" id="CRM">
+					<a class="icon iconfont icon-kehu"></a>
+					<span>我的客户</span>
+				</p>
+				<p class="mui-col-xs-3">
+					<a class="icon iconfont icon-zizhitubiao unclickable"></a>
+					<span>我的资质</span>
+				</p>
+				<p class="mui-col-xs-3">
+					<a class="mui-icon mui-icon-location unclickable" id="Gps"></a>
+					<span>我的位置</span>
+				</p>
+			</div>
+		</header>
+		<div class="mui-content" style="padding-top:100px;margin-top:30px;margin-bottom:30px;">
+			<div class="mui-input-group" id="linkvdUsercom" style="padding:10px 18px 5px 10px;margin-bottom:5px;">
+				<div class="mui-row " style="padding:0;margin:0;">
+					<p class="list_font mui-col-xs-4" style="margin-bottom:0px;">组织类别：</p>
+					<p class="list_font mui-col-xs-8" id="bill_unit"></p>
+				</div>
+				<div class="mui-row " style="padding:0;margin:0;">
+					<p class="list_font mui-col-xs-4" style="margin-bottom:0px;">所属片区：</p>
+					<p class="list_font mui-col-xs-8" id="fbillnoName"></p>
+				</div>
+				<div class="mui-row " style="padding:0;margin:0;">
+					<p class="list_font mui-col-xs-4" style="margin-bottom:0px;">直供/流向：</p>
+					<p class="list_font mui-col-xs-8" id="bill_bflow"></p>
+				</div>
+				<div class="mui-row " style="padding:0;margin:0;">
+					<p class="list_font mui-col-xs-4" style="margin-bottom:0px;">供货商：</p>
+					<p class="list_font mui-col-xs-8" id="coppoName"></p>
+					<p class="list_font mui-col-xs-8" id="bill_coppo" style="display: none;"></p>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="" style="padding:0px;height:72px;">
+					<div class="mui-row" style="background:;padding:0px;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;margin-right:10px;">
+							<img class="vdvc312 mui-col-xs-12" id="userImg" src="../../images/icon/default.png" style="padding:0px;width:60px;border:1px solid #ccc;border-radius:10px;" />
+
+						</div>
+						<div class="mui-col-xs-9 mui-row mui-pull-right" style="background:;padding-right:0;padding-left:0px;margin-left:15px;">
+							<div class="list_h5 mui-col-xs-12" style="color:#242424;border-bottom:1px solid #efeff4;padding:5px 0;height:28px;">
+								<span class="mui-col-xs-4 spn">客户代码：</span>
+								<span class="mui-col-xs-5 spn" id="bill_id"></span>
+								<span class="list_sts mui-col-xs-3 mui-pull-right" id="bill_task" style="float:right;margin-top:3px;height: 16px;width:60px;"></span>
+							</div>
+							<div class="list_font mui-col-xs-12" style="padding:5px 0;height:28px;">
+								<span class="mui-col-xs-3 spn">客户名称：</span>
+								<span class="mui-col-xs-9 spn" id="bill_name"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">纳税人识别号：</span><span class="mui-col-xs-8 spn" id="linkbd_linktaxid"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">客户标签：</span><span class="mui-col-xs-8 spn" id="bill_label"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">联系人：</span><span class="mui-col-xs-8 spn" id="linkvd_linkuser"></span>
+				</div>
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn">厂编/电话：</span><span class="mui-col-xs-8 spn" id="linkbd_linktel"></span>
+				</div> 
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">所在地区：</span><span class="mui-col-xs-8 spn" id="linkbd_linkprov"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">所在街道：</span><span class="mui-col-xs-8 spn" id="linkbd_linkstreet"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">客户地址：</span><span class="mui-col-xs-8 spn" id="linkvd_corraddr"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">地区位置：</span>
+					<span class="mui-col-xs-3 spn" id="linkbd_lngposition"></span> 
+				</div>
+				<div class="mui-row"  >
+ 					<a class="mui-icon mui-icon-location" id="Gps1" style="font-size:24px; float:right;"></a>
+					<span class="mui-col-xs-3 spn">客户位置：</span>
+					<span class="mui-col-xs-4 spn" id="linkbd_lngposition_map"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">营业面积：</span><span class="mui-col-xs-8 spn" id="linkbd_busiarea"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">员工人数：</span><span class="mui-col-xs-8 spn" id="linkbd_emplsum"></span>
+				</div>
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn">餐台数量：</span><span class="mui-col-xs-8 spn" id="linkbd_tablsum"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">制单人：</span><span class="mui-col-xs-8 spn" id="bill_userName"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;display: none;">
+					<span class="mui-col-xs-4 spn">制单人代码：</span><span class="mui-col-xs-8 spn" id="bill_user"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">抄送：</span><span class="mui-col-xs-8 spn" id="cc_user"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4; display: none;">
+					<span class="mui-col-xs-4 spn">抄送：</span><span class="mui-col-xs-8 spn" id="cc_user_code"></span>
+				</div>
+				<div class="mui-row">
+					<span class="mui-col-xs-4 spn">制单时间：</span><span class="mui-col-xs-8 spn" id="bill_date"></span>
+				</div>
+			</div>
+			<div class="">
+				<div id="mui-row">
+					<button type="button" id="associate" class="mui-btn mui-btn-primary mui-btn-outlined mui-pull-right" style="padding:5px;margin:0 30px;font-size:14px !important;display:none;">点击关联</button>
+				</div>
+				
+				<!--<p id="" class="mui-h5" style="padding-left:18px; padding-top:10px;">关联状态：<span class='state' id="linkbd_linksts"></span></p>-->
+				<div class="fold" id="fold">
+					<p id="" class="mui-h5" style="padding-left:25px;font-size: 12px;">关联编码：<span class='state' id="linkvd_linkcom"></span><span></span></p>
+					<p id="" class="mui-h5" style="padding-left:25px;font-size: 12px;">关联客户：<span class='state' id="linkvd_linkcomName"></span></p>
+					<p id="" class="mui-h5" style="padding-left:25px;padding-right:25px;font-size: 12px;">
+						关联时间：
+						<span class='state mui-col-xs-4' id="linkvd_linkdate"></span>
+						<span class="list_sts mui-col-xs-3 mui" id="linkbd_linksts" style="float:right;margin-top:3px;height: 16px;width:60px;">已关联</span>
+						<!--<span class="mui-col-xs-1" id="linkbd_linksts" style="float:right;margin-top:3px;">已关联</span>-->
+					</p>
+				</div>
+			</div>
+
+			<form class="mui-input-group" style="padding:15px 18px 15px 18px;display: none;">
+				<div>
+					位置信息
+				</div>
+				<div class="mui-row">
+					<span class="mui-col-xs-4 spn">位置经度：</span><span class="mui-col-xs-8" id="linkbd_lngposition_map"></span>
+				</div>
+				<div class="mui-row">
+					<span class="mui-col-xs-4 spn">位置纬度：</span><span class="mui-col-xs-8" id="linkbd_latposition_map"></span>
+				</div>
+				<div class="mui-row">
+					<span class="mui-col-xs-4 spn">位置信息：</span><span class="mui-col-xs-8" id=""></span>
+				</div>
+				<!--<div >
+					<button type="button" class="mui-btn mui-btn-outline">采集当前地点位置信息</button>
+				</div>-->
+			</form>
+
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<!--三级联动-->
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/mui.poppicker.js"></script>
+	<script src="../../js/areas(2).js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init();
+ 		// 刷新
+		window.addEventListener('GPSto311node', function(event) { 
+			var lng = event.detail.lng;
+			var lat = event.detail.lat;
+			var address = event.detail.address;
+			var aa = lng + "," + lat; 
+			var oridetailInfo=event.detail.oridetailInfo;
+			document.getElementById("linkbd_lngposition_map").innerText=aa;
+
+			// 标题栏
+			document.getElementById("header").innerHTML = oridetailInfo.bill_name;
+			// 第一部分
+			document.getElementById("bill_id").innerHTML = oridetailInfo.bill_id;
+			document.getElementById("bill_name").innerHTML = oridetailInfo.bill_name;
+			document.getElementById("bill_coppo").innerHTML = oridetailInfo.bill_coppo;
+			document.getElementById("bill_label").innerHTML = oridetailInfo.bill_label;
+			document.getElementById("coppoName").innerHTML = oridetailInfo.bill_spec;
+			document.getElementById("linkbd_linktaxid").innerHTML = oridetailInfo.bill_text[0].linkbd_linktaxid; // 纳税人识别号
+			document.getElementById("linkvd_linkuser").innerHTML = oridetailInfo.bill_text[0].linkvd_linkuser;
+			document.getElementById("linkbd_linktel").innerHTML = oridetailInfo.bill_text[0].linkbd_linktel;
+			document.getElementById("bill_task").innerHTML = oridetailInfo.bill_task; // 说明
+			// 状态
+			if(oridetailInfo.bill_task == "S") {
+				document.getElementById("bill_task").innerHTML = "待审核";
+			} else if(oridetailInfo.bill_task == "Y") {
+				document.getElementById("bill_task").innerHTML = "已审核";
+			} else {
+				document.getElementById("bill_task").innerHTML = "待送审";
+			}
+			document.getElementById("bill_unit").innerHTML = oridetailInfo.bill_unit;
+			document.getElementById("bill_bflow").innerHTML = oridetailInfo.bill_bflow;
+			// 关联状态
+//			if(oridetailInfo.bill_text[0].linkbd_linksts == "是") {
+//				document.getElementById("linkbd_linksts").innerHTML = "已关联"; // 关联状态
+//			} else {
+//				document.getElementById("linkbd_linksts").innerHTML = "未关联"; // 关联状态
+//			}
+			if(!vlUtils.isnull(datas[0].bill_oppo)){
+				document.getElementById("linkbd_linksts").innerHTML = "已关联"; // 关联状态
+				document.getElementById("associate").style.display = "none";
+			}else{
+				if(!vlUtils.isnull(datas[0].bill_text[0].linkvd_linkcom)) {
+					document.getElementById("linkbd_linksts").innerHTML = "已关联"; // 关联状态
+				} else {
+					document.getElementById("linkbd_linksts").innerHTML = "未关联"; // 关联状态
+					document.getElementById("associate").style.display = "block";
+					document.getElementById("associate").addEventListener("tap",associate);
+				}
+			}
+			document.getElementById("linkvd_linkdate").innerHTML = oridetailInfo.bill_text[0].linkvd_linkdate; // 关联时间
+			document.getElementById("linkvd_linkcomName").innerHTML = datas[0].bill_text[0].linkvd_linkcomName; // 关联客户
+//			document.getElementById("linkvd_linkcom").innerHTML = oridetailInfo.bill_text[0].linkvd_linkcom // 关联客户编码
+			document.getElementById("linkvd_linkcom").innerHTML = oridetailInfo.bill_oppo // 关联客户编码
+			//第二部分
+			var addrStr = oridetailInfo.bill_text;
+			if(typeof(oridetailInfo.bill_context) == "string" && oridetailInfo.bill_context.slice(0,2)=="[{"){
+				addrStr = JSON.parse(oridetailInfo.bill_context);
+			}else if(typeof(oridetailInfo.bill_context) == "object"){
+				addrStr = oridetailInfo.bill_context;
+			}
+			document.getElementById("linkbd_linkprov").innerHTML = addrStr[0].linkbd_linkprov;
+			document.getElementById("linkbd_linkstreet").innerHTML = addrStr[0].linkbd_linkstreet;
+			document.getElementById("linkvd_corraddr").innerHTML = addrStr[0].linkvd_corraddr;
+			document.getElementById("linkbd_lngposition").innerHTML = addrStr[0].linkbd_lngposition;
+			// 第四部分
+			document.getElementById("linkbd_busiarea").innerHTML = oridetailInfo.bill_text[0].linkbd_busiarea;
+			document.getElementById("linkbd_emplsum").innerHTML = oridetailInfo.bill_text[0].linkbd_emplsum;
+			document.getElementById("linkbd_tablsum").innerHTML = oridetailInfo.bill_text[0].linkbd_tablsum;
+			// 管理员、业务员
+			document.getElementById("bill_user").innerHTML = oridetailInfo.bill_user;
+			document.getElementById("bill_userName").innerHTML = oridetailInfo.bill_userName;
+			
+			if(!vlUtils.isnullObejct(oridetailInfo.cc_user)){
+
+				var cc_user_cn="";//名
+				var cc_user_code=""//代码 
+				for(var cuser in  oridetailInfo.cc_user){
+					if(vlUtils.isnull(cc_user_code)){
+						 cc_user_code=cuser;
+					}else{
+						cc_user_code+=","+cuser;
+					}
+					if(vlUtils.isnull(cc_user_cn)){
+						cc_user_cn=oridetailInfo.cc_user[cuser]
+					}else{
+						cc_user_cn+=","+oridetailInfo.cc_user[cuser];
+					}
+					
+				}
+			document.getElementById("cc_user").innerHTML = cc_user_cn;
+			document.getElementById("cc_user_code").innerHTML = cc_user_code;
+			}
+	 	
+			document.getElementById("bill_date").innerHTML = oridetailInfo.bill_date;
+				return;
+ 
+		});
+		
+		// rewrite the mui.back
+//		document.getElementById("goBack").addEventListener("tap", function() {
+//			// 返回
+//			var oldBack = mui.back;
+//			mui.back = function() {
+//				var prevPage = plus.webview.getWebviewById('vdvc312_plist.html');
+//				prevPage.show();
+//			}
+//			mui.back();
+//		})
+		
+		var $$ = jQuery.noConflict();
+		var detailInfo = null;
+		var teamBillCom; 	// 1.管理单位代码
+		var teamBillComName;// 2.管理单位名称
+		var fbill_no;		// 3.fbill_no是
+		var loginCom;		// 4.登录单位代码
+		var loginComName;	// 5.登录单位名称
+		var userbillNo;		// 6.登录人的代码
+		var userName;		// 7.登录人的姓名
+		var privileges;		// 8.当前的权限是
+		var fromPage;		// 9.从哪个页面来
+		//
+		mui.plusReady(function() {
+			window.addEventListener('backAndRefreshList', function(event) {
+
+				teamBillCom 	= event.detail.teamBillCom;		// 管理单位代码
+				fbill_no 		= event.detail.fbill_no;		// fbill_no是
+				teamBillComName = event.detail.teamBillComName; // 管理单位名称
+				loginCom 		= event.detail.loginCom;	 	// 登录单位代码
+				loginComName 	= event.detail.loginComName;	// 登录单位名称
+				userbillNo 		= event.detail.userbillNo;		// 登录人的代码
+				userName 		= event.detail.userName,		// 登录人的姓名
+				privileges 		= event.detail.privileges,		// 当前的权限是
+				fromPage 		= event.detail.fromPage,		// 从哪个页面来
+				bill_no 		= event.detail.bill_no,		// 从哪个页面来
+				queryparmas={
+					name:'vdvc312',    
+					bill_com:loginCom, 
+					bill_task:"L,S,Y,YF",
+					currentPage:1, 
+					pageSize:1, 
+					paramText:"",
+					bill_no:bill_no  
+				}
+
+				searchAjax(queryparmas);
+			})
+			// 扫码关联
+			// 抄送接收105传送过来的名字		
+			window.addEventListener('scannerVc101q1', function(event) {
+				var qrCode = event.detail.qrCode;
+				var billcode = event.detail.billcode;
+				var qrData = event.detail.qrData;
+				/*
+				 * 0: 业务标识(vdvc10501)
+				 * 1: 用户代码(vdvc001-) 
+				 * 2: 用户名称 
+				 * 3: 用户身份(负责人、配送员、服务员) 
+				 * 4: 客户代码(vdvc101-) 
+				 * 5: 客户编码 
+				 * 6: 客户名称
+				 * 7: 客户身份(企业、经销商、终端) 
+				 * 8: 客户负责人 
+				 * 9: 客户地址
+				 * 10: 单位代码(燕京101代码)
+				 * 11：单位名称
+				 * 12：电话（客户负责人的）
+				 * 13：直接上级客户代码
+				 * 14：直接上级客户名称
+				 */
+				// 关联状态
+				document.getElementById("associate").style.display = 'none';
+				document.getElementById("linkbd_linksts").innerHTML = "已关联"; // 关联状态
+				document.getElementById("linkvd_linkdate").innerHTML = vlUtils.dateToString(date); // 关联时间
+				document.getElementById("linkvd_linkcomName").innerHTML = qrData.bill_text.split("&")[6]; // 关联客户
+				document.getElementById("linkvd_linkcom").innerHTML = qrData.bill_text.split("&")[4]; // 关联客户编码
+			});
+			// 重写返回事件
+			var oldBack = mui.back;
+			mui.back = function() {
+				var prevPage = plus.webview.getWebviewById('vdvc312_plist.html');
+				if(prevPage){
+					prevPage.show();
+				}else{
+					oldBack();
+				}
+			}
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			fbillnoName		= self.fbillnoName;
+			// 其他
+			document.getElementById("fbillnoName").innerHTML = fbillnoName;
+			if(fromPage=="vdvc312list") {
+				detailInfo = self.detailInfo;
+			}
+			if(fromPage=="vdvc312edit") {
+				detailInfo = self.rqsData;
+				detailInfo.bill_task = "S";
+				if((typeof detailInfo.bill_text) == "string"){
+					detailInfo.bill_text = JSON.parse(detailInfo.bill_text);
+				}
+			}
+
+//			BreadcrumbNavPage.push("node");
+//			BreadcrumbNav.push(teamBillCom);
+//			BreadcrumbNavName.push(teamBillComName);
+			var date 		= new Date();
+			var commit 		= document.getElementById("commit");
+			var bill_date 	= vlUtils.dateToString(date);
+			var rqsData 	= null; //提交的数据
+			var inputData 	= null; // 表单里的数据 
+
+			// 查询该条数据
+			var queryparmas={
+				name:'vdvc312',    
+				bill_com:detailInfo.bill_com, 
+				bill_task:"L,S,Y,YF",
+				currentPage:1, 
+				pageSize:1, 
+				paramText:"",
+				bill_no:detailInfo.bill_no  
+			}
+			searchAjax(queryparmas);
+			
+			// 点击用户管理
+			document.getElementById('userManagement').addEventListener("tap", function() {
+//				return;
+				// 判断权限：
+//				if(detailInfo.bill_text[0].linkbd_linksts || detailInfo.bill_text[0].linkbd_linksts=="关联失败"){
+				if(detailInfo.bill_oppo == ""||!detailInfo.bill_text[0].linkbd_linksts || detailInfo.bill_text[0].linkbd_linksts=="关联失败"|| detailInfo.bill_text[0].linkbd_linksts=="未关联"){
+					mui.toast("客户未关联，不允许建立下级用户！");
+					return;
+				}
+				if(detailInfo.bill_unit == "经销商"){
+					business = "经销商";
+				}else if(detailInfo.bill_unit == "终端"){
+					business = "终端";
+				}else{
+					business = "312";
+				}
+				// 
+				teamBillCom = detailInfo.bill_text[0].linkvd_linkcom;
+				teamBillComName = detailInfo.bill_name;
+
+				mui.openWindow({
+					url: 'vdvc105_plist.html',
+					id: "vdvc105_plist.html",
+					createNew: true,
+					extras: {
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码	// 取当前li的linkvd_linkcom
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 取当前li的bill_name
+						fbill_no 		: "",				// 3.fbill_no是		// 取""查出成员+管理员
+						loginCom 		: loginCom,			// 4.登录单位代码
+						loginComName 	: loginComName,		// 5.登录单位名称
+						userbillNo 		: userbillNo,		// 6.登录人的代码
+						userName 		: userName,			// 7.登录人的姓名
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vdvc312node",	// 9.从哪个页面来
+						business		: business
+					}
+				})
+			}, false)
+
+			// 编辑
+			document.getElementById("toEdit").addEventListener("tap", function() {
+				var billUser = document.getElementById("toEdit").getAttribute("billUser");
+				var privileges = vlUtils.getStorage("newPrivileges");
+
+				if(billUser == userbillNo || privileges == "ROOT") {
+					mui.openWindow({
+						url: 'vdvc312_edit.html',
+						id: "vdvc312_edit.html",
+						createNew: true,
+						extras: {
+							teamBillCom 	: teamBillCom, 		// 1.管理单位代码	// 不变
+							teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变
+							fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+							loginCom 		: loginCom,			// 4.登录单位代码
+							loginComName 	: loginComName,		// 5.登录单位名称
+							userbillNo 		: userbillNo,		// 6.登录人的代码
+							userName 		: userName,			// 7.登录人的姓名
+							privileges 		: privileges,		// 8.当前的权限是
+							fromPage 		: "vdvc312plist",	// 9.从哪个页面来
+							flagNew			: "N",
+							detailInfo      : detailInfo,
+							fbillnoName		: fbillnoName
+						}
+					})
+				} else {
+					mui.toast("仅制单人或管理员有此权限！");
+				}
+
+			});
+			
+			// 客户关系
+			document.getElementById("CRM").addEventListener("tap", function() {
+				// 判断权限："linkbd_linksts": "关联失败"
+				if(detailInfo.bill_oppo == "" || !detailInfo.bill_text[0].linkbd_linksts||detailInfo.bill_text[0].linkbd_linksts=="关联失败"){
+					mui.toast("客户未关联，不允许建立下级客户！");
+					return;
+				}
+				// 
+				var teamBillComName = detailInfo.bill_name;
+				var teamBillCom 	= detailInfo.bill_text[0].linkvd_linkcom;
+				var fbill_no		= detailInfo.bill_text[0].linkvd_linkcom;
+				mui.openWindow({
+					url:'vdvc311_plist.html',
+					id:'vdvc311_plist.html',
+					extras:{
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 0109改为当前li的 linkvd_linkcom  
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 0109改为当前li的 bill_name 
+						fbill_no 		: fbill_no,			// 3.fbill_no是		// 0109改为当前li的 linkvd_linkcom 
+						loginCom 		: loginCom,			// 4.登录单位代码
+						loginComName 	: loginComName,		// 5.登录单位名称
+						userbillNo 		: userbillNo,		// 6.登录人的代码
+						userName 		: userName,			// 7.登录人的姓名
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vdvc312node",	// 9.从哪个页面来
+						detailInfo		: detailInfo
+					}
+				})
+				return;
+				mui.fire(plus.webview.getWebviewById('vdvc311_plist.html'), 'lowerDeptRefresh311plist', {
+					teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 0109改为当前li的 linkvd_linkcom  
+					teamBillComName : teamBillComName,	// 2.管理单位名称	// 0109改为当前li的 bill_name 
+					fbill_no 		: fbill_no,			// 3.fbill_no是		// 0109改为当前li的 linkvd_linkcom 
+					loginCom 		: loginCom,			// 4.登录单位代码
+					loginComName 	: loginComName,		// 5.登录单位名称
+					userbillNo 		: userbillNo,		// 6.登录人的代码
+					userName 		: userName,			// 7.登录人的姓名
+					privileges 		: privileges,		// 8.当前的权限是
+					fromPage 		: "vdvc312node",	// 9.从哪个页面来
+					detailInfo		: detailInfo
+				});
+				
+				mui.fire(plus.webview.getWebviewById('vdvc311_list.html'), 'lowerDeptRefresh311list', {
+					teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 0109改为当前li的 linkvd_linkcom  
+					teamBillComName : teamBillComName,	// 2.管理单位名称	// 0109改为当前li的 bill_name 
+					fbill_no 		: fbill_no,			// 3.fbill_no是		// 0109改为当前li的 linkvd_linkcom 
+					loginCom 		: loginCom,			// 4.登录单位代码
+					loginComName 	: loginComName,		// 5.登录单位名称
+					userbillNo 		: userbillNo,		// 6.登录人的代码
+					userName 		: userName,			// 7.登录人的姓名
+					privileges 		: privileges,		// 8.当前的权限是
+					fromPage 		: "vdvc312node",	// 9.从哪个页面来
+					detailInfo		: detailInfo
+				});
+				 
+				mui.openWindow({
+ 					id: 'vdvc311_plist.html',
+				 
+				});  
+			}) 
+			//位置管理Gps开始======================
+			document.getElementById("Gps1").addEventListener("tap", function() {
+
+				var billUser = document.getElementById("toEdit").getAttribute("billUser");
+				var privileges = vlUtils.getStorage("newPrivileges");
+
+				if(billUser == userbillNo || privileges == "ROOT") {
+					mui.openWindow({
+						url: '../../Gps.html',
+						id: "Gps.html",
+						createNew:true,
+						extras: {
+							detailInfo		: detailInfo,
+							oridetailInfo	: detailInfo,
+							fromPage		: "vdvc312_node.html"
+						}
+					})
+				} else {
+					mui.toast("仅制单人或管理员有此权限！");
+				}
+			})
+
+			//位置管理Gps结束====================
+			//*****************************************************
+			function searchAjax(queryparmas) {
+				mui.ajax(systemURL + 'Find/Ddata/find', {
+					data: queryparmas,
+					beforeSend: function() {
+						var network = true;
+						checkNetState(); // 检查网络链接状态
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 60000, //超时时间设置为10秒；
+//					contentType: "application/x-www-form-urlencoded; charset=utf-8",
+					contentType: "application/json; charset=utf-8",
+					success: function(data) { 
+						if(data.code == 0) { 
+							var datas = data.data; 
+							if(datas.length != 0) {
+								detailInfo = datas[0];
+								//							document.getElementById("info").innerHTML = JSON.stringify(datas);
+								document.getElementById("header").innerHTML = datas[0].bill_name;
+								// 头像
+								var imgid = vlUtils.uuid('img', 4, 10);
+								$$("#userImg").attr('id', imgid);
+								//判断有值的话拿到用户的id然后请求小图标
+								if(!vlUtils.isnull(datas[0]["bill_text"][0]["linkvd_linkcom"])) {
+									vlUtils.downloadicon(datas[0]["bill_text"][0]["linkvd_linkcom"], imgid);
+								};
+								// 给每个输入框赋值
+
+								// 第一部分
+								document.getElementById("bill_id").innerHTML = datas[0].bill_id;
+								document.getElementById("bill_name").innerHTML = datas[0].bill_name;
+								document.getElementById("linkbd_linktaxid").innerHTML = datas[0].bill_text[0].linkbd_linktaxid; // 纳税人识别号
+								document.getElementById("linkvd_linkuser").innerHTML = datas[0].bill_text[0].linkvd_linkuser;
+								document.getElementById("linkbd_linktel").innerHTML = datas[0].bill_text[0].linkbd_linktel;
+								document.getElementById("bill_coppo").innerHTML = datas[0].bill_coppo;
+								document.getElementById("coppoName").innerHTML = datas[0].bill_spec;
+								// document.getElementById("bill_context").innerHTML = datas[0].bill_context; // 说明
+								document.getElementById("bill_task").innerHTML = datas[0].bill_task; // 说明
+								document.getElementById("linkbd_lngposition_map").innerText = datas[0].bill_text[0].linkbd_lngposition_map; //Gps客户位置
+								if(document.getElementById("linkbd_lngposition_map").innerText == undefined || document.getElementById("linkbd_lngposition_map").innerText ==  "undefined"){
+									document.getElementById("linkbd_lngposition_map").innerText = " "; 
+								}
+								// 状态
+								if(datas[0].bill_task == "S") {
+									document.getElementById("bill_task").innerHTML = "待审核";
+								} else if(datas[0].bill_task == "Y") {
+									document.getElementById("bill_task").innerHTML = "已审核";
+								} else {
+									document.getElementById("bill_task").innerHTML = "待送审";
+								}
+								document.getElementById("bill_unit").innerHTML = datas[0].bill_unit;
+								document.getElementById("bill_bflow").innerHTML = datas[0].bill_bflow;
+								// 关联状态
+//								if(!vlUtils.isnull(datas[0].bill_oppo)){
+//									document.getElementById("linkbd_linksts").innerHTML = "已关联"; // 关联状态
+//								}else{
+//									if(!vlUtils.isnull(datas[0].bill_text[0].linkvd_linkcom)) {
+//										document.getElementById("linkbd_linksts").innerHTML = "已关联"; // 关联状态
+//									} else {
+//										document.getElementById("linkbd_linksts").innerHTML = "未关联"; // 关联状态
+//									}
+//								}
+								if(!vlUtils.isnull(datas[0].bill_oppo)){
+									document.getElementById("linkbd_linksts").innerHTML = "已关联"; // 关联状态
+									document.getElementById("associate").style.display = "none";
+								}else{
+									if(!vlUtils.isnull(datas[0].bill_text[0].linkvd_linkcom)) {
+										document.getElementById("linkbd_linksts").innerHTML = "已关联"; // 关联状态
+									} else {
+										document.getElementById("linkbd_linksts").innerHTML = "未关联"; // 关联状态
+										document.getElementById("associate").style.display = "block";
+										document.getElementById("associate").addEventListener("tap",associate);
+									}
+								}
+
+								document.getElementById("linkvd_linkdate").innerHTML = datas[0].bill_text[0].linkvd_linkdate; // 关联时间
+								document.getElementById("linkvd_linkcomName").innerHTML = datas[0].bill_text[0].linkvd_linkcomName; // 关联客户
+//								document.getElementById("linkvd_linkcom").innerHTML = datas[0].bill_text[0].linkvd_linkcom // 关联客户编码
+								document.getElementById("linkvd_linkcom").innerHTML = datas[0].bill_oppo // 关联客户编码
+								//第二部分
+								var addrStr = datas[0].bill_text;
+								if(typeof(datas[0].bill_context) == "string" && datas[0].bill_context.slice(0,2)=="[{"){
+									addrStr = JSON.parse(oridetailInfo.bill_context);
+								}else if(typeof(datas[0].bill_context) == "object"){
+									addrStr = datas[0].bill_context;
+								}
+								document.getElementById("linkbd_linkprov").innerHTML = addrStr[0].linkbd_linkprov;
+								document.getElementById("linkbd_linkstreet").innerHTML = addrStr[0].linkbd_linkstreet;
+								document.getElementById("linkvd_corraddr").innerHTML = addrStr[0].linkvd_corraddr;
+								document.getElementById("linkbd_lngposition").innerHTML = addrStr[0].linkbd_lngposition;
+								//document.getElementById("bill_name").innerHTML = detailInfo.
+								// 第四部分
+								document.getElementById("linkbd_busiarea").innerHTML = datas[0].bill_text[0].linkbd_busiarea;
+								document.getElementById("linkbd_emplsum").innerHTML = datas[0].bill_text[0].linkbd_emplsum;
+								document.getElementById("linkbd_tablsum").innerHTML = datas[0].bill_text[0].linkbd_tablsum;
+								// 管理员、业务员
+								document.getElementById("bill_user").innerHTML = datas[0].bill_user;
+								document.getElementById("bill_userName").innerHTML = datas[0].bill_userName;
+								var cc_user_cn="";//名
+								var cc_user_code=""//代码 
+
+								for(var cuser in  datas[0].cc_user){
+									
+									if(vlUtils.isnull(cc_user_code)){
+										 cc_user_code=cuser;
+									}else{
+										cc_user_code+=","+cuser;
+									}
+									if(vlUtils.isnull(cc_user_cn)){
+										cc_user_cn=datas[0].cc_user[cuser]
+									}else{
+										cc_user_cn+=","+datas[0].cc_user[cuser];
+									}
+									
+								}
+								document.getElementById("cc_user").innerHTML = cc_user_cn;
+								document.getElementById("cc_user_code").innerHTML = cc_user_code;
+								document.getElementById("bill_date").innerHTML = datas[0].bill_date;
+								// 编辑按钮权限判断
+								// var toEdit =  document.getElementById("toEdit");
+								document.getElementById("toEdit").setAttribute("billUser", datas[0].bill_user);
+								// 
+								var len = mui(".input").length;
+								for(var i = 0; i < len; i++) {
+									if(mui(".input")[i].value == "undefined") {
+										mui(".input")[i].value = ' ';
+									}
+								}
+								// 去掉关联状态的undefined
+								var len1 = mui(".state").length;
+								for(var i = 0; i < len1; i++) {
+									if(mui(".state")[i].innerHTML == "undefined") {
+										mui(".state")[i].innerHTML = ' ';
+									}
+								}
+								// 							
+							} else {
+								mui.toast("未查询到数据");
+								// document.getElementById("contList").innerHTML = '';
+							}
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						console.log(errorThrown);
+						console.log(type);
+					}
+				});
+			}
+			// 【关联】事件
+			function associate(){
+				var rqsData = {
+					bill_no : detailInfo.bill_no,
+					bill_user : userbillNo,
+					bill_com : teamBillCom,
+				}
+				var wsScan = plus.webview.getWebviewById("scan_signup.html");
+				if(!vlUtils.isnull(wsScan)){
+					plus.webview.hide(wsScan);
+					plus.webview.close(wsScan);
+				}
+				mui.openWindow({
+					url:"../vlvdsu/scan_signup.html",
+					id:"scan_signup.html",
+					createNew:true,
+					extras:{
+						system	: "关联101",
+						fromPage: "vdvc312_node.html",
+						rqsData : rqsData
+					}
+				})
+			}
+			function associateSuccess(){
+				
+			}
+		}); // plusReady
+	</script>
+
+</html>

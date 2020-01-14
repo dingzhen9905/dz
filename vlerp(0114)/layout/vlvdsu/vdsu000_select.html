@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			
+			.mui-row {
+				padding: 8px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			/* 终端*/
+			/*三级联动样式*/
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+			
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			
+			.ui-push {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+				display: none;
+			}
+			/* 灰色*/
+			
+			.gray {
+				color: gray;
+			}
+			
+			.hide {
+				display: none;
+			}
+			
+			.mui-input-row.lastInput:after {
+				height: 0;
+			}
+			.list_font {
+				padding:1px;
+				padding-left:15px;
+				color: #000000;
+				font-size: 11px;
+				line-height: 12px;
+				height: 12px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			header.headerMain.editHeader{
+				height:75px !important;
+			}
+			.mui-content{
+				padding-top:78px !important;
+				margin-bottom: 30px;
+			}
+			.btnbox{padding:10px;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle">
+				<p id="title">选择部门客户</p>
+				<h1 id="header"></h1>	
+			</div>
+		</header>
+		<div class="mui-content" >
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row hide">
+					<label>部门(代码)</label>
+					<input id="bill_dept" type="text" readonly="readonly" class="mui-input-clear" placeholder="点击选择部门">
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>部门</label>
+					<input id="bill_deptName" type="text" readonly="readonly" class="mui-input-clear" placeholder="点击选择部门">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row hide">
+					<label>供货商(311代码)</label>
+					<input id="bill_coppo" 
+							type="text" 
+							class="mui-input-clear requiredInput" 
+							readonly="readonly" 
+							placeholder="点击选择供货商"
+							
+							data-field="text.bill_coppo"  
+							/>
+				</div>
+				<div class="mui-input-row hide">
+					<label>供货商(101代码)</label>
+					<input id="bill_oppo" 
+							type="text" 
+							class="mui-input-clear requiredInput" 
+							readonly="readonly" 
+							placeholder="点击选择供货商"
+							
+							data-field="text.bill_oppo"  
+							/>
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>供货商</label>
+					<input id="bill_oppoName" 
+							type="text" 
+							class="mui-input-clear requiredInput" 
+							readonly="readonly" 
+							placeholder="点击选择供货商"
+							
+							data-field="text.bill_name"  
+							data-link = 'bill_oppo'
+							data-href="../vlfind/vdvc311_VRfind.html"
+							/>
+				</div>
+			</div>
+			<div class="btnbox">
+				 <button id='showCard' type="button" class="mui-btn mui-btn-primary mui-btn-block mui-btn-outlined">出示二维码新建终端</button>
+				 <button id='buildRelate' type="button" class="mui-btn mui-btn-primary mui-btn-block mui-btn-outlined">扫客户二维码建关系</button>
+			</div>
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/mui.poppicker.js"></script>
+	<script src="../../js/areas(2).js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var date = new Date(); 
+		var bill_date = vlUtils.dateToString(date);
+		var branchInfo=[];
+		mui.init({});
+		var getElem = function(el){return document.getElementById(el);};
+		var oDeptName = getElem('bill_deptName');
+		var oBillOppo = getElem('bill_oppoName');
+		var oSohwCard = getElem('showCard');
+		var oBuildRelate = getElem('buildRelate');
+
+		mui.plusReady(function() {
+			// TODO 1. 页面上的字段========================
+			// TODO 2. 接收传过来的参数===========================
+			var self = plus.webview.currentWebview(),
+				teamBillCom 	= self.teamBillCom,
+				teamBillComName = self.teamBillComName,
+				userbillNo 	= self.userbillNo,
+				loginCom 	= self.loginCom,
+				loginComName= self.loginComName,
+				choice 		= self.choice,
+				fromPage 	= self.fromPage,
+				privileges	= self.privileges,
+				commonParams=	self.commonParams;
+				// 
+				oDeptName.addEventListener('tap', eDeptName, false);
+				oBillOppo.addEventListener('tap', eBillOppo, false);
+				oSohwCard.addEventListener('tap', eShowCard, false);
+				oBuildRelate.addEventListener('tap', eBuildRelate, false);
+			window.addEventListener('vdvc311VRfind01', function(event) {
+				var linkName = event.detail.linkName;
+				var _name = event.detail.fieldid;
+				var btn = event.detail.btn;
+				var dataRow = event.detail.dataRow;
+				if(typeof(dataRow)=="string"){
+					dataRow = JSON.parse(dataRow);
+				}
+//				console.log(JSON.stringify(dataRow));
+				var other = event.detail.other;
+				var oid = document.getElementById(_name);
+				var _id = oid.getAttribute('data-link');
+				document.getElementById(_name).value= linkName;
+				document.getElementById(_id).value= dataRow[0]['参数'];
+				document.getElementById('bill_coppo').value= dataRow[0]['图片'];
+			});
+			
+			// TODO 3. 基础设置/赋值 =============================
+			_tempUser = privileges === "ROOT" ? "%" : userbillNo;
+			/*
+			queryparmas = { // 默认全部004
+				name: 'msvr',
+				bill_com: vlUtils.getStorage("newTeamBillCom"),
+				bill_task: "VR_find_dept001", //默认004
+				bill_user:_tempUser,
+				bill_title:"",
+				currentPage: 1,
+				pageSize: 10,
+				paramText: ""
+			}
+			*/
+		   window.addEventListener("vdvc311VRdept01",depts)
+		   	function depts(event){
+		   	    bill_name=event.detail.linkName	
+		   //		console.log(JSON.stringify(bill_dept))
+		   		document.getElementById("bill_deptName").value = bill_name
+                document.getElementById("bill_dept").value = bill_name
+		   	}
+			
+			function eDeptName() {
+			    mui.openWindow({
+			    	id :"vdvc311_VRdept.html",
+			    	url:"../vlfind/vdvc311_VRdept.html",
+					createNew:true,
+			    	extras:{
+			    		teamBillCom		: teamBillCom,
+			    		teamBillComName	: teamBillComName, 								
+			    		loginComName	: loginComName, 	
+			    		userbillNo		: userbillNo, 		
+			    		//userName		: userName,
+			    		fromPage		: "vdsu000_select.html", 	
+	                    loginCom        : vlUtils.getStorage("newTeamBillCom"),
+			    	    billuser        : _tempUser,
+						billtask        : "VR_find_dept001",
+						bill_title      : ""
+					}
+			    })
+			}
+			function checkRequire(){
+				var _dept = getElem("bill_dept").value;
+				var _client = getElem("bill_oppo").value;
+				if(_dept === ""){
+					mui.toast("请先选择部门~")
+					return false;
+				}else if(_client === ""){
+					mui.toast("请先选择经销商~")
+					return false;
+				}
+				return true;
+			}
+			function eBillOppo() {
+				var _opt = {
+					"id" : "bill_oppoName",
+					"btn" : "终端",
+					"com" : teamBillCom,
+				}
+				openPage(_opt);
+			}
+			function eShowCard(){
+				var check_r = checkRequire();
+				if(!check_r)return;
+				mui.openWindow({
+					url:"../../CodeCard.html",
+					id:"CodeCard.html",
+					extras:{
+						bill_no         : getElem("bill_coppo").value,
+						bill_name       : getElem("bill_oppoName").value,
+						teamBillCom 	: teamBillCom ,
+						teamBillComName : teamBillComName,
+						userbillNo 		: userbillNo,
+						loginCom 		: loginCom,
+						loginComName 	: loginComName,
+						fbill_no 		: getElem("bill_dept").value,
+						fromPage 		: "vdsa402_plist.html",
+						data_info		: "新建一级经销商负责人",
+						commonParams	: commonParams,
+					}
+				})
+			}
+			function eBuildRelate(){
+				var check_r = checkRequire();
+				if(!check_r)return;
+				
+				var ws312= plus.webview.getWebviewById("vdsu312_edit.html");
+				if(!vlUtils.isnull(ws312)){
+					plus.webview.close(ws312);
+				}
+				var paramColl = {
+					teamBillCom		: teamBillCom,
+					teamBillComName	: teamBillComName,
+					fbill_no		: getElem("bill_dept").value,
+					loginCom		: loginCom, 
+					loginComName	: loginComName, 
+					userbillNo		: userbillNo, 
+//					userName		: userName, 
+					privileges		: privileges, 		
+					fromPage		: "vdsu000_select.html", 	
+					fbillnoName		: getElem("bill_deptName").value,		
+					bcoppo			: getElem("bill_oppo").value,		
+					bspec			: getElem("bill_oppoName").value,		
+				}
+				mui.openWindow({
+					url:"../vlvdsu/vdsu312_edit.html",
+					id:"vdsu312_edit.html",
+					createNew:true,
+					extras:{
+						paramColl : paramColl,
+					}
+				})
+			
+			}
+		
+			
+			function openPage(opt){
+				var dataHref = document.getElementById(opt.id).getAttribute("data-href"); // 没有连接即为未开发
+				if(dataHref == "" || dataHref == undefined || dataHref == null){
+					plus.nativeUI.toast("～敬请期待～", {
+						'verticalAlign': "top"
+					});
+					return;
+				}
+				var scanpage = plus.webview.getWebviewById(dataHref.slice(8));
+				if(!vlUtils.isnull(scanpage)){
+					plus.webview.hide(scanpage);
+					plus.webview.close(scanpage);
+				}
+				var urlarr = dataHref.split("/");
+				// 打开页面
+				mui.openWindow({
+					url:dataHref,
+					id: urlarr[urlarr.length-1],
+					createNew:true,
+					extras:{
+						teamBillCom 	: teamBillCom ,
+						teamBillComName : teamBillComName,
+						userbillNo 		: userbillNo,
+//						userName 		: userName,
+						loginCom 		: loginCom,
+						loginComName 	: loginComName,
+//						privileges 		: privileges,
+//						userRole		: userRole,
+						btn 			: opt.btn,
+						fieldid 		: opt.id,
+						bill_task		: 'VR_vdvc311_find_001',
+						choice			: 'single',
+						fromPage		: 'vdsu000_select.html',
+				    },
+				});
+
+			}
+	});  
+	</script>
+
+</html>

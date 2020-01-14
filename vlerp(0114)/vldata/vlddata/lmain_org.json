@@ -1,0 +1,6 @@
+[
+{"bill_no":"org01","bill_theme":"部门管理","bill_pic":"vdoa012_b.png","link_lnext":"vdvc103_list"},
+{"bill_no":"org02","bill_theme":"通讯录管理","bill_pic":"vdoa012_b.png","link_lnext":"vdvc121_list"},
+{"bill_no":"org03","bill_theme":"客户管理","bill_pic":"vdoa012_b.png","link_lnext":"vdvc311_list"},
+{"bill_no":"org04","bill_theme":"终端管理","bill_pic":"vdoa012_b.png","link_lnext":"vdvc312_list"}
+]

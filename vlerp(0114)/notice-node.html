@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>【消息详情】</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/common/mui.min.css">
+		<link rel="stylesheet" href="css/index.css">
+		<link rel="stylesheet" href="css/fonts/iconfont.css" />
+		<style type="text/css">
+			header{height: 65px !important;}
+			header a, header h1{color: #FFFFFF !important;}
+			.mui-content{padding-top: 50px !important;}
+			label{font-size: 12px;color: #6C6C6C;}
+			input{height:30px !important;margin:3px auto !important;padding:2px !important;border:1px solid #5da8fa !important;border-radius:10px !important;font-size: 14px;}
+			input[placeholder] {padding:2px !important;font-size: 14px;color: #000;}
+			.list_font{font-size: 12px;}
+			.search-terms-txt{padding: 8px 5px;text-align:;}
+			.search-terms-title{padding-left:10px}
+			.hide {display: none;}
+			 .order-main-ul{background: none;}
+			.order-main-li{margin-bottom:5px;padding:5px 10px !important;border-bottom:1px solid #20B2AA;margin-bottom:3px;}
+			.report-title{text-align: left;padding-left: 10px;}
+			.report-item{}
+			.mui-row:before,
+			.mui-row:after,
+			.mui-table-view-cell:after,
+			.mui-table-view-cell:before{height:0px;}
+			.content-total{border-top:1px dashed #C0C0C0}
+			.vl-list-search-tip{padding:100px;height:300px;text-align: center;}
+			.vl-list-search-tip .icon {color:#353B42;font-size:100px;}
+			.vl-list-search-result{color:#000 !important;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;}
+			.vl-list-search-icon{color:#0062cc;height:100px;line-height: 100px;font-size: 100px;}
+			.vl-center{text-align: center;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id='J_pageTitle'></h1>
+		</header>
+		<div class="mui-content">
+			<!--下拉刷新容器-->
+			<div id="pullrefresh" class=""style="background:;margin:0;padding-top:;">
+				<div style="position: relative;" class="hide">
+					<div id="showHint" class="vl-list-search-tip hide" style="">
+						<span class="icon iconfont icon-wushuju" style=""></span>
+						<p class="vl-list-search-result">未查询到相关的数据</p>
+						<p >可以尝试其他查询</p>
+					</div>
+					<div id="searching" class="vl-list-search-tip" style="">
+						<p class="mui-icon mui-icon-search vl-list-search-icon"></p>
+						<p>正在搜索中......</p>
+					</div>
+					<div id="showError" class="vl-list-search-tip hide" style="">
+						<span class="icon iconfont icon-kulian" style=""></span>
+						<p class="vl-list-search-result">出错啦~</p>
+						<p >请稍后再试</p>
+					</div>
+				</div>
+				<div class="mui-scroll" id="content" style="background:;margin:0">
+					<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed order-main-ul">
+					</ul>
+				</div>
+				<!-- <script id="li-template" type='text/template'>				
+					<li class="mui-table-view-cell order-main-li mui-right order-main-li <%=liClass%>"  
+						style="background:#fff;">
+                    	<div class="data-row hide"><%=rowdata%></div>
+                        <div class="mui-row">
+                           	<span class="mui-col-xs-8 report-title"><%=liTitle%></span>
+							<span class="mui-col-xs-4 report-item vl-center"><%=liLeftM%></span>
+                        </div>
+	                </li>
+				</script> -->
+				<script id="li-template" type="text/template">
+					<li class="mui-table-view-cell" style="margin-bottom: 3px;background: #fff;overflow: hidden;">
+						<div class="data-row hide"><%=rowdata%></div>
+						<div class="mui-slider-cell  mui-slider-handle">
+							<div class="mui-row mainfulltxt" style="overflow: hidden;">
+								<div class="mui-col-xs-2 mui-row hide" style="padding:5px;width:55px;">
+									<img class="vdfa332 mui-col-xs-12" src="<%=liImgSrc%>" onerror="this.src='../../images/defult/vdvc101.png'" id="<%=liImgId%>" />
+								</div>
+								<div class="mui-col-xs-8 mui-row" style="min-height:50px;">
+									<h5 class="list_h5 mui-col-xs-12 mftbillname" style="color:#242424;padding-top:1px;"><%=liTitle%></h5>
+									<p class="list_font mui-col-xs-12 mft"><%=liLeftM%></p>
+								</div>
+								<div class="mui-col-xs-4 mui-row list_three" style="text-align: right;">
+									<p class="list_fonts mui-col-xs-12"><%=liDate%></p>
+								</div>
+							</div>
+						</div>
+					</li>
+				</script>
+			</div>
+		
+		<script src="js/mui.min.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="js/arttmpl.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="js/md5.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-2.1.0.js" 	type="text/javascript" charset="utf-8"></script>
+		<script src="js/vlindex.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+		;(function(){	
+			// 初始化mui
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style:'circle',
+						callback: pulldownRefresh
+					},
+					up: {
+						auto:false,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			var totalPage = 0,
+			count = 1,
+			pageSize = 10,
+			userNew = null,
+			sys = null,
+			ajaxParam = null,
+			// 
+			pager = {};
+			var teamBillCom,teamBillComName,
+				userbillNo,userName,
+				loginCom,loginComName,
+				privileges,fromPage,
+				bill_no,fbillnoName,pageTitle,dataInfo,
+				commonParams = 'VR_vdvc901_query_02',
+				aUpdate = [];
+			mui.plusReady(function(){
+				userNew = JSON.parse(VlStore.pGet("user"));
+				sys = userNew.com_linkvd_userCom;
+				var self = plus.webview.currentWebview();
+				teamBillCom 	= self.teamBillCom;
+				teamBillComName = self.teamBillComName;
+				userbillNo 		= self.userbillNo;
+				userName 		= self.userName;
+				loginCom 			= self.loginCom;
+				loginComName 	= self.loginComName;
+				privileges 		= self.privileges;
+				// commonParams 	= self.commonParams;
+				otherParams 	= self.otherParams;
+				fbill_no			= self.fbill_no;
+				fromPage 			= self.fromPage;
+				pageTitle   		= self.pageTitle;
+				fbillnoName 		= self.fbillnoName;
+				dataInfo 			= self.dataRow; 
+				document.getElementById('J_pageTitle').innerHTML = "新的"+dataInfo['指令'];
+				findData()
+				// 绑定事件
+				bindEvent();
+			});
+			function pullupRefresh() {
+				setTimeout(function() {
+					count++;
+					if((count > pager.totalPage)){
+					 	mui.toast('没有更多数据了～');
+					}else{
+					 	findData(count, false)
+					 }
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+				}, 1500);
+			}
+			
+			// 下拉刷新具体业务实现
+			function pulldownRefresh() {
+				document.getElementById("contList").innerHTML = "";
+				document.getElementById("searching").style.display = "block";
+				setTimeout(function() {
+					eSearch()
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(true);
+				}, 1500);
+			}
+			// 绑定事件
+			function bindEvent(){}
+			function getSearchTxt(){
+				return document.getElementById("J_edate").value;
+			}
+			function findData(page,type){
+				var params = {
+					name		: 'msvr',
+					bill_task	 : commonParams,
+					bill_user	 : userbillNo,
+					bill_com	 : teamBillCom, // 当前单位
+					// bill_com:"vdvc10100_20190810_3e7119a7",
+					// bill_user:"vdvc00100_20190812_9c9c7009",
+					bill_bflow : dataInfo['指令'],
+					currentPage : arguments[0] ? arguments[0] : 1,
+					pageSize  : pageSize,
+					paramText : "",
+				};
+				console.log(JSON.stringify(params))
+				VlAjax.post({
+					"port" : "active",
+					"headers" : "json",
+					"isFirst" : type,
+				}, params, sCBfind)
+			}
+			
+			function sCBfind(data,type) {
+				console.log(JSON.stringify(data))
+				pager = data.page;
+				document.getElementById("showHint").style.display = "none";
+				var contList = document.getElementById("contList");
+				if(data.data.length != 0) {
+					var html = '';
+					for(var i = 0; i < data.data.length; i++) {
+						if(type&&i==0){
+							contList.innerHTML="";
+							document.getElementById("searching").style.display = "none";
+							var newdataArr ={};
+							for(var k in data.data[0]) {
+								newdataArr[k.slice(0, 2)] = k.slice(2);
+							}
+						}
+						var _rowd = st315listAdapter(data.data[i]);
+						var source = document.getElementById('li-template').innerHTML;
+			            var render = template.compile(source);
+			            html += render(_rowd);
+						var _txt = "'" + _rowd['liImgId'] + "'";
+						aUpdate.push(_txt);
+					}
+					jQuery("#contList").append(html);
+				} else { // 如果没有长度说明没有数据，提示没有数据
+	//				mui.toast("未查询到数据~")
+					document.getElementById("contList").innerHTML = '';
+					document.getElementById("searching").style.display = "none";
+					document.getElementById("showHint").style.display = "block";
+				}
+				plus.nativeUI.closeWaiting();
+		
+			}
+			function eSearch(){
+				document.getElementById("showHint").style.display = "none";
+				document.getElementById("contList").innerHTML = "";
+				document.getElementById("searching").style.display = "block";
+				findData()
+			}
+			var c = 0;
+			function st315listAdapter(data){
+				var oData = {};
+				for(var k in data) {
+					oData[k.slice(0, 2)] = data[k];
+				}
+				return {
+					"liClass"	: "",
+					"rowdata" 	: JSON.stringify(oData),
+					"liTitle" 	: oData["标题"],
+					"liDate" 	: oData["日期"].slice(0,10),
+					"liStatus" 	: "",
+					"liImgId" 	: oData["指令"],
+					"liImgName" : "",
+					
+					"liLeftT" 	: "",
+					"liLeftM" 	: oData["图片"],
+					"liLeftB" 	: "",
+					
+					"liRightT" 	: "",
+					"liRightM" 	: "",
+					"liRightB" 	: "",
+				}
+			}
+			function updateStatus(arr, sCB){
+				var params = {
+					name		: 'task_idata',
+					bill_task	: "VE_taidata_update_01",
+					bill_no	 	: VlTools.getBno('vdvc901'),
+					bill_user	: userbillNo,
+					bill_com	: teamBillCom, // 当前单位
+					// bill_com	: "vdvc10100_20190810_3e7119a7",
+					// bill_user	: "vdvc00100_20190812_9c9c7009",
+					cc_user 	: arr.join(','),
+				};
+				console.log(arr)
+				console.log(JSON.stringify(params))
+				VlAjax.post({
+					"port" : "sendTask",
+					"headers" : "json",
+				}, params, sCB)
+			}
+			var oldBack = mui.back;
+			mui.back = function (){
+				updateStatus(aUpdate, sCBupdate);
+				mui.fire(plus.webview.getWebviewById('index-tabbar-notice'),'refreshList',{"refresh" : true});
+				mui.openWindow({
+					id:'index-tabbar-notice'
+				})
+				oldBack();
+			}
+			function sCBupdate(data){
+				console.log(JSON.stringify(data))
+			}
+		})();
+		</script>
+	</body>
+
+</html>

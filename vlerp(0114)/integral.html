@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="css/fonts/iconfont.css" />
+		<style>
+			body {
+				font-family: "Arial";
+			}
+			
+			#linkvd_stcode li {
+				list-style: none;
+			}
+			
+			#linkvd_stcode li::before {
+				content: "+ ";
+				/*color:blue;*/
+				/*font-size:30px;*/
+			}
+			
+			form {
+				margin: 10px 0;
+			}
+			
+			.topInput,
+			.topInput a {
+				/*height:40px;
+				line-height: 40px;*/
+				height: 50px;
+				line-height: 50px;
+			}
+			
+			.topInput a {
+				padding-top: 0;
+				padding-bottom: 0;
+				line-height: 14px;
+			}
+			
+			.topInput a input {
+				padding-top: 0;
+				color: #929292;
+			}
+			
+			.topInput a input#linkvd_term {
+				/*border:1px solid #E0E0E0;*/
+				padding-top: 5px;
+				padding-bottom: 5px;
+				color: #555;
+				height: 28px;
+				width: auto;
+				border-radius: 5px;
+				background-color: #E0E0E0;
+			}
+			
+			.topInput a input[placeholder] {
+				font-size: 14px;
+			}
+			/*ul {
+				margin-top: 5px;
+				margin-bottom: 5px;
+				padding: 5px;
+				background: #fff;
+			}*/
+			
+			.mui-row:before,
+			.mui-row:after {
+				display: none;
+			}
+			
+			.threeBottom {
+				overflow: hidden;
+			}
+			
+			.m {
+				overflow: hidden;
+				margin-top: -28px !important;
+				padding: 0 !important;
+			}
+			
+			.topNav {
+				padding: 0;
+			}
+			
+			.topNav p {
+				height: 35px;
+				line-height: 35px;
+			}
+			/*删除*/
+			
+			p.topitem {
+				padding: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--头部-->
+		<header class="mui-bar mui-bar-nav" id='head' style="height:60px;">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" style=""></span>
+			<h1 class="mui-title" id="header" style="">V积分</h1>
+			<span class="mui-icon mui-icon-info  mui-pull-right" style="" id="Help"></span>
+		</header>
+		<!--V币金额-->
+		<div style="width:100%;height:150px;background:#4F4F4F; margin-top:60px;padding-left:20px;padding-top:20px;">
+			<div style="width:60px;height:60px;background:#BEBEBE;border-radius: 50%;margin:0 auto"><img src="" alt="" onerror="this.src='images/defult/vdvc001.png'" id="images" style="width:60px;height:60px;border-radius: 50%;" /></div>
+			<div style="width:50px;height:20px;border:1px solid white;float:right;margin-right:10px;margin-top:-70px;text-align: center;border-radius:10%;" id="sign">
+				<sapn style="color:white">签到</sapn>
+			</div>
+			<div style="margin-top:30px;"><span style="color:#C4C400;font-size: 26px;margin-left:20px;margin-top:40px;" id="Vgold">200</span><span style="font-size: 12px;color:#BEBEBE">个可用V金币，价值约<span style="color:#C4C400">￥&nbsp <span id="cash">0</span>元</span>
+				</span>
+			</div>
+
+		</div>
+		<!--积分规则说明区域-->
+		<div id="rule" style="margin:20px;display: none;">
+			<div>如何获得积分？</div>
+			<div>
+				<p>登录App、每日签到、分享内容及邀请好友等操作都可以获取积分。</p>
+				<p>获得的积分可以在积分商城中兑换优惠券、礼品卡以及调调精选好物等礼品。具体的积分规则及获得方式如下：</p>
+			</div>
+			<ul id="">
+			<li>每日签到 </li>
+			<li>连续签到第1天 - 第5天：每日签到积分+3；</li>
+			<li>连续签到5天：额外获得15积分；</li>
+			<li>连续签到第6天 - 第30天：每日签到积分+5， </li>
+			<li>连续签到10天：额外获得20积分奖励； </li>
+			<li>连续签到20天：额外获得50积分奖励； </li>
+			<li>连续签到30天：额外获得100积分奖励； </li>
+			<li>连续签到第31天及以上：每日签到积分+10； </li>
+			<li>连续签到31天后每连续签到15天：额外100积分奖励； </li>
+			<li>当连续签到中断后，则回到初始签到状态重新累计连续签到天数； </li>
+			</ul>
+			<div style="width:60%;height:50px;background:#0062CC;margin:0 auto;border-radius:5%;text-align:center;" id="know"><span style="color:#FFFFFF;font-size:22px;line-height: 50px;">我知道了</span></div>
+		</div>
+		<div id="content">
+			<!--金币兑换区域-->
+			<div style='margin-top:10px' ;>
+				<!--四级标题-->
+				<div style="height:40px;background:#FFFFFF">
+					<div style="margin-left:20px;line-height:40px;font-family: arial;font-weight: bold;font-size:16px;">积分兑换</div>
+				</div>
+				<!--商品展示区域-->
+				<!-- <ul  class="mui-row" style="list-style:none;margin-left:-60px;margin-top:0px;background:#FFFFFF"> -->
+				<ul id="contList" class="mui-row mui-table-view mui-table-view-striped mui-table-view-condensed detailist">
+					
+				</ul>
+			</div>
+
+		</div>
+		<script  id="listTmpl" type="text/template">
+			<li class="mui-col-xs-6">
+				<div class="grid" style="box-sizing: border-box;margin:5px;padding:5px;text-align: center;background:#FFFFFF">
+					<div class="data-row" style="display:none"><%=rowdata%></div>
+					<p><img src="<%=liImgSrc%>" onerror="this.src='images/icon/default.png'" style="width:80px;"></p>
+					<div style="font-weight:bold;font-size: 14px;"><%=liTitle%></div>
+					<p class="detail" style="font-size:12px;"><%=liLeftM%></p>
+					<p class="author" style="font-size:12px;color:red">￥<%=liLeftB%>积分</p>
+				</div>
+			</li>
+		</script>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/jquery-2.1.0.js"></script>
+	<script src="js/md5.js"></script>
+	<script src="js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/immersed.js"></script>
+	<script type="text/javascript">
+		var $$ = jQuery.noConflict();
+		var Header = document.getElementById("header"); //头部
+			Vgold = document.getElementById("Vgold"), //V金币
+			Cash = document.getElementById("cash"), //现金
+			Help = document.getElementById("Help"), //头部帮助规则按钮
+			Rule = document.getElementById("rule"), //规则范围
+			Content = document.getElementById("content"), //内容展示区域
+			Know = document.getElementById("know"),
+			Sign = document.getElementById("sign"); //签到
+		var userBillNo,teamBillCom,teamBillComName;
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			plus.screen.lockOrientation("portrait-primary");  // 禁止横屏显示
+			userBillNo = self.userbillNo; //登录人唯一的bill_no
+			teamBillCom = self.teamBillCom; //单位
+			teamBillComName = self.teamBillComName;
+			
+			mui("#images")[0].setAttribute('src', VlAjax.getImgPath(userBillNo));
+			Help.addEventListener("tap", function() {
+				Rule.style.display = "block";
+				Content.style.display = "none";
+			})
+			Know.addEventListener("tap", function() {
+				Rule.style.display = "none";
+				Content.style.display = "block";
+			})
+			//点击签到
+			Sign.addEventListener("tap", function() {
+				mui.alert("暂未开放");
+			})
+			//
+			mui("#content").on("tap", "li", function(e) {
+				var dataRow = jQuery(this).find(".data-row").eq(0).html();
+				var rowObj = JSON.parse(dataRow);
+				mui.openWindow({
+					url: './layout/vlvdeb/vdeb311_node.html',
+					id: 'vdeb311_node.html',
+					createNew: true,
+					extras: {
+						detailInfo: rowObj,
+						userbillNo: userBillNo,
+						teamBillCom: teamBillCom,
+						teamBillComName: teamBillComName
+					}
+				})
+			})
+			
+			findIntegral();//查询个人积分
+			findGifts();//查询兑换礼品
+
+			document.getElementById("goBack").addEventListener("tap", function() {
+				var vs = plus.webview.getWebviewById('tab-webview-subpage-setting.html');
+				vs.reload(); // 重载
+				vs.show();
+				var ws = plus.webview.currentWebview();
+				plus.webview.close(ws);
+
+			})
+		}); // PlusReady 结束
+		
+		function findIntegral(){
+			var p = {
+				name: "vdeb301",
+				bill_task: "L,Y",
+				currentPage: 1,
+				pageSize: 30,
+				bill_user: userBillNo
+			}
+			VlAjax.post({
+				"port":"fuzzy",
+				"headers":"json",
+				"outPath":"layout/login.html"
+			}, p, sCB);
+			function sCB(data, type) {
+				if(data.data.length != 0) {
+					var datas = data.data[0];
+					Vgold.innerHTML = datas.node_amt;
+					Cash.innerHTML = Vgold.innerHTML / 10000;
+				} 
+			}
+		}
+		function findGifts(){
+			var p = {
+				name: "vdeb311",
+				bill_task: "L,Y",
+				currentPage: 1,
+				pageSize: 30,
+				// bill_com:teamBillCom,
+				bill_user: userBillNo
+			}
+			VlAjax.post({
+				"port":"fuzzy",
+				"headers":"json",
+				"outPath":"layout/login.html"
+			}, p, sCB);
+			function sCB(data, type) {
+				var html = '';
+				for(var i = 0; i < data.data.length; i++) {
+					var _rowd = dataAdapter(data.data[i])
+					var source = document.getElementById('listTmpl').innerHTML;
+					var render = template.compile(source);
+					html += render(_rowd);
+					if(type&&i==0){
+						contList.innerHTML = "";
+					}
+				}
+				jQuery("#contList").append(html);
+			}
+			function dataAdapter(data) {
+				return {
+					"rowdata" 	: JSON.stringify(data),
+					"liTitle" 	: data.bill_name,
+					"liDate" 	: "",
+					"liStatus" 	: "",
+					"liImgSrc"  : VlAjax.getImgPath(data.bill_text[0].linkbd_bEANcode),
+					"liImgId" 	: "",
+					"liImgName" : "",
+					
+					"liLeftM" 	: data.bill_id,
+					"liLeftB" 	: data.node_price,
+					
+					"liRightT" 	: "",
+					"liRightM" 	: "",
+					"liRightB" 	: "",
+					"canDel"	: ""
+				}
+			}
+		}
+	</script>
+
+</html>

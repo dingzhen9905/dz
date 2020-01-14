@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>部门管理（新建）</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		
+		<!--三级联动-->
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.mui-input-row.lastInput:after{
+				height:0;
+			}
+			.blabel{color:#FF4400;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p id="title"></p>
+				<h1 id="header" ></h1>	
+			</div>
+			<a class=" mui-pull-right rightIcon" id="saveBtn" data-loading-text="提交中" >保存</a>	
+			<div class="mui-row navBar buttonBars" style="background: #F7F7F7;">
+				<button type="button" id="deleteBtn" class="mui-col-xs-4" >
+					<span class="mui-icon mui-icon-trash" id="deleteIcon" ></span>
+					<span >删除</span>
+				</button>
+				<button  type="button" id="bSendBtn" class="mui-col-xs-4 " >
+					<span class="mui-icon mui-icon-upload" id="bSendIcon" ></span>
+					<span >送审</span>
+				</button>
+				 <button  type="button" id="bBackBtn" class="mui-col-xs-3 " style="display: none;">
+					<span class="mui-icon mui-icon-paperclip" id="bBackIcon"></span>
+					<span >收回</span>
+				</button>
+				<span class="mui-col-xs-4 state" id="billState"></span>
+			</div>
+		</header>
+		<div class="mui-content" style="padding-top:100px;margin-top:10px;margin-bottom:30px;">
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row " style="display:none;">
+					<label>上级部门</label>
+					<input id="fbill_no" type="text" readonly="readonly" style="font-size:12px;">
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>上级部门</label>
+					<input id="fbill_no_name" type="text" readonly="readonly" style="font-size:12px;">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;display: none;">
+				<div class="mui-input-row lastInput" id="bill_context">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row">
+					<label>部门编码</label>
+					<input id="bill_id" type="text" class="mui-input-clear red-border requiredInput" placeholder="录入部门编码" required="required">
+				</div>
+				<div class="mui-input-row lastInput">
+					<label>部门名称</label>
+					<input id="bill_name" type="text" class="mui-input-clear red-border requiredInput" placeholder="录入部门名称" required="required">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 16px;margin-bottom:5px;">
+				<div class="mui-input-row " id="deptType">
+					<div class="mui-col-xs-3 mui-pull-left" style="padding:11px 0 11px 15px;">部门类别</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-5">
+						<label id='' >部门</label>
+						<input name="deptType" type="radio" class="deptType" id="deptType1" value="部门">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-4">
+						<label id='' >岗位</label>
+						<input name="deptType" type="radio" class="deptType" id="deptType2" value="岗位">
+					</div>
+				</div>
+				<div class="mui-input-row lastInput" id="billTitle">
+					<label>部门类型</label>
+					<input id="bill_title" type="text" class="mui-input-clear red-border requiredInput" placeholder="点击选择部门类型" readonly="readonly">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;display: none;">
+				
+				<div class="mui-input-row" style="position: relative;">
+					<label>负责人</label>
+					<input id="linkvd_linkuser" type="text" class="" placeholder="录入负责人">
+					<button type="button" id="linkbd_linksts" class="mui-btn mui-btn-warning mui-btn-outlined" style="padding:2px 5px;position: absolute;right:10px;top:10px;width:auto;display: none;">未关联</button>
+				</div>
+				<div class="mui-input-row lastInput" style="position: relative;">
+					<label>负责人手机号</label>
+					<input id="linkbd_linktel" type="number" class="" placeholder="录入负责人手机号">
+					<button type="button" id="choiceUser" class="mui-btn mui-btn-primary mui-btn-outlined" style="padding:2px 5px;position: absolute;right:10px;top:10px;width:auto;display: none;"> 点击关联 </button>
+				</div>
+				<div class="mui-input-row lastInput" style="display: none;">
+					<label>负责人代码</label>
+					<input id="linkbd_linkid" type="text" class="" placeholder="关联后自动带出" readonly="readonly">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:8px 18px 5px 32px;margin-bottom:5px;">
+				<label class="blabel">部门标签<span style="color:#B6B6B6;font-size:10px;">&nbsp;&nbsp;&nbsp;* 多个标签请用<span style="color:crimson;">英文</span>逗号隔开</span></label>
+				<textarea name="" rows="2" cols="2" placeholder="部门标签" id="bill_label" class="" style="border:1px solid #eee;width:100%;margin-top:5px;font-size:12px;line-height: 16px;"></textarea>
+			</div>
+			<div class="mui-input-group" id="cc" style="padding:5px 18px 5px 25px;margin-bottom:5px;">
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn">抄送：</span>
+					<span class="mui-icon mui-icon-plusempty" id="" style="float:right;"></span>
+ 					<span class="mui-col-xs-6 spn" id="cc_user_cn"></span>
+				</div>
+				<div class="mui-row" style="display: none;">
+					<span class="mui-col-xs-4 spn">抄送id：</span>
+					<span class="mui-icon mui-icon-plusempty" id="" style="float:right;"></span>
+					<span class="mui-col-xs-6 spn" id="cc_user_code" style="display: ; overflow: hidden;"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;display:none;">
+				<div class="mui-input-row lastInput" style="">
+					<label>制单时间</label>
+					<input id="bill_date" type="text" class="" placeholder="" readonly="readonly">
+				</div>
+			</div>
+			<!--定编人数预留，别删！！！！-->
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;display:none;">
+				<div class="mui-input-row lastInput">
+					<label>定编人数</label>
+					<input id="" type="number" class="mui-input-clear" placeholder="录入定编人数">
+				</div>
+			</div>
+			<!-- 点击退出时底部弹出-->
+			<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action">
+				<!-- 可选择菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="sureDelBtn">
+						<a>确认</a>
+					</li>
+				</ul>
+				<!-- 取消菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a href="#sheet1"><b>取消</b></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = null;
+		var hadSend = false;  // 用于判断是否送审
+		var flagsave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		var deptname = "";
+		var contextTxt = null;
+		mui.plusReady(function() {
+
+			// 接收传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录人的代码
+			loginComName 	= self.loginComName;	// 5.登录人的名称
+			userbillNo 		= self.userbillNo;		// 6.登录单位代码
+			userName 		= self.userName;		// 7.登录单位名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			// 其他
+			flagNew = self.flagNew;
+			deptname = self.deptname;
+			contextTxt = self.contextTxt;
+			if(fbill_no!="ROOT" && !vlUtils.isnull(contextTxt)){
+				if(contextTxt.slice(0,1)==","){
+					contextTxt = contextTxt.slice(1);
+				}
+				document.getElementById("bill_context").innerHTML = contextTxt;
+			}
+			document.getElementById("billTitle").addEventListener("tap",function(){
+				var queryparmas = {
+					name: 'msvr',
+					bill_task: "VR_select_type", // 查询的指令
+					bill_com: loginCom, // 当前单位
+					bill_user: userbillNo, // 当前登陆人
+					bill_id: '100002',
+					currentPage: 1,
+					pageSize: 100,
+					paramText: ""
+				};
+				rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData, '../login.html');
+			})
+			
+			
+			// 抄送接收105传送过来的名字		
+			window.addEventListener('105findselectedUser', function(event) {
+				var userNameStr = event.detail.userNameStr;
+				var userCodeStr = event.detail.userCodeStr;
+				document.getElementById("cc_user_code").innerHTML = userCodeStr;
+				document.getElementById("cc_user_cn").innerHTML = userNameStr;
+				return;
+			});
+
+			
+			// 抄送，清空名字
+			window.addEventListener('105findEmptySelected', function(event) {
+		 		var close = event.detail.close;
+ 		 		if(close){
+ 		 			document.getElementById("cc_user_code").innerHTML = "";
+					document.getElementById("cc_user_cn").innerHTML = "";
+					oldUserName   = "";
+					oldUserCode = "";
+		 		}
+				return;
+			}); 
+			// 上级部门  
+//			document.getElementById("header").innerHTML = deptname; // 0109注释
+			document.getElementById("header").innerHTML = teamBillComName; 				// 0109修改
+			document.getElementById("fbill_no_name").value = teamBillComName; 			//0109增加
+			document.getElementById("fbill_no").value = fbill_no; 
+			// 事件绑定
+			document.getElementById("saveBtn").addEventListener("tap", saveBtn);		// 保存
+			document.getElementById("deleteBtn").addEventListener("tap",deleteBtn);		// 按下“删除”后弹出底部菜单
+			document.getElementById("sureDelBtn").addEventListener("tap", sureDelBtn); 	// 删除：弹出确认菜单之后点击确认
+			document.getElementById("bSendBtn").addEventListener("tap",bSendBtn); 		// 送审
+			document.getElementById("bBackBtn").addEventListener("tap",bBackBtn);		// 收回
+			
+			// 判断为新增还是修改
+			if(flagNew == "N") { // 修改  
+			 	document.getElementById("title").innerHTML = "信息编辑";
+			 	detailInfo = self.detailInfo;
+				var privileges = self.privileges;
+				var bill_no = detailInfo.bill_no;
+				onlyCode = detailInfo.bill_no; //bill_no字段  
+				setInputvalue(); 
+				var bill_task = "d_save";
+				var bill_user = detailInfo.bill_user;
+				
+				flagsave=true;
+				if(detailInfo.bill_task == "L" || detailInfo.bill_task == "S"){
+					hadSend = false;
+				}
+				if(detailInfo.bill_task != "L"){
+					hadSend = true;
+				}
+				rqsData = detailInfo;
+				setButton(detailInfo);
+			} 
+			if(flagNew == "Y") { // 新增状态
+				onlyCode = getDataCode("vdvc103"); //bill_no字段
+				var bill_task = "d_new";
+				document.getElementById("title").innerHTML = "部门注册";
+				document.getElementById("billState").innerHTML = "录入中";
+				document.getElementById("bill_date").value = vlUtils.dateToString(date);
+				setButton(detailInfo);
+			}
+			//
+			// 抄送 （打开105） 
+			document.getElementById("cc").addEventListener("tap", function() {
+				//触发详情页面的newsId事件
+				var oldUserName = document.getElementById("cc_user_cn").innerHTML;
+				var oldUserCode = document.getElementById("cc_user_code").innerHTML;
+				mui.openWindow({
+					url: 'vdvc105_find.html',
+					id: 'vdvc105_find.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom,
+						teamBillComName: teamBillComName,
+						userbillNo: userbillNo,
+						loginCom: loginCom,
+						loginComName: loginComName,
+						oldUserName:oldUserName,
+						oldUserCode:oldUserCode,
+						choice: "single", // 单选
+//					 	choice:"multiple", // 多选
+					 	fromPage: "vdvc103hn_edit.html",
+					}
+				})
+			}) 
+			// 负责人
+			document.getElementById("choiceUser").addEventListener("tap", function() {
+				var linkvdLinkuser = document.getElementById("linkvd_linkuser").value;
+				var linkbdLinkid = document.getElementById("linkbd_linktel").value;
+//				if(linkbdLinkid == "" || linkvdLinkuser == ""){
+//					mui.toast("请先填写负责人姓名和手机号！");
+//					return;
+//				}
+				if(linkbdLinkid == ""){
+					document.getElementById("linkbd_linksts").innerHTML = "关联失败";
+					return;
+				}
+				var queryparmas = {
+					name: 'vdvc105',
+					bill_com: loginCom,		
+					bill_task:"L,S,Y,YF",
+					currentPage: 1,
+					pageSize: 20,
+					paramText: linkbdLinkid,
+					fbill_no:""
+				}
+				searchAjax(queryparmas,linkvdLinkuser);
+			}) 
+			// 按钮设置
+			function setButton(detailInfo){
+				
+				var userbillNo = vlUtils.getStorage("userbillNo");
+				var privileges = vlUtils.getStorage("newPrivileges");
+				
+				
+				// 1.
+				if(!flagsave){
+
+
+					document.getElementById("saveBtn").addEventListener("tap",saveBtn); 
+					document.getElementById("bSendBtn").addEventListener("tap",bSendBtn);
+					document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn);
+			 		document.getElementById("deleteBtn").removeEventListener("tap",deleteBtn);
+			 		// 
+			 		document.getElementById("saveBtn").style.color =  "#FFF"; 
+					document.getElementById("bSendIcon").style.color =  "#18B4ED";
+			 		document.getElementById("bBackIcon").style.color =  "#8f8f94";
+			 		document.getElementById("deleteIcon").style.color =  "#8f8f94";
+				}
+				// 2.
+				if(flagsave && !hadSend){
+
+
+
+					document.getElementById("saveBtn").addEventListener("tap",saveBtn); 
+					document.getElementById("bSendBtn").addEventListener("tap",bSendBtn);
+					document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn);
+			 		document.getElementById("deleteBtn").addEventListener("tap",deleteBtn);
+			 		//
+			 		document.getElementById("saveBtn").style.color =  "#FFF";
+					document.getElementById("bSendIcon").style.color =  "#18B4ED";
+			 		document.getElementById("bBackIcon").style.color =  "#8f8f94";
+			 		document.getElementById("deleteIcon").style.color =  "#18B4ED";
+				}
+				// 3.
+				if(flagsave && hadSend && privileges != "ROOT"){
+					document.getElementById("saveBtn").removeEventListener("tap",saveBtn); 
+					document.getElementById("bSendBtn").removeEventListener("tap",bSendBtn);
+					document.getElementById("bBackBtn").addEventListener("tap",bBackBtn);
+			 		document.getElementById("deleteBtn").removeEventListener("tap",deleteBtn);
+			 		//
+			 		document.getElementById("saveBtn").style.color =  "#8f8f94";
+					document.getElementById("bSendIcon").style.color =  "#8f8f94";
+			 		document.getElementById("bBackIcon").style.color =  "#18B4ED";
+			 		document.getElementById("deleteIcon").style.color =  "#8f8f94";
+				}
+				// 4.
+				if(flagsave && hadSend && privileges == "ROOT"){
+					document.getElementById("saveBtn").addEventListener("tap",saveBtn); 
+					document.getElementById("bSendBtn").removeEventListener("tap",bSendBtn);
+					document.getElementById("bBackBtn").addEventListener("tap",bBackBtn);
+			 		document.getElementById("deleteBtn").removeEventListener("tap",deleteBtn);
+			 		//
+			 		document.getElementById("saveBtn").style.color =  "#FFF";
+					document.getElementById("bSendIcon").style.color =  "#8f8f94";
+			 		document.getElementById("bBackIcon").style.color =  "#18B4ED";
+			 		document.getElementById("deleteIcon").style.color =  "#8f8f94";
+				}
+			}
+			//验证必填
+			function validateRequired(){  
+ 				var check = true;
+ 				// 判断必填字段是否填写
+				var blankInputLens = mui(".mui-input-clear.requiredInput").length;
+				for(var i = 0; i < blankInputLens; i++) {
+					if(!mui(".mui-input-clear.requiredInput")[i].value || mui(".mui-input-clear.requiredInput")[i].value.trim() == "") {
+						var label = mui(".mui-input-clear.requiredInput")[i].previousElementSibling;
+						mui.toast(label.innerText + "不允许为空");
+						mui("#saveBtn").button('reset');
+						check = false;
+						return check;
+					}
+				}
+				// 电话
+//				document.getElementById("linkbd_linktel").value;
+//				var phoneNum = checkMobile(document.getElementById("linkbd_linktel").value);
+//				if(phoneNum == '' || phoneNum == false || typeof(phoneNum) == Number) {
+//					mui("#saveBtn").button('reset');
+//					check = false;
+//					return check;
+//				}
+				// 检查用户类别是否选择
+				var len = mui(".deptType").length;
+				var count = 0;
+				for(var i = 0; i < len; i++) { // 判断是否选择
+					if(!mui(".deptType")[i].checked) {
+						count++;
+						if(count == 2) {
+							mui.toast("请选择部门类别！");
+							check = false;
+							mui("#saveBtn").button('reset');
+							return check;
+						}
+					}
+				}
+				//
+				return check;
+			}
+			//修改输入框赋值
+			function setInputvalue(){ 
+				// 赋值
+				document.getElementById("bill_name").value = detailInfo.bill_name; // 部门名称
+				document.getElementById("bill_title").value = detailInfo.bill_title; // 部门名称
+				document.getElementById("bill_id").value = detailInfo.bill_id; // 部门编码
+				document.getElementById("fbill_no").value = detailInfo.fbill_no; // 上级部门
+				document.getElementById("linkvd_linkuser").value = detailInfo.bill_text[0].linkvd_linkuser; // 负责人
+				document.getElementById("linkbd_linkid").value = detailInfo.bill_text[0].linkbd_linkid; // 负责人代码
+				document.getElementById("linkbd_linktel").value = detailInfo.bill_text[0].linkbd_linktel; // 负责人手机号
+				document.getElementById("bill_date").value = detailInfo.bill_date;
+				document.getElementById("bill_label").value = detailInfo.bill_label;
+				document.getElementById("bill_context").innerHTML = detailInfo.bill_context;
+				if (detailInfo.bill_text[0].linkbd_linkid){
+					document.getElementById("linkbd_linkid").value = detailInfo.bill_text[0].linkbd_linkid; // 关联状态
+				}else{
+					document.getElementById("linkbd_linkid").value = ""; // 关联状态
+				}
+				if (detailInfo.bill_text[0].linkbd_linksts){
+					document.getElementById("linkbd_linksts").innerHTML = detailInfo.bill_text[0].linkbd_linksts; // 关联状态
+				}else{
+					document.getElementById("linkbd_linksts").innerHTML = "未关联"; // 关联状态
+				}
+				//
+				if(detailInfo.bill_bflow == "部门") {
+ 					document.getElementById("deptType1").checked = true;
+				} else if(detailInfo.bill_bflow == "岗位") {
+ 					document.getElementById("deptType2").checked = true;
+				}
+				// 状态
+				if(detailInfo.bill_task == "S") {
+					document.getElementById("billState").innerHTML = "待审核";
+				}
+				if(detailInfo.bill_task == "Y") {
+					document.getElementById("billState").innerHTML = "已审核";
+				}
+				if(detailInfo.bill_task == "L") {
+					document.getElementById("billState").innerHTML = "待送审";
+				}
+				if(privileges != "ROOT" && (detailInfo.bill_task == "Y" || detailInfo.bill_task == "S")){
+					document.getElementById("bSendIcon").style.color = "#8f8f94";
+					document.getElementById("deleteIcon").style.color = "#8f8f94";
+				}
+				var ccUserJson = detailInfo.cc_user;
+
+ 				if(!vlUtils.isnull(ccUserJson)){
+ 					var ccUserNameStr = "";
+					var ccUserCodeStr = "";
+					// 遍历对象，取出里面的中文名放在页面上
+					for(var i in ccUserJson) {
+						ccUserNameStr += "," + ccUserJson[i];
+						ccUserCodeStr += "," + i;
+					}
+					document.getElementById("cc_user_code").innerHTML = ccUserCodeStr.slice(1);
+					document.getElementById("cc_user_cn").innerHTML = ccUserNameStr.slice(1);
+ 				}else{
+ 					document.getElementById("cc_user_code").innerHTML = "";
+					document.getElementById("cc_user_cn").innerHTML = "";
+ 				}
+ 				// 删除按钮的状态
+				document.getElementById("deleteBtn").style.display = "block"; 
+			
+			}
+			//获取每个输入框的值
+			function getInputValue() {
+				// 获取每一个输入框的值
+				var bill_name = $$("#bill_name").val(); // 部门名称
+				var bill_title = $$("#bill_title").val(); // 部门名称
+				var bill_id = $$("#bill_id").val(); // 部门编码
+				var fbill_no = $$("#fbill_no").val(); // 上级部门
+				var billcontext = $$("#fbill_no_name").val(); // 上级部门
+				var bill_context = $$("#bill_context").html(); // 上级部门
+				var linkvd_linkuser = $$("#linkvd_linkuser").val(); // 负责人
+				var linkbd_linktel = $$("#linkbd_linktel").val(); //  负责人手机号
+				var linkbd_linkid = $$("#linkbd_linkid").val(); //  负责人手代码
+				var linkbd_linksts = $$("#linkbd_linksts").html(); // 关联状态
+				var bill_date = $$("#bill_date").val(); // 部门名称
+				var bill_label = $$("#bill_label").val(); // 部门名称
+				
+				// 抄送
+				var cc_user_code = document.getElementById("cc_user_code").innerHTML; //
+				var cc_user_cn   = document.getElementById("cc_user_cn").innerHTML; // 
+				
+				// 抄送转换格式、提交：
+				var ccUserCodeArr = cc_user_code.split(",");
+				var ccUserNameArr = cc_user_cn.split(",");
+				var ccUserJson = {}; 
+ 				if(!vlUtils.isnull(ccUserCodeArr)){
+ 					for(var i = 0; i < ccUserCodeArr.length; i++) {
+						ccUserJson[ccUserCodeArr[i]] = ccUserNameArr[i];
+					} 
+					ccUserJson= JSON.stringify(ccUserJson)
+ 				}else{
+ 					ccUserJson="";
+ 				}
+				// 部门类别
+				var len = mui(".deptType").length;
+				for(var i = 0; i < len; i++) { // 判断是否选择
+					if(mui(".deptType")[i].checked) {
+						var linknext = mui(".deptType")[i].value;
+					}
+				}
+				// bill_text提交的数据
+				inputData = [{
+					linkvd_linkuser: linkvd_linkuser,
+					linkbd_linktel: linkbd_linktel,
+					linkbd_linksts:linkbd_linksts,
+					linkbd_linkid:linkbd_linkid
+				}]
+				// 提交的数据
+				rqsData = JSON.parse(JSON.stringify(sendTaskData));
+				rqsData.bill_no 	= onlyCode;
+				rqsData.bill_id 	= bill_id;
+				rqsData.bill_name 	= bill_name;
+				rqsData.fbill_no 	= fbill_no;
+				rqsData.bill_title 	= bill_title;
+				rqsData.bill_context= bill_context;
+				rqsData.bill_task 	= bill_task;
+				rqsData.link_next 	= linknext;
+				rqsData.bill_bflow 	= linknext;
+				rqsData.cc_user 	= ccUserJson;
+				rqsData.bill_user 	= userbillNo;
+				rqsData.bill_com 	= loginCom;
+				rqsData.bill_text 	= JSON.stringify(inputData);
+				rqsData.bill_date 	= bill_date;
+				rqsData.bill_label 	= bill_label;
+				rqsData.bill_label = rqsData.bill_label.replace(/，/g,',');
+				return rqsData;
+			}
+			// 送审指令
+			function bSendBtn(){ 
+				var billDate = document.getElementById("bill_date").value ;
+				var fbillNo = document.getElementById("fbill_no").value ;
+//				var params = {
+////					name: "vdvc103",
+//					bill_com: loginCom, //登录人单位  // 0109把teamBillCom改了
+//					fbill_no:fbillNo,
+//					bill_no: onlyCode,
+//					bill_user: userbillNo,
+//					bill_date:billDate,
+//					bill_task:"b_send",
+//					flag_urgent: "Y"
+//				} 
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				params.bill_com  = loginCom;
+				params.fbill_no  = fbillNo;
+				params.bill_no 	 = onlyCode;
+				params.bill_user = userbillNo;
+				params.bill_date = billDate;
+				params.bill_task = "b_send";
+				if(flagsave){
+					//
+					var verfiedResults = validateRequired();//验证是否为必填字段  
+
+					if(verfiedResults == false){
+						mui("#saveBtn").button('reset');
+						return;
+					}
+					newrqsData = getInputValue(); //获取每一个输入框的的值的方法   
+					newrqsData = vlUtils.isUpdateObj(detailInfo, newrqsData);
+					//
+					newrqsData.bill_text = JSON.parse(newrqsData.bill_text); 
+
+					if(!detailInfo.bill_text[0].linkbd_linkid){
+						newrqsData.bill_text[1].bill_text = JSON.parse(newrqsData.bill_text[1].bill_text) 
+						newrqsData.bill_text[1].bill_text[0].linkbd_linkid = document.getElementById("linkbd_linkid").value;
+						newrqsData.bill_text[1].bill_text[0].linkbd_linksts = document.getElementById("linkbd_linksts").innerHTML;
+						newrqsData.bill_text[1].bill_text = JSON.stringify(newrqsData.bill_text[1].bill_text); 
+					}
+					newrqsData.bill_text = JSON.stringify(newrqsData.bill_text); 
+					newrqsData.bill_task = "d_save";
+					if(typeof(newrqsData.cc_user) != "string"){
+ 						newrqsData.cc_user=JSON.stringify(newrqsData.cc_user);
+					}
+					//
+					saveAjax(newrqsData);
+					// 以上是0318加//0320加
+					auditing(params);//送审方法
+				}else{
+					var verfiedResults = validateRequired();//验证是否为必填字段  
+
+					if(verfiedResults == false){
+						mui("#saveBtn").button('reset');
+						return;
+					}
+					rqsData = getInputValue(); //获取每一个输入框的的值的方法   
+					saveAjax(rqsData) ;
+					auditing(params);//送审方法
+				}
+			}
+			// 送审ajax
+			function auditing(params){
+
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async:false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+
+						if(data.code == 0) {
+
+							mui.toast(data.message);
+//								document.getElementById("bSendIcon").style.color = "#8f8f94";
+							document.getElementById("billState").innerHTML = "已审核";
+							mui.openWindow({
+								id: 'vdvc103hn_node.html',
+								url: 'vdvc103hn_node.html',
+								createNew: true, 
+								extras: { 
+									teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 不变
+									teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变
+									fbill_no 	  	: fbill_no,			// 3.fbill_no是		// 不变
+									loginCom 		: loginCom,			// 4.登录人的代码
+									loginComName 	: loginComName,		// 5.登录人的名称
+									userbillNo 		: userbillNo,		// 6.登录单位代码
+									userName 		: userName,			// 7.登录单位名称
+									privileges 		: privileges,		// 8.当前的权限是
+									fromPage 		: "vdvc103edit",		// 9.从哪个页面来
+									rqsData			: rqsData,
+								}
+							}); 
+							hadSend = true;
+							setButton(detailInfo);
+							if(privileges != "ROOT"){
+								document.getElementById("deleteIcon").style.color = "#8f8f94";
+							}
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) { 
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+
+					}
+				});
+			}
+			// 收回指令
+			function bBackBtn(){ 
+				var billDate = document.getElementById("bill_date").value ;
+				var fbillNo = document.getElementById("fbill_no").value ;
+				var params = {
+//					name: "vdvc103",
+					bill_com: loginCom, //登录人单位  // 0109把teamBillCom改了
+					fbill_no:fbillNo,
+					bill_no: onlyCode,
+					bill_user: userbillNo,
+					bill_date:billDate,
+					bill_task:"b_back",
+					flag_urgent: "Y"
+				} 
+//				var params={
+////						name: "vdvc103",
+//						bill_com: loginCom, //登录人单位  // 0109把teamBillCom改了
+//						bill_no: onlyCode,
+//						bill_user: userbillNo,
+//						bill_task: "b_back",
+//						flag_urgent: "Y"
+//				} 
+				if(hadSend){
+					takeback(params);//收回方法
+				}
+			} 
+			// 保存指令
+			function saveBtn(){ 
+ 				mui(this).button('loading'); 
+				var verfiedResults = validateRequired();//验证是否为必填字段  
+
+				if(verfiedResults == false){
+					mui("#saveBtn").button('reset');
+					return;
+				}
+				rqsData = getInputValue(); //获取每一个输入框的值的方法   
+
+				if(flagNew == "N") {  
+
+
+					rqsData = vlUtils.isUpdateObj(detailInfo, rqsData);
+					rqsData.bill_text = JSON.parse(rqsData.bill_text); 
+
+					if(!detailInfo.bill_text[0].linkbd_linkid){
+						rqsData.bill_text[1].bill_text = JSON.parse(rqsData.bill_text[1].bill_text) 
+						rqsData.bill_text[1].bill_text[0].linkbd_linkid = document.getElementById("linkbd_linkid").value;
+						rqsData.bill_text[1].bill_text[0].linkbd_linksts = document.getElementById("linkbd_linksts").innerHTML;
+						rqsData.bill_text[1].bill_text = JSON.stringify(rqsData.bill_text[1].bill_text); 
+					}
+					rqsData.bill_text = JSON.stringify(rqsData.bill_text); 
+					rqsData.bill_task = "d_save";
+					if(typeof(rqsData.cc_user) != "string"){
+ 						rqsData.cc_user=JSON.stringify(rqsData.cc_user);
+					}
+ 				}
+				if(flagNew == "Y"){
+					 if(flagsave){
+					 	rqsData = vlUtils.isUpdateObj(detailInfo, rqsData);
+					 	//
+					 	rqsData.bill_text = JSON.parse(rqsData.bill_text); 
+
+						if(!detailInfo.bill_text[0].linkbd_linkid){
+							rqsData.bill_text[1].bill_text = JSON.parse(rqsData.bill_text[1].bill_text) 
+							rqsData.bill_text[1].bill_text[0].linkbd_linkid = document.getElementById("linkbd_linkid").value;
+							rqsData.bill_text[1].bill_text[0].linkbd_linksts = document.getElementById("linkbd_linksts").innerHTML;
+							rqsData.bill_text[1].bill_text = JSON.stringify(rqsData.bill_text[1].bill_text); 
+						}
+						rqsData.bill_text = JSON.stringify(rqsData.bill_text); 
+						rqsData.bill_task = "d_save";
+						if(typeof(rqsData.cc_user) != "string"){
+	 						rqsData.cc_user=JSON.stringify(rqsData.cc_user);
+						}
+					 	//
+					 }
+				} 
+				if(rqsData.bill_ndate == ""){
+					rqsData.bill_ndate = '1900-01-01 00:00:00';
+				}
+
+//				return;
+				saveAjax(rqsData)  
+			}
+			// 保存ajax
+			function saveAjax(params){
+
+
+//				return;
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async:false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+
+
+//							plus.nativeUI.toast("该功能用于删除已经扫过的码，当前并没有扫码列表",{'verticalAlign':"top"});
+							mui.toast(data.message)
+							flagsave=true;
+							detailInfo = params;	//0319
+							detailInfo.bill_task = "L"; //0319
+							setButton(detailInfo);
+							mui("#saveBtn").button('reset');
+						}
+						if(data.code == 1) {
+ 							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+					}
+				});
+			}
+			// 删除按钮
+			function deleteBtn(){ 
+				mui('#sheet1').popover('show', document.getElementById("deleteBtn"));
+		 
+			}
+			// 确认删除
+			function sureDelBtn(){ 
+//				var params = {
+//					bill_no: onlyCode,
+//					bill_task: "d_delete",
+//					bill_user: userbillNo, // 登陆人
+//					bill_com: loginCom, //登录人单位  // 0109把teamBillCom改了
+//				}
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				params.bill_no 	 = onlyCode;
+				params.bill_task = "d_delete";
+				params.bill_user = userbillNo;
+				params.bill_com	 = loginCom;
+				deleteAjax(params);//删除方法 
+			}
+			// 删除ajax
+			function deleteAjax(params) {
+
+
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+
+ 						if(data.code == 0) {
+							mui.toast(data.message);
+							deleteSuccess("vdvc103hn_plist.html","vdvc103hn_list.html");
+						}
+						if(data.code == 1) { 
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+ 						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText)
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+
+					}
+				}); 
+			}
+			function deleteSuccess(parentview,childview){
+				var listview = plus.webview.getWebviewById(childview);
+	    			listview.reload();
+	    			var plistview = plus.webview.getWebviewById(parentview);
+	    			plistview.reload();
+				var oldBack = mui.back;
+			    mui.back = function(){
+			    	var webview = plus.webview.getWebviewById(parentview);
+			    	webview.show();
+			    }
+			    mui.back();
+			} 
+			function searchAjax(queryparmas,linkuser) {
+//				return;
+
+				mui.ajax(systemURL + 'Find/Ddata/find', {  //  // 'Business/allocated'
+					data:queryparmas,
+					beforeSend: function() {
+						var network = true;
+						checkNetState(); // 检查网络链接状态
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 60000, //超时时间设置为10秒；
+//					contentType: "application/x-www-form-urlencoded; charset=utf-8",
+					contentType: "application/json;charset=utf-8",
+					success: function(data) {
+
+						if(data.code == 0) {
+
+							var datas = data.data;
+							if(datas.length != 0) {
+							   	// 赋值结束
+							  for(var i = 0; i < datas.length; i++) {
+							  	 	if(linkuser == datas[i].bill_name){
+								   		document.getElementById("linkbd_linkid").value = datas[i].bill_text[0].linkvd_linkuser;
+								   		document.getElementById("linkbd_linksts").innerHTML = "关联成功";
+								   	}else{
+								   		document.getElementById("linkbd_linksts").innerHTML = "关联失败";
+								   	}
+							  }
+							} else {
+								document.getElementById("linkbd_linksts").innerHTML = "关联失败";
+								mui.toast("未查询到数据");
+							}
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						console.log(errorThrown);
+						console.log(type);
+					}
+				});
+			}
+			function reportData(data) {
+				if(data.data.length != 0) {
+					var typeArr = data.data[0]["内容内容"].split(",");
+					var reportArr = [];
+					// 获取数组
+					for(var i = 0; i < typeArr.length; i++) {
+						reportArr[i] = {
+							"title": typeArr[i]
+						};
+					}
+					reportArr[reportArr.length] = {"title": "其他"}
+
+					// 弹框
+					plus.nativeUI.actionSheet({
+						title: "切换部门类型",
+						cancel: "取消",
+						buttons: reportArr
+					}, function(e) {
+						//商品类型find赋值
+						if((e.index - 1) == (reportArr.length-1)){
+							//修改弹出框默认input类型为password 
+							mui.prompt('其他部门类型','请输入部门类型','vlerp',['取消','确定'],function(e){
+								var aa = document.querySelector('.mui-popup-input input').value;
+								if (e.index == 1) {
+									document.getElementById("bill_title").value = e.value;
+								}
+							},'div');
+							
+						}else if((e.index - 1) != -1){
+							document.getElementById("bill_title").value = reportArr[(e.index - 1)].title;
+						}
+					});
+				
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					mui.prompt('输入部门类型','请输入部门类型','vlerp',['取消','确定'],function(e){
+						if (e.index == 1) {
+							document.getElementById("bill_title").value = e.value;
+						}
+					},'div');
+				}
+			}
+		}); // plusReady
+		
+	</script>
+
+</html>

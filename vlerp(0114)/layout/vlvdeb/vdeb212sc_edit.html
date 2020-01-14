@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.imageviewer.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/icons-extra.css" />
+		
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.dtpicker.css" />
+		<style>
+			.mui-row:before,
+			.mui-row:after {
+				display: none;
+			}
+			.m {
+				overflow: hidden;
+				margin-top: -28px !important;
+				padding: 0 !important;
+			}
+			.mui-table-view:after,
+			.mui-table-view:before,
+			.mui-table-view-cell:after{
+				height: 0;
+			}
+			.mui-input-row label{
+				padding: 2px 5px !important;
+				box-sizing: border-box;
+			}
+			.list_font{font-size: 12px;}
+			.list_fonts{margin-top:3px;font-size:12px;text-align: right;}
+			.nodeqty{color: #FF4400;font-size: 16px;}
+			.nodeprice:before{content: '￥';padding: 0 3px 0 5px;color: #242424;font-size:10px;}
+			.nodeprice{font-size:16px;color:#242424;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height:65px;" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>	
+			<h1 class="mui-title headText" id="header">确认提交</h1>
+		</header>
+
+		<nav class="mui-bar mui-bar-tab" id="footer" style="display:;">
+			<a class="mui-tab-item" id="Select" style="background:;color:#262930;margin-top:5px;">
+			</a>
+			<a class="mui-tab-item" id="" style="background:;color:#262930;">
+				<span class="mui-tab-label" style="display: none;">合计：<span style="color:red" id="amount">0</span></span>
+			</a>
+			<a class="mui-tab-item" id="saveBtn" style="background:#FD7238;color:#ffffff;">
+				<span class="mui-tab-label">确认提交（<span id="pickNum">0</span>）</span>
+			</a>
+		</nav>
+
+		<div class="mui-content">
+			<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-top:20px;background:none;">
+			</ul>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/mui.imageViewer.js"></script>
+	<script src="../../js/mui.dtpicker.js"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		var $$ = jQuery.noConflict();
+		var mianOnlyCode = getDataCode("vdeb211");
+		var detailOnlyCode = getDataCode("vdeb212");
+		var detail_vInfo = [];
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var parentPage = "";
+		var search = ""; // 要查询的内容
+		var startIndex = 1;
+		var pageSize = 10;
+		var linkvd_stcode = ''; //用于存储扫描的码 
+		var inputData = null; // 表单里的数据
+		var hadSend = false; // 用于判断是否送审
+		var billnoSave = ""; // 修改时的主表bill_no 
+		var detailInfo = {};
+		var date = new Date();
+		var bill_date = vlUtils.dateToString(date);
+		//定义全局的rqs 
+		var dataSourse = {}; //用来重新渲染DOM
+		var saveDataSourse = []; //用来提交到212的数据
+		var saveDeleteData = []; //用于存放删除的bill_no
+		var mainInfos = "";
+		var amount = "";
+		var pickNum = "";
+		var itmeData = {main:"",detail:[]};
+		var sendNum = 0;
+		shops=true;
+		var getTmrDate = function (){
+			var today = new Date();
+			today.setTime(today.getTime()+24*60*60*1000);
+			
+			var tmrY = today.getFullYear(),
+				tmrM = (today.getMonth()+1)+'',
+				tmrD = today.getDate()+'';
+			tmrM = tmrM.length === 1 ? '0' + tmrM : tmrM;
+			tmrD = tmrD.length === 1 ? '0' + tmrD : tmrD;
+			
+			var tmr = tmrY+"-" + tmrM + "-" + tmrD;
+			getTmrDate = function (){
+				return tmr;
+			}
+			return getTmrDate();
+		}
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			parentPage = self.parentPage;
+			flagNew = self.flagNew;
+			amount = self.amount;
+			pickNum = self.pickNum;
+			fromPage = self.fromPage;
+			selectedAdataArr = self.selectedAdataArr;
+			curSys           =self.curSys
+			dealData();
+			renderList();
+			//终端系统删除自提和厂送
+			if(curSys=="终端"){
+				document.getElementById("zhong").innerHTML=""
+			}
+			document.getElementById("amount").innerHTML = amount;
+			document.getElementById("pickNum").innerHTML = pickNum
+			// 管理单位
+			vlUtils.setStorage("agencyTeamBillCom", teamBillCom);
+			//返回事件
+			document.getElementById("goBack").addEventListener("tap", function() {
+				var oldBack = mui.back;
+			});
+			jQuery('input.requiredInput').change(function(){
+				var curLi = jQuery(this).parents('li');
+				var rowdata = JSON.parse(curLi.attr('data-row'));
+				var curIdx = jQuery('li.Mlist').index(jQuery(this).parents('li'));
+				var nowdate = jQuery(this).val();
+				saveDataSourse[curIdx].main.bill_ndate = nowdate + ' 00:00:00';
+				rowdata.main.bill_ndate = nowdate + ' 00:00:00';
+				curLi.attr('data-row',JSON.stringify(rowdata));
+				
+			})
+			// 删除 
+			mui("#contList").on('tap', '.mui-btn-red', function(e) {
+				var e = this;
+				var li = e.parentNode.parentNode;
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow);
+				var bill_id = rowObj.bill_id;
+				var node_nqty = rowObj.node_nqty;
+				sliderDelete(bill_id);
+			});
+			//滑动删除
+			function sliderDelete(bill_id) {
+				for(var i = 0; i < dataSourse.length; i++) {
+					for(var k = 0; k < dataSourse[i].detail.length; k++) {
+						if(dataSourse[i].detail[k].bill_id == bill_id) {
+							dataSourse[i].detail.splice(k, 1);
+							renderDom(dataSourse);
+						}
+					}
+				}
+
+			}
+
+			//重新渲染DOM
+			function renderDom(data) {
+
+				var text = "";
+				Toal = 0;
+				amount = 0;
+				document.getElementById("pickNum").innerHTML = 0;
+				document.getElementById("amount").innerHTML = 0;
+				for(var i = 0; i < data.length; i++) {
+					var contList = document.getElementById("contList");
+					text += '<div class="topStore" style="height:30px;background:white;margin-top:5px;">';
+					text += '<span class="mui-icon mui-icon-arrowright"></span>';
+					text += '<span class="mui-icon mui-icon-home"></span>';
+					text += '<span style="margin-left:10px">' + data[i].main.bill_comName + '</span>';
+					text += '<span style="float:right;"></span>';
+					text += '</div>';
+					for(var k = 0; k < data[i].detail.length; k++) {
+						var contList = document.getElementById("contList");
+						var comImgid = vlUtils.uuid('comImg', 4, 10);
+						text += '<li class="mui-table-view-cell" style="padding-top:5px;background:white;" data-row=\'' + JSON.stringify(data[i].detail[k]) + '\'>';
+						text += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+						text += '<div class="mui-slider-cell  mui-slider-handle">';
+						text += '<div class="mui-row m">';
+						text += '<span id="Check" class="mui-icon mui-icon-checkmarkempty" style="font-size:40px;color:#F7F7F8;line-height:25px;text-align: center;margin-left: -8px; display:none;"></span>'
+						text += '</div>'
+						text += '<div class="mui-col-xs-4 mui-row" style="background:;padding:5px;width:;">';
+						text += '<img class="vdeb211 mui-col-xs-12" src="../../images/icon/default.png"  id="' + comImgid + '" style="width:60px;height:60px;" />';
+						text += '</div>';
+						text += '<div class="mui-col-xs-8 " >';
+						text += '<div class="mui-row addNumBox1" id="add" style="display:none;overflow:hidden;">';
+						text += '<div class="mui-col-xs-10 mui-row" style="background:;height:50px;position: relative;">';
+						text += '<div style="position: absolute;top:18px;left:20px;width:80%;border:1px solid #ddd;border-radius: 4px;">';
+						text += '<div class="subfun" style="width:25px;height:25px;float:left; text-align:center;line-height:30px;border-right:1px solid #ddd;">-</div>';
+						text += '<input id="num"  value="' + data[i].detail[k].node_nqty + '" style="width:50%; float:left;text-align:center;height:30px;border:0;"></input>';
+						text += '<div class="addfun" style="width:25px;height:25px;float:left;text-align:center;line-height:30px;padding:0;border-left:1px solid #ddd;">+</div>';
+						text += '</div>';
+						// ↑自己写
+						text += '</div>';
+						text += '<div class="mui-col-xs-3 mui-row list_three" style="text-align:right;padding-right:5px">';
+						text += '<p class="list_fonts mui-col-xs-12 addnum" mainNum="' + i + '" detailNum="' + k + '" style="float:right;background:#f0ad4e;height:65px;line-height:65px;width:50px;text-align: center;color:#fff;">完成</p>';
+						text += '</div>';
+						text += '</div>';
+						text += '<div class="mui-row addNumBox0" style="display:block;overflow:hidden;height:70px;">';
+						text += '<div class="mui-col-xs-9 mui-row" style="background:;height:50px;">';
+						text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;">' + data[i].detail[k].bill_name + '</h5>';
+						text += '<p class="list_font mui-col-xs-12" >' + data[i].detail[k].bill_id + '</p>';
+						text += '<p class="list_font mui-col-xs-12" style="background:;font-size:12px; color:red;display:none"><span>￥</span>&nbsp' + data[i].detail[k].node_price + '</p>';
+						text += '</div>';
+						text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align:right;padding-right:5px">';
+						text += '<p class="list_fonts mui-col-xs-12" style="float:right;"><span class="mui-icon mui-icon-compose"></span></p>';
+//						text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;"></p>';
+						text += '<p id="number" class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">×' + data[i].detail[k].node_nqty + '</p>';
+						text += '</div>';
+						text += '</div>';
+						text += '</div>';
+						text += '</div>';
+						text += '</div>';
+						text += '</li>';
+//						vlUtils.downloadicon(data[i].detail[k]["bill_text"][0]["linkbd_bEANcode"], comImgid);
+					}
+					text += '</div>'
+					contList.innerHTML = text;
+				}
+				for(var a = 0; a < data.length; a++) {
+					for(var b = 0; b < data[a].detail.length; b++) {
+						vlUtils.downloadicon(data[a].detail[b]["bill_text"][0]["linkbd_bEANcode"], comImgid );
+					}
+				}
+			}
+
+			document.getElementById("saveBtn").addEventListener("tap", saveBtn);
+           function saveBtn() {
+					   if(shops){
+							 shops=false
+							mui("#saveBtn").button('loading');
+											var val = jQuery("input[name='bill_wflow0']:checked").val();
+											
+											for(var j = 0; j < saveDataSourse.length; j++) {
+												//将配送方式写入DataSourse中
+												var flow_name = 'bill_wflow' + j;
+												var radio_name = "input[name=" +flow_name+ "]:checked";
+							//					console.log(jQuery(radio_name).val());
+												saveDataSourse[j].main.bill_wflow = jQuery(radio_name).val();
+							//					console.log(JSON.stringify(saveDataSourse[j]));
+												saveAjax(saveDataSourse[j])
+							//					CRUDajax(saveDataSourse[j],'../login.html',sCBsave);	
+												var params = {
+													bill_com: saveDataSourse[j].main.bill_com,
+													bill_no: saveDataSourse[j].main.bill_no,
+													bill_user: userbillNo,
+													bill_task: "b_send"
+												}
+												auditing(params);
+							//					CRUDajax(params,'../login.html',sCBsend);
+											}									 
+					 setTimeout(function(){					   				
+						shops=true
+				   },5000)
+			   } 
+			}
+			function sCBsave(){}
+			function sCBsend(){}
+			function sCBdel(){}
+			function auditing(params) {
+				//	return;
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							sendNum++;
+							if(sendNum==saveDataSourse.length){
+								for (var t = 0; t < saveDeleteData.length; t ++) {
+									deleteData(saveDeleteData[t].params);
+								}
+							}
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code, data.error_description, '../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+	
+					}
+				});
+			}
+			//保存提交
+			function saveAjax(params) {
+				mui.ajax(systemURL + 'Api/Task/sendTaskDetail', {
+					data: params,
+					dataType: 'json',
+					type: 'post',
+					beforeSend: function() {
+						checkNetState();
+					},
+					timeout: 10000,
+					async: false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message);
+							flagsave = true;
+							mui("#saveBtn").button('reset');
+							beforeOpen('vdeb212sc_plist.html','vdeb212sc_list.html')
+							mui.openWindow({
+								id: 'vdeb212sc_plist.html',
+								url: 'vdeb212sc_plist.html',
+								createNew: true,
+								extras: {
+									teamBillCom: teamBillCom,
+									teamBillComName: teamBillComName,
+									userbillNo: userbillNo,
+									loginCom: loginCom,
+									loginComName: loginComName,
+									fromPage:fromPage
+								}
+							});
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code, data.error_description, '../login.html');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+
+					}
+				});
+			}
+			//删除
+			function deleteData(rqsData) {
+				mui.ajax(systemURL + 'Buy/deleteProduct', {
+					data: rqsData,
+					dataType: 'json',
+					type: 'post',
+					beforeSend: function() {
+						checkNetState();
+					},
+					timeout: 10000,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message);
+							deleteSuccess();
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code, data.error_description, '../login.html');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText)
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+					}
+				});
+				// 发送请求结束 
+			}
+
+			function deleteSuccess() {} 
+			function dealData(){
+				for(var i = 0; i < selectedAdataArr.length; i++) {
+					saveDataSourse[i] = JSON.parse(JSON.stringify(itmeData));
+					var Mbillno =  getDataCode("vdeb212");
+					var _Mqty = 0;
+					var _Mamt = 0;
+					saveDataSourse[i].main = vlUtils.deepCopy(selectedAdataArr[i].main,saveDataSourse[i].main);
+					saveDataSourse[i].main.bill_no = Mbillno;
+					saveDataSourse[i].main.bill_task = "d_new";
+					
+					saveDataSourse[i].main.bill_ndate = getTmrDate();
+					saveDataSourse[i].main.bill_date = bill_date;
+					saveDataSourse[i].main.bill_bflow = '商城订单';
+					//
+					saveDataSourse[i].main.bill_name = teamBillComName; // ？
+					saveDataSourse[i].main.bill_oppo = teamBillCom;		// ？
+					for(var k = 0; k < selectedAdataArr[i].detail.length; k++) {
+						var date = new Date();
+						saveDataSourse[i].detail[k] = vlUtils.deepCopy(selectedAdataArr[i].detail[k],saveDataSourse[i].detail[k]);
+						saveDataSourse[i].detail[k].fbill_no  = Mbillno;
+						saveDataSourse[i].detail[k].bill_no   = getDataCode("vdeb212");
+						saveDataSourse[i].detail[k].bill_date = vlUtils.dateToString(date);
+						saveDataSourse[i].detail[k].bill_task = "d_new";
+						saveDataSourse[i].detail[k].node_nqty  = Number(saveDataSourse[i].detail[k].node_nqty);
+						saveDataSourse[i].detail[k].node_price= Number(saveDataSourse[i].detail[k].node_price);
+						saveDataSourse[i].detail[k].node_amt  = Number(saveDataSourse[i].detail[k].node_amt);
+						//
+						_Mqty += Number(saveDataSourse[i].detail[k].node_nqty);
+						_Mamt += Number(saveDataSourse[i].detail[k].node_amt);
+						var _btext = JSON.parse(JSON.stringify(saveDataSourse[i].detail[k].bill_text));
+						_btext[0]['bill_comName'] = _btext[0]['bill_oppoName'];
+						delete _btext[0]['bill_oppoName'];
+						saveDataSourse[i].detail[k].bill_text = JSON.stringify(_btext);
+						var delDParams = {
+							bill_no		: selectedAdataArr[i].detail[k].bill_no,
+							bill_task	: "d_delete",
+							fbill_no	: selectedAdataArr[i].detail[k].fbill_no,
+							bill_user	: userbillNo, // 登陆人
+							bill_com	: teamBillCom, //登录人单位  
+							node_nqty	: Number(saveDataSourse[i].detail[k].node_nqty),
+							node_price	: Number(saveDataSourse[i].detail[k].node_nqty)
+						}
+						var delD = {"ndbillno":saveDataSourse[i].detail[k].bill_no,"params":delDParams};
+						saveDeleteData.push(delD);
+						
+					}
+					saveDataSourse[i].main.node_nqty = _Mqty;
+					saveDataSourse[i].main.node_price = Number(saveDataSourse[i].main.node_price);
+					saveDataSourse[i].main.node_amt = _Mamt;
+					saveDataSourse[i].main.bill_com = saveDataSourse[i].detail[0].bill_com;
+				}
+			}
+			function renderList(){
+				var contList = document.getElementById("contList");
+				var text = "";
+				for(var i = 0; i < saveDataSourse.length; i++) {
+					text += '<li class="mui-table-view-cell Mlist" style="padding-top:5px;background:#fff;margin-bottom: 3px;border-radius:10px;" data-row=\'' + JSON.stringify(saveDataSourse[i]) + '\'>';
+					text += '<div class="topStore" style="height:30px;background:white;border-bottom: 1px solid #E0E0E0;margin-bottom:2px;">';
+					text += '<span class="mui-icon mui-icon-home" style="color:#2187E7;"></span>';
+					text += '<span style="margin-left:10px;font-size:14px;">' + selectedAdataArr[i].main.bill_name + '</span>';
+					text += '<span style="float:right;"></span>';
+					text += '</div>';
+					text += '<ul class="goodsD mui-table-view mui-table-view-striped mui-table-view-condensed" style="padding:0;margin: 0;overflow: hidden;">';
+					for(var k = 0; k < saveDataSourse[i].detail.length; k++) {
+						text += '<li class="mui-table-view-cell Dlist" style="padding:0;margin:0;background:#f6f6f6;margin-bottom:2px;border-radius:5px;" data-row=\'' + JSON.stringify(saveDataSourse[i].detail[k]) + '\'>';
+//							text += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+							text += '<div class="mui-slider-cell mui-slider-handle" style="">';
+								text += '<div class="mui-row" style="">';
+									text += '<div class="mui-col-xs-3 mui-row" style="padding:5px;">';
+										text += '<img class="vdvc311 mui-col-xs-12" src="../../images/icon/default.png" id="' + saveDataSourse[i].detail[k].bill_no + '" style="width:60px;height:60px;border-radius: 5px;" />';
+									text += '</div>';
+									text += '<div class="mui-col-xs-9 ">';
+										text += '<div class="mui-row changeNumBox" id="" style="display:none;overflow:hidden;">';
+											text += '<div class="mui-col-xs-9" style="background:;height:50px;position: relative;">';
+												text += '<div class="mui-row" style="position: absolute;top:20px;left:5%;border:1px solid #E0E0E0;border-radius: 5px;text-align:center;">';
+													text += '<div class="mui-col-xs-3" style="line-height:25px;border-right:1px solid #E0E0E0;">-</div>';
+													text += '<div class="mui-col-xs-6" style="padding: 0;margin: 0;">';
+														text += '<input  type="number" oninput="this.value = this.value.replace(/[^0-9]/g, \'\');" min="1" style=" float:left;border:none;height:25px;margin:0;"/>';
+													text += '</div>';
+													text += '<div class="mui-col-xs-3" style="line-height:25px;border-left:1px solid #E0E0E0;">+</div>';
+												text += '</div>';
+											text += '</div>';
+											text += '<div class="mui-col-xs-3 mui-row finishAdd" style="overflow: hidden;">';
+												text += '<p class="list_fonts mui-col-xs-12" style="background:#f0ad4e;height:70px;line-height:70px;text-align:center;color:#fff;margin:auto 5px;">完成</p>';
+											text += '</div>';
+										text += '</div>';
+										text += '<div class="mui-row infoBox" style="display:block;overflow:hidden;min-height:70px;">';
+											text += '<div class="mui-col-xs-12 mui-row" style="background:;">';
+											text += '<h5 class="list_h5 mui-col-xs-12 billname" style="color:#242424;">' + saveDataSourse[i].detail[k].bill_name +'('+saveDataSourse[i].detail[k].bill_bflow+ ')</h5>';
+											text += '</div>';
+											text += '<div class="mui-col-xs-7 mui-row" style="background:;">';
+												text += '<p class="list_font mui-col-xs-6 bilid">' + saveDataSourse[i].detail[k].bill_id + '</p>';
+												text += '<p class="list_font mui-col-xs-6 billspec" style="float:right;margin-top:3px;font-size:10px;">'+ saveDataSourse[i].detail[k].bill_spec +'</p>';
+											    text += '<p class="list_font mui-col-xs-6" style="color:#242424;">数量:'+ saveDataSourse[i].detail[k].node_nqty*saveDataSourse[i].detail[k].node_nprice +'件</p>';
+												text += '<p class="list_font mui-col-xs-6">重量:'+ saveDataSourse[i].detail[k].node_nqty*saveDataSourse[i].detail[k].node_namt +'KG</p>';
+											text += '</div>';
+											text += '<div class="mui-col-xs-5 mui-row list_three" style="text-align:right;padding-right:5px">';
+												text += '<p class="list_fonts mui-col-xs-12">托盘数:<span class="nodeqty">' + saveDataSourse[i].detail[k].node_nqty + '</span></p>';
+												text += '<p class="list_fonts mui-col-xs-12"><span class="nodeprice" style="display:none;">' + saveDataSourse[i].detail[k].node_price + '</span></p>';
+											text += '</div>';
+										text += '</div>';//
+									text += '</div>';
+								text += '</div>';
+							text += '</div>';
+						text += '</li>';
+	//					vlUtils.downloadicon(saveDataSourse[i].detail[k].bill_id, saveDataSourse[i].detail[k].bill_no );
+					}
+					text += '</ul>';
+					text += '<div style="border-top: 1px solid #E0E0E0;padding-top:2px;">';
+					text += '<div class="mui-input-row">';
+					text += '<label style="height:24px;">';
+					text += '<span class="mui-icon mui-icon-extra mui-icon-extra-calendar" style="font-size:20px;padding:0;margin:0;color:#2187E7;"></span>';
+					text += '<span style="font-size: 12px;padding: 0px auto;margin-top: -7px;vertical-align: middle;display: inline-block;">需求时间</span>';
+					text += '</label>';
+					text += '<input type="date" class="requiredInput" value='+getTmrDate()+' style="border: 1px solid #ccc;font-size:12px;height:24px;" />';
+					text += '</div>';
+					text += '</div>';
+					text += '<div id="zhong" class="mui-row">';
+					text += '<div class="mui-col-xs-4" style="padding-top: 7px;">';
+					text += '<label style=";font-size:12px;padding-left:7px;">运输方式：</label>';
+					text += '</div>';
+					text += '<div class="mui-radio  mui-left mui-col-xs-4">';
+					text += '<input id="" name='+("bill_wflow"+i)+' class="" type="radio" checked="true" value ="自提"/>';
+					text += '<label style="padding-top: 7px;;font-size:12px;">自提</label>';
+					text += '</div>';
+					text += '<div class="mui-col-xs-4 mui-radio  mui-left">';
+					text += '<input id="" name='+("bill_wflow"+i)+' class="" type="radio" value = "厂送">';
+					text += '<label style="padding-top: 7px;;font-size:12px;">厂送</label>';
+					text += '</div>';
+					text += '</div>';
+					text += '</li>';
+				}
+				contList.innerHTML = text;
+				for(var a = 0; a < saveDataSourse.length; a++) {
+					for(var b = 0; b < saveDataSourse[a].detail.length; b++) {
+						vlUtils.downloadicon(saveDataSourse[a].detail[b].bill_nspec, saveDataSourse[a].detail[b].bill_no );
+					}
+				}
+			}
+			function beforeOpen(){
+				var _args = arguments,
+					_page;
+				for(var i = 0; i < _args.length; i++){
+					var _page = plus.webview.getWebviewById(_args[i]);
+					if(!vlUtils.isnull(_page)){
+						plus.webview.hide(_page);
+						plus.webview.close(_page);
+					}
+				}
+			}
+		}); // PlusReady 结束
+		
+		
+	</script>
+
+</html>

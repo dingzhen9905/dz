@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 70px !important;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">提现申请详情</h1>
+		</header>
+		<!---->
+		<div class="mui-content mainBody nodeBody" style="padding-top:75px !important;">
+			<div class="mui-input-group groupInfo" style="display: none;">
+				<div class="mui-row infoItem lastItem">
+					<span class="mui-col-xs-4">单据号：</span>
+					<span class="mui-col-xs-8"  id="bill_no"></span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row infoItem">
+					<span class="mui-col-xs-4">申请人：</span>
+					<span class="mui-col-xs-8"  id="bill_name"></span>
+				</div>
+				<div class="mui-row infoItem lastItem">
+					<span class="mui-col-xs-4">银行卡号：</span>
+					<span class="mui-col-xs-8"  id="bill_id"></span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row infoItem">
+					<span class="mui-col-xs-4">申请金额：</span>
+					<span class="mui-col-xs-8"  id="node_amt"></span>
+				</div>
+				<div class="mui-row infoItem lastItem">
+					<span class="mui-col-xs-4">账户余额：</span>
+					<span class="mui-col-xs-8"  id="node_price"></span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row infoItem lastItem">
+					<span class="mui-col-xs-4">申请时间：</span>
+					<span class="mui-col-xs-8"  id="bill_date"></span>
+				</div>
+				<div class="mui-row infoItem" style="display:none;">
+					<span class="mui-col-xs-4">备注：</span>
+					<span class="mui-col-xs-8"  id="bill_user"></span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var deptname;
+		mui.plusReady(function() {
+			var oldBack = mui.back;
+//		    mui.back = function(){
+//		    		var webview = plus.webview.getWebviewById('vdfa312_plist.html');
+//		   	 	webview.show();
+//		    }
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 		= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			detailInfo		= self.detailInfo; 
+ 			
+			//
+			var date = new Date();
+			var commit = document.getElementById("commit");
+			var bill_date = vlUtils.dateToString(date);
+			var rqsData = null; //提交的数据
+			var inputData = null; // 表单里的数据
+			//
+			// 给每个输入框赋值
+			document.getElementById('bill_name').innerHTML 		= detailInfo.bill_name; //部门名称
+			document.getElementById('bill_id').innerHTML 		= detailInfo.bill_id; // 部门编码
+			document.getElementById('bill_no').innerHTML 		= detailInfo.bill_no; // 上级部门
+			document.getElementById('node_price').innerHTML 	= detailInfo.node_price; // 上级部门
+			document.getElementById('node_amt').innerHTML 		= detailInfo.node_amt; //负责人手机号
+			document.getElementById("bill_date").innerHTML 		= detailInfo.bill_date;
+
+			// 点击返回按钮
+//			document.getElementById("goBack").addEventListener("tap", function() {
+//			    var oldBack = mui.back;
+//			    mui.back = function(){
+//			    	var webview = plus.webview.getWebviewById('vdfa312_plist.html');
+//			    	webview.show();
+//			    }
+//			    mui.back();
+//			});
+
+
+		}); // plusReady
+	</script>
+
+</html>

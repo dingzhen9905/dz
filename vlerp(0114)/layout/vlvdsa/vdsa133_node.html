@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>防窜查询</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			.mui-row.topNav{
+				padding:0px;
+			}
+			.mui-row.topNav p a {
+				padding:3px;
+			}
+			.mui-row.topNav p span{
+				font-size:12px;
+			}
+			/* 灰色*/
+			.gray {
+				color:gray;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.hide{
+				display: none;
+			}
+			.mui-input-row.lastInput:after{
+				/*display: none;*/
+				height:0;
+			}
+			.spn{
+				color:gray;
+			}
+			/*关联状态*/
+			.list_sts{
+				font-size: 12px;
+				line-height: 14px;
+				color:#f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border:1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			/*顶部导航*/
+			.topNavItem{
+				color:#8f8f94;
+			}
+			.bottomLine{
+				border-bottom: 1px solid #8f8f94;
+				position:relative;
+				margin: 25px 50px;
+			}
+			.end{
+				position:absolute;
+				top:-8px;
+				left:32%;
+				background: #efeff4;
+				padding:0 10px;
+				z-index:111;
+				font-size: 10px;
+			}
+			.mui-input-row.detail{
+				padding-top:8px;
+				padding-left:15px;
+				height:120px;
+			}
+			.mui-input-row.detail p{
+				margin-bottom:0;
+			}
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			.delv {color:#f0ad4e}
+			.reci {color:#4cd964}
+		</style>
+	</head>
+	<body>
+	   	<header class="mui-bar mui-bar-nav" id="head" style="height:70px;background-color:;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" style="color:white;background-color:;"></a>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit"  style="color:white;background-color:;font-weight:normal;"></a>		
+			<h1 class="mui-title" id="header" style="color:white;background-color:;">用户信息</h1>
+			<div class="mui-row topNav" style="display:none;position:fixed;top:62px;left:0;background: #fff;width:100%;padding-top:3px;border-bottom:1px solid #C0C0C0;height:58px; z-index: 9999;">
+				<p class="mui-col-xs-3 topNavItem" id="profile" style="text-align: center;">
+					<a class="mui-icon mui-icon-personadd"  style="display:block;font-size:26px;color:#8f8f94;"></a>
+					<span class="" style="display:block;font-size:12px;padding-top:1px;">工作轨迹</span>
+				</p>
+				<p class="mui-col-xs-3 topNavItem"  id="CRM" style="text-align: center;">
+					<a class=" mui-icon mui-icon-pengyouquan" style="display:block;font-size:24px;color:#8f8f94;"></a>
+					<span class="" style="display:block;font-size:12px;padding-top:1px;">业绩查询</span>
+				</p>
+				<p class="mui-col-xs-3 topNavItem"  id="freeze" style="text-align: center;">
+					<a class=" mui-icon mui-icon-pengyouquan"  id="freezeIcon" style="display:block;font-size:24px;color:#8f8f94;"></a>
+					<span class="" id="freezeText" style="display:block;font-size:12px;padding-top:1px;">冻结处理</span>
+				</p>
+				<p class="mui-col-xs-3 topNavItem"  id="changeDept" style="text-align: center;">
+					<a class=" mui-icon mui-icon-pengyouquan"  id="freezeIcon" style="display:block;font-size:24px;color:#8f8f94;"></a>
+					<span class="" id="freezeText" style="display:block;font-size:12px;padding-top:1px;">部门调动</span>
+				</p>
+			</div>
+		</header>
+		
+	   	<!--<div class="mui-content" style="padding-top:100px;margin-top:30px;margin-bottom:30px;">-->	
+	   	<div class="mui-content" style="padding-top:80px;margin-top:0px;margin-bottom:30px;">	
+	   		<div class="mui-input-group info" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row mui-">
+					 <label class="" id="check" data-loading-text="查询中"><a class="mui-icon mui-icon-compose" style="position: relative;top:-2px;"></a><span style="position: relative;top:-5px;" >防窜号：</span></label>
+					 <input class="mui-input-clear" id="bill_title" type="text" placeholder="点击查询" required="required">
+					 
+				</div>
+				<div class="mui-input-row detail lastInput">
+					<p class='mui-h6'>箱码：<span id="linkbd_casecode"></span></p>
+	                <p class='mui-h6'>瓶码：<span id="bill_context"></span></p>
+	                <p class='mui-h6'>产品名称：<span id="linkbd_ERP_itemname" ></span></p>
+	                <p class='mui-h6'>批次：<span id="linkbd_lotno"></span></p>
+	                <!--<p class='mui-h6'>产品编码：<span id="linkbd_ERP_itemid" ></span></p>-->
+	                <p class='mui-h6'>经销商：<span id="linkbd_ERP_corrname"></span></p>
+	                <!--<p class='mui-h6'>仓库(id)：<span id="linkbd_ERP_invname"></span></p>-->
+	                <!--<p class='mui-h6'>仓库名：<span id="linkbd_ERP_invid" style=""></span></p>-->
+	                <!--<p class='mui-h6'>制单时间：<span id="bill_date"></span></p>-->
+				</div>
+			</div>
+			<!--查询地点及 是否窜货-->
+			<div class="mui-input-group" style="padding:5px 18px 5px 25px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">查询地点：</span><span class="mui-col-xs-8 spn"  id="linkbd_corrname"></span>
+				</div>
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-4 spn">是否窜货：</span><span class="mui-col-xs-8 spn"  id="linkvd_if_flee"></span>
+				</div>
+			</div>
+			<!--<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+			    <div class="mui-input-row">
+			        <label>查询地点</label>
+			   		<input type="text" id="linkbd_corrname" class="mui-input-clear" placeholder="请输入查询地点">
+			    </div>
+			    <div class="mui-input-row lastInput" id="linkvd_if_flee">
+			         <div class="mui-col-xs-4 mui-pull-left" style="padding:11px 0 11px 15px;">是否窜货</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-4">
+				        <label>是</label>
+						<input name="isflee" id="isFlee" type="radio" class="linkvd_if_flee_input" value="是">
+				    </div>
+				    <div class=" mui-pull-left mui-radio mui-left mui-col-xs-4">
+				        <label>否</label>
+						<input name="isflee" id="notFlee" type="radio" class="linkvd_if_flee_input"  value="否">
+				    </div>
+			   </div>
+			</div>-->
+			<div class="mui-input-group" style="padding:5px 18px 5px 25px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">制单人：</span><span class="mui-col-xs-8 spn"  id="bill_userName"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;display: none;">
+					<span class="mui-col-xs-4 spn">制单人代码：</span><span class="mui-col-xs-8 spn"  id="bill_user"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">抄送：</span><span class="mui-col-xs-8 spn"  id="cc_user"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;display:none;">
+					<span class="mui-col-xs-4 spn">抄送id：</span><span class="mui-col-xs-8 spn"  id="cc_user_code"></span>
+				</div>
+				<div class="mui-row">
+					<span class="mui-col-xs-4 spn">制单时间：</span><span class="mui-col-xs-8 spn"  id="bill_date"></span>
+				</div>
+			</div>
+			<ul class="mui-table-view" id="contList" style="margin-top:15px;padding-top:10px;padding-bottom: 10px;">
+
+			</ul>
+	   	</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">  
+		var $$ = jQuery.noConflict();
+        mui.plusReady(function() { 
+        	//************************************
+        	// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			var teamBillCom = self.teamBillCom;
+			var teamBillComName = self.teamBillComName;
+			var loginCom = self.loginCom;
+			var loginComName = self.loginComName;
+			var userbillNo = self.userbillNo;
+			var detailInfo = self.detailInfo;
+
+			if(self.detailInfo){
+				detailInfo = self.detailInfo;
+			}
+			//********************
+			queryparmas={
+				name:'vdsa133',    
+				bill_com:detailInfo.bill_com, 
+				bill_task:"L,S,Y,YF",
+				currentPage:1, 
+				pageSize:1, 
+				paramText:"",
+				bill_no:detailInfo.bill_no  
+			}
+			searchAjax(queryparmas);
+//			{  
+//					name:'vdsa133',    
+//					bill_com:teamBillCom,  
+//					currentPage:startIndex, 
+//					pageSize:pageSize, 
+//					paramText:search,
+//					bill_no:bill_no
+//				}
+//			searchAjax(teamBillCom,1,1,'',detailInfo.bill_no); 
+        	//************************************
+        	document.getElementById("header").innerHTML = teamBillComName;//
+        	
+        	// 编辑结束
+			document.getElementById("toEdit").addEventListener("tap",function(){
+				var billUser = document.getElementById("toEdit").getAttribute("billUser");
+				var privileges = vlUtils.getStorage("newPrivileges");
+				var num="";
+				if(billUser == userbillNo || privileges == "ROOT"){
+					mui.openWindow({
+						url: 'vdsa133_edit.html',
+				    	id: "vdsa133_edit.html",
+					    createNew:true,
+					    extras:{
+							teamBillCom : teamBillCom ,
+							teamBillComName : teamBillComName,
+							userbillNo : userbillNo,
+							loginCom : loginCom,
+							loginComName : loginComName,
+							detailInfo : detailInfo,
+							privileges: privileges,
+							flagNew : "N",
+							num:""
+						} 
+					})
+				}else{
+					mui.toast("仅制单人或管理员有此权限！");
+				}
+			
+			})
+			// 点击编辑结束
+			
+			document.getElementById('freeze').addEventListener("tap",function(){
+					var billNo=detailInfo.bill_no;
+					mui.ajax(systemURL + 'Business/bFrozen', {
+					data: {
+						name:"vdsa133",
+						bill_com:teamBillCom,
+						bill_no:billNo,
+						bill_user:userbillNo
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					headers: {
+//						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+						contentType: "application/json; charset=utf-8",
+					},
+					success: function(data) {
+
+						if(data.code == 0) {
+
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							mui("#commit").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#commit").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+
+					}
+				});
+			})
+
+		function searchAjax(queryparmas){
+
+			mui.ajax(systemURL+'Find/Ddata/find',{
+				data:queryparmas,
+				beforeSend: function() {
+					var network = true;
+					checkNetState();// 检查网络链接状态
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:60000,//超时时间设置为10秒；
+//				contentType:"application/x-www-form-urlencoded; charset=utf-8",
+				contentType: "application/json; charset=utf-8",
+				success:function(data){
+					if(data.code == 0){
+						var datas = data.data;
+						if(datas.length != 0){
+							// 赋值
+				        	document.getElementById("bill_title").value = datas[0].bill_title;
+							document.getElementById("linkbd_casecode").innerHTML = datas[0].bill_text[0].linkbd_casecode; // 箱码
+							document.getElementById("bill_context").innerHTML = datas[0].bill_context; // 瓶码
+							document.getElementById("linkbd_lotno").innerHTML = datas[0].bill_text[0].linkbd_lotno; // 批次
+							document.getElementById("linkbd_ERP_itemname").innerHTML =  datas[0].bill_text[0].linkbd_ERP_itemname; // 产品名称
+							document.getElementById("linkbd_ERP_corrname").innerHTML =  datas[0].bill_text[0].linkbd_ERP_corrname; // 经销商
+							document.getElementById("linkbd_corrname").innerHTML =  datas[0].bill_text[0].linkbd_corrname; // 地点
+							document.getElementById("linkvd_if_flee").innerHTML =  datas[0].bill_text[0].linkvd_if_flee; // 是否窜货
+							// 管理员、业务员
+							document.getElementById("bill_user").innerHTML = datas[0].bill_user;
+							document.getElementById("bill_userName").innerHTML = datas[0].bill_userName;
+							document.getElementById("bill_date").innerHTML = datas[0].bill_date;
+							detailInfo.bill_date = datas[0].bill_date;
+							// 存储制单人
+							// 管理员、业务员
+							var cc_user_cn="";//名
+							var cc_user_code=""//代码 
+							for(var cuser in  datas[0].cc_user){
+								if(vlUtils.isnull(cc_user_code)){
+									 cc_user_code=cuser;
+								}else{
+									cc_user_code+=","+cuser;
+								}
+								if(vlUtils.isnull(cc_user_cn)){
+									cc_user_cn=datas[0].cc_user[cuser]
+								}else{
+									cc_user_cn+=","+datas[0].cc_user[cuser];
+								}
+							}
+							document.getElementById("cc_user").innerHTML = cc_user_cn;
+							document.getElementById("cc_user_code").innerHTML = cc_user_code;
+							// 编辑按钮
+							document.getElementById("toEdit").setAttribute("billUser", datas[0].bill_user);
+						}else{
+							mui.toast("未查询到数据");
+						}
+					}
+					if(data.code == 1){
+						ajaxCode1(data.error_code,data.error_description,'../login.html');
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					console.log(xhr.responseText);
+					console.log(errorThrown);
+					console.log(type);
+				}
+		    });
+		   }
+		// 物流查询
+		if(detailInfo.bill_text[0].linkbd_casecode == ''){
+			var xcode = detailInfo.bill_title;
+		}else{
+			var xcode = detailInfo.bill_text[0].linkbd_casecode;
+		}
+		// 开始查询出库单
+		var queryparmas = {
+			name: 'msvr',
+			bill_task:"VR_find_logistics",		// 默认查询的指令// q_sa001_sa214 //q_vdac301
+			bill_com: teamBillCom,		// 当前单位
+			bill_user:userbillNo,		// 当前登陆人
+			bill_id:xcode,
+			currentPage: 1,
+			pageSize: 100,
+			paramText: ""
+		};
+		console.log(JSON.stringify(queryparmas))
+		rqsDataAjax(queryparmas,'/Find/Ddata/activity',reportData,'../login.html');
+//		var queryparmas_vdst212={
+//			name:'vdst212',
+//			bill_com:teamBillCom,
+//			currentPage:1,
+//			pageSize:20,
+//			paramText:detailInfo.bill_text[0].linkbd_casecode
+//		}
+//		searchAjax2(queryparmas_vdst212);
+		// 查出库
+		//发送ajax
+		function reportData(data) {
+
+           console.log(JSON.stringify(2))
+			if(data.data.length != 0) {
+				mui.toast("搜索完成，正在加载...")
+				var text = '';
+				for(var i = 0; i < data.data.length; i++) {
+					var newdataArr = {};
+					for(var k in data.data[i]) {
+						newdataArr[k.slice(0, 2)] = data.data[i][k];
+					}
+					var contList = document.getElementById("contList");
+					text += ' <li class="mui-table-view-cell mui-row process" style="height:auto;padding-left:10px;position:relative;">';
+					text += ' <div class="" style="text-align: right;padding-right:10px;width:20%;float:left;">';
+					text += ' <p style="font-size:11px;">' + (newdataArr["日期"]).slice(2, 10) + '</p>';
+					text += ' <p style="font-size:10px;">' + (newdataArr["日期"]).slice(11, 16) + '</p>';
+					text += ' </div>';
+					text += ' <div style="height:auto;width:0px;color:#c8c7cc;position:absolute;top:0px;left:21%;" >';
+					text += ' <a class="mui-icon mui-icon-checkmarkempty" style="background:orange;border-radius: 50%;color: #fff;font-size:14px;position:absolute;top:0px;left:-6px;z-index:9;"></a>';
+					text += ' </div>';
+					text += ' <div style="height:auto;padding-left:10px;padding-right:10px;padding-bottom:5px;position:relative;width:80%;float:left;border-left:1px solid #c8c7cc;z-index:1;border-bottom:1px dotted #c8c7cc;">';
+					text += ' <p style="font-size:14px;">已发货</p>';
+					text += ' <p style="font-size:12px;padding-bottom:0;margin-bottom:0;line-height: 16px;">';
+					text += ' <span>' + newdataArr["标题"] + '</span> ';
+					text += ' <span class="delv"> 已发出,</span><br/> ';
+					text += ' <span class="reci">收货单位 </span> ';
+					text += ' <span>' + newdataArr["内容"] + '</span><br/> ';
+					if(newdataArr["指令"] != ""){
+						text += '<button type="button" class="mui-btn mui-btn-royal mui-btn-outlined" style="padding:2px;margin:0;font-size:10px;padding-bottom:0px;">已签收</button> ';
+					}else{
+						text += '<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" style="padding:2px;margin:0;font-size:10px;padding-bottom:0px;">未签收</button>';
+					}
+					text += ' </p> ';
+					text += ' </div> ';
+					text += ' </li> ';
+					contList.innerHTML = text;
+				}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				document.getElementById("contList").innerHTML = '';
+				mui.toast("未查询到相关出库信息!");
+			}
+		}
+       }); 		// plusReady 结束
+    </script>  
+</html>

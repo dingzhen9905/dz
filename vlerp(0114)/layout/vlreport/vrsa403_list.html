@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>【湖南-企业-市检审核】</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../../css/common/mui.min.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style type="text/css">
+			header{height: 65px !important;}
+			header a, header h1{color: #FFFFFF !important;}
+			.mui-content{padding-top: 65px !important;}
+			.vrac203-search-terms{position: fixed;z-index: 100000000;width:100%;height:112px;background: #EAEAEA;overflow: hidden;}
+			label{font-size: 12px;color: #6C6C6C;}
+			input{height:30px !important;margin:3px auto !important;padding:2px !important;border:1px solid #5da8fa !important;border-radius:10px !important;font-size: 14px;}
+			input[placeholder] {padding:2px !important;font-size: 14px;color: #000;}
+		
+			.search-terms-txt{padding: 8px 5px;text-align:;}
+			.search-terms-title{padding-left:10px}
+			.hide {display: none;}
+			.order-main-li{margin-bottom:5px;padding:5px 10px !important;background:#fff;border-top:0px solid #E0E0E0; box-shadow: 3px 3px 3px #ccc}
+			.order-imgbox{padding:5px;padding-left:0px;box-sizing:border-box;}
+			.order-info-title {padding-top:1px;font-size: 14px;color:#242424;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+			.order-info-leftbox{}
+			.order-info-left {display: -webkit-box;min-height: 14px;margin-bottom:1px;font-size: 12px;line-height: 12px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;}
+			.order-info-rightbox{text-align: right;}
+			.order-info-right {font-size: 12px;line-height: 14px;float: right;margin:1px auto;}
+			.order-price{color:#FF5053;font-size: 14px;}
+			.order-qty{font-size: 16px;color: #000000;}
+			.order-statusbox{text-align:right;padding-right:10px;}
+			.order-status {margin-left:10px;font-size: 10px;line-height: 14px;color: #f0ad4e;border: 1px solid #f0ad4e;border-radius: 2px;text-align: center;}
+			.detail-label{padding:0px 5px 0px 50px !important;}
+			.mui-row:before,
+			.mui-row:after,
+			.mui-table-view-cell:after,
+			.mui-table-view-cell:before{height:0px;}
+			.content-total{border-top:1px dashed #C0C0C0}
+			.vl-list-search-tip{padding:100px;height:300px;text-align: center;}
+			.vl-list-search-tip .icon {color:#353B42;font-size:100px;}
+			.vl-list-search-result{color:#000 !important;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;}
+			.vl-list-search-icon{color:#0062cc;height:100px;line-height: 100px;font-size: 100px;}
+			.list_sts{padding:3px; font-size:12px;}
+			/**/
+			.vl-tab-bar{background: #F0F0F0;}
+			.vl-tab-item{height: 32px;line-height: 30px;color: #242424;text-align: center;}
+			/* .vl-tab-item:hover{background:#EA6D10;color: #FFFFFF;} */
+			.vl-tab-item.active{color: #EA6D10;border-bottom: 2px solid #EA6D10;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id='J_pageTitle'></h1>
+		</header>
+		<div class="mui-content">
+		    <div class="vrac203 vrac203-search vrac203-search-terms">
+				<div class="mui-row vl-tab-bar" id="J_tabbar"></div>
+   				<div class="mui-row">
+   					<div class="search-terms-txt mui-col-xs-2">时间段:</div>
+	   				<div class="search-terms-depts mui-col-xs-4">
+							<input id="J_bdate" type="date" class="requiredInput search-date" placeholder="">
+			   		</div>
+			   		<div class="search-terms-txt mui-col-xs-1">至:</div>
+			   		<div class="search-terms-clients mui-col-xs-4">
+							<input id="J_edate" type="date" class="requiredInput search-date" placeholder="">
+			   		</div>
+			   		<div class="search-terms-txt mui-col-xs-1"></div>
+   				</div>
+	   			<div class="mui-row">
+			   		<div class="search-terms-clients mui-col-xs-9 mui-row">
+						<div class="search-terms-txt mui-col-xs-2">搜索</div>
+		   				<div class="search-terms-depts mui-col-xs-10">
+								<input id="J_btn_search" type="text" class="requiredInput" placeholder="">
+				   		</div>
+					</div>
+		   			<div class="mui-col-xs-2" id="J_searchBtn" style="padding-left:10px;box-sizing: border-box !important;">
+						<button class="mui-btn-primary mui-btn-outlined">查询</button>
+					</div>
+					<div class="search-terms-txt mui-col-xs-1"></div>
+	   			</div>
+		   		<div class="mui-row content-total"> 
+		   			<div class="search-terms-txt mui-col-xs-4">拜访终端数：</div>
+		   			<div class="search-terms-txt mui-col-xs-4" id="totalContent"></div>
+		   			<div class="search-terms-txt mui-col-xs-1">(个)</div>
+		   		</div>
+		  	</div>
+		 
+			<!--下拉刷新容器-->
+			<div id="pullrefresh" class="vrac203-search vrac203-search-resluts"style="background:;margin:0;padding-top:90px;">
+				<div style="position: relative;">
+					<div id="J_noData" class="vl-list-search-tip hide" style="">
+						<span class="icon iconfont icon-wushuju" style=""></span>
+						<p class="vl-list-search-result">未查询到相关的数据</p>
+						<p >可以尝试其他查询</p>
+					</div>
+					<div id="J_searching" class="vl-list-search-tip" style="">
+						<p class="mui-icon mui-icon-search vl-list-search-icon"></p>
+						<p>正在搜索中......</p>
+					</div>
+					<div id="J_showError" class="vl-list-search-tip hide" style="">
+						<span class="icon iconfont icon-kulian" style=""></span>
+						<p class="vl-list-search-result">出错啦~</p>
+						<p >请稍后再试</p>
+					</div>
+				</div>
+				<div class="mui-scroll" id="content" style="background:;margin:0">
+					<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed order-main-ul">
+					</ul>
+				</div>
+				<script id="li-template" type='text/template'>				
+					<li class="mui-table-view-cell order-main-li mui-right order-main-li <%=addiClass%>" data-show=false style="background:#fff;">
+	                    <div class="mui-slider-cell  mui-slider-handle">
+	                    	<div class="data-row hide"><%=rowdata%></div>
+	                        <div class="mui-row maintxt main-top hide">
+	                                <span class="mui-col-xs-7 "><%=liTitle%></span>
+	                                <span class="mui-col-xs-5 main-top-right"><%=liRightM%></span>
+	                        </div>
+	                        <div class="mui-row main-middle">
+	                            <div class="mui-col-xs-2 mui-row order-imgbox">
+	                                <img class="mui-col-xs-12" src="<%=liImgSrc%>" height="60px" onerror="this.src='../../images/icon/default.png'" />
+	                            </div>
+	                            <div class="mui-col-xs-8 order-info-leftbox">
+	                                <h5 class="order-info-title mui-col-xs-12 "><%=liTitle%></h5>
+	                                <p class="order-info-left mui-col-xs-12 "><%=liLeftT%></p>
+	                                <p class="order-info-left mui-col-xs-12 "><%=liLeftM%></p>
+	                                <p class="order-info-left mui-col-xs-12 "><%=liLeftB%></p>
+	                            </div>
+	                            <div class="mui-col-xs-2 mui-row order-info-rightbox" style="text-align: right;">
+	                                <p class="order-info-right mui-col-xs-12"><%=liDate%></p>
+									<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;">
+										<button class="list_sts mui-btn-outlined mui-btn-<%=liRightB%>"><%=liStatus%></button>
+									</p>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </li>
+				</script>
+				<script type="text/text/template" id="J_temp_tabbar">
+					<p class="mui-col-xs-6 vl-tab-item active" data-type="001" data-qtask="" data-task="VR_vdsa402_query_13" data-txt="待审核">待审核</p>
+					<p class="mui-col-xs-6 vl-tab-item" data-type="002" data-qtask="已审核" data-task="VR_vdsa402_query_13" data-txt="已审核">已审核</p>
+				</script>
+			</div>
+		
+		<script src="../../js/mui.min.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/md5.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/arttmpl.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/jquery-2.1.0.js" 	type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/vlindex.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+		;(function(){	
+			// 初始化mui
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style:'circle',
+						callback: pulldownRefresh
+					},
+					up: {
+						auto:false,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			var totalPage = 0,
+			count = 1,
+			pageSize = 10,
+			userNew = null,
+			sys = null,
+			lib = null,
+			slider = mui("#slider"),
+			ajaxParam = null,
+			searchTask = "VR_vdsa402_query_13",
+			activeQtask = "",
+			// 渲染页面的数据
+			oRenderdata = {'data':[],'pager':{}},
+			lastTitle = '';
+			var teamBillCom,teamBillComName,
+				userbillNo,userName,userRole,
+				loginCom,loginComName,
+				privileges,commonParams,
+				fbill_no,fbillnoName,
+				fromPage,pageTitle,
+				dataInfo,otherParams,searchTask,activeQtask,
+				activeTxt = "未审核";
+		
+			mui.plusReady(function(){
+				userNew = JSON.parse(VlStore.pGet("user"));
+				sys = userNew.com_linkvd_userCom;
+				var self = plus.webview.currentWebview();
+				teamBillCom 	= self.teamBillCom;
+				teamBillComName = self.teamBillComName;
+				userbillNo 		= self.userbillNo;
+				userName 		= self.userName;
+				userRole 		= self.userRole;
+				loginCom 			= self.loginCom;
+				loginComName 	= self.loginComName;
+				privileges 		= self.privileges;
+				commonParams 	= self.commonParams;
+				fbill_no			= self.fbill_no;
+				fromPage 			= self.fromPage;
+				pageTitle   		= self.pageTitle;
+				fbillnoName 		= self.fbillnoName;
+				dataInfo 			= self.dataInfo;
+				otherParams 	= self.otherParams;
+				
+//				console.log(JSON.stringify(self))
+				document.getElementById('J_pageTitle').innerHTML = pageTitle;
+				document.getElementById('J_bdate').value = VlDate.get(new Date(), "_ymd");
+				document.getElementById('J_edate').value = VlDate.get(new Date(), "_ymd");
+				// console.log((JSON.parse(otherParams))['has-status'])
+				if((JSON.parse(otherParams))['has-status']){
+					mui('#J_tabbar')[0].innerHTML = template('J_temp_tabbar',{});
+				}
+			    jQuery("#J_tabbar").children().append("<span></span>")
+				findData();
+				// 绑定事件
+				bindEvent();
+			});
+			
+			window.addEventListener('backmath', function (event) { 
+			  var bill_bdate = event.detail.bdate; 
+			  var bill_edate = event.detail.edate; 
+			  document.getElementById('J_bdate').value = bill_bdate
+			  document.getElementById('J_edate').value = bill_edate
+			  findData()
+			})
+			
+			function pullupRefresh() {
+				setTimeout(function() {
+					count++;
+					if((count > pager.totalPage)){
+					 	mui.toast('没有更多数据了～');
+					}else{
+					 	findData(count, false)
+					
+					 }
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+				}, 1500);
+			}
+			
+			// 下拉刷新具体业务实现
+			function pulldownRefresh() {
+				document.getElementById("contList").innerHTML = "";
+				document.getElementById("J_searching").style.display = "block";
+				setTimeout(function() {
+					eSearch()
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(true);
+				}, 1500);
+			}
+			// 绑定事件
+			function bindEvent(){
+				document.getElementById("J_searchBtn").addEventListener("tap",eSearch);
+				mui("#contList").on('tap', '.nearbyli', function(e) { eaTabVdsa402(e, this); });
+				mui("#J_tabbar").on("tap", "p", function(e) { eaTapBar(e, this)});
+			}
+			function getBEDate() {
+				    bdate = document.getElementById("J_bdate").value;
+					edate = document.getElementById("J_edate").value;
+					bill_bdate = bdate
+					bill_edate = edate
+				if(bdate == "" || edate == ""){
+					mui.toast("请先选择时间段~")
+					return false;
+				}
+				return {
+					bdate : bdate + " 00:00:00",
+					edate : edate + " 23:59:59",
+				}
+			}
+			function getSearchTxt(){
+				return document.getElementById("J_edate").value;
+			}
+			function findData(page,type){
+//				 console.log(searchTask)
+				var _date = getBEDate();
+				if(!!!_date)return;
+				if(VlUtils.isnull(searchTask)){
+					mui.toast("缺少指令，请联系管理员");
+					return;
+				}
+				
+				var params = {
+					name		: 'msvr',
+					bill_task	 : searchTask,
+					bill_bdate	 : _date.bdate,
+					bill_edate	 : _date.edate,
+					bill_title   : document.getElementById("J_btn_search").value,
+					bill_user	 : userbillNo,
+					bill_com	 : teamBillCom, // 当前单位
+					bill_bflow   : "市场检查",
+					bill_qtask   : activeQtask,
+					currentPage  : arguments[0] ? arguments[0] : 1,
+					pageSize  : pageSize,
+					paramText : "",
+				};
+//				 console.log(JSON.stringify(params));
+				VlAjax.post({
+					"port" : "active",
+					"headers" : "json",
+					"isFirst" : type,
+				}, params, sCBfind)
+			}
+			function sCBfind(data,type) {
+				pager = mui.type(data.page) === 'array' ? data.page[0] : data.page;
+			    totalRecord = data.page["totalRecord"]
+				var txt = "("+totalRecord+")";
+				jQuery("#J_tabbar").find(".active").children().html(txt)
+				document.getElementById("totalContent").innerHTML = pager.totalRecord;
+				document.getElementById("J_noData").style.display = "none";
+				var contList = document.getElementById("contList");
+				if(data.data.length != 0) {
+					var html = '';
+					var aImg = [];
+					for(var i = 0; i < data.data.length; i++) {
+						if(type&&i==0){
+							contList.innerHTML="";
+							document.getElementById("J_searching").style.display = "none";
+						}
+						var _rowd = st315listAdapter(data.data[i]);
+						var source = document.getElementById('li-template').innerHTML;
+			            var render = template.compile(source);
+			            html += render(_rowd);
+					}
+					jQuery("#contList").append(html);
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					document.getElementById("contList").innerHTML = '';
+					document.getElementById("J_searching").style.display = "none";
+					document.getElementById("J_noData").style.display = "block";
+				}
+				plus.nativeUI.closeWaiting();
+			}
+			function eSearch(){
+				document.getElementById("contList").innerHTML = "";
+				document.getElementById("J_searching").style.display = "block";
+				findData()
+			}
+			var _oContent = {
+				"姓名": "",
+				"经度": "",
+				"纬度": "",
+				"离店时间": "",
+				"终端代码": ""
+			}
+			function st315listAdapter(data){
+				var oData = {};
+				for(var k in data) {
+					oData[k.slice(0, 2)] = data[k];
+				}
+				var _content = oData['内容'] = (oData['内容'].indexOf('{') > -1) ? JSON.parse(oData['内容']) : _oContent;
+				var _result = oData["内容"]["审核结果"];
+				var _btncolor = {
+					"合格" : "green",
+					"不合格" : "red",
+					"未审核" : "gray"
+				}
+			
+				return {
+					"rowdata" 	: JSON.stringify(oData),
+					"addiClass" : "nearbyli",
+					"liTitle" 	: oData["标题"],
+					"liDate" 	: oData["日期"].slice(5,16),
+					"liStatus" 	: _result || "未审核",
+					"liImgSrc"  : VlAjax.getImgPathmen(oData["内容"]['终端代码']),
+					
+					"liLeftT" 	: oData["指令"],
+					"liLeftM" 	: oData["图片"],
+					"liLeftB" 	: "拜访人："+oData["内容"]['姓名'],
+					
+					"liRightT" 	: "",
+					"liRightM" 	: "",
+					"liRightB" 	: _btncolor[_result] ,
+				}
+			}
+		
+			function eaTabVdsa402(e, self) {
+				var dataRow = jQuery(self).find(".data-row").html();
+				var dataRow = JSON.parse(dataRow);
+				VlPage.beforeOpen("vdsa403hn_node.html");
+				mui.openWindow({
+					url: '../vlvdhn/vdsa403hn_node.html',
+					id: 'vdsa403hn_node.html',
+					createNew: true,
+					extras: {
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 不变 
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变 
+						fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+						loginCom 		: loginCom,			// 4.登录单位代码
+						loginComName 	: loginComName,		// 5.登录单位名称
+						userbillNo 		: userbillNo,		// 6.登录人的代码
+						userName 		: userName,			// 7.登录人的姓名
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vrsa403_list.html",	// 9.从哪个页面来
+						detailInfo 		: dataRow,
+						commonParams 	: "vdsa40206",// 主管和业务员的页面不一样
+						otherParams 	: otherParams,
+						activeQtask		: activeQtask,
+						bill_bdate      : bill_bdate,
+						bill_edate      : bill_edate,
+					}
+				});
+			}
+			function imgerror(img){
+				img.src="images/icon/default.png";
+				img.οnerrοr=null;   //控制不要一直跳动
+			}
+			function eaTapBar(e, self){
+				// document.getElementById("searchBox").value = "";
+				jQuery(self).addClass("active").siblings().removeClass("active");
+				// var search = document.getElementById("searchBox").value;
+				// document.getElementById("searchBox").blur();	
+				searchTask = self.getAttribute("data-task");
+				activeTxt = self.getAttribute("data-txt");
+				activeQtask = self.getAttribute("data-qtask");
+				
+				findData();
+			}
+		})();
+		</script>
+	</body>
+
+</html>

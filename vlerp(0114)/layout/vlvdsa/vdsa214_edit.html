@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover"/>
+		<meta name="HandheldFriendly" content="true"/>
+		<meta name="MobileOptimized" content="320"/>
+		<title>扫盖</title>
+		<link rel="stylesheet" href="../../css/common/common.css" type="text/css" charset="utf-8"/>
+		<link rel="stylesheet" href="../../css/common/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" href="../../css/index.css" />
+		<style type="text/css">
+			#bcid {
+				width: 100%;
+				height: 78%;
+				position: absolute;
+				top: 95px;
+				bottom: 44px;
+				text-align: center;
+			}
+			.tip {
+				color: #FFFFFF;
+				font-weight: bold;
+				text-shadow: 0px -1px #103E5C;
+			}
+			footer {
+				width: 100%;
+				height: 44px;
+				position: absolute;
+				bottom: 0px;
+				line-height: 44px;
+				text-align: center;
+				color: #FFF;
+			}
+			.fbt {
+				width: 100%;
+				height: 100%;
+				/*background-color: #FFCC33;*/
+				background-color: #2A99FA;
+				float: left;
+			}
+			.fbt:active {
+			  	-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+				box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+			}
+			#Code{
+				position: absolute;
+				top: 65px;left: 0px;
+				z-index: 99;
+				width: 100%;height:30px;
+				line-height: 30px;
+				padding-left: 20px;
+				background:#fff;color: #0062cc;
+				text-align: left;
+			}
+		</style>
+	</head>
+	<body style="background-color: #000000;">
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id='head' style="height:95px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" ></a>
+			<div class="mui-title plistTitle">
+				<p id="title">促销扫码</p>
+				<h1 id="header" ></h1>	
+			</div>
+			<p  id="Code"style="">当前码：<span id="innerCode" style="color:#0062cc;font-size: 14px;"></span></p>
+		</header>
+		<div id="bcid">
+			<div style="height:30%"></div>
+			<p class="tip">...载入中...</p>
+		</div>
+		<footer>
+			<div class="fbt" id="openFilght">手电筒</div>
+		</footer>
+	</body>
+	<script type="text/javascript" src="../../js/common.js"></script>
+	<script type="text/javascript" src="../../js/md5.js"></script>
+	<script type="text/javascript" src="../../js/mui.min.js"></script>
+	<script type="text/javascript" src="../../js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" src="../../js/index.js"></script>
+	<script type="text/javascript" src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		var ws=null,wo=null;
+		var scan=null,domready=false;
+		// 新增
+		var system=null;
+		var billcode=null;
+		var qrtext=null;
+		var fromPage=null;
+		var rqsData=null;
+		var qrDataJSON=null;
+		var teamBillCom=null;
+		var teamBillComName=null;
+		var userbillNo=null;
+		var loginCom=null;
+		var loginComName=null;
+		var flagNew=null;
+		var count = 0; //扫码计数
+		var oldlens = 0;
+		var scantype = ""; //接收扫描成功的参数 
+		var scanresult = ""; //接收扫描成功的参数 
+		var scanfile = ""; //接收扫描成功的参数 
+		var scantype2 = "positivescan"; //默认正扫
+		var resultarr = []; //用于检测扫描码是否存在// 把每一次的扫描的结果推入该数组
+		var codeLength = true;//用于检测服务器是否有该码
+		var onlyCode = getDataCode("vdsa214");//提交的表
+		// H5 plus事件处理
+		function plusReady(){
+			if(ws||!window.plus||!domready){
+				return;
+			}
+			// 获取窗口对象
+			ws=plus.webview.currentWebview();
+			wo				= ws.opener();
+			fromPage			= ws.fromPage;
+			teamBillCom 		= ws.teamBillCom;
+			teamBillComName = ws.teamBillComName;
+			userbillNo 		= ws.userbillNo;
+			loginCom 		= ws.loginCom;
+			loginComName 	= ws.loginComName;
+			flagNew 			= ws.flagNew;
+			// 开始扫描
+			ws.addEventListener('show', function(){
+				scan=new plus.barcode.Barcode('bcid');
+			    scan.onmarked=onmarked;
+			    scan.start({conserve:true,filename:'_doc/barcode/'});
+			}, false);
+			// 显示页面并关闭等待框
+		    ws.show('pop-in');
+//		    wo.evalJS('closeWaiting()');
+			//监听back安卓
+			plus.key.addEventListener("backbutton", function() {
+				scan.close();
+				plus.webview.currentWebview().close();
+				if(fromPage == "work"){
+					plus.webview.getWebviewById('tab-webview-subpage-work').show();
+					plus.webview.getWebviewById('tab-webview-subpage-work').reload();
+				}
+			});
+			document.querySelector('header a').addEventListener('tap', function() { //点击back箭头
+				scan.close();
+				plus.webview.currentWebview().close();
+				if(fromPage == "work"){
+					plus.webview.getWebviewById('tab-webview-subpage-work').show();
+					plus.webview.getWebviewById('tab-webview-subpage-work').reload();
+				}
+			})
+			var openFlag = false;
+			document.querySelector('#openFilght').addEventListener('click', function() { //开启手电筒
+				openFlag = !openFlag;
+				if(openFlag) {
+					scan.setFlash(true);
+				} else {
+					scan.setFlash(false);
+				}
+			})
+		}
+		if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready', plusReady, false);
+		}
+		// 监听DOMContentLoaded事件
+		document.addEventListener('DOMContentLoaded', function(){
+			domready=true;
+			plusReady();
+		}, false);
+		// 
+		// 二维码扫描成功
+		function onmarked(type, result, file){
+			var isExist = false; 	// 不存在，发送ajax
+			var qualified = false; 	// 不合格
+			// 显示等待框
+			plus.nativeUI.showWaiting( "正在查询开奖,结果请耐心等待！", {background:"rgba(211,100,50,0.8)",style:"black"} );
+		    result = result.replace(/\r\n/g, '');
+		    var innercode = result; 			// 先存一份扫到的码到新变量里面
+				if(/([^\/]+)$/.test(innercode)){	// 去掉/以前的部分
+				  	innercode=RegExp.$1;
+				}
+				document.getElementById("innerCode").innerHTML =result; 	// 完整的码
+				wo = plus.webview.currentWebview().opener();
+				// 
+				result = result.replace(/\n/g, '');		// 去掉多余的空格
+				scantype 	= type;
+				scanresult 	= result;
+				scanfile	= file;
+				// 校验码制，验证码是否符合规范
+				if(scanresult.substring(0,1) != "N" && scanresult.substring(0,1) != "H") { 
+					alert("请扫瓶盖内码！");
+				}else{
+					scanresult = vlUtils.cutout(scanresult);// 去掉/以前的部分
+					qualified = true;
+//					if(!vlUtils.verifyCode(scanresult)){
+//					}else{
+//						qualified = true;// 如果通过则
+//					}
+				}
+				if(qualified){	// 如果码合格，才去看数组中有没有
+					for(var i = 0; i < resultarr.length; i++) {
+						// 判断数组中是否存在，存在则返回
+						if(resultarr[i] == scanresult) {
+							alert("扫描重复");
+							isExist = true; // 存在
+							break;
+						}
+					}
+					//
+					if(!isExist) {  // 不存在，将结果放进数组,发送请求
+						resultarr.push(scanresult);
+						var refer={};
+						refer=scanresult +"";
+						count++;
+
+						var date1 = new Date();
+						// 用扫码得到的信息去查询相关数据：
+						var params = {
+							bill_no		: onlyCode,
+							fbill_no		: "ROOT",
+							bill_task	: "d_new",
+							bill_user	: userbillNo, 
+							bill_com		: teamBillCom, 
+							bill_text	: refer,
+							bill_date	: vlUtils.dateToString(date1),
+							bill_ndate	: "1900-00-00 00:00:00",
+							node_qty		: 0,
+							node_price	: 0,
+							node_amt		: 0
+						}
+						rqsDataAjax1(params,'Business/openPrizes', qrData , '../login.html',true);
+					}else{
+						plus.nativeUI.closeWaiting();
+						scan.start({
+							conserve: true,
+							sound: "default"
+						});
+					}
+				}else{// 码不合格，则直接重新开始
+					plus.nativeUI.closeWaiting();
+					scan.start({
+						conserve: true,
+						sound: "default"
+					});
+				}
+		}
+		function qrData(data,type){
+			plus.nativeUI.closeWaiting();
+			if(data.code == 0) {
+				if(data.data.length != 0){
+					var datas = data.data;
+					mui.alert("****"+datas[0]["bill_text"][0]["linkvd_awardic"]+"****", '开奖结果', function() {
+						scan.start({
+							conserve: true,
+							sound: "default"
+						});
+					});
+				}else{}
+			}
+			
+		}
+		function rqsDataAjax1(params,port,rqsDataSuccess,urlPath,searchtype){
+			mui.ajax(systemURL + port, {
+				data: params,
+				beforeSend: function() {
+					var network = true;
+					checkNetState(); // 检查网络链接状态
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 60000, //超时时间设置为10秒；
+				contentType: "application/json; charset=utf-8",
+				success: function(data) {
+					if(data.code == 0) {
+						rqsDataSuccess(data,searchtype);
+					}
+					if(data.code == 1) {
+						plus.nativeUI.closeWaiting();
+						scan.start({
+							conserve: true,
+							sound: "default"
+						});
+						ajaxCode1(data.error_code,data.error_description,urlPath);
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					plus.nativeUI.closeWaiting();
+					scan.start({
+						conserve: true,
+						sound: "default"
+					});
+				}
+			});		
+		}
+	</script>
+</html>

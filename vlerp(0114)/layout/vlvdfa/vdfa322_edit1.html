@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 70px !important;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">兑奖详情</h1>
+
+		</header>
+		<!---->
+		<div class="mui-content mainBody nodeBody" style="padding-top:75px !important;">
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row infoItem lastItem">
+					<span class="mui-col-xs-4">兑奖金额：</span>
+					<span class="mui-col-xs-8" id="node_amt"></span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row infoItem">
+					<span class="mui-col-xs-4">收款方姓名：</span>
+					<span class="mui-col-xs-8" id="bill_name"></span>
+				</div>
+				<div class="mui-row infoItem lastItem">
+					<span class="mui-col-xs-4">收款方代码：</span>
+					<span class="mui-col-xs-8" id="bill_user"></span>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+			<div class="mui-input-row lastInput">
+				<button class="mui-btn mui-btn-primary" id="saveBtn" data-loading-text="提交中" style="width: 100%;">提交</button>
+			</div>
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var deptname;
+		mui.plusReady(function() {
+			var oldBack = mui.back;
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no = self.fbill_no; // 3.fbill_no是
+			loginCom = self.loginCom; // 4.登录单位代码
+			loginComName = self.loginComName; // 5.登录单位名称
+			userbillNo = self.userbillNo; // 6.登录人的代码
+			userName = self.userName; // 7.登录人的姓名
+			privileges = self.privileges; // 8.当前的权限是
+			fromPage = self.fromPage; // 9.从哪个页面来
+			detailInfo = self.detailInfo;
+			var date = new Date();
+			var commit = document.getElementById("commit");
+			var bill_date = vlUtils.dateToString(date);
+			var rqsData = null; //提交的数据
+			var inputData = null; // 表单里的数据
+			var onlyCode = getDataCode("vdfa322")
+
+			document.getElementById("node_amt").innerHTML = "20";
+			document.getElementById("bill_name").innerHTML = "用户1";
+			document.getElementById("bill_user").innerHTML = "vdvc001**********"
+
+			//获取每个输入框的值
+			function getInputValue() {
+				var bill_name = $$("#bill_name").html(); //兑奖人姓名
+				var bill_user = $$("#bill_user").html(); //兑奖人代码
+				var node_amt = $$("#node_amt").html(); //兑奖金额
+
+				// bill_text提交的数据
+				inputData = [{}]
+				// 提交的数据
+//				rqsData = {
+//					bill_id: "",
+//					cc_user: "",
+//					bill_title: "",
+//					bill_no: onlyCode,
+//					bill_task: "d_new",
+//					fbill_no: userbillNo,
+//					bill_user: userbillNo, // 登陆人
+//					bill_com: teamBillCom, //登录人单位  
+//					bill_dept: "",
+//					link_next: "",
+//					node_qty: "",
+//					bill_ipaddr: "",
+//					bill_gpsaddr: "",
+//					bill_context: "",
+//					bill_name: bill_name,
+//					node_price: "",
+//					node_amt: node_amt,
+//					bill_oppo: userbillNo, //提现人
+//					bill_date: vlUtils.dateToString(date),
+//					bill_text: "",
+//				}
+				rasData = JSON.parse(JSON.stringify(sendTaskData));
+				rqsData.bill_no   = onlyCode;
+				rqsData.bill_task = "d_new";
+				rqsData.fbill_no  = userbillNo;
+				rqsData.bill_user = userbillNo;
+				rqsData.bill_com  = teamBillCom;
+				rqsData.bill_name = bill_name;
+				rqsData.node_amt  = Number(node_amt);
+				rqsData.bill_oppo = userbillNo;
+				rqsData.bill_date = vlUtils.dateToString(date);
+				return rqsData;
+			}
+			document.getElementById("saveBtn").addEventListener("tap", function() {
+				mui(this).button('loading');
+				rqsData = getInputValue(); //获取每一个输入框的值的方法   
+
+
+				// 提交保存
+				saveAjax(rqsData)
+
+			});
+
+			//保存提交
+			function saveAjax(params) {
+				//return;
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async: false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message)
+							flagsave = true;
+							//							setButton(detailInfo);
+							mui("#saveBtn").button('reset');
+						}
+						if(data.code == 1) {
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+					}
+				});
+			}
+			// 点击返回按钮
+			//document.getElementById("goBack").addEventListener("tap", function() {
+			//	 var oldBack = mui.back;
+			//	 mui.back = function(){
+			//	 var webview = plus.webview.getWebviewById('vdfa312_plist.html');
+			//	 webview.show();
+			//}
+			//			    mui.back();
+			//			});
+		}); // plusReady
+	</script>
+
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.mui-input-row.lastInput:after{
+				height:0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id='head' style="height:;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header"></h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit" style="position: relative;"></a> 
+			<div class="mui-row  navBar nodeTopNav">
+				<p class="mui-col-xs-12" id="bBackBtn">
+					<a class="mui-icon mui-icon-paperclip"  id="bBackIcon"></a>
+					<span>收回单据</span>
+				</p>
+			</div>
+		</header>
+		
+		<div class="mui-content" style="padding-top:120px;margin-top:10px;margin-bottom:30px;">
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row">
+					<label>持卡人：</label>
+					<input id="linkvd_linkuser" type="text" class="" placeholder="录入持卡人" readonly="readonly">
+				</div>
+				<div class="mui-input-row" style="display: none;">
+					<label>持卡人：</label>
+					<input id="fbill_no" type="text" class="" placeholder="录入持卡人" readonly="readonly">
+				</div>
+				<div class="mui-input-row">
+					<label>银行卡号：</label>
+					<input id="bill_id" type="number" class="mui-input-clear requiredInput" placeholder="录入银行卡号" required="required">
+				</div>
+				<div class="mui-input-row">
+					<label>银行：</label>
+					<input id="bill_name" type="text" class="mui-input-clear requiredInput" placeholder="录入银行名称" required="required">
+				</div>
+				 
+				<div class="mui-input-row lastInput">
+					<label>预留手机号</label>
+					<input id="linkbd_linktel" type="number" class=""  readonly="readonly" style="font-size:14px;">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row lastInput" >
+						<label>是否为默认卡</label>
+					 <input id="linkvd_ifdefault" type="text" class=""  readonly="readonly" style="font-size:14px;">
+				</div>
+			</div>
+			<!-- 点击退出时底部弹出-->
+			<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+				<!-- 可选择菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="sureDelBtn">
+						<a>确认</a>
+					</li>
+				</ul>
+				<!-- 取消菜单 -->
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a href="#sheet1"><b>取消</b></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = "";
+		var hadSend = false;  // 用于判断是否送审
+		var flagsave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		mui.plusReady(function() {
+			var datas=vlUtils.getStorage("user");
+			var datass=JSON.parse(datas);
+			document.getElementById("linkbd_linktel").value=datass.usertel;
+			// 接收传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录人的代码
+			loginComName 	= self.loginComName;	// 5.登录人的名称
+			userbillNo 		= self.userbillNo;		// 6.登录单位代码
+			userName 		= self.userName;		// 7.登录单位名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			detailInfo      =self.detailInfo;
+			// 其他
+			flagNew = self.flagNew;	// 定点(不受出库单控制,选终端) 定向(选出库单) 定组
+			queryparmas = { // 默认001全部
+				name: 'vdvc811',
+				bill_no: detailInfo.bill_no,
+				bill_com: teamBillCom,  // 0109把teamBillCom改了
+				bill_task: "L,S,Y", //默认001
+				currentPage: 1,
+				pageSize: 1,
+				paramText: "",
+				fbill_no: userbillNo
+			}
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas, 'Find/Ddata/find', reportData, '../login.html',true);
+
+			// 重写返回事件
+			var oldBack = mui.back;
+			mui.back = function() {
+				var webview = plus.webview.getWebviewById("vdvc811_plist.html");
+				webview.reload();
+				var webviewP = plus.webview.getWebviewById("vdvc811_list.html");
+				webviewP.reload();
+				oldBack();			
+			}
+//			document.getElementById("header").innerHTML=detailInfo.bill_name;
+//			
+//			// 上级部门  
+//			document.getElementById("linkvd_linkuser").value = userName; //0109增加
+//			document.getElementById("fbill_no").value = userbillNo; 
+//			document.getElementById("bill_id").value =detailInfo.bill_id;
+//			document.getElementById("bill_name").value=detailInfo.bill_name;
+//
+//			if(detailInfo.bill_text[0].linkvd_ifdefault == 'true'){
+//				document.getElementById("linkvd_ifdefault").value ="是";
+//			}
+//			if(detailInfo.bill_text[0].linkvd_ifdefault == 'false'){
+//				 document.getElementById("linkvd_ifdefault").value ="否";
+//			}
+//			if(detailInfo.bill_task != "L" ){
+//				document.getElementById("bBackBtn").addEventListener("tap",bBackBtn);
+//				document.getElementById("bBackIcon").style.color =  "#18B4ED";
+//			}else{
+//				document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn);
+//		 		document.getElementById("bBackIcon").style.color =  "#8f8f94";
+//			}
+			 // 点击编辑
+			document.getElementById("toEdit").addEventListener("tap",function(){
+				if(detailInfo.bill_task == "Y" ||detailInfo.bill_task == "S" ){
+					plus.nativeUI.toast("单据已送审，\n请先收回!", {
+						'verticalAlign': "middle"
+					});
+					return;
+				}else if(detailInfo.bill_task == "YF" ){
+					plus.nativeUI.toast("单据已冻结，\n请先收回!", {
+						'verticalAlign': "middle"
+					});
+					return;
+				}
+				mui.openWindow({
+					url: 'vdvc811_edit.html',
+					id: "vdvc811_edit.html",
+				    createNew:true,
+				    extras:{
+				    	teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 不变 
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变 
+						fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+						loginCom 		: loginCom,			// 4.登录单位代码
+						loginComName 	: loginComName,		// 5.登录单位名称
+						userbillNo 		: userbillNo,		// 6.登录人的代码
+						userName 		: userName,			// 7.登录人的姓名
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vdvc811_node",	// 9.从哪个页面来
+						detailInfo 		: detailInfo,
+						flagNew 			: "N"
+					} 
+				})
+				
+			});
+			// 收回
+//			document.getElementById("bBackBtn").addEventListener("tap",bBackBtn);
+			function bBackBtn(){ 
+				var date = new Date();
+				var params = JSON.parse(JSON.stringify(sendTaskData));
+				params.bill_com	 = teamBillCom;
+				params.bill_no 	 = detailInfo.bill_no;
+				params.bill_user = userbillNo;
+				params.bill_task = "b_back";
+				params.bill_date = vlUtils.dateToString(date);
+				//
+				takeback(params);//收回方法
+			} 
+			// 收回
+			function takeback(params){
+				mui.ajax(systemURL + 'Api/Task/sendTask', {
+					data: params,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async:false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+
+						if(data.code == 0) {
+							console.log(JSON.stringify(data));
+							mui.toast(data.message);
+							document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn);
+	 						document.getElementById("bBackIcon").style.color =  "#8f8f94";
+							detailInfo.bill_task = "L";
+						}
+						if(data.code == 1) { 
+							ajaxCode1(data.error_code,data.error_description,'../login.html');
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) { 
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+					}
+				});
+			}
+			function reportData(data,type){
+				if(data.code == 0) {
+					var datas = data.data;
+					pager = data.page[0];
+					if(datas.length != 0) {
+						document.getElementById("header").innerHTML=datas[0].bill_name;
+						// 
+						document.getElementById("linkvd_linkuser").value = userName; //0109增加
+						document.getElementById("fbill_no").value = userbillNo; 
+						document.getElementById("bill_id").value =datas[0].bill_id;
+						document.getElementById("bill_name").value=datas[0].bill_name;
+			
+						if(datas[0].bill_text[0].linkvd_ifdefault == 'true'){
+							document.getElementById("linkvd_ifdefault").value ="是";
+						}
+						if(datas[0].bill_text[0].linkvd_ifdefault == 'false'){
+							 document.getElementById("linkvd_ifdefault").value ="否";
+						}
+						if(datas[0].bill_task != "L" ){
+							document.getElementById("bBackBtn").addEventListener("tap",bBackBtn);
+							document.getElementById("bBackIcon").style.color =  "#18B4ED";
+						}else{
+							document.getElementById("bBackBtn").removeEventListener("tap",bBackBtn);
+					 		document.getElementById("bBackIcon").style.color =  "#8f8f94";
+						}
+					} else {
+						mui.toast("未查询到数据~");
+					}
+				}
+				plus.nativeUI.closeWaiting();
+			
+			}
+		}); // plusReady
+		
+	</script>
+
+</html>

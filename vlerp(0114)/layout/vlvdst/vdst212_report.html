@@ -1,0 +1,175 @@
+<!--
+	//字段:bill_no	//主:	// 细:
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>部门管理（新建）</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.dtpicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.mui-input-row.lastInput:after{
+				height:0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id='head' id="head" style="height:75px;">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p id="title">报表下载</p>
+				<h1 id="header" ></h1>	
+			</div>	
+		</header>
+		<div class="mui-content" style="padding-top:75px;margin-top:10px;margin-bottom:30px;">
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row lastInput">
+					<label>选择开始时间 :</label>
+					<input id="bill_date" type="date" class="requiredInput" style="border:1px solid #E0E0E0;border-radius:10px;">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row lastInput">
+					<label>选择结束时间 :</label>
+					<input id="bill_ndate" type="date" class="requiredInput" style="border:1px solid #E0E0E0;border-radius:10px;">
+				</div>
+			</div>
+			<div class="mui-row" style="background: #ffffff;"> 
+				<button type="buttton" class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-12" id="saveBtn" style="text-align: center;margin-right:;" >确&nbsp; &nbsp; &nbsp;定</button>	
+			</div>
+		</div>
+	</body>
+	
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/mui.dtpicker.js"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = null;
+		var rqsData = "";
+		var bill_task = "";
+		var dataTitle = "";
+		var dataTask = "";
+		mui.plusReady(function() {
+			
+			// TODO 1. 页面上的字段========================
+			var h = {
+				bill_wflow : "",
+				bill_task:"",
+				bill_name:""
+			};
+			var v = {
+				bill_spec 	:"",							//主:				// 细:
+				bill_context:"",							//主:				// 细:
+				bill_date 	:"",							//主:ROOT?			// 细:?
+				bill_ndate 	:""							//主:				// 细:
+			};
+
+			// TODO 2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录人的代码
+			loginComName 	= self.loginComName;	// 5.登录人的名称
+			userbillNo 		= self.userbillNo;		// 6.登录单位代码
+			userName 		= self.userName;		// 7.登录单位名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			dataTask		= self.dataTask;
+			dataTitle		= self.dataTitle;
+			// 其他
+			
+			// TODO 3. 基础设置/赋值 
+			document.getElementById("header").innerHTML = teamBillComName; 				
+			document.getElementById("title").innerHTML = dataTitle; 				
+			
+			// TODO 4. 事件绑定==================================
+			document.getElementById("saveBtn").addEventListener("tap",saveBtn);
+			// TODO 5. 监听自定义事件=============================
+			
+			// TODO 6. 事件/方法=================================
+			// 保存指令
+			function saveBtn(){ 
+				plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+				var checkResults = checkRequiredItems();//验证是否为必填字段  
+				if(checkResults == false){
+					plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+					return;
+				}
+				//
+//				var bdate = document.getElementById("bill_date").value;
+//				var edate = document.getElementById("bill_ndate").value;
+				updatedVersion()
+			}
+			// 下载
+			function updatedVersion() {
+				var bdate = document.getElementById("bill_date").value;
+				var edate = document.getElementById("bill_ndate").value;
+				mui.toast("正在下载中,请耐心等待,下载完成后会自动打开安装页面!");
+				plus.nativeUI.showWaiting();
+				//版本更新 
+//				var dtask = plus.downloader.createDownload(systemURL + "File/downloadByExecl?bill_task=VR_report&bill_bdate="+bdate+"&bill_edate="+edate, {}, function(d, status) {
+				var dtask = plus.downloader.createDownload(systemURL + "File/downloadByExecl?bill_task="+dataTask+"&bill_bdate="+bdate+"&bill_edate="+edate+"&bill_com="+teamBillCom, {}, function(d, status) {
+					if(d.state == 4 && status == 200) {
+						var path = d.filename;
+						plus.runtime.install(path);
+						mui.toast("下载完成啦~");
+						
+						plus.nativeUI.closeWaiting();
+						plus.runtime.openFile( path, {}, function (){
+							mui.toast("打开失败！");
+						});
+					} else {
+						mui.alert('文件下载失败:' + status);
+					}
+					
+				});
+				dtask.start();
+			} 
+		}); // plusReady
+		
+	</script>
+
+</html>

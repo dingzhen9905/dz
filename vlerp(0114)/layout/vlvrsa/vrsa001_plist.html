@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			label {
+				line-height: 30px;
+			}
+			
+			input[placeholder] {
+				font-size: 12px;
+				line-height: 10px;
+			}
+			
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			#topNav {
+				padding: 0;
+			}
+			
+			.topNav {
+				text-align: center;
+				position: relative;
+				margin-bottom: 0px;
+				height: 35px;
+				color: #353b42;
+			}
+			
+			.active {
+				color: #ea6d10;
+				border-bottom: 2px solid #ea6d10;
+				/*background:pink;*/
+			}
+			
+			.mui-bar .mui-icon:active {
+				background: #0062cc!important;
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			
+			.queryCondition {
+				display: block;
+				position: relative;
+				top: 12px;
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background: #f7f7f7;
+				vertical-align: middle;
+			}
+			
+			.queryCondition:before {
+				display: inline-block;
+				position: relative;
+				top: -13px;
+				left: -5px;
+				z-index: 9;
+				content: " ";
+				width: 18px;
+				height: 18px;
+				border: 1px solid #0062CC;
+				border-radius: 50%;
+				vertical-align: middle;
+			}
+			
+			#searchName {
+				font-size: 12px;
+				margin: 2px 5px;
+				padding: 0;
+				height: 30px;
+				line-height: 30px;
+				border: 1px solid #007aff;
+				/*dedee2*/
+				border-radius: 3px;
+				text-align: center;
+				color: #007aff;
+			}
+		</style>
+	</head>
+
+	<header class="mui-bar mui-bar-nav" id='head' style="height:100px;border-bottom:0.5px solid #C0C0C0;background-color:;display: ;">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" style="color:white;background-color:;height:60px;line-height: 60px;"></a>
+		<h1 class="mui-title" id="header" style="color:white;background-color:;font-weight:normal;height:60px;line-height: 85px;"></h1>
+		<a class="mui-icon mui-icon-search mui-pull-right" id="toEdit" style="color:white;background-color:;height:60px;line-height: 60px;display: none;"></a>
+		<div class="mui-row" style="position:fixed;top:65px;left:0px;width:1000px;height:35px;line-height: 35px;background:#f7f7f7;" id="topNavOut">
+			<p class="mui-col-xs-2 topNavOut " id="fiscal_year" style="text-align: center;color: #ea6d10;padding: 0; position: fixed; width:70px;height:35px;background:#C7C7CC"></p>
+			<div style="width:700px;overflow: hidden;margin-left:70px;">
+				<div class="mui-col-xs-10 mui-row topNavOut" id="topNav" style="overflow: hidden;width:700px;">
+					<p class="mui-col-xs-1 topNav" data-active="" id="1">1月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="2">2月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="3">3月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="4">4月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="5">5月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="6">6月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="7">7月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="8">8月</p>
+					<p class="mui-col-xs-1 topNav" data-active="active" id="9">9月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="10">10月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="11">11月</p>
+					<p class="mui-col-xs-1 topNav" data-active="" id="12">12月</p>
+				</div>
+			</div>
+		</div>
+		<div class="mui-row" id="radio" style="position:fixed;top:105px;left:0px;width:100%;line-height:35px;background:#f7f7f7;">
+			<div class="mui-col-xs-3 mui-pull-left" style="padding-left:16px;">查询报表名称 </div>
+			<div class="mui-col-xs-7 mui-row " id="selsect" style="">
+				<p class="mui-col-xs-10" id="searchName">点击选择</p>
+				<p class="mui-col-xs-10" id="searchCode" style="display:none;">点击选择</p>
+			</div>
+			<button type="button" id="refresh" class="mui-btn mui-btn-success" style="padding:5px 10px 0 10px;margin-top:-2px;">刷新</button>
+		</div>
+		<div class="mui-row" style="position:fixed;top:142px;width:100%;background:#20B2AA;padding:0;text-align: center;height: 30px;line-height: 30px;margin-left:-10px;color:#fff;">
+			<span class="mui-col-xs-6" id="title0" style="text-align: left;padding-left: 10px;">标题及内容</span>
+			<!--<span class="mui-col-xs-5" style="">内容</span>-->
+			<span class="mui-col-xs-2" id="title1" style="text-align: center;">数量</span>
+			<span class="mui-col-xs-2" id="title2" style="text-align: center;">金额</span>
+			<span class="mui-col-xs-2" id="title3" style="">时间</span>
+		</div>
+	</header>
+	<div class="mui-content">
+	</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vrsa001_list.html',
+				id: 'vrsa001_list.html',
+				styles: {
+					top: '175px',
+					bottom: '0px',
+				}
+			}]
+		});
+		var searchName = '';
+		var searchCode = '';
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vrsa001_list_subpage').pullRefresh().scrollTo(0,0,100)");
+		});
+		// 头部滑动
+		var startClientX; // 初始位置
+		var dirX; // 横向滑动的距离
+		var nowLeft = 0; // 当前的left值
+		// 开始触摸
+		document.getElementById("topNav").addEventListener("touchstart", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			startClientX = event.touches[0].clientX; // 获取初始位置
+		}, false)
+		// 触摸移动
+		document.getElementById("topNav").addEventListener("touchmove", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			dirX = event.touches[0].clientX - startClientX; // 获取结束位置与初始位置的距离
+			document.getElementById("topNav").style.transform = "translate(" + dirX + "px,0px)";
+		}, false)
+		// 触摸结束
+		document.getElementById("topNav").addEventListener("touchend", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			document.getElementById("topNav").style.transform = "none";
+			nowLeft += dirX; // 获取结束位置
+			if(nowLeft > 0) {
+				document.getElementById("topNav").style.left = "0px";
+			} else {
+				document.getElementById("topNav").style.left = nowLeft + "px"; // 记住结束位置
+			}
+			if(nowLeft < -400) {
+				document.getElementById("topNav").style.left = "-400px";
+			}
+		}, false)
+		// 
+		//获取当前年份
+		var dates = new Date();
+		var year = dates.getFullYear();
+		var curtMonth = dates.getMonth() + 1;
+		document.getElementById("fiscal_year").innerHTML = year + "年";
+		// 切换年份
+		document.getElementById("fiscal_year").addEventListener("tap", function() {
+			var actionbuttons = [];
+			for(var i = 0; i < 5; i++) {
+				var listyear = year - i + "年";
+				actionbuttons.push({
+					"title": listyear
+				});
+			}
+			// 判断有几个公司
+			if(actionbuttons.length != 1) {
+				plus.nativeUI.actionSheet({
+					title: "切换年份",
+					cancel: "取消",
+					buttons: actionbuttons
+				}, function(e) {
+					document.getElementById("fiscal_year").innerHTML = actionbuttons[(e.index - 1)].title;
+					searchCode = document.getElementById("searchCode").innerHTML;
+					// 获取年 月
+					var fiscal_year = parseInt(jQuery("#fiscal_year").html());
+					var fiscal_month = parseInt(jQuery("#topNav").find(".active").html());
+					if(fiscal_month.length == 1) {
+						fiscal_month = "0" + fiscal_month;
+					}
+					fiscalperiod = fiscal_year * 100 + fiscal_month;
+					if(searchCode == "" || searchCode == "点击选择") {
+						mui.toast("请先选择报表！")
+						return;
+					}
+					mui.fire(plus.webview.getWebviewById('vrsa001_list.html'), 'changeReport', {
+						billtask: searchCode,
+						fiscalperiod: fiscalperiod
+					});
+				});
+			}
+		})
+
+		// 获取当前月份
+		function curtMonths(curtMonth) {
+			document.getElementById(curtMonth).classList.add("active");
+		}
+		curtMonths(curtMonth);
+		//进去显示月份的位置
+		if(curtMonth >= "8") {
+			document.getElementById("topNav").style.left = "-400px";
+		}
+		if(curtMonth < "8" && curtMonth > "4") {
+			document.getElementById("topNav").style.left = "-170px";
+		}
+		if(curtMonth <= "4") {
+			document.getElementById("topNav").style.left = "0px";
+		}
+
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			userName = self.userName;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			privileges = vlUtils.getStorage("newPrivileges");
+			commonParams = self.commonParams;
+			
+			// 更改header的显示信息
+			document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+
+			// nav
+			mui("#topNav").on("tap", "p", function() {
+				var self = this;
+				jQuery(this).addClass("active").siblings().removeClass("active");
+				var fiscal_year = parseInt(jQuery("#fiscal_year").html());
+				var fiscal_month = parseInt(jQuery(this).html());
+				if(fiscal_month.length == 1) {
+					fiscal_month = "0" + fiscal_month;
+				}
+				fiscalperiod = fiscal_year * 100 + fiscal_month;
+				var searchCode = document.getElementById("searchCode").innerHTML;
+				if(searchCode == "" || searchCode == "点击选择") {
+					mui.toast("请先选择报表！")
+					return;
+				}
+				mui.fire(plus.webview.getWebviewById('vrsa001_list.html'), 'changeReport', {
+					billtask: searchCode,
+					fiscalperiod: fiscalperiod
+				});
+			});
+			//接收list页面传过来的数据，进行表头更换
+			window.addEventListener('changeReportPlist', function(event) {
+				data = event.detail.data;
+				reportData(data);
+			});
+
+			// 点击刷新按钮
+			document.getElementById("refresh").addEventListener("tap", function() {
+				var fiscal_year = parseInt(jQuery("#fiscal_year").html());
+				var fiscal_month = parseInt(jQuery("#topNav").find(".active").html());
+				if(fiscal_month.length == 1) {
+					fiscal_month = "0" + fiscal_month;
+				}
+				fiscalperiod = fiscal_year * 100 + fiscal_month;
+				if(searchCode == "" || searchCode == "点击选择") {
+					mui.toast("请先选择报表！")
+					return;
+				}
+				// 查询更换表头
+				var params = {
+					name: 'msvr',
+					bill_task: searchCode, // 查询的指令
+					bill_com: teamBillCom, // 当前单位
+					bill_user: userbillNo, // 当前登陆人
+					//					fbill_no: "ROOT",			// 查询主表
+					fiscal_period: fiscalperiod,
+					currentPage: 1,
+					pageSize: 1,
+					paramText: ""
+				};
+				rqsDataAjax(params, '/Find/Ddata/activity', reportData, '../login.html');
+				// 传值给子表
+				mui.fire(plus.webview.getWebviewById('vrsa001_list.html'), 'changeReport', {
+					billtask: searchCode,
+					fiscalperiod: fiscalperiod
+				});
+			})
+
+			// 打开 查询报表页面
+			document.getElementById("selsect").addEventListener("tap", function() {
+				var params = {
+					name: 'msvr',
+					bill_task: commonParams, // 查询的指令 // 
+					bill_com: teamBillCom, // 当前单位
+					bill_user: userbillNo, // 当前登陆人
+					fbill_no: "ROOT", // 查询主表
+					currentPage: 1,
+					pageSize: 100,
+					paramText: ""
+				};
+				rqsDataAjax(params, '/Find/Ddata/activity', rqsDataSuccess);
+				return;
+				mui.openWindow({
+					url: 'vrsa001_qm_find.html',
+					id: "vrsa001_qm_find.html",
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom, // 1.管理单位代码	// 不变
+						teamBillComName: teamBillComName, // 2.管理单位名称	// 不变
+						//						fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+						loginCom: loginCom, // 4.登录单位代码
+						loginComName: loginComName, // 5.登录单位名称
+						userbillNo: userbillNo, // 6.登录人的代码
+						userName: userName, // 7.登录人的姓名
+						privileges: privileges, // 8.当前的权限是
+						fromPage: "vrsa001_plist", // 9.从哪个页面来
+						flagNew: "Y",
+						choice: "single",
+						commonParams: commonParams,
+						tradeName: "",
+						tradeCode: ""
+					}
+				})
+			}) // select
+			// 更换 表头
+			function reportData(data, type) {
+				var newdataArr = {};
+				if(data.data.length != 0){
+					for(var k in data.data[0]) {
+						newdataArr[k.slice(0, 2)] = k.slice(2);
+					}
+					document.getElementById("title0").innerHTML = newdataArr["标题"];
+					document.getElementById("title1").innerHTML = newdataArr["数量"];
+					document.getElementById("title2").innerHTML = newdataArr["金额"];
+					document.getElementById("title3").innerHTML = newdataArr["日期"];
+				}else{
+					mui.toast("未查询到数据!")
+				}
+			} // reportData
+			// 打开报表列
+			function rqsDataSuccess(data, type) {
+				if(data.data.length != 0) {
+					var reportArr = [];
+					// 获取数组
+					for(var i = 0; i < data.data.length; i++) {
+						reportArr[i] = {
+							"title": data.data[i]["内容内容"]
+						};
+					}
+					// 弹框
+					plus.nativeUI.actionSheet({
+						title: "切换报表",
+						cancel: "取消",
+						buttons: reportArr
+					}, function(e) {
+						//商品类型find赋值
+						document.getElementById("searchCode").innerHTML = data.data[(e.index - 1)]["指令指令"];
+						document.getElementById("searchName").innerHTML = reportArr[(e.index - 1)].title;
+						searchCode = data.data[(e.index - 1)]["指令指令"];
+						searchName = reportArr[(e.index - 1)].title;
+						// 获取年 月
+						var fiscal_year = parseInt(jQuery("#fiscal_year").html());
+						var fiscal_month = parseInt(jQuery("#topNav").find(".active").html());
+						if(fiscal_month.length == 1) {
+							fiscal_month = "0" + fiscal_month;
+						}
+						fiscalperiod = fiscal_year * 100 + fiscal_month;
+						if(searchCode == "" || searchCode == "点击选择") {
+							mui.toast("请先选择报表！")
+							return;
+						}
+						// 传值
+						mui.fire(plus.webview.getWebviewById('vrsa001_list.html'), 'changeReport', {
+							billtask: searchCode,
+							fiscalperiod: fiscalperiod
+						});
+					});
+				} else {
+					mui.toast("未查询到数据");
+				}
+			}
+		}); //plusReady
+	</script>
+
+</html>

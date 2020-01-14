@@ -1,0 +1,114 @@
+[
+    {
+        "link_next": "bdlink_glist,1,正常,关张,停业,转让",
+        "bill_context": "linkbd_attr_sale",
+        "bill_no": "vmsa20100_20010101_0101B001",
+        "node_qty": "2.0000000",
+        "bill_title": "经营状况"
+    },
+    {
+        "link_next": "bdlink_glist,1,专卖,同场,无",
+        "bill_context": "linkvd_attr_term",
+        "bill_no": "vmsa20100_20010101_0101B002",
+        "node_qty": "3.0000000",
+        "bill_title": "终端属性"
+    },
+    {
+        "link_next": "bdlink_gtext,1,0106688",
+        "bill_context": "linkbd_corr_no",
+        "bill_no": "vmsa20100_20010101_0101B003",
+        "node_qty": "4.0000000",
+        "bill_title": "一批厂编"
+    },
+    {
+        "link_next": "bdlink_gtext,0,燕京",
+        "bill_context": "linkbd_corr",
+        "bill_no": "vmsa20100_20010101_0101B004",
+        "node_qty": "5.0000000",
+        "bill_title": "送货经销商"
+    },
+    {
+        "link_next": "bdlink_gtext,0,青岛",
+        "bill_context": "linkbd_corr_oppo",
+        "bill_no": "vmsa20100_20010101_0101B005",
+        "node_qty": "6.0000000",
+        "bill_title": "竞品经销商"
+    },
+    {
+        "link_next": "bdlink_glist,1,无,赠酒,费用,其他",
+        "bill_context": "linkvd_type_input",
+        "bill_no": "vmsa20100_20010101_0101B006",
+        "node_qty": "7.0000000",
+        "bill_title": "投入类型"
+    },
+    {
+        "link_next": "bdlink_glist,1,是,否",
+        "bill_context": "linkvd_if_cabnit",
+        "bill_no": "vmsa20100_20010101_0101B007",
+        "node_qty": "8.0000000",
+        "bill_title": "是否有展柜"
+    },
+    {
+        "link_next": "bdlink_glist,1,是,否",
+        "bill_context": "linkvd_if_deskchair",
+        "bill_no": "vmsa20100_20010101_0101B008",
+        "node_qty": "9.0000000",
+        "bill_title": "是否有桌椅"
+    },
+    {
+        "link_next": "bdlink_glist,1,是,否",
+        "bill_context": "linkvd_if_stack",
+        "bill_no": "vmsa20100_20010101_0101B009",
+        "node_qty": "10.0000000",
+        "bill_title": "是否有堆头"
+    },
+    {
+        "link_next": "bdlink_glist,1,是,否",
+        "bill_context": "linkvd_if_doorad",
+        "bill_no": "vmsa20100_20010101_0101B010",
+        "node_qty": "11.0000000",
+        "bill_title": "是否有门头广告"
+    },
+    {
+        "link_next": "bdlink_glist,1,是,否",
+        "bill_context": "linkvd_if_saleqs",
+        "bill_no": "vmsa20100_20010101_0101B011",
+        "node_qty": "12.0000000",
+        "bill_title": "是否销售清爽"
+    },
+    {
+        "link_next": "bdlink_gtext,0,35.0元/箱",
+        "bill_context": "linkbd_price_saleqs",
+        "bill_no": "vmsa20100_20010101_0101B012",
+        "node_qty": "13.0000000",
+        "bill_title": "清爽进店价格"
+    },
+    {
+        "link_next": "vdlink_glist,1,vdvc312",
+        "bill_context": "linkvd_vdvc312",
+        "bill_no": "vmsa20100_20010101_0101V000",
+        "node_qty": "1.0000000",
+        "bill_title": "终端名称"
+    },
+    {
+        "link_next": "vdlink_glist,2,vdvc501",
+        "bill_context": "linkvd_vdvc501",
+        "bill_no": "vmsa20100_20010101_0101V013",
+        "node_qty": "14.0000000",
+        "bill_title": "本品销售情况"
+    },
+    {
+        "link_next": "vdlink_glist,2,vdvc511",
+        "bill_context": "linkvd_vdvc511",
+        "bill_no": "vmsa20100_20010101_0101V014",
+        "node_qty": "15.0000000",
+        "bill_title": "竞品销售情况"
+    },
+    {
+        "link_next": "vdlink_photo,1,vdvc801",
+        "bill_context": "linkvd_sale_photo",
+        "bill_no": "vmsa20100_20010101_0101V015",
+        "node_qty": "16.0000000",
+        "bill_title": "销售产品图片"
+    }
+]

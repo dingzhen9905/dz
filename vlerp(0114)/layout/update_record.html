@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/common/mui.min.css">
+		<style type="text/css">
+			header{
+				height:60px !important;
+				padding-top:20px;
+			}
+			.mui-content>.mui-table-view:first-child {
+				margin-top: -1px;
+			}
+			.mui-table-view-cell.mui-collapse .mui-collapse-content{
+				margin: 5px;
+				border-radius: 5px;
+			}
+			.mui-navigate-right{
+				position: relative;
+				font-size:14px;
+			}
+			.mui-pull-right{
+				position: absolute;
+				right:40px;
+				top:10px;
+				font-size:12px;
+			}
+			.update-version{
+				font-weight: bold;
+			}
+			.update-content {
+				margin-bottom:5px !important;
+				border-bottom: 1px dashed #ccc;
+				font-weight: bold;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">更新历史</h1>
+		</header>
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper"style="margin-top:25px;">
+			<div class="mui-scroll" id="content"></div>
+			<script id="tmpl" type='text/template'>
+				<ul class="mui-table-view mui-table-view-chevron">
+					<% for ( var i = 0; i < msg.length; i ++){ var item = msg[i];%>
+						<li class="mui-table-view-cell mui-collapse">
+							<a class="mui-navigate-right" href="#">
+									<div>
+										<%= item.alias%> 
+										<%= item.version.split('_')[1] %> 
+										主要更新
+									</div>
+									<span class="mui-pull-right"> 
+										<%= item.date %> 
+									</span>
+							</a>
+							<div class="mui-collapse-content">
+								<p>
+									<span class="update-version">版本号：</span>
+									 <%= item.version %> 
+								</p>
+								<p class="update-content">更新内容：</p>
+								<% for ( var k = 0; k < item['content'].length; k ++){ var itm = item['content'][k]%>
+									<p><%= itm.txt %></p>
+								<% } %>
+							</div>
+						</li>
+					<% } %>
+				</ul>
+			</script>
+		</div>
+		<script src="../js/mui.min.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vljs/update_record.js" 	type="text/javascript" charset="utf-8"></script>
+		<script src="../js/arttmpl.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../js/jquery-2.1.0.js" 	type="text/javascript" charset="utf-8"></script>
+		<script src="../js/index.js" 			type="text/javascript" charset="utf-8"></script>
+		<script>
+			
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style:'circle',
+						callback: pulldownRefresh
+					},
+					up: {
+						auto:true,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			var totalPage = 0
+			var count = 1;
+			var size = 10;
+			var userNew = null;
+			var sys = null;
+			var lib = systemURL.split("//")[1].split(".")[0];
+			
+			mui.plusReady(function(){
+				userNew = JSON.parse(vlUtils.getStorage("user"));
+				sys = userNew.com_linkvd_userCom;
+			});
+			function pullupRefresh() {
+				setTimeout(function() {
+					var options = {
+						libray	: lib,
+						sys		: sys,
+						size	: size,
+						curPage	: count
+					}
+					var oData = sysRecord(options);
+					totalPage =oData.pager.totalPage; 
+					var html = template('tmpl',oData)
+					document.getElementById('content').innerHTML = html;
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > totalPage)); //参数为true代表没有更多数据了。
+					
+				}, 1500);
+			}
+
+			function addData() {
+				var options = {
+					libray	: lib,
+					sys		: sys,
+					size	: size,
+					curPage	: count
+				}
+				var oData = sysRecord(options);
+				var html = template('tmpl',oData)
+				document.getElementById('content').innerHTML = html;
+			}
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				setTimeout(function() {
+					addData();
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+					mui.toast("刷新完成~");
+				}, 1500);
+			}
+
+		</script>
+	</body>
+
+</html>

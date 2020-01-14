@@ -1,0 +1,328 @@
+<!--
+	//字段:bill_no	//主:	// 细:
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>班组人员</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.dtpicker.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			body{
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:0px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.mui-input-row.lastInput:after{
+				height:0;
+			}
+			#banzuMember li:nth-of-type(odd){
+				background:#F0F0F0;
+			}
+			.mui-input-group:after,.mui-input-group:before{
+				height: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head" style="height:75px;">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p id="title">排班查询</p>
+				<h1 id="header" ></h1>	
+			</div>	
+		</header>
+		<div class="mui-content" style="padding-top:75px;margin-top:10px;margin-bottom:30px;">
+<!--			
+			//			{
+//	            "图片班别":"两班倒",				bill_bflow
+//	            "数量数量":"0",
+//	            "指令编号":"2001",				bill_task
+//	            "日期日期":"2018-06-17 09:12:27",
+//	            "参数班组名称":"配电班",			bill_name
+//	            "内容排班规则":"早,早,休,夜,夜,休",	bill_context//
+//	            "标题班组":"配电一班,配电二班",		bill_spec
+//	            "金额金额":"0"
+//	        },-->
+			<div class="mui-input-group" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;display:none;">
+				<div class="mui-row">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">图片班别:</span>
+					<span class="mui-col-xs-8" id="bill_bflow"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">指令编号:</span>
+					<span class="mui-col-xs-8" id="bill_task"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">参数班组名称:</span>
+					<span class="mui-col-xs-8" id="bill_name"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">bill_no:</span>
+					<span class="mui-col-xs-8" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">bill_spec:</span>
+					<span class="mui-col-xs-8" id="bill_spec"></span>
+				</div>
+			</div>
+			
+			<div class="mui-input-group" style="padding:5px 18px 5px 10px;margin-bottom:5px;">
+				<div class="mui-row" style="height: 40px;">
+					<span class="mui-col-xs-3"  style="color:;font-size:12px;padding-left:13px;line-height:35px;">排班情况：</span>
+					<span class="mui-col-xs-7"  style="color:darkgrey;font-size:10px;padding-left:13px;line-height:35px;">*默认查询当天，点击可修改查询时间</span>
+					<button id="changeTime" class="mui-col-xs-2" style="position: relative;top:5px;padding:0;margin:0;font-size: 10px;height: 30px;"> 查询时间 </button>
+				</div>
+				<div id="selectTime" style="display:none;margin-bottom: 3px;">
+					<div class="mui-input-group" style="margin-bottom:5px;border：none;">
+						<div class="mui-input-row lastInput">
+							<label>选择开始时间 :</label>
+							<input id="bill_date" type="date" class="requiredInput" placeholder=""  style="border:1px solid #E0E0E0;border-radius:10px;">
+						</div>
+					</div>
+					<div class="mui-input-group" style="margin-bottom:5px;">
+						<div class="mui-input-row lastInput">
+							<label>选择结束时间 :</label>
+							<input id="bill_ndate" type="date" class="requiredInput" placeholder="" style="border:1px solid #E0E0E0;border-radius:10px;">
+						</div>
+					</div>
+					<div class="mui-row" style="background: #ffffff;"> 
+						<button type="buttton" class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-12" id="saveBtn" style="text-align: center;margin-right:;" >确&nbsp; &nbsp; &nbsp;定</button>	
+					</div>
+				</div>
+				<div class="mui-row" style="padding:0;margin:0;background:#999999;color:#fff;">
+					<!--<span class="mui-col-xs-1" style="font-size: 30px;">·</span>-->
+					<span class="mui-col-xs-1" ></span>
+					<span class="mui-col-xs-4" >姓名</span>
+					<span class="mui-col-xs-3" >班次</span>
+					<span class="mui-col-xs-4" >日期</span>
+				</div>
+				<ul id="banzuMember" class="mui-row" style="border-top:1px solid #EAEAEA;margin-left:10px;padding-top:5px;margin-top:0;list-style:none;">
+				</ul>
+			</div>
+			<div class="mui-row" style="background: #ffffff;display: none;"> 
+				<button type="buttton" class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-12" id="saveBtn" style="text-align: center;margin-right:;" >确&nbsp; &nbsp; &nbsp;定</button>	
+			</div>
+		</div>
+	</body>
+	
+
+	
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/mui.dtpicker.js"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = null;
+		var rqsData = "";
+		var bill_task = "";
+		var bancitimeArr = [];
+		mui.plusReady(function() {
+			// TODO 1. 页面上的字段========================
+			var h = {
+				bill_bflow 	:"",
+				bill_task	:"",
+				bill_name	:"",
+				bill_no		:"",
+				bill_spec 	:"",							//主:				// 细:
+			};
+			var v = {
+				bill_context:"",							//主:				// 细:
+				bill_date 	:"",							//主:ROOT?			// 细:?
+				bill_ndate 	:""							//主:				// 细:
+			};
+
+			// TODO 2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录人的代码
+			loginComName 	= self.loginComName;	// 5.登录人的名称
+			userbillNo 		= self.userbillNo;		// 6.登录单位代码
+			userName 		= self.userName;		// 7.登录单位名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			// 其他
+			flagNew = self.flagNew;
+			detailInfo = self.detailInfo;
+			// TODO 3. 基础设置/赋值 
+			document.getElementById("header").innerHTML = detailInfo["参数"].split(",")[1]; 				// 班别+班组名称
+			document.getElementById("bill_task").innerHTML = detailInfo["指令"]; 	 // 指令编号
+			document.getElementById("bill_no").innerHTML = detailInfo["参数"].split(",")[0]; 	 // 参数班组名称
+			document.getElementById("bill_name").innerHTML = detailInfo["参数"].split(",")[1]; 	 // 参数班组名称
+			document.getElementById("bill_bflow").innerHTML = detailInfo["图片"]; 	 // 图片班别
+			document.getElementById("bill_spec").innerHTML = detailInfo["标题"]; 	 // 班组	
+			//
+			document.getElementById("bill_date").value=getdate(new Date());
+			document.getElementById("bill_ndate").value=getdate(new Date());
+			function getdate(now){
+		        var year = now.getFullYear();
+		        var month = (now.getMonth() + 1).toString();
+		        var day = (now.getDate()).toString();
+		        if (month.length == 1) {
+		            month = "0" + month;
+		        }
+		        if (day.length == 1) {
+		            day = "0" + day;
+		        }
+		        var dateTime = year + "-" + month + "-" + day;
+		        return dateTime;
+			}
+			// 
+//			VR_query_vdac401_01,
+//			参数：
+//			单位代码'#{bill_com}'，
+//			班组名称：'#{bill_name}'，
+//			开始时间'#{bill_date}'，
+//			结束时间：'#{bill_ndate}'
+			// 查询考勤组
+			var clerkInfoParams = {
+				name: 'msvr',
+				bill_task: "VR_query_vdac401_01", 				// 查询的指令
+				bill_com: teamBillCom, 						// 当前单位
+				bill_user: userbillNo,						// 当前登陆人
+				bill_name: document.getElementById("bill_spec").innerHTML,			// 班组名称
+//				bill_name: "信息中心",			// 班组名称
+				bill_date:document.getElementById("bill_date").value,
+				bill_ndate:document.getElementById("bill_ndate").value,
+				currentPage: 1,
+				pageSize: 30,
+				paramText: ""
+			};
+//			mui.toast("查询班组人员的指令："+"\n"+"VR_query_vdac401_01");
+			rqsDataAjax(clerkInfoParams, '/Find/Ddata/activity', clerkInfo, '../login.html',true);
+			
+			// TODO 4. 事件绑定==================================
+			mui("#banzuMember").on('tap', 'li', function(e) {
+				var e = this;
+				var li = e;
+				var potionArr = [
+					{"title": "删除"}
+				]
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow);
+				// 弹框
+				plus.nativeUI.actionSheet({
+					title: jQuery(li).find(".name").html(),
+					cancel: "取消",
+					buttons: potionArr
+				}, function(e) {
+					if(potionArr[(e.index - 1)].title == "删除"){
+						var txt = '是否要删除“'+jQuery(li).find(".name").html() +'”'
+						// 弹出确认删除菜单，确认后删除
+						mui.confirm(txt, "删除确认", ["删除", "不删除"], function(e) {
+							if(e.index == 0) {
+								// 是
+								li.parentNode.removeChild(li);
+								var date = new Date();
+								var sendTaskData = {
+									bill_no		: rowObj["指令"],
+									bill_task	: "VE_delete_vdac401",
+									bill_user	: userbillNo, 
+									bill_com	: teamBillCom, 
+									bill_date	: vlUtils.dateToString(date),
+									bill_oppo   : rowObj["指令"],
+									bill_unit 	: rowObj["内容"],
+									bill_ndate	: rowObj["日期"],
+								}
+								CRUDajax(sendTaskData,"../login.html",saveSuccess111);
+							} else {
+								// 否
+							}
+						});
+					}
+				});
+			});
+			// TODO 5. 监听自定义事件=============================
+			// TODO 6. 事件/方法=================================
+			// 保存指令
+			document.getElementById("changeTime").addEventListener("tap",function(){
+				document.getElementById("selectTime").style.display= "block";
+			});
+			document.getElementById("saveBtn").addEventListener("tap",function(){
+				document.getElementById("selectTime").style.display= "none";
+				var clerkInfoParams = {
+					name: 'msvr',
+					bill_task: "VR_query_vdac401_01", 				// 查询的指令
+					bill_com: teamBillCom, 						// 当前单位
+					bill_user: userbillNo,						// 当前登陆人
+					bill_name: document.getElementById("bill_spec").innerHTML,			// 班组名称
+//					bill_name: "信息中心",			// 班组名称
+					bill_date:document.getElementById("bill_date").value,
+					bill_ndate:document.getElementById("bill_ndate").value,
+					currentPage: 1,
+					pageSize: 30,
+					paramText: ""
+				};
+//				mui.toast("查询班组人员的指令："+"\n"+"VR_query_vdac401_01");
+				rqsDataAjax(clerkInfoParams, '/Find/Ddata/activity', clerkInfo, '../login.html',true);
+			});
+			// 查询当前班组人员：
+			function clerkInfo(data,type){
+				if(data.data.length != 0) {
+					var banzuMember = document.getElementById("banzuMember");
+					for(var i = 0; i < data.data.length; i++) {
+						var newdataArr = {};
+						for(var k in data.data[i]) {
+							newdataArr[k.slice(0, 2)] = data.data[i][k];
+						}
+						//
+						var text = "";
+						if(type&&i==0){
+							banzuMember.innerHTML = "";
+						}
+						var li = document.createElement("li");
+						li.setAttribute("data-row",JSON.stringify(newdataArr));
+						li.setAttribute("data-no",newdataArr["图片"]);
+						li.setAttribute("class", "mui-row");
+						li.style.padding = "0px";
+						li.style.margin = "0px";
+						text += '<span class="mui-col-xs-1" ><span class="mui-icon mui-icon-star" style="font-size: 16px;"></span></span>';
+						text += '<span class="mui-col-xs-4 name" >'+newdataArr["图片"]+'</span>';
+						text += '<span class="mui-col-xs-3" >'+newdataArr["内容"]+'</span>';
+						text += '<span class="mui-col-xs-4" >'+newdataArr["日期"].slice(5,10)+'</span>';
+						li.innerHTML = text;
+						banzuMember.appendChild(li);
+					}
+				}else{
+					document.getElementById("banzuMember").innerHTML = '<li style="color:gray;">未查询到相关信息~</li>';
+				}
+			}
+			function saveSuccess111(){
+			}
+		}); // plusReady
+	</script>
+</html>

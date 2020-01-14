@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/icons-extra.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+
+		<!--三级联动-->
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			body {font-size: 12px;color: #666;}
+			ul,li {margin: 0px;padding: 0px;}
+			ul li {list-style: none;}
+			
+			.list_font {
+				color: #000000;
+				font-size: 11px;
+				line-height: 12px;
+				height: 12px;
+				margin-bottom:5px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			.list_font span{
+				color:gray;
+			}
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+			/*开始list*/
+			.mui-slider-cell,
+			.mui-slider-handle {
+				/*background: #EFEFF4;*/
+				/*background: #f4e7b3;*/
+			}
+			.title{color: #000000;}
+			.detail {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			.detail{
+				font-size: 10px;
+				margin: 0px !important;
+				padding: 0px !important;
+				text-align: left;
+				color: #666;
+			}
+			
+			p.detail span {
+				color: #20B2AA;
+				margin: 0;
+				padding:0;
+				line-height: 12px;
+			}
+			
+			.mui-input-group:after {
+				background-color: #c8c7cc !important;
+			}
+			.mui-table-view-cell:after{height: 0;}
+			.hide{
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height:70px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">库存盘点详情</h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit"></a>
+			<a class="mui-icon mui-icon-paperclip mui-pull-right hide" id="J_btn_back"></a>	
+		</header>
+		<div class="mui-content" style="margin-top:25px !important;">
+			<div class="mui-input-group hide" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;">
+				<div class="mui-row">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">标识:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_no" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">fbill_no:</span>
+					<span class="mui-col-xs-8" data-field="html.fbill_no" id="fbill_no">ROOT</span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单单位:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_com" id="bill_com"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_user" id="bill_user"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单时间:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_date" id="bill_date"></span>
+					<br/>
+				</div>
+			</div>
+			<div class="mui-slider-cell  mui-slider-handle " style="background:#fff;padding:10px 20px 3px 15px;">
+				<div class="">
+					<div class="mui-row" style="height: 30px;overflow: hidden;">
+						<div class="mui-col-xs-9" id="bill_name" style="font-size:14px;line-height: 30px;color:#000000;font-weight: bold;"></div>
+						<p class="list_sts mui-col-xs-3 mui-pull-right" style="width:auto;padding:1px 5px;float:right;margin:3px 0;overflow:hidden;" id="bill_task"></p>
+					</div>
+					<div class="mui-row" style="border-bottom: 1px dotted #FFEBCD;border-top: 1px dotted #FFEBCD;padding:5px 0;overflow: hidden;">
+						<div class="mui-col-xs-2 mui-row" style="text-align: left;">
+							<img class="vdst316 mui-col-xs-11" src="../../images/icon/default.png" style="border-radius: 5px;" />
+						</div>
+						<div class="mui-col-xs-5 mui-row" >
+							<p class="list_font mui-col-xs-12">三级流程：<span id="bill_bflow"></span></p>
+							<p class="list_font mui-col-xs-12">盘点日期：<span id="bill_ndate"></span></p>
+						</div>
+						<div class="mui-col-xs-5 mui-row list_three" >
+						</div>
+					</div>
+					<div class="mui-row" style="min-height: 16px;line-height: 16px;margin-top:5px;">
+						<div class=" mui-col-xs-2" style="padding-left: 0px;text-align: center;"> 
+							<p class="list_font"  ></p>
+						</div>
+						<div class=" mui-col-xs-10" style="padding-left:0px;"> 
+							<p class="list_font">
+								<span id=""></span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group rel_div"  style="padding:5px 15px 5px 8px;margin-top:5px;background: #20B2AA;color:#fff">
+				<div class="mui-row" style="width:100%;">
+					<span class="mui-col-xs-2" style="text-align: center;">盘点明细</span>
+				</div>
+			</div>
+			<ul id="details" style="background:none;">
+			</ul>
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var bill_user;
+		var getElem = function(el){return document.getElementById(el);};
+		var oBtnEdit = getElem('toEdit');
+		var oBtnBack = getElem('J_btn_back');
+		var oBtnGoBack = getElem('goBack'); 
+		var details = getElem("details");
+		mui.plusReady(function() {
+			// TODO 1. 页面上的字段========================
+			var normalData ={
+				h : {
+					bill_no 	:"",
+					fbill_no 	:"",
+					bill_date 	:"",				
+					bill_user 	:"",
+					bill_com 	:"",
+				 	bill_name 	:"",
+					bill_ndate 	:"",
+					bill_bflow 	:"",
+				},
+				v : {},
+				c : {}
+			}
+
+			// TODO 2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			var userinfo = JSON.parse(vlUtils.getStorage('user'));
+			teamBillCom 	= self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no 		= self.fbill_no; // 3.fbill_no是
+			loginCom 		= self.loginCom; // 4.登录单位代码
+			loginComName 	= self.loginComName; // 5.登录单位名称
+			userbillNo 		= self.userbillNo; // 6.登录人的代码
+			userName 		= self.userName; // 7.登录人的姓名
+			privileges 		= self.privileges; // 8.当前的权限是 
+			fromPage 		= self.fromPage; // 9.从哪个页面来	
+			if(fromPage.indexOf('list') > -1) {
+				var _data = self.detailInfo;
+				mainInfo = self.mainInfo;
+				queryparmas = {
+					name: 'vdst216',
+					bill_no: _data['参数'],
+//					fbill_no: _data['参数'],
+					bill_com: userinfo.bill_coppo,
+					bill_task: "Y,S,L",
+					currentPage: 1,
+					pageSize: 1,
+					paramText: '',
+				}
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas, 'Find/Ddata/findDetail', reportData, '../login.html',true);
+			}else if(fromPage.indexOf('edit') > -1) {
+				detailInfo = self.rqsData;
+				renderPage(detailInfo.values);
+			}else{
+				renderPage(detailInfo.values);
+			}
+			
+			function renderPage(data){
+				setValue(data.main,normalData,false); 
+				var oStatus = {"L":"待送审","S":'待审核',"Y":"已审核"};
+				getElem("bill_task").innerHTML = oStatus[data.main.bill_task];
+				billstate(data.main.bill_task);
+				renderDetail(data);
+			}
+			// 点击返回按钮
+			oBtnGoBack.addEventListener("tap", eGoBack, false);
+			oBtnEdit.addEventListener("tap", eToEdit, false);
+			oBtnBack.addEventListener("tap", eBtnBack, false);
+			function eBtnBack(){
+				mui.confirm("确认要收回此单据吗？", "收回确认", ["收回", "取消"], function(e) {
+					if(e.index == 0) { // 是
+						rqsBack();
+					} 
+				});
+			}
+			function rqsBack(){
+				var _date = new Date();
+				var _param = {
+					bill_task :	"b_back",
+					bill_no   : getElem('bill_no').innerHTML,
+					bill_com  : teamBillCom,
+					bill_user : userbillNo,
+					bill_date : vlUtils.dateToString(_date),
+				}
+				CRUDajax(_param,'../login.html',callback);
+			}
+			function callback() {
+				oBtnBack.style.display = 'none';
+				oBtnEdit.style.display = 'block';
+				detailInfo.values.main.bill_task = 'L';
+				getElem('bill_task').innerHTML = '待送审';
+			}
+			function billstate(task){
+				if(task == "L"){
+					oBtnEdit.style.display = 'block';
+					oBtnBack.style.display = 'none';
+				} else {
+					oBtnEdit.style.display = 'none';
+					oBtnBack.style.display = 'block';
+				}
+			}
+			// event
+			function eToEdit(){
+				var billUser = detailInfo.values.main.bill_user;
+				var privileges = vlUtils.getStorage("newPrivileges");
+				if(billUser == userbillNo || privileges == "ROOT") {
+					var ws = plus.webview.getWebviewById("vdst216_edit.html");
+					if(!vlUtils.isnull(ws)){
+						plus.webview.close(ws);
+					}
+					mui.openWindow({
+						url: 'vdst216_edit.html',
+						id: "vdst216_edit.html",
+						createNew: true,
+						extras: {
+							teamBillCom		: teamBillCom, // 1.管理单位代码 	// 不变 
+							teamBillComName	: teamBillComName, // 2.管理单位名称	// 不变 
+							fbill_no		: fbill_no, // 3.fbill_no是		// 不变
+							loginCom		: loginCom, // 4.登录单位代码
+							loginComName	: loginComName, // 5.登录单位名称
+							userbillNo		: userbillNo, // 6.登录人的代码
+							userName		: userName, // 7.登录人的姓名
+							privileges		: privileges, // 8.当前的权限是
+							fromPage		: "vdst216_node.html", // 9.从哪个页面来
+							detailInfo		: detailInfo,//10.整条数据
+							hadSave 		: true, //11.N为修改,
+							flagNew 		: "N"
+						},
+					    waiting:{
+							autoShow:true,//自动显示等待框，默认为true
+							title:'正在打开页面...',//等待对话框上显示的提示内容
+						}
+					})
+				} else {
+					mui.toast("仅制单人或管理员有此权限！");
+				}
+			
+			}
+			//
+			function eGoBack() {
+				var oldBack = mui.back;
+				mui.back = function() {
+					var webview = plus.webview.getWebviewById('vdst216_plist.html');
+					webview.show();
+				}
+				mui.back();
+			}
+			//
+			function renderDetail(data){
+				var _m = data.main;
+				var _d = data.detail;
+				var text = "";
+				for(var j = 0; j < _d.length; j++) {
+					var li = document.createElement("li");
+					li.setAttribute("data-row",JSON.stringify(_d[j]));
+					li.setAttribute("class", "mui-table-view-cell");
+					li.style.paddingLeft = "8px";
+					li.style.background = "#fff";
+					li.style.borderBottom = "1px dashed #eee";
+					li.style.marginBottom = "3px";
+					var text = "";
+					text += '<div class="mui-row" style="border-bottom: 1px dotted #FFEBCD;">';
+						text += '<div class="mui-col-xs-2" style="margin:0;padding:3px;">';
+							text += '<img src="../../images/icon/chaxun.png" style="width: 30px;height: 30px;"/>';
+						text += '</div>';
+						text += '<div class="mui-col-xs-10 mui-row" style="margin:0;padding:0px;">';
+							text += '<p class="mui-col-xs-12 title">['+_d[j].bill_id+']'+_d[j].bill_name+'</p>';
+							text += '<p class="mui-col-xs-12 detail">物品编码：<span>'+_d[j].bill_bid+'</p>';
+							text += '<p class="mui-col-xs-12 detail">调增(减)数量：<span>'+_d[j].node_qty+'</p>';
+							text += '<p class="mui-col-xs-12 detail">规格：<span>'+_d[j].bill_spec+'</p>';
+						text += '</div>';
+					text += '</div>';
+					li.innerHTML = text;
+					details.appendChild(li);
+				}
+			}
+			
+			function reportData(data,type){
+				plus.nativeUI.closeWaiting("正在查询数据...");
+				detailInfo = data.data[0];
+				renderPage(data.data[0].values);
+			}	
+		});// plusReady
+	</script>
+
+</html>

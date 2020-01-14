@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>返利计算</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			.hide{display: none !important;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head" style="height: auto;">
+			<div style="overflow: hidden;">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+				<div class="mui-title plistTitle">
+					<p id="TO">返利计算</p>
+					<h1 id="header"></h1>
+				</div>
+				<a class="mui-icon mui-icon-plusempty mui-pull-right hide" id="toEdit"> </a>
+			</div>
+			<!--<div class="mui-row navBar topNavRow" id="topNav">
+				<p class="mui-col-xs-4 topNav active" data-type="001">待确认</p>
+				<p class="mui-col-xs-4 topNav" data-type="002">已确认</p>
+				<p class="mui-col-xs-4 topNav" data-type="003">全部</p>
+			</div>-->
+			<div class="mui-row" style="background: #E0E0E0;height:42px;">
+				<div class="mui-col-sm-10 mui-col-xs-10" style="position: relative;left:2px;">
+					<div class="mui-input-row mui-search">
+						<input type="search" id="searchBox" class="mui-input-clear" onkeyup="enterSearch(event)" placeholder="">
+					</div>
+				</div>
+				<div class="mui-col-sm-2 mui-col-xs-2" style="position: relative;top:-3px;">
+					<button type="button" id="searchBtn" class="mui-btn" >搜索</button>
+				</div> 
+			</div>
+		</header>
+		<div class="mui-content">
+
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var teamBillCom = null;
+		var teamBillComName = null;
+		var userbillNo = null;
+		var userName = null;
+		var loginCom = null;
+		var loginComName = null;
+		var privilege = null;
+		var fromPage = null;
+		var fbill_no = null;
+		var ROOTfbillNo = "";
+		var search = '';
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdst313_list_01.html',
+				id: 'vdst313_list_01.html',
+				styles: {
+					top: '116px',
+					bottom: '5px',
+				}
+			}]
+		});
+
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vdst313_list_01').pullRefresh().scrollTo(0,0,100)");
+		});
+
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; 
+			teamBillComName = self.teamBillComName; 
+			fbill_no = self.fbill_no; 
+			loginCom = self.loginCom; 
+			loginComName = self.loginComName; 
+			userbillNo = self.userbillNo; 
+			userName = self.userName; 
+			privileges = self.privileges; 
+			fromPage = self.fromPage; 
+			// 其他
+			ROOTfbillNo = self.fbill_no;
+
+			// 更改header的显示信息
+			document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+
+			// nav
+			mui("#topNav").on("tap", "p", function() {
+				var self = this;
+				jQuery(this).addClass("active").siblings().removeClass("active");
+				//触发详情页面的newsId事件
+				mui.fire(plus.webview.getWebviewById('vdst313_list_01.html'), 'differentStatesRefresh210list', {
+					active: self.getAttribute("data-type"),
+					search: search,
+					port  : '/Find/Ddata/activity'
+				});
+			});
+			document.addEventListener('reload', function(event) {
+				jQuery('#topNav p').eq(0).addClass("active").siblings().removeClass("active");
+			}); 
+			// 
+			document.getElementById("toEdit").addEventListener("tap", function() {
+				plus.nativeUI.showWaiting("正在打开页面..."); 
+				var privileges = vlUtils.getStorage("newPrivileges");
+				var ws = plus.webview.getWebviewById("vdst313_edit.html");
+				if(!vlUtils.isnull(ws)){
+					plus.webview.close(ws);
+				}
+				var queryflow = {
+					name: 'msvr',
+					bill_task: "VR_query_flow", // 查询的指令
+					bill_com: teamBillCom, // 当前单位
+					bill_user: userbillNo, // 当前登陆人
+					bill_oppo:"vdst316",
+					currentPage: 1,
+					pageSize: 100,
+					paramText: ""
+				};
+				rqsDataAjax(queryflow, '/Find/Ddata/activity', reportData, '../login.html');
+			});
+			function reportData(data, type) {
+				plus.nativeUI.closeWaiting(); 
+				var dataInfo = [];
+				if(data.data.length != 0) {
+					var text = '';
+					for(var i = 0; i < data.data.length; i++) {
+						var newdataArr = {};
+						for(var k in data.data[i]) {
+							newdataArr[k.slice(0, 2)] = data.data[i][k];
+						}
+						dataInfo.push(newdataArr);
+					}
+					mui.openWindow({
+						url: 'vdst313_edit.html',
+						id: "vdst313_edit.html",
+						createNew: true,
+						extras: {
+							teamBillCom: teamBillCom, 
+							teamBillComName: teamBillComName, 
+							fbill_no: fbill_no, 
+							loginCom: loginCom, 
+							loginComName: loginComName, 
+							userbillNo: userbillNo, 
+							userName: userName, 
+							privileges: privileges, 
+							fromPage: "vdst313_plist_01.html", 
+							flagNew: "Y", //进入新建
+							dataInfo: dataInfo
+						}
+					})
+				} else{ // 无对应的业务
+//					privileges = vlUtils.getStorage("newPrivileges");
+//					if(privileges == "ROOT"){ // 即使没有流程，管理员也可以直接进入生成单据
+						mui.openWindow({
+							url: 'vdst313_edit.html',
+							id: "vdst313_edit.html",
+							createNew: true,
+							extras: {
+								teamBillCom: teamBillCom, 
+								teamBillComName: teamBillComName, 
+								fbill_no: fbill_no, 
+								loginCom: loginCom, 
+								loginComName: loginComName, 
+								userbillNo: userbillNo, 
+								userName: userName, 
+								privileges: privileges, 
+								fromPage: "vdst313_plist_01.html", 
+								flagNew: "Y",
+								detailInfo:dataInfo
+							}
+						})
+//					}else{ // 没有流程，提示没有权限
+//						mui.toast("对不起，您无此权限!");
+//					}
+				}
+			}
+		}); // plusReady
+		// 搜索框事件
+		function enterSearch(e) {e.keyCode == 13 && eventSearch();}
+		// 搜索按钮事件
+		document.getElementById("searchBtn").addEventListener("tap",eventSearch);
+		function eventSearch() {
+			document.getElementById("searchBox").blur();
+	        search = document.getElementById("searchBox").value;
+			mui.fire(plus.webview.getWebviewById('vdst313_list_01.html'), 'differentStatesRefresh210list', {
+				active: jQuery("#topNav").children(".active").attr("data-type"),
+				search: search,
+				port  : '/Find/Ddata/activity'
+			});
+		}
+	</script>
+
+</html>

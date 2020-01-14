@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>拜访签到</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title{
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.active{
+				color: #ea6d10;
+				border-bottom:2px solid #ea6d10;
+				/*background:pink;*/
+			}
+			.mui-bar .mui-icon:active { 
+				background: #0062cc!important;
+	        }
+	        .mui-bar-nav ~ .mui-content .mui-pull-top-pocket{
+  				top: 100px;
+  			}
+  			.hide{display: none;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head" style="height: 136px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<div class="mui-title plistTitle" id="selectionDepartment">
+				<p id="TO">客户列表</p>
+				<h1 id="header"></h1>
+				<span style="position: relative;left:58px;top:-35px;color:white;font-size:12px;display:none;margin-left:20px;" id="moredept">▼</span>
+			</div>
+			<a class="mui-icon mui-icon-plusempty mui-pull-right hide" id="toEdit" style="display:none;"></a>
+			<div class="mui-row navBar topNavRow displayBlock" id="topNav">
+				<p class="mui-col-xs-3 topNav active" data-active="active" data-type="001">附近的店<span></span></p>
+				<p class="mui-col-xs-3 topNav" data-type="002">未拜访<span></span></p>
+				<p class="mui-col-xs-3 topNav" data-type="003">待处理<span></span></p>
+				<p class="mui-col-xs-3 topNav" data-type="004">拜访记录<span></span></p>
+			</div>
+			<div class="mui-row searchBar">
+				<div class="mui-col-sm-10 mui-col-xs-10">
+					<div class="mui-input-row mui-search">
+						<input type="search" id="searchBox" class="mui-input-clear" onkeyup="enterSearch(event)" placeholder="">
+					</div>
+				</div>
+				<div class="mui-col-sm-2 mui-col-xs-2">
+					<button type="button" id="searchBtn" class="mui-btn">搜索</button>
+				</div>
+			</div>
+		</header>
+		<div class="mui-content" id="aaa" style="border: transparent;">
+
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig:{
+				doubletap:true
+			},
+			subpages:[{
+				url:'vdsa402_list.html',
+				id:'vdsa402_list.html',
+				styles:{
+					top: '140px',
+					bottom: '0px',
+				}
+			}]
+		});
+	
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap',function () {
+			if(contentWebview==null){
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vdsa402_list').pullRefresh().scrollTo(0,0,100)");
+		});
+		var search = '';
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function(){ 
+			
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			var teamBillCom 	= self.teamBillCom;
+			var teamBillComName = self.teamBillComName;
+			var loginCom 		= self.loginCom;
+			var loginComName 	= self.loginComName;
+			var userbillNo 		= self.userbillNo; // 6.登录人的代码
+			var userName 		= self.userName; // 7.登录人的姓名
+			var privileges 		= self.privileges; // 8.当前的权限是
+			var fromPage 		= self.fromPage; // 9.从哪个页面来
+			var fbillnoName 	= self.fbillnoName;
+			var dataInfo 		= self.dataInfo; //
+			var fbill_no 		= self.fbill_no; //
+			// 更改header的显示信息
+			document.getElementById("header").innerHTML= teamBillComName;//头部显示发货单位名
+			document.getElementById("header").setAttribute("teamBillCom",teamBillCom);
+            document.getElementById("header").setAttribute("userbillNo",userbillNo);
+            document.getElementById("header").setAttribute("loginCom",loginCom);
+            document.getElementById("header").setAttribute("loginComName",loginComName);
+            //
+             window.addEventListener('plist_in_list', function(event) {
+				fbill_no = event.detail.fbill_no;
+				fbillnoName = event.detail.fbillnoName;
+			}) 
+	        window.addEventListener('vdvc103VRfindselectedDept', function(event) {
+				fbill_no = event.detail.linkCom;
+				fbillnoName = event.detail.linkName;
+				document.getElementById("header").innerHTML = fbillnoName;
+				mui.fire(plus.webview.getWebviewById('vdsa402_list.html'), "plist_in_list", {
+					fbill_no: fbill_no,
+					fbillnoName:fbillnoName
+				})
+				
+			}) 
+            
+			//跳转到编辑页面
+			document.getElementById("toEdit").addEventListener("tap",function(){
+				var ws312= plus.webview.getWebviewById("vdsu312_edit.html");
+				if(!vlUtils.isnull(ws312)){
+					plus.webview.close(ws312);
+				}
+				var paramColl = {
+						teamBillCom		: teamBillCom, 		// 1.管理单位代码	// 不变
+						teamBillComName	: teamBillComName, 	// 2.管理单位名称	// 不变
+						fbill_no		: fbill_no, 		// 3.片区代码		// 不变
+						loginCom		: loginCom, 		// 4.登录单位代码
+						loginComName	: loginComName, 	// 5.登录单位名称
+						userbillNo		: userbillNo, 		// 6.登录人的代码
+						userName		: userName, 		// 7.登录人的姓名
+						privileges		: privileges, 		// 8.当前的权限是
+						fromPage		: "vdsa402_plist.html", 	// 9.从哪个页面来
+						fbillnoName		: fbillnoName,		// 片区名称
+					}
+				mui.openWindow({
+					url:"../vlvdsu/vdsu312_edit.html",
+					id:"vdsu312_edit.html",
+					createNew:true,
+					extras:{
+						paramColl : paramColl,
+					}
+				})
+//				var selectArr = [
+//					{
+//						"title": "新建用户"
+//					},
+//					{
+//						"title": "新增客户"
+//					}
+//				];
+//				// 弹框
+//				plus.nativeUI.actionSheet({
+//					title: "选择操作项",
+//					cancel: "取消",
+//					buttons: selectArr
+//				}, function(e) {
+//					//商品类型find赋值
+//					if((e.index - 1) == 0){
+//						var ws311find = plus.webview.getWebviewById("vdvc311_select.html");
+//						if(!vlUtils.isnull(ws311find)){
+//							plus.webview.close(ws311find);
+//						}
+//						mui.openWindow({
+//							url:"../vlvdvc/vdvc311_select.html",
+//							id:"vdvc311_select.html",
+//							extras:{
+//								teamBillCom 	: teamBillCom ,
+//								teamBillComName : teamBillComName,
+//								userbillNo 		: userbillNo,
+//								userName 		: userName,
+//								loginCom 		: loginCom,
+//								loginComName 	: loginComName,
+//								privileges 		: privileges,
+//								fbill_no 		: "ROOT",
+//								fromPage 		: "vdsa402_plist.html",
+//								data_info		: "新建一级经销商负责人"
+//							}
+//						})
+//					}else if((e.index - 1) == 1){
+//						var ws312= plus.webview.getWebviewById("vdsu312_edit.html");
+//						if(!vlUtils.isnull(ws312)){
+//							plus.webview.close(ws312);
+//						}
+//						var paramColl = {
+//								teamBillCom		: teamBillCom, 		// 1.管理单位代码	// 不变
+//								teamBillComName	: teamBillComName, 	// 2.管理单位名称	// 不变
+//								fbill_no		: fbill_no, 		// 3.片区代码		// 不变
+//								loginCom		: loginCom, 		// 4.登录单位代码
+//								loginComName	: loginComName, 	// 5.登录单位名称
+//								userbillNo		: userbillNo, 		// 6.登录人的代码
+//								userName		: userName, 		// 7.登录人的姓名
+//								privileges		: privileges, 		// 8.当前的权限是
+//								fromPage		: "vdsa402_plist.html", 	// 9.从哪个页面来
+//								fbillnoName		: fbillnoName,		// 片区名称
+//							}
+//						mui.openWindow({
+//							url:"../vlvdsu/vdsu312_edit.html",
+//							id:"vdsu312_edit.html",
+//							createNew:true,
+//							extras:{
+//								paramColl : paramColl,
+//							}
+//						})
+////						
+//					}
+//				});
+			})
+			 
+			// nav
+			mui("#topNav").on("tap","p",function(){
+				var self = this;
+				jQuery(this).addClass("active").siblings().removeClass("active");
+
+				search = document.getElementById("searchBox").value;
+				var searchInput = document.getElementById("searchBox"); 
+				searchInput.value = "";
+				searchInput.blur();
+				// 判断当前是什么状态
+//				if(search == "") { // 搜索框如果为空，则使用查询接口
+//					port = 'Business/allocated';
+//				} else { // 搜索框如果不为空，则使用搜索接口
+//					port = 'Find/Ddata/fuzzy';
+//				}
+				//触发详情页面的newsId事件
+				mui.fire(plus.webview.getWebviewById('vdsa402_list.html'), 'differentStatesRefresh311list', {
+					active: self.getAttribute("data-type"), //
+					search: search,
+				});
+			});
+			// * 搜索框事件
+			function enterSearch(e) {
+				if(e.keyCode == 13) {
+					var queryStauts = "";
+					document.getElementById("searchBox").blur();
+					search = document.getElementById("searchBox").value;
+					if(search == "") { // 搜索框如果为空，则提示用户输入
+						mui.toast("请先输入搜索条件！");
+						return;
+					}
+					mui.fire(plus.webview.getWebviewById('vdsa402_list.html'), 'differentStatesRefresh311list', {
+						active: jQuery("#topNav").children(".active").attr("data-type"),
+						search: search,
+					});
+				}
+			}
+			// * 搜索按钮事件
+			document.getElementById("searchBtn").addEventListener("tap", function() {
+				document.getElementById("searchBox").blur();
+				search = document.getElementById("searchBox").value;
+				if(search == "") {
+					// 搜索框如果为空，则提示用户输入
+					mui.toast("请先输入搜索条件！");
+					return;
+				}
+				mui.fire(plus.webview.getWebviewById('vdsa402_list.html'), 'differentStatesRefresh311list', {
+					active: jQuery("#topNav").children(".active").attr("data-type"),
+					search: search,
+				});
+			});
+			//
+			if(fromPage == "work") {
+				$$("#moredept").css("display","block");
+				if(dataInfo.length != 0) {
+					document.getElementById("header").innerHTML = dataInfo[0].title;
+				} else {
+					document.getElementById("header").innerHTML = "";
+				}
+
+				document.getElementById("selectionDepartment").addEventListener("tap", function() {
+					if(dataInfo.length <= 1) {
+						mui.toast("没有更多的部门了!");
+						return;
+					}
+//					if(dataInfo.length != 1) {
+//						plus.nativeUI.actionSheet({
+//							title: "切换部门",
+//							cancel: "取消",
+//							buttons: dataInfo
+//						}, function(e) {
+//							document.getElementById("header").innerHTML = dataInfo[(e.index - 1)].title;
+//							fbill_no = dataInfo[(e.index - 1)].bill_no;
+//							fbillnoName = dataInfo[(e.index - 1)].title;
+//							mui.fire(plus.webview.getWebviewById('vdsa402_list.html'), "plist_in_list", {
+//								fbill_no: fbill_no,
+//								fbillnoName:fbillnoName
+//							})
+//							mui.fire(plus.webview.getWebviewById('vdsa402_plist.html'), "plist_in_list", {
+//								fbill_no: fbill_no,
+//								fbillnoName:fbillnoName
+//							})
+//						});
+//					}
+					if(dataInfo.length != 1) { 
+						var oldUserName = document.getElementById("header").innerHTML;
+						var oldUserCode = fbill_no;
+						mui.openWindow({
+							url: '../vlvdvc/vdvc103_VRfind.html',
+							id: "vdvc103_VRfind.html",
+							createNew: true,
+							extras: {
+								teamBillCom		: teamBillCom, 		// 1.管理单位代码	// 不变
+								teamBillComName	: teamBillComName, 	// 2.管理单位名称	// 不变
+								fbill_no		: fbill_no, 		// 3.fbill_no是		// 不变
+								loginCom		: loginCom, 		// 4.登录单位代码
+								loginComName	: loginComName, 	// 5.登录单位名称
+								userbillNo		: userbillNo, 		// 6.登录人的代码
+								userName		: userName, 		// 7.登录人的姓名
+								privileges		: privileges, 		// 8.当前的权限是
+								fromPage		: "vdsa402_plist.html", 	// 9.从哪个页面来
+								oldUserName 	: oldUserName,
+								oldUserCode 	: oldUserCode,
+								choice			: "single", 		// 单选
+								// choice		:"multiple", 		// 多选
+							}
+						})
+					}
+				})
+
+			} else {
+				document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+				$$("#moredept").css("display","none");
+			}
+	});
+	</script>
+</html>
+

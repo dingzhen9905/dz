@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<style>
+			body {font-size: 14px;}
+			.mui-row {padding: 8px;}
+			.mui-input-group:before{height: 0;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 70px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">反馈详情</h1>
+		</header>
+		<div class="mui-content mainBody nodeBody" style="padding-top: 70px !important;">
+			<div class="mui-row vlel-hide" style="padding:10px 0 0 16px;margin:0;background: #FFFFFF;font-size: 12px;">
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">标识：</p><p id="bill_no" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">fbill_no：</p><p id="fbill_no" class="auto-fill mui-col-xs-8">ROOT</p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">bill_task：</p><p id="bill_task" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">制单人代码：</p><p id="bill_user" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">制单单位：</p><p id="bill_com" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">制单单位名称：</p><p id="bill_title" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">燕京代码：</p><p id="bill_coppo" class="auto-fill mui-col-xs-8"></p>
+			</div>
+			<div class="mui-input-group"  style="padding:5px 18px 5px 18px;margin-top:5px;position: relative;margin-bottom:5px;">
+				<div class="mui-row infoItem" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4">反馈人：</span>
+					<span class="mui-col-xs-8"  id="bill_name"></span>
+				</div>
+				<div class="mui-row infoItem lastItem">
+					<span class="mui-col-xs-4">反馈时间：</span>
+					<span class="mui-col-xs-8"  id="bill_date"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:8px 18px 5px 32px;margin-bottom:5px;">
+				<label class="blabel">反馈内容</label>
+				<textarea name="" rows="10" cols="2" placeholder="" readonly="readonly" id="cc_user" class="" style="border:1px solid #eee;width:100%;margin-top:5px;font-size:12px;line-height: 16px;"></textarea>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-top:5px;position: relative;">
+				<div class="mui-row infoItem lastItem">
+					<span class="mui-col-xs-4">联系方式：</span>
+					<span class="mui-col-xs-8"  id="bill_bid"></span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var queryparmas;
+		var hadChange = false;
+		var teamBillCom,teamBillComName,userbillNo,userName,loginCom,loginComName,fromPage,commonParams,bno,activeType,otherParams;
+		var  normalData = {
+			h: {
+				bill_no: "",
+				fbill_no: "", 	
+				bill_user: "", // 制单人
+				bill_name: "", // 制单人姓名
+				bill_com: "", // 制单单位			
+				bill_title: "", // 制单单位
+				bill_coppo: "", // 燕京代码
+				bill_task: "", // 
+				bill_date: "", // 制单时间
+				cc_user: "", 
+				bill_bid: "",
+			},
+			v: {},
+			c: {}
+		}
+		var testa = {
+			h:{},
+			c:{},
+			v:{}
+		}
+		mui.plusReady(function() {
+
+			var oldBack = mui.back;
+			mui.back = function() {
+				if(hadChange){
+					reloadPage('vdvc203_plist.html', 'vdvc203_list.html')
+				}else{
+					oldBack();
+				}
+			}
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+				teamBillCom = self.teamBillCom;
+				teamBillComName = self.teamBillComName;
+				userbillNo = self.userbillNo;
+				userName = self.userName;
+				loginCom = self.loginCom;
+				loginComName = self.loginComName;
+				fromPage = self.fromPage;
+				commonParams = self.commonParams;
+				activeType = self.activeType,
+				otherParams 	= self.otherParams;
+				detailInfo = self.detailInfo;
+				bno = detailInfo.bill_no;
+			var date = new Date();
+			var commit = document.getElementById("commit");
+			var bill_date = VlDate.get(date, "_ymdhms");
+			var rqsData = null; //提交的数据
+			var inputData = null; // 表单里的数据
+			
+			// 获取当前用户详情信息
+			queryparmas = {
+				name: 'vdvc203',
+				bill_com: loginCom,
+				bill_task:"L,S,Y",
+				currentPage: 1,
+				pageSize: 1,
+				paramText: "",
+				bill_no: bno
+			}
+			VlAjax.post({
+				"port" : "find",
+				"headers" : "json",
+			}, queryparmas, sCBfind)
+			
+			// 编辑结束
+			function sCBfind(data,type){
+				if(data.data.length != 0) {
+					if(data.data[0].bill_text == ""){
+						data.data[0].bill_text = [testa.h];
+					}
+					detailInfo = data.data[0];
+					VlEdit.setValue(data.data[0], normalData);
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					mui.toast("未查询到数据~")
+				}
+				plus.nativeUI.closeWaiting();
+			}
+			
+			function reloadPage(page1, page2){
+				var webview = plus.webview.getWebviewById(page1);
+				webview.show();
+				webview.reload();
+				if(arguments[1]){
+					var subview = plus.webview.getWebviewById(page2);
+					subview.reload();
+				}
+			}
+		}); // plusReady
+	</script>
+
+</html>

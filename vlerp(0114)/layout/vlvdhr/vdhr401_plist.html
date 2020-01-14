@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<div class="mui-title plistTitle">
+				<p id="TO">排班班组</p>
+				<h1 id="header"></h1>	
+			</div>
+			<a class="mui-icon mui-icon-plusempty mui-pull-right" id="toEdit" ></a>
+			<div class="mui-row navBar topNavRow" id="topNav">
+				<p class="mui-col-xs-6 topNav active" data-type="001" style="">全部</p>
+				<p class="mui-col-xs-6 topNav" data-type="002">待处理</p>
+				<p class="mui-col-xs-6 topNav" data-type="004" style="display: none;">已失效</p>
+			</div>
+		</header>
+
+		<div class="mui-content">
+
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var userName = "";
+		var loginCom = "";
+		var loginComName = "";
+		var privilege = "";
+		var fromPage= "";
+		var fbill_no = "";
+		var fbill_noName = "";
+		var BreadcrumbNav = [];
+		var BreadcrumbNavName = [];
+		var BreadcrumbNavArr = [];
+		var ROOTfbillNo = "";
+		var detailInfo = null ;
+		var deptname = ""; //显示单位的中文名
+		//**********************subpage传过来的单位根据该单位给右上角的+传值
+		// 103list左滑
+		window.addEventListener('lowerDeptRefresh103plist', function(event) {
+
+			teamBillCom 	= event.detail.teamBillCom;		// 管理单位代码
+			fbill_no 		= event.detail.fbill_no;		// fbill_no是
+			teamBillComName = event.detail.teamBillComName; // 管理单位名称
+			loginCom 		= event.detail.loginCom;	 	// 登录单位代码
+			loginComName 	= event.detail.loginComName;	// 登录单位名称
+			userbillNo 		= event.detail.userbillNo;		// 登录人的代码
+			userName 		= event.detail.userName,		// 登录人的姓名
+			privileges 		= event.detail.privileges,		// 当前的权限是
+			fromPage 		= event.detail.fromPage,		// 从哪个页面来
+			
+			detailInfo 		= event.detail.detailInfo;
+			//
+			deptname = detailInfo.bill_name;
+
+			// 把当前fbill_no和部门名字传入数组中
+			BreadcrumbNav.push(teamBillCom);			// 0109改，之前取fbill_no
+			BreadcrumbNavName.push(teamBillComName);	// 0109改，之前取detailInfo.bill_name
+			
+		});
+		//=================================
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdhr401_list.html',
+				id: 'vdhr401_list.html',
+				styles: {
+					top: '110px',
+					bottom: '20px',
+				}
+			}]
+		});
+
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vdhr401_list').pullRefresh().scrollTo(0,0,100)");
+		});
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			// 接收传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			// 其他
+			ROOTfbillNo 	= self.fbill_no;
+			// 更改header的显示信息
+			document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+
+			// 右上角点击进入103_edit.html
+			// 右上角点击进入103_edit.html
+			document.getElementById("toEdit").addEventListener("tap", function() {
+				var privileges = vlUtils.getStorage("newPrivileges");
+				var ws = plus.webview.getWebviewById("vdhr401_edit.html");
+				if(!vlUtils.isnull(ws)){
+					plus.webview.close(ws);
+				}
+				// 在根部的时候只能
+//				if(ROOTfbillNo == fbill_no && privileges == "ROOT"){
+					mui.openWindow({
+						url: 'vdhr401_edit.html',
+						id: "vdhr401_edit.html",
+						createNew: true,
+						extras: {
+							teamBillCom 	: teamBillCom, 		// 1.管理单位代码	// 不变
+							teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变
+							fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+							loginCom 		: loginCom,			// 4.登录人的代码
+							loginComName 	: loginComName,		// 5.登录人的名称
+							userbillNo 		: userbillNo,		// 6.登录单位代码
+							userName 		: userName,			// 7.登录单位名称
+							privileges 		: privileges,		// 8.当前的权限是
+							fromPage 		: fromPage,			// 9.从哪个页面来
+							deptname		: deptname,
+							flagNew			: "Y"
+						},
+					    waiting:{
+							autoShow:true,//自动显示等待框，默认为true
+							title:'正在打开页面...',//等待对话框上显示的提示内容
+						}
+					})
+//				}
+//				if(ROOTfbillNo == fbill_no && privileges != "ROOT"){
+//					mui.toast("仅管理员有此权限!")
+//				}
+//				if(ROOTfbillNo != fbill_no){
+//					mui.openWindow({
+//						url: 'vdhr401_edit.html',
+//						id: "vdhr401_edit.html",
+//						createNew: true,
+//						extras: {
+//							teamBillCom 	: teamBillCom, 		// 1.管理单位代码
+//							teamBillComName : teamBillComName,	// 2.管理单位名称
+//							fbill_no 		: fbill_no,			// 3.fbill_no是
+//							loginCom 		: loginCom,			// 4.登录单位代码
+//							loginComName 	: loginComName,		// 5.登录单位名称
+//							userbillNo 		: userbillNo,		// 6.登录人的代码
+//							userName 		: userName,			// 7.登录人的姓名
+//							privileges 		: privileges,		// 8.当前的权限是
+//							fromPage 		: fromPage,			// 9.从哪个页面来
+//							deptname		: deptname,
+//							flagNew			: "Y"
+//						}
+//					})
+//				}
+				
+			})
+
+
+			// nav
+			mui("#topNav").on("tap", "p", function() {
+
+				var self = this;
+				jQuery(this).addClass("active").siblings().removeClass("active");
+				//触发详情页面的newsId事件
+				mui.fire(plus.webview.getWebviewById('vdhr401_list.html'), 'differentStatesRefresh103list', {
+					active: self.getAttribute("data-type")
+				});
+			})
+		})
+	</script>
+
+</html>

@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>拜访</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<!-- <link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" /> -->
+		<style>
+			body {
+				font-size: 12px;
+			}
+			
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			input[placeholder] {
+				font-size: 12px;
+			}
+			.mui-input-row.lastInput:after {
+				height: 0;
+			}
+			.mui-input-row.detail {
+				padding-top: 8px;
+				padding-left: 15px;
+				height: 120px;
+			}
+			.mui-input-row.detail p {
+				margin-bottom: 0;
+			}
+			/*关联状态*/
+			.list_font {
+				padding:1px;
+				padding-left:15px;
+				color: #000000;
+				font-size: 11px;
+				line-height: 12px;
+				height: 16px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			
+			.imgs{
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				margin-bottom: 10px;
+				margin-left: 8px;
+				border: 1px solid #0070C0;
+				border-radius: 10px;
+				text-align: center;
+				line-height: 100px;
+				overflow: hidden;
+			}
+			.imgs .content-image{
+				width: 100px;
+			}
+			.auto-fill {
+				padding:1px;
+				padding-left:5px;
+				color: #242424;
+				font-size: 11px;
+				line-height: 12px;
+				height: 12px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			.auto-fill-title{color: gray;}
+			.mui-input-row{position: relative;}
+			.mui-switch{position: absolute;right:5px;top:5px;height: 20px;margin-top:0px;width:39px;}
+			.mui-switch-handle{height: 18px !important;width: 18px !important;}
+			/**/
+			.mui-radio.mui-left label, .mui-checkbox.mui-left label{
+				margin-top:5px;
+				padding-left: 40px !important;
+				padding-right: 0px !important;
+			}
+			input[type="radio"],input[type="checkbox"] {
+				top: 12px !important;
+			}
+			.mui-radio input[type='radio']:before, .mui-checkbox input[type='checkbox']:before{
+				font-size: 18px !important;
+			}
+			.hide-el{display: none;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head" style="height:75px;">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p id="title">新增拜访</p>
+				<h1 id="header" ></h1>	
+			</div>
+			<a class="mui-pull-right rightIcon" id="deleteBtn">删除</a>
+		</header>
+		<div class="mui-content" style="padding-top:75px;margin-bottom:30px;">
+			<div class="mui-input-group hide-el" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;">
+				<div class="mui-row">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">标识:</span>
+					<span class="mui-col-xs-8" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">fbill_no:</span>
+					<span class="mui-col-xs-8" id="fbill_no">ROOT</span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">bill_task:</span>
+					<span class="mui-col-xs-8" id="bill_task"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人代码:</span>
+					<span class="mui-col-xs-8" id="bill_user"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人姓名:</span>
+					<span class="mui-col-xs-8" id="bill_unit"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单单位:</span>
+					<span class="mui-col-xs-8" id="bill_com"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单时间:</span>
+					<span class="mui-col-xs-8" id="bill_date"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">拜访类别:</span>
+					<span class="mui-col-xs-8" id="bill_bflow">业务员拜访</span>
+					<br/>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row basicInfo">
+					<div class="mui-col-xs-2 imgFrame">
+						<img class="vdsa402" id="userImg" src="../../images/icon/default.png" width=100% style="border-radius: 10px;"/>
+					</div>
+					<div class="mui-col-xs-10 mui-row mui-pull-right infoFrame">
+						<div class="list_font mui-col-xs-12  mui-row  infoItem">
+							<span class="mui-col-xs-12"  id="bill_name" style="font-size:14px;display:;"></span>
+							<span class="mui-col-xs-12 hide-el" id="bill_oppo" style="font-size:14px;"></span>
+							<span class="mui-col-xs-12 hide-el" id="bill_coppo" style="font-size:14px;"></span>
+						</div>
+						<div class="mui-col-xs-12">
+							<div class="mui-row" style="margin: 0;padding:0;min-height:20px;overflow:hidden;">
+								<span class="mui-col-xs-3" style="color:#ACACB4;">当前地址:</span>
+								<span class="mui-col-xs-9" id="bill_title" style=""></span>
+							</div>
+							<div class="mui-row" style="margin: 0;padding:0;height: 20px;">
+								<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+									<span class="mui-col-xs-3" style="color:#ACACB4;">经度:</span>
+									<span class="mui-col-xs-9" id="bill_ipaddr"></span>
+								</div>
+								<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+									<span class="mui-col-xs-3" style="color:#ACACB4;">纬度:</span>
+									<span class="mui-col-xs-9" id="bill_gpsaddr"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group mui-row" style="padding:5px 18px 5px 10px;">
+				<div class="mui-input-row lastInput" style="">
+					<div class="mui-row"  style="margin:0;padding:0;">
+						<div class="mui-col-xs-10">
+							<label>抵店时间</label>
+							<input type="text" id="bill_bdateshow" class="mui-input-clear " readonly="readonly" placeholder="点击按钮录入抵店时间">
+							<input type="text" id="bill_bdate" class="hide-el mui-input-clear" readonly="readonly" placeholder="点击按钮录入抵店时间">
+						</div>
+						<div class="mui-col-xs-2">
+							<button class="mui-btn mui-btn-primary mui-btn-outlined getdate" data-id="bill_bdate" id="J_btn_bdate" style="float: none;width: auto;padding:3px 10px;margin-top:10px;"> 抵达 </button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group" id="photoArr" style="padding:5px 18px 5px 18px;margin:5px 0;">
+				<div style="border-bottom:1px solid #E3E3E3;color: #20B2AA;">
+					<span class="mui-col-xs-10">执行任务：拍照</span>
+				</div>
+				<div class="photobox" id="photobox" style="height:240px; width:100%;position: relative;margin-top: 10px;">
+					<div class="imgs" style="top: 10px;left: 0px;" data-info="门头照">
+						门头照
+					</div>
+					<div class="imgs" style="top: 10px;left: 110px;" data-info="拜访卡">
+						拜访卡登记并拍照				
+					</div>
+					<div class="imgs" style="top: 10px;left: 220px;" data-info="产品陈列">
+						产品陈列
+					</div>
+					<div class="imgs" style="top: 120px;left: 0px;" data-info="冰箱/展示柜">
+						冰箱/展示柜
+					</div>
+					<div class="imgs" style="top: 120px;left: 110px;" data-info="货架整理">
+						货架整理拍照
+					</div>
+					<div class="imgs" style="top: 120px;left: 220px;" data-info="POP">
+						POP拍照
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group" id="group2" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div style="border-bottom:1px solid #E3E3E3;color: #20B2AA;">
+					<span class="mui-col-xs-10">其他任务：终端库存</span>
+				</div>
+				<div class="mui-row" style="border-bottom: 1px dashed #CCCCCC;padding:0;margin:0;">
+					<div class="mui-col-xs-2" style="text-align: center;line-height: 80px;">
+						本品
+					</div>
+					<div class="mui-col-xs-10">
+						<div class="mui-input-row " style="">
+							<div class="mui-row"  style="margin:0;padding:0;">
+								<div class="mui-col-xs-10">
+									<label>听装</label>
+									<input type="number" id="node_qty" class="mui-input-clear " placeholder="请录入听装数量">
+								</div>
+								<div class="mui-col-xs-2" style="color:gray;line-height:40px;">（件）</div>
+							</div>
+						</div>
+						<div class="mui-input-row lastInput" style="">
+							<div class="mui-row"  style="margin:0;padding:0;">
+								<div class="mui-col-xs-10">
+									<label>瓶装</label>
+									<input type="number" id="node_price" class="mui-input-clear " placeholder="请录入瓶装数量">
+								</div>
+								<div class="mui-col-xs-2" style="color:gray;line-height:40px;">（件）</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mui-row"  style="padding:0;margin:0;">
+					<div class="mui-col-xs-2" style="text-align: center;line-height: 80px;">
+						竞品
+					</div>
+					<div class="mui-col-xs-10">
+						<div class="mui-input-row " style="">
+							<div class="mui-row"  style="margin:0;padding:0;">
+								<div class="mui-col-xs-10">
+									<label>听装</label>
+									<input type="number" id="node_nqty" class="mui-input-clear " placeholder="请录入听装数量">
+								</div>
+								<div class="mui-col-xs-2" style="color:gray;line-height:40px;">（件）</div>
+							</div>
+						</div>
+						<div class="mui-input-row lastInput" style="">
+							<div class="mui-row"  style="margin:0;padding:0;">
+								<div class="mui-col-xs-10">
+									<label>瓶装</label>
+									<input type="number" id="node_nprice" class="mui-input-clear " placeholder="请录入瓶装数量">
+								</div>
+								<div class="mui-col-xs-2" style="color:gray;line-height:40px;">（件）</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:8px 18px 5px 32px;margin:5px 0;">
+				<label class="blabel">拜访总结</label>
+				<textarea name="" rows="2" cols="2" placeholder="请录入拜访总结" id="bill_remark" class="" style="border:1px solid #eee;width:100%;margin-top:5px;font-size:12px;line-height: 16px;"></textarea>
+			</div>
+			<div class="mui-row" style="padding:5px 18px 5px 10px;background: #fff;">
+				<div class="mui-input-row" style="border-bottom: 1px solid #E0E0E0;">
+					<div class="mui-row"  style="margin:0;padding:0;">
+						<label>离店时间</label>
+						<input type="text" id="bill_edateshow" class="mui-input-clear" readonly="readonly" placeholder="点击“确认并离店”后自动生成">
+						<input type="text" id="bill_edate" class="hide-el" readonly="readonly" placeholder="点击“确认并离店”后自动生成">
+					</div>
+				</div>
+				<div class="mui-row" style="margin: 10px 0;overflow: hidden;">
+					<div class="mui-col-xs-1"></div>
+					<!--<div class="mui-col-xs-3">-->
+					<button class="mui-btn mui-btn-primary mui-col-xs-4" data-id="bill_edate" id="J_btn_edate" style="padding:3px 5px;margin-top:10px;"> 确认并离店 </button>
+					<!--</div>-->
+					<div class="mui-col-xs-2"></div>
+					<button class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-4" id="saveBtn" style="padding:3px 5px;margin-top:10px;"> 保存 </button>
+					<div class="mui-col-xs-1"></div>
+				</div>
+			</div>
+			
+			
+		</div>		
+		<!-- 点击退出时底部弹出-->
+		<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<!-- 可选择菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" id="sureDelBtn">
+					<a>确认</a>
+				</li>
+			</ul>
+			<!-- 取消菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#sheet1"><b>取消</b></a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FQCQkNvWb9g4FnFXN3IGieSwQgLOR2PU&services=&t=20171004185957"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/vlindex.js"></script>
+	<script src="../../js/immersed.js"></script>
+	<!-- <script src="../../js/mui.picker.js"></script>
+	<script src="../../js/mui.poppicker.js"></script> -->
+	<!-- <script src="../../js/vldata/data-city-3.js" type="text/javascript" charset="utf-8"></script> -->
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var sa402bno = "";
+		var fbill_no = "";
+		var hadSave;
+		var hadSend = false; // 用于判断是否送审
+		var vc801bno = "";
+		var rqsData = null; //提交的数据
+		var inputData = null; // 表单里的数据
+		var reciveInfo ={};
+		var userName;
+		var privileges;
+		var fromPage;
+		var linkName;
+		var detailInfo;
+		var newdataInfo = {};
+		var task= null;
+		var bill_task;
+		var oldBack = mui.back;
+		var sa402Init = {
+			bstatus : {	"L" : "待送审","S" : "待审核","Y" : "已审核","YF": "已失效","new":"录入中"},
+			newBill : {
+				"false" : {
+					"title"		: "新增拜访",
+					"btask"		: "d_new",
+					"flagsave" 	: false,
+					"bno" 		: VlTools.getBno('vdsa402'),
+					"bstatus" 	: "new",
+					"setValue" 	: false,
+					"backFn"	: newBack
+				},
+				"true" : {
+					"title"		: "拜访信息编辑",
+					"btask"		: "d_save",
+					"flagsave" 	: true,
+					"bno" 		: "",
+					"bstatus" 	: "",
+					"setValue" 	: true,
+					"backFn"	: oldBack
+				}
+			},
+		}
+		
+		// TODO 1. 页面上的字段========================
+		var  normalData = {
+			h : {
+				bill_no 	:"",	// 唯一标识	
+				fbill_no 	:"",	// 唯一标识	
+				bill_name	: "",	// 终端名称
+				bill_oppo	: "", 	// 终端101代码
+				bill_coppo	: "",	// 终端312代码
+				bill_title	: "",	// 定位地址
+				bill_ipaddr	: "",	// 定位经度
+				bill_gpsaddr: "",	// 定位纬度
+				bill_bflow	: "",	// 业务员拜访
+				bill_com 	:"",	// 制单单位（燕京代码）			
+				bill_user 	:"",	// 制单人
+				bill_unit 	:"",	// 制单人姓名
+				bill_task	:"",	// 
+				bill_date 	:"",	// 制单时间
+			},
+			v : {
+				bill_bdate 	:"",	// 抵达时间
+				node_qty	: 0,	// 本品听装
+				node_price  : 0, 	// 本品瓶装
+				node_nqty	: 0,	// 竞品听装
+				node_nprice : 0, 	// 竞品瓶装
+				bill_remark	: 0,	// 备注
+				bill_edate 	:"",	// 离店时间
+			},
+			c : {}
+		}
+		var testa={
+			h : {},
+			v : {},
+			c : {}
+		}
+		mui.plusReady(function() {
+			//2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码 
+			loginComName 	= self.loginComName;	// 5.登录单位名称 
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			hadSave 		= self.hadSave === true ? "N" : "Y";
+			hadSave 		= self.hadSave;
+			detailInfo 		= self.detailInfo;
+			//TODO 3. 基础设置/赋值 
+			
+			mui.back = function(){
+				 var btn = ["确定","取消"];
+				  mui.confirm('您确认要返回吗？','温馨提示',btn,function(e){
+				    if(e.index==0){
+				    	//执行mui封装好的窗口关闭逻辑；
+					   sa402Init['newBill'][hadSave]['backFn']();
+				    }
+				  });
+			}
+			
+			// 基础赋值
+			if(fromPage == "vdsa402hn_list.html" && !hadSave){
+				var clientInfo = self.clientInfo;
+				document.getElementById("bill_name").innerHTML = clientInfo["标题"];
+				document.getElementById("bill_oppo").innerHTML = clientInfo["图片"];
+				document.getElementById("bill_coppo").innerHTML = clientInfo["参数"];
+				getGeocodeIn();
+			}
+			if(hadSave) { // 修改  
+				var detailInfo = self.detailInfo;
+				detailInfo = rqsData = self.detailInfo;
+				VlEdit.setValue(detailInfo,normalData);
+				document.getElementById("bill_edateshow").value = detailInfo.bill_edate.indexOf("1900") > -1 ? "" : detailInfo.bill_edate.slice(0,-3);
+				document.getElementById("bill_bdateshow").value = detailInfo.bill_bdate.slice(0,-3);
+				//
+				sa402Init['newBill'][hadSave]['bno'] = detailInfo.bill_no;
+				sa402Init['newBill'][hadSave]['bstatus'] = detailInfo.bill_task;
+			} 
+			document.getElementById("header").innerHTML = teamBillComName; 
+			document.getElementById("title").innerHTML 	 = sa402Init['newBill'][hadSave]["title"];
+			// 新增修改不一样
+			document.getElementById("bill_no").innerHTML   = sa402Init['newBill'][hadSave]['bno'];
+			//
+			document.getElementById("bill_user").innerHTML = userbillNo;
+			document.getElementById("bill_unit").innerHTML = userName;
+			document.getElementById("header").innerHTML    = teamBillComName;
+			document.getElementById("bill_com").innerHTML = teamBillCom;
+			document.getElementById("bill_task").innerHTML = sa402Init['newBill'][hadSave]["btask"];
+			bill_task = sa402Init['newBill'][hadSave]["btask"];
+			setButton(sa402Init['newBill'][hadSave]['bstatus']);
+			
+			
+			document.getElementById("saveBtn").addEventListener("tap", eBtnSave, false);
+			document.getElementById("deleteBtn").addEventListener("tap",eBtnDel, false);
+			document.getElementById("sureDelBtn").addEventListener("tap", eBtnSureDel, false); 	
+			document.getElementById("J_btn_bdate").addEventListener("tap",eBtnBdate, false);
+			document.getElementById("J_btn_edate").addEventListener("tap",eBtnEdate, false);
+	
+			//
+		});//plusReady
+			function setButton(task){
+				var _status = {
+					"new" : {
+						"show" : ['saveBtn'],
+						"hide" : ['deleteBtn']
+					},
+					"L" : {
+						"show" : ['saveBtn','deleteBtn'],
+						"hide" : []
+					},
+					"S" :  {
+						"show" : [],
+						"hide" : ['saveBtn','deleteBtn']
+					},
+					"Y" :  {
+						"show" : [],
+						"hide" : ['saveBtn','deleteBtn']
+					},
+				}
+				var _show = _status[task]['show'];
+				for(var i = 0 ; i < _show.length; i ++){
+					document.getElementById(_show[i]).style.display = "block";
+				}
+				var _hide = _status[task]['hide'];
+				for(var i = 0 ; i < _hide.length; i ++){
+					document.getElementById(_hide[i]).style.display = "none";
+				}
+			}
+			function billstate(task){
+				var _json = {"L":"待送审","S":"待审核","Y":"已审核"}
+				document.getElementById("billState").innerHTML = _json[task] ? _json[task] : "录入中";
+			}
+			function sCBfindImg(data,type){
+				if(data.data.length != 0) {
+					var photoBox = jQuery("#photobox .imgs");
+					for(var i = 0; i < data.data.length; i++) {
+						var newdataArr = {};
+						for(var k in data.data[i]) {
+							newdataArr[k.slice(0, 2)] = data.data[i][k];
+						}
+						for(var a = 0; a< photoBox.length; a ++){
+							var datainfo = jQuery("#photobox .imgs").eq(a).attr("data-info");
+							if(datainfo==newdataArr["内容"]){
+								downloadImgs(newdataArr["图片"],a);
+							}
+						}
+					}
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					mui.toast("未查询到数据~")
+				}
+			}
+
+			// TODO 6. 事件/方法=================================
+			mui("#photoArr").on('tap', '.imgs', function(e) {
+				var e = this;
+				var li = e;
+				event.stopPropagation();
+				event.preventDefault();
+				var idx = jQuery(li).index();				
+				var txt = jQuery(li).parent().html();
+				changePhoto(idx);
+			});
+			function changePhoto(idx) {
+				var a = [{title: "拍照"},{title: "更换"},{title: "删除"}];
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: a
+				}, function(b) {
+					switch(b.index) {
+						case 0:
+							break;
+						case 1:
+							paizhao(idx);
+						break;
+						case 2:
+							genghuan(idx);
+						break;
+						case 3:
+							shanchu(idx);
+						break;
+						default:
+							break
+					}
+				})
+			}
+			// 唤起相机
+			function callPhotograph(idx) {
+				var nvc801bno = VlTools.getBno("vdvc801");
+				//调用相机
+				var cmr = plus.camera.getCamera(); 
+				//  拍照的大小
+				var aRes = cmr.supportedImageResolutions;
+				var res = aRes[aRes.length - 1]; // 默认取最小的
+				//获取照片的格式
+				var fmt = cmr.supportedImageFormats[0];
+				cmr.captureImage(function(path) {
+					plus.io.resolveLocalFileSystemURL(path, function(entry) {
+						var imgText = " ";
+						var paths = entry.fullPath;
+						if(idx === ""){
+							imgText += '<div class="imgs">';
+							imgText += '<img id=' + nvc801bno + ' data-save="" class="content-image" src="' + paths + '"/>';
+							imgText += '</div>';
+							$$("#photoArr").find(".photobox").append(imgText);
+						}else{
+							imgText += '<img id=' + nvc801bno + ' data-save="" class="content-image" src="' + paths + '"/>';
+							$$("#photoArr").find(".imgs").eq(idx).html(imgText);
+						}
+						// 801.json
+						/*判断文件不是空时 读取并且添加数据*/
+						plus.io.resolveLocalFileSystemURL(
+							"_documents",
+							function(direntry) {
+								direntry.getDirectory("vlddata", {
+									create: true,
+									exclusive: false
+								}, function(filentry) {
+									filentry.getFile("vdvc801.json", {
+										create: true,
+										exclusive: false
+									}, function(entry1) {
+										entry1.createWriter(function(writer) {
+											writer.onwrite = function(e) {
+											};
+											var a = [];
+											if(writer.length == 0) {
+												var obj = {
+													"bill_title": "",
+													"bill_no": nvc801bno,
+													"bill_task": "d_new",
+													"fbill_no": "ROOT",
+													"bill_user": userbillNo,
+													"bill_com": teamBillCom,
+													"node_qty": "0",
+													"bill_context": paths,
+													"bill_date": VlDate.get(new Date(),"_ymdhms"),
+												}
+												a.push(obj);
+												var str = JSON.stringify(a);
+												writer.seek(writer.length - 1);
+												writer.write(str);
+											} else {
+												/*判断文件不是空时 读取并且添加数据*/
+												plus.io.resolveLocalFileSystemURL("_documents/vlddata/vdvc801.json", function(entry) {
+													entry.file(function(file) {
+														var fileReader = new plus.io.FileReader();
+														fileReader.readAsText(file, 'utf-8');
+														fileReader.onloadend = function(evt) {
+															var data2 = evt.target.result
+															var data = JSON.parse(data2);
+															var obj = {
+																"bill_no": nvc801bno,
+																"bill_task": "d_new",
+																"fbill_no": "ROOT",
+																"bill_user": userbillNo,
+																"bill_com": teamBillCom,
+																"node_qty": "0",
+																"bill_context": paths,
+																"bill_date": VlDate.get(new Date(),"_ymdhms"),
+															}
+															data.unshift(obj);
+															var str = JSON.stringify(data);
+															writer.seek(0);
+															writer.write(str);
+														}
+													});
+												}, function(e) {
+													console.log("Resolve file URL failed: 11" + e.message);
+												});
+											}
+										}, function(e) {
+											console.log(e.message);
+										})
+									}, function(e){
+										console.log(e.message);
+									})
+								}, function() {
+									console.log(e.message);
+								});
+							},
+							function(e) {
+								console.log("Resolve file URL failed: 22" + e.message);
+							});
+
+					}, function(e) {
+						// console.log(e.message);  
+					});
+				}, function(error) {
+					//console.log( "Capture image failed: " + error.message );
+				}, {
+					filter: "none",
+					resolution: res,
+					format: "png",
+					filename: "_documents/Vlbfile/" + nvc801bno
+				});
+			}
+			var task = null;
+			// TODO 
+			function uploadImgs(){
+				var lens = jQuery(".content-image").length;
+				for(var i = 0; i < lens; i ++){
+					var imgId = jQuery(".content-image").eq(i).attr("id");
+					var imgUrl = jQuery(".content-image").eq(i).attr("src");
+					var info = jQuery(".content-image").eq(i).parent().attr("data-info");
+					var datasave = jQuery(".content-image").eq(i).attr("data-save");
+		        	if(VlUtils.isnull(datasave)){ // 判断是否保存过，没有保存过的再提交，保存过不用再次提交 
+		        		var pUlImg = {
+		        			bill_no		: imgId,
+		        			bill_task	: "d_new",
+		        			fbill_no	: "ROOT",
+		        			bill_user	: userbillNo,
+		        			bill_title  : info,
+		        			bill_com	: teamBillCom,
+		        			bill_oppo	: document.getElementById("bill_no").innerHTML,
+		        			bill_name	: imgId,
+		        			bill_date	: VlDate.get(new Date(), "_ymdhms"),
+		        		}
+//		        		CRUDajax(pUlImg,"../login.html",sCBulImg);//方法 
+		        		sendTask(pUlImg);
+		        		jQuery(".content-image").eq(i).attr("data-save","1");
+		        		createUpload(imgId,imgUrl);
+		        	}
+				}
+			}
+			function sCBulImg(){//不可删除
+			}
+			// 上传照片
+			function createUpload(imgId,urloadURL) {
+				task = plus.uploader.createUpload(VlCfg.SYSURL + "File/uploadFile", {
+						method: "POST",
+						blocksize: 204800,
+						priority: 100
+					},
+					function(t, status) {
+						// 上传完成
+						if(status == 200) {
+							plus.nativeUI.toast("图片上传成功~",{'verticalAlign':"top"});
+						} else {
+							alert("图片上传失败："+status)
+						}
+					}
+				);
+				task.addFile(urloadURL, {
+					key: imgId
+				});
+				// 监听上传任务状态
+				task.start();
+			}
+			// 下载
+			function downloadImgs(strNo,idx) {// 创建下载任务保存小图片 
+				var filename=strNo+".png";
+				var relativePath = "_downloads/Vlbfile/" + filename;
+				var sd_path = plus.io.convertLocalFileSystemURL(relativePath);
+		        plus.io.resolveLocalFileSystemURL(relativePath, function(entry) {
+		        	var imgText = '<img id=' + strNo + ' data-save="1" class="content-image" src="' + sd_path + '"/>';
+					jQuery("#photobox .imgs").eq(idx).html(imgText); 
+		            //如果文件存在,则直接设置本地图片
+		        }, function(e) {
+		            //如果文件不存在,联网下载图片
+	            	var urls = VlCfg.SYSURL + "File/APP?billName="+strNo+"&filePostfix=.jpg";
+					var dtask = plus.downloader.createDownload(urls, {filename:"_downloads/Vlbfile/"}, function ( d, status ) {
+						// 下载完成
+						if ( status == 200 ) { 
+							var sd_path = plus.io.convertLocalFileSystemURL(d.filename);
+							var imgText = '<img id=' + strNo + ' data-save="1" class="content-image" src="' + sd_path + '"/>';
+							//
+							jQuery("#photobox .imgs").eq(idx).html(imgText); 
+						} 
+					});
+		   			dtask.start(); 
+		        });
+		        //
+			}
+			//删除照片的ajax
+			function delphoto(idx){
+				var imgId = jQuery(".imgs").eq(idx).children("img").attr("id");
+				var imgUrl = jQuery(".imgs").eq(idx).children("img").attr("src");
+				var info = jQuery(".imgs").eq(idx).attr("data-info");
+				var del801 = {
+					bill_no		: imgId,
+					bill_task	: "d_delete",
+					fbill_no	: "ROOT",
+					bill_user	: userbillNo,
+					bill_title  : info,
+					bill_com	: teamBillCom,
+					bill_oppo	: document.getElementById("bill_no").innerHTML,
+					bill_name	: imgId,
+					bill_date	: VlDate.get(new Date(), "_ymdhms"),
+				}
+				CRUDajax(del801,"../login.html",dp);//删除方法 
+			}
+			function dp(){} // 不可删除
+			//点击照片【拍照】
+			function paizhao(idx){
+				var l = $$(".imgs").eq(idx).children("img").length;
+				if(l == 0){
+					callPhotograph(idx)
+				}else{
+					mui.toast("~已经有照片了~");
+				}
+			}
+			//点击照片【更换】
+			function genghuan(idx){
+				var img = $$(".imgs").eq(idx).children("img");
+				var btn = ["确定更换","取消更换"];
+				if(img.length != 0){
+					mui.confirm('更换后原照片将被删除!','您确认要更换此照片吗？',btn,function(e){
+						if(e.index == 0){
+							var datasave = img.attr("data-save");
+				        	if(!VlUtils.isnull(datasave)){
+				        		delphoto(idx);
+				        	}
+							callPhotograph(idx);							
+						}else{
+							return
+						}
+					})	
+				}else{
+					mui.toast("~没有照片可更换~");
+				}
+				
+		  	}
+			//点击照片【删除】
+			function shanchu(idx) {
+				var img = $$(".imgs").eq(idx).children("img");
+				if(idx !== ""){
+					if(img.length !=0){
+				        var del=confirm("您确定要删除此照片？");
+				        if(del==true){
+				        	var datasave = img.attr("data-save");
+				        	if(!VlUtils.isnull(datasave)){
+				        		delphoto(idx);
+				        	}
+				        	var datainfo = $$("#photoArr").find(".imgs").eq(idx).attr("data-info");
+			        		var dataname = datainfo;
+				        	if(datainfo.slice(0,2) == "其他"){
+				        		dataname = "其他";
+				        	}
+				        	$$("#photoArr").find(".imgs").eq(idx).html("点击拍"+dataname);
+				        }else{
+				            return;
+				        }
+				    }else{
+				    	mui.toast("~没有照片可删除~");
+				    }
+				}
+        	}
+			
+			// 
+			function findClient() {
+				mui.openWindow({
+					url: '../vlvdvc/vdvc312_find.html',
+					id: "vdvc312_find.html",
+					createNew: true,
+					extras: {
+						teamBillCom		: teamBillCom,
+						teamBillComName	: teamBillComName,
+						userbillNo		: userbillNo,
+						loginCom		: loginCom,
+						loginComName	: loginComName,
+						detailInfo		: detailInfo,
+						choice			: "single",
+						fromPage		: "vdsa402hn_edit.html",
+						linkCom			: "",
+						linkName 		: "",
+					}
+				})
+			}
+			//
+			function getGeocodeIn(){
+				
+			
+			 if(plus.os.name ==="Android"){
+				 plus.geolocation.getCurrentPosition(function(p) {
+				 	if(VlUtils.isnull(p.addresses)){
+				 		document.getElementById("bill_title").innerHTML = "定位失败"
+				 	}else{
+				 		document.getElementById("bill_title").innerHTML = p.addresses;
+				 		document.getElementById("bill_ipaddr").innerHTML = p.coords.longitude;
+				 		document.getElementById("bill_gpsaddr").innerHTML = p.coords.latitude;
+				 		document.getElementById("bill_title").setAttribute("data-location",JSON.stringify(p));
+				 	}
+				 }, function ( e ) {
+				 	document.getElementById("bill_title").innerHTML = "获取定位位置信息失败："+e.message ;
+				 },{geocode:true});
+			 }else{
+				 var geolocation = new BMap.Geolocation();
+				   geolocation.getCurrentPosition(function(r) {
+				     if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+				 	   var provinces=p.address.province
+				 	   var citys=p.address.city
+				 	   var districts=p.address.district
+				 	   var streets=p.address.street
+				 	   var titles=provinces+citys+districts+streets
+				 	   document.getElementById("bill_title").innerHTML = titles;
+				 	   document.getElementById("bill_ipaddr").innerHTML = p.longitude;
+				 	   document.getElementById("bill_gpsaddr").innerHTML = p.latitude;
+				 	   document.getElementById("bill_title").setAttribute("data-location", JSON.stringify(p));
+				     } else {
+				 	   document.getElementById("bill_title").innerHTML = "获取定位位置信息失败：";
+				     }
+				   });
+			 }
+			
+			}
+			function checkBeforeSend(){
+				
+				if(jQuery(".imgs").children("img").length==0){
+					alert('送审失败\n单据已为您保存\n原因：\n 未拍摄照片~\n 至少拍摄一张照片  \n再送审', {'verticalAlign': "middle"});
+					plus.nativeUI.closeWaiting();
+					return false;
+				};
+				return true;
+			}
+			// 提交前数据处理
+			function vd511Process(data) {
+				 
+				data.bill_date = VlDate.get(new Date(), '_ymdhms');
+				var _brfore = VlUtils.deepCopy(detailInfo,{});
+				var _after = VlUtils.deepCopy(data,{});
+				data = sa402Init['newBill'][hadSave]['bstatus'] === "L" ? VlEdit.compareData(_brfore, _after) : data;
+				data.bill_task 	= bill_task;
+				
+				return data;
+			}
+			function getParam(task){
+				var date = new Date();
+				var params = {
+					bill_com  : teamBillCom,
+					bill_no   : document.getElementById('bill_no').innerHTML,
+					fbill_no  : document.getElementById("fbill_no").innerHTML,
+					bill_user : userbillNo,
+					bill_task : task,
+					bill_date : VlDate.get(date, '_ymdhms')
+				};
+				return params
+			}
+			function sendTask(p, sCB, type){
+				VlAjax.post({
+					"port" : "sendTask",
+					"headers" : "json",
+					"async" : (typeof arguments[2] === "undefined" ? true : arguments[2] )
+				},p,sCB);
+			}
+			function eBtnSave(){
+				plus.nativeUI.showWaiting("正在保存数据..."); 
+
+				var checkResults = VlEdit.checkRequired();  
+				if(checkResults == false){
+					plus.nativeUI.closeWaiting();
+					return false;
+				}
+				rqsData = VlEdit.getValue(normalData); 
+				rqsData = vd511Process(rqsData);
+				sendTask(rqsData, sCBsave, false);
+				return true;
+			}
+			function eBtnSend(){ 
+				
+				var _p = getParam('b_send');
+				var canSend1 = eBtnSave();
+//				var canSend2 = checkBeforeSend();
+				var canSend2 = true;
+				if(canSend1 && canSend2){sendTask(_p,sCBsend)};
+			} 
+			function eBtnDel(){ 
+				mui('#sheet1').popover('show', document.getElementById("deleteBtn"));
+			}
+			function eBtnSureDel(){ 
+				var _p = getParam('d_delete');
+				sendTask(_p, sCBdel);
+			}
+			
+			function sCBsave(){
+				mui.toast("操作成功~");
+				hadSave = true;
+				sa402Init['newBill'][hadSave]['bstatus']="L";
+				setButton("L");
+				bill_task = sa402Init['newBill'][hadSave]["btask"];
+				detailInfo = VlUtils.deepCopy(rqsData,{});
+				uploadImgs();// 上传照片
+				plus.nativeUI.closeWaiting(); 
+			}
+			function sCBsend(data){
+				plus.nativeUI.closeWaiting();
+				sa402Init['newBill'][hadSave]['bstatus']="S";
+				setButton("S");
+				var _p = {
+					name : "msvr",
+					bill_task: "VE_vdvc312_update_02",
+					bill_com: teamBillCom,
+					bill_user: userbillNo,
+					bill_no:document.getElementById("bill_coppo").innerHTML,// 312代码
+					bill_unit:document.getElementById("bill_ipaddr").innerHTML,// 经度
+					bill_nunit:document.getElementById("bill_gpsaddr").innerHTML,// 纬度
+					bill_title:document.getElementById("bill_title").innerHTML,// 地址
+					bill_date : VlDate.get(new Date(), "_ymdhms")
+				}
+				VlAjax.post({
+					"port" : "sendTask",
+					"headers" : "json"
+				},_p,sCBupdate);
+			}
+			function sCBupdate(){
+				sCBdel();
+			}
+			function sCBdel(){
+				deleteSuccess("vdsa402hn_plist.html","vdsa402hn_list.html");
+			}
+			function deleteSuccess(parentview,childview){
+				var listview = plus.webview.getWebviewById(childview);
+	    			listview.reload();
+	    			var plistview = plus.webview.getWebviewById(parentview);
+	    			plistview.reload();
+				var oldBack = mui.back;
+			    mui.back = function(){
+				    	var webview = plus.webview.getWebviewById(parentview);
+				    	webview.show();
+			    }
+			    mui.back();
+			} 
+			function findImg(no){
+				var pFImg = {
+					name		: 'msvr',
+					bill_com	: loginCom,
+					bill_user	: userbillNo,
+					bill_task	:"VR_find_vdvc801_01",
+					currentPage	: 1,
+					pageSize	: 100,
+					paramText	: "",
+					bill_no		: no
+				}
+				VlAjax.post({
+					"port" : "active",
+					"headers" : "json"
+				},pFImg,sCBfindImg);
+			}
+			function newBack(){
+				var webview = plus.webview.getWebviewById('vdsa402hn_plist.html');
+				webview.show();
+			}
+		function eBtnBdate(e){
+			getDate("bill_bdate");
+		}
+		function eBtnEdate(e){
+			getDate("bill_edate");
+			document.getElementById("bill_date").innerHTML = document.getElementById("bill_edate").value;
+			eBtnSend();
+		}
+		function getDate(id){
+			var _date = VlDate.get(new Date(), "_ymdhms");
+			document.getElementById(id).value = _date;
+			document.getElementById((id+"show")).value = _date.slice(0, -3);
+		}
+	</script>
+
+</html>

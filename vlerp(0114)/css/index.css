@@ -1,0 +1,280 @@
+/*header*/
+body{
+	font-size: 12px;
+	color : #000000;
+}
+input[placeholder] {
+	font-size: 12px;
+}
+/*@media only screen and (device-width: 375px) and (device-height: 812px) {
+	.mui-bar.mui-bar-tab{
+		padding-bottom: 34px;
+	}
+}*/
+.headerMain{
+	height:100px;		/*仅311/312/vdsa210/vdvc511的plist、311plist01为140px,写行内即可 TODO*/
+	padding:26px 0 0 0;	
+	color:#FFFFFF;		
+	overflow:hidden;	
+}
+.headerMain a {
+	margin:0px 0 0 0 !important;/*plistHeader*/
+	color:#FFFFFF;			
+	display: inline-block;	
+}
+.headerMain  h1.headText{
+	height: 44px;
+	margin:0;
+	line-height: 44px;
+	color:  #FFFFFF; 
+	font-size: 16px;
+}
+.headerMain div.plistTitle p{
+	height: 25px;
+	margin:0;
+	line-height: 25px;
+	color:  #FFFFFF; 
+	font-size: 16px;
+}
+.headerMain div.plistTitle h1 {
+	margin: 0;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: normal !important;
+	height:19px;
+}
+.headerMain div.navBar {
+	margin-top:44px;
+	padding:0;
+	background-color:#f7f7f7;
+	text-align: center;
+	line-height: 30px;
+}
+.dataState{
+	display: inline-block;	
+	height:20px; 
+	margin:5px 20px;
+	box-sizing: border-box;
+	border: 1px solid #ECB100; 
+	border-radius: 10%; 
+	text-align:center;
+	line-height: 20px;
+	color: #ECB100; 
+	font-size: 12px;
+}
+/*============================================================*/
+.mainBody{
+	padding-top:110px !important;
+}
+.mainBody div.groupInfo{
+	padding:5px 18px 5px 18px;
+	margin-bottom:5px;
+}
+.mainBody div.groupInfo div.basicInfo{
+	height:70px;
+	padding:0px;
+	border-bottom:1px solid #efeff4;
+	box-sizing: border-box;
+}
+.mainBody div.groupInfo div.basicInfo div.imgFrame{
+	height:70px;
+	padding:5px;
+	box-sizing: border-box;
+}
+.mainBody div.groupInfo div.basicInfo div.imgFrame img{
+	box-sizing: border-box;
+	display: block;
+	height: 60px;
+	padding:0px;
+	margin:0 auto;
+	border:1px solid #ccc;
+	border-radius:10px;
+}
+.mainBody div.groupInfo div.basicInfo  div.infoFrame{ 
+	box-sizing: border-box;
+	float: right;
+}
+.mainBody div.groupInfo div.infoItem{
+	min-height: 35px !important;
+	box-sizing: border-box;
+	border-bottom:1px solid #efeff4;
+	line-height: 35px;
+	color: gray;
+}
+.mainBody div.groupInfo div.infoItem.lastItem{
+	border-bottom: none;
+}
+.mainBody div.linkInfo p{
+	padding-left:25px;
+	font-size: 12px;
+}
+.mainBody div.linkInfo p span.dataState{
+	margin:0 20px 0 20px;
+	float: right;
+}
+.mainBody div.hintLine{
+	border-bottom: 1px solid #8f8f94;
+	position:relative;
+	margin: 25px 50px;	
+}
+.mainBody div.hintLine p.hintText{
+	position:absolute;
+	top:-8px;
+	left:32%;
+	background: #efeff4;
+	padding:0 10px;
+	z-index:111;
+	font-size: 10px;
+}
+/*border-bottom:1px solid #efeff4;*/
+/*style="float:right;margin-top:3px;height: 16px;width:60px;"*/
+/* plistHeader ----------------------------------------- */
+/* plist 页面的+ */
+.plistHeader a#toEdit{
+	font-weight: bold;
+}
+/* plist 页面的导航下的button */
+.plistHeader div.topNavRow p{
+	height: 32px;/*ios-36px | andriod-32px TODO*/
+	padding: 0;
+	margin: 0;
+	color: #353b42;
+}
+.plistHeader div.topNavRow p.active{
+	box-sizing: border-box;
+	color: #ea6d10;
+	border-bottom: 2px solid #ea6d10;
+}
+/* plist 页面的搜索框 */
+.plistHeader div.searchBar{
+	padding-left:2px;
+	background-color:#efeff4;
+	color: #000000;
+}
+.plistHeader div.searchBar input{
+	margin-top:5px;
+	/*margin-left:2px;*/
+}
+.plistHeader div.searchBar button{
+	height:30px;
+	margin:0 auto;
+	margin-top:-2px;
+}
+
+/* editHeader ------------------------------------------------*/
+/* edit 页面的+和< */
+.editHeader{/*ios-94px | andriod-98px TODO*/
+	height: 98px;	
+}
+.editHeader a {
+	width:44px;			
+	height: 44px;
+	line-height: 44px;
+	text-align: right;	
+	z-index: 2222;
+	font-size: 16px;
+}
+.editHeader a.rightIcon{ 
+	text-align: left;	
+}
+.editHeader div.plistTitle p{ 
+	margin:0 4px;		
+}
+/* edit 页面的小标题*/
+.editHeader div.plistTitle h1 {
+	margin:0 4px;		
+}
+/*---------------------------------*/
+/* edit 页面的小导航 */
+.editHeader div.buttonBars button {
+	margin:0;
+	padding:0;
+	height: 30px;
+	line-height: 30px;
+	border: none;
+}
+.editHeader div.buttonBars button span{
+	margin:0;
+	padding:0;
+	height: 30px;
+	line-height: 35px;
+	color: #777777;
+	font-size: 14px;
+}
+.editHeader div.buttonBars button span.mui-icon {
+	top:0;
+	color: #18B4ED;
+	line-height: 25px;
+	font-size: 20px;
+}
+.editHeader div.buttonBars span.state{
+	display: inline-block;	
+	width:12%; 
+	height:20px; 
+	margin:5px 20px;
+	box-sizing: border-box;
+	border: 1px solid #ECB100; 
+	border-radius: 10%; 
+	text-align:center;
+	line-height: 20px;
+	color: #ECB100; 
+	font-size: 12px;
+}
+/* nodeHeader ------------------------------------------------*/
+.nodeHeader{/*ios-118px | andriod-122px TODO*/
+	height: 122px;
+}
+.nodeHeader div.nodeTopNav p{
+	height: 54px;
+	text-align: center;
+	line-height: 28px;
+	margin-bottom:0;
+}
+.nodeHeader div.nodeTopNav p a{
+	display:block;
+	padding-top:4px;
+	background: #F7F7F7;
+	font-size:24px;
+	color:#0062CC;
+}
+.nodeHeader div.nodeTopNav p a.unclickable{
+	color:#8f8f94;
+}
+.nodeHeader div.nodeTopNav p a.mui-icon{/*如果是mui的图标则需要去掉下内边距*/
+	padding-bottom:0;
+}
+.nodeHeader div.nodeTopNav p span{
+	display:block;
+	font-size:12px;
+	line-height: 22px;
+}
+/* body*************************************************************/
+.nodeBody{
+	padding-top:130px !important;
+}
+.mui-input-row.lastInput:after {height: 0;}
+/* 以上可以逐步清理，但使用页面较多,需小心 */
+
+/* 常用的公用类：start */
+.vlel-hide{display: none;}
+.vltxt-center{text-align: center;}
+.vlinput-required:before{content:"* ";color: crimson;}
+.vlfield-highlight{color:#FF4400;}
+.vltip{color:#B6B6B6;font-size:10px;}
+
+/* 常用的公用类：end */
+
+/* 【编辑页+详情页】隐藏内容/自动带出内容：start */
+.auto-fill {height: 14px;padding:1px 1px 1px 5px;font-size: 12px;line-height: 14px;color: #242424;overflow: hidden;}
+.auto-fill-title{color: gray;}
+/* 【编辑页+详情页】隐藏内容/自动带出内容：end */
+
+/* */
+.vlbasic-txtbox{padding:5px 18px 5px 18px;margin:5px auto;overflow:hidden;}
+.vlbasic-txt .vlbasic-txt-item{ margin:0; padding:0;font-size: 10px;color:#ACACB4;overflow: hidden;}
+.vlbasic-txt .vlbasic-txt-value{width:60%;float:right;color: #000000;}
+/**/
+.threelevel-addr{padding-bottom:10px;}
+.threelevel-pickbox{padding:0;margin:0 0 5px 0;position: relative;}
+.threelevel-icon{position: absolute;right:10px;top:8px;}
+.threelevel-item {padding:3px 25px !important;height: 16px;color: #000000;font-size: 12px;line-height: 14px;overflow: hidden;}

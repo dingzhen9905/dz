@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>【湖南-企业-业绩统计】</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../../css/common/mui.min.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style type="text/css">
+			header{height: 65px !important;}
+			header a, header h1{color: #FFFFFF !important;}
+			.mui-content{padding-top: 65px !important;}
+			.vrac203-search-terms{position: fixed;z-index: 100000000;width:100%;background: #EAEAEA;overflow: hidden;}
+			label{font-size: 12px;color: #6C6C6C;}
+			input{height:30px !important;margin:3px auto !important;padding:2px !important;border:1px solid #5da8fa !important;border-radius:10px !important;font-size: 14px;}
+			input[placeholder] {padding:2px !important;font-size: 14px;color: #000;}
+		
+			.search-terms-txt{padding: 8px 5px;text-align:;}
+			.search-terms-title{padding-left:10px}
+			.hide {display: none;}
+			.order-main-li{margin-bottom:5px;padding:5px 10px !important;border-bottom:1px solid #20B2AA;}
+			.report-item{}
+			.mui-row:before,
+			.mui-row:after,
+			.report-title{text-align: left;padding-left: 10px;}
+			.mui-table-view-cell:after,
+			.mui-table-view-cell:before{height:0px;}
+			.content-total{border-top:1px dashed #C0C0C0}
+			.vl-list-search-tip{padding:100px;height:300px;text-align: center;}
+			.vl-list-search-tip .icon {color:#353B42;font-size:100px;}
+			.vl-list-search-result{color:#000 !important;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;}
+			.vl-list-search-icon{color:#0062cc;height:100px;line-height: 100px;font-size: 100px;}
+			.vl-center{text-align: center;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id='J_pageTitle'></h1>
+		</header>
+		<div class="mui-content">
+		    <div class="vrac203 vrac203-search vrac203-search-terms">
+   				<div class="mui-row">
+   					<div class="search-terms-txt mui-col-xs-2">时间段:</div>
+	   				<div class="search-terms-depts mui-col-xs-4">
+							<input id="J_bdate" type="date" class="requiredInput search-date" placeholder="">
+			   		</div>
+			   		<div class="search-terms-txt mui-col-xs-1">至:</div>
+			   		<div class="search-terms-clients mui-col-xs-4">
+							<input id="J_edate" type="date" class="requiredInput search-date" placeholder="">
+			   		</div>
+			   		<div class="search-terms-txt mui-col-xs-1"></div>
+   				</div>
+	   			<div class="mui-row">
+	   				<div class="search-terms-clients mui-col-xs-7 mui-row">
+	   					<div class="search-terms-txt mui-col-xs-3">搜索：</div>
+	   					<div class="search-terms-depts mui-col-xs-9">
+	   							<input id="J_btn_search" type="text" class="requiredInput" placeholder="">
+	   			   		</div>
+	   				</div>
+	   				<div class="mui-col-xs-2" id="J_searchBtn" style="padding-left:10px;box-sizing: border-box !important;">
+	   					<button class="mui-btn-primary mui-btn-outlined">查询</button>
+	   				</div>
+	   				<div class="mui-col-xs-2" id="J_download" style="padding-left:10px;box-sizing: border-box !important;">
+	   					<button class="mui-btn-primary mui-btn-outlined">导出</button>
+	   				</div>
+	   				<div class="search-terms-txt mui-col-xs-1"></div>
+	   			</div>
+				
+				
+					
+
+		  	</div>
+		 
+			<!--下拉刷新容器-->
+			<div id="pullrefresh" class="vrac203-search vrac203-search-resluts"style="background:;margin:0;padding-top:82px;">
+				<div style="position: relative;">
+					<div id="showHint" class="vl-list-search-tip hide" style="">
+						<span class="icon iconfont icon-wushuju" style=""></span>
+						<p class="vl-list-search-result">未查询到相关的数据</p>
+						<p >可以尝试其他查询</p>
+					</div>
+					<div id="searching" class="vl-list-search-tip" style="">
+						<p class="mui-icon mui-icon-search vl-list-search-icon"></p>
+						<p>正在搜索中......</p>
+					</div>
+					<div id="showError" class="vl-list-search-tip hide" style="">
+						<span class="icon iconfont icon-kulian" style=""></span>
+						<p class="vl-list-search-result">出错啦~</p>
+						<p >请稍后再试</p>
+					</div>
+				</div>
+				
+			
+					<div>
+						<div id="tables" class="mui-row" style="background:#20B2AA;padding:0;height: 30px;line-height: 30px;color:#fff;width:700px;">
+							<div class="mui-row mui-col-xs-7">
+								<span class="mui-col-xs-3 report-title nav1"></span>
+								<span class="mui-col-xs-2 nav2 vl-center"></span>
+								<span class="mui-col-xs-2 nav3 vl-center"></span>
+								<span class="mui-col-xs-2 nav4 vl-center"></span>
+								<span class="mui-col-xs-2 nav5 vl-center"></span>
+							</div>	
+							<div class="mui-row mui-col-xs-5" style="margin-left: -35px;">
+								<span class="mui-col-xs-3 nav6 vl-center"></span>
+								<span class="mui-col-xs-3 nav7 vl-center"></span>
+								<span class="mui-col-xs-3 nav8 vl-center"></span>
+								<span class="mui-col-xs-3 nav9 vl-center"></span>
+							</div>
+						</div>
+						<ul id="maths" style="width:700px;" class="mui-table-view mui-table-view-striped mui-table-view-condensed order-main-ul">
+												
+						</ul>
+						 <ul id="contList" style="width:700px;" class="mui-table-view mui-table-view-striped mui-table-view-condensed order-main-ul">
+						    
+							
+										
+						 </ul>
+						  
+					</div>
+				
+		
+					
+					
+				
+				<script id="li-template" type='text/template'>				
+				    <li class="mui-table-view-cell order-main-li mui-right order-main-li" style="background:#fff;">
+				    	<div class="data-row hide"><%=rowdata%></div>
+				        <div class="mui-row">
+						  <div class="mui-row mui-col-xs-7">
+				           	<span class="mui-col-xs-3 report-title" ><%=liTitle%></span>
+							<span class="mui-col-xs-2 vl-center" ><%=liLeftT%></span>
+				    		<span class="mui-col-xs-2 vl-center" ><%=liLeftM%></span>
+							<span class="mui-col-xs-2 vl-center" ><%=liRightT%></span>
+							<span class="mui-col-xs-2 vl-center" ><%=liLeftB%></span>
+						  </div>
+						  <div class="mui-row mui-col-xs-5" style="margin-left: -35px;">	
+							<span class="mui-col-xs-3 vl-center" ><%=liDate%></span>
+							<span class="mui-col-xs-3 vl-center" ><%=liStatus%></span>
+							<span class="mui-col-xs-3 vl-center" ><%=liImgName%></span>
+							<span class="mui-col-xs-3 vl-center" ><%=liRightM%></span>
+						  </div>	
+				        </div>
+				    </li>
+				</script>
+			</div>
+		
+		<script src="../../js/mui.min.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/md5.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/arttmpl.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/jquery-2.1.0.js" 	type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/vlindex.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+		;(function(){	
+			// 初始化mui
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style:'circle',
+						callback: pulldownRefresh
+					},
+					up: {
+						auto:false,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			
+			var totalPage = 0,
+			count = 1,
+			pageSize = 20,
+			userNew = null,
+			sys = null,
+			lib = null,
+			slider = mui("#slider"),
+			ajaxParam = null,
+			// 
+			today = new Date(),
+			sYear = today.getFullYear(),
+			sNowMonth = today.getMonth(),
+			sMonth = sNowMonth - 1, //  默认查上个月的
+			pager = {};
+			var teamBillCom,teamBillComName,userbillNo,userName,loginCom,loginComName,privileges,fbill_no,fbillnoName,fromPage,pageTitle,dataInfo;
+		
+			sMonth += 1;
+			mui.plusReady(function(){
+				userNew = JSON.parse(VlStore.pGet("user"));
+				sys = userNew.com_linkvd_userCom;
+				var self = plus.webview.currentWebview();
+				teamBillCom 	= self.teamBillCom;
+				teamBillComName = self.teamBillComName;
+				userbillNo 		= self.userbillNo;
+				userName 		= self.userName;
+				loginCom 		= self.loginCom;
+				loginComName 	= self.loginComName;
+				privileges 		= self.privileges;
+				otherParams 	= self.otherParams;
+				fbill_no			= self.fbill_no;
+				fromPage 			= self.fromPage;
+				pageTitle   		= self.pageTitle;
+				fbillnoName 		= self.fbillnoName;
+				dataInfo 			= self.dataInfo; 
+				//console.log(JSON.stringify(self))
+				document.getElementById('J_pageTitle').innerHTML = pageTitle;
+				document.getElementById('J_bdate').value = VlDate.get(new Date(), "_ymd");
+				document.getElementById('J_edate').value = VlDate.get(new Date(), "_ymd");
+				findData()
+				bindEvent();
+			});
+			function pullupRefresh() {
+				setTimeout(function() {
+					count++;
+					if((count > pager.totalPage)){
+					 	mui.toast('没有更多数据了～');
+					}else{
+					 	findData(count, false)
+					 }
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+				}, 1500);
+			}
+			
+			// 下拉刷新具体业务实现
+			function pulldownRefresh() {
+				document.getElementById("contList").innerHTML = "";
+				document.getElementById("searching").style.display = "block";
+				document.getElementById("tables").style.display = "none";
+			    document.getElementById("maths").style.display = "none";
+				setTimeout(function() {
+					eSearch()
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(true);
+				}, 1500);
+			}
+			function bindEvent(){
+				document.getElementById("J_searchBtn").addEventListener("tap",eSearch);
+				document.getElementById("J_download").addEventListener("tap",download);
+			}
+			//下载报表
+			function download(){
+			   var _date = getBEDate();
+			if(!!!_date)return;
+				var params = {
+				bill_task	 : "VR_vdsa402_query_09",
+				bill_bdate	 : _date.bdate,
+				bill_edate	 : _date.edate,
+				bill_user	 : userbillNo,
+				bill_com	 : loginCom, // 登录单位
+						};
+			VlAjaxDl.excel(params);
+				}
+		   // 时间配置
+			function getBEDate() {
+				var bdate = document.getElementById("J_bdate").value,
+					edate = document.getElementById("J_edate").value;
+				if(bdate == "" || edate == ""){
+					mui.toast("请先选择时间段~")
+					return false;
+				}
+				return {
+					bdate : bdate + " 00:00:00",
+					edate : edate + " 23:59:59",
+				}
+			}
+			function getSearchTxt(){
+				return document.getElementById("J_edate").value;
+			}
+			function findData(page,type){
+				var _date = getBEDate();
+				if(!!!_date)return;
+				var params = {
+					bill_task	 : "VR_vdsa402_query_09",
+					bill_bdate	 : _date.bdate,
+					bill_edate	 : _date.edate,
+					bill_title   : document.getElementById("J_btn_search").value,
+					bill_user	 : userbillNo,
+					bill_com	 : loginCom, // 登录单位
+					currentPage : arguments[0] ? arguments[0] : 1,
+					pageSize  : pageSize,
+					paramText : "",
+				};
+				VlAjax.post({
+					"port" : "active",
+					"headers" : "json",
+					"isFirst" : type,
+				}, params, sCBfind)
+			}
+			function sCBfind(data,type) {
+				pager = data.page;
+				document.getElementById("showHint").style.display = "none";
+				
+				var contList = document.getElementById("contList");
+//				console.log(JSON.stringify(data))
+				if(data.data.length != 0) {
+					var html = '';
+					var aImg = [];
+					var hsum = 0,bsum=0,lsum=0,xsum=0,dsum=0,zsum=0,
+					    wsum=0,asum=0
+					for(var i = 0; i < data.data.length; i++) {
+						if(type&&i==0){
+							contList.innerHTML="";
+							document.getElementById("searching").style.display = "none";
+							var newdataArr ={};
+							for(var k in data.data[0]) {
+								newdataArr[k.slice(0, 5)] = k;
+							}
+							mui('.nav1')[0].innerHTML = newdataArr['业务员'];
+							mui('.nav2')[0].innerHTML = newdataArr['拜访次数'];
+							mui('.nav3')[0].innerHTML = newdataArr['合格次数'];
+							mui('.nav4')[0].innerHTML = newdataArr['合格率%'];
+							mui('.nav5')[0].innerHTML = newdataArr['销量'];
+							mui('.nav6')[0].innerHTML = newdataArr['终端个数'];
+							mui('.nav7')[0].innerHTML = newdataArr['拜访个数'];
+							mui('.nav8')[0].innerHTML = newdataArr['未拜访个数'];
+							mui('.nav9')[0].innerHTML = newdataArr['拜访率%'];
+						}
+						var _rowd = st315listAdapter(data.data[i]);
+						var source = document.getElementById('li-template').innerHTML;
+			            var render = template.compile(source);
+			            html += render(_rowd);		
+						bsum+=data.data[i]["拜访次数"]
+						hsum+=data.data[i]["合格次数"]
+						xsum+=data.data[i]["销量"]
+						dsum+=data.data[i]["终端个数"]
+						zsum+=data.data[i]["拜访个数"]
+						wsum+=data.data[i]["未拜访个数"]
+						asum+=data.data[i]["拜访率%"]
+						document.getElementById("tables").style.display = "block";
+						document.getElementById("maths").style.display = "block";
+					}
+					if(bsum==0){
+						lusm=0
+					}else{
+						lsum=(hsum/bsum*100).toFixed(2)
+					}
+					if(dsum==0){
+						asum=0
+					}else{
+						asum=(zsum/dsum*100).toFixed(2)
+					}
+					var text=""
+						text+='<li class="mui-table-view-cell order-main-li mui-right order-main-li">'
+						text+='<div class="mui-row">'
+						text+='<div class="mui-row mui-col-xs-7">'
+				        text+='<span class="mui-col-xs-3 report-title" >合计</span>'
+						text+='<span class="mui-col-xs-2 vl-center">'+bsum+'</span>'
+				    	text+='<span class="mui-col-xs-2 vl-center">'+hsum+'</span>'
+						text+='<span class="mui-col-xs-2 vl-center">'+lsum+'</span>'
+						text+='<span class="mui-col-xs-2 vl-center">'+xsum+'</span>'
+						text+='</div>'
+						text+='<div class="mui-row mui-col-xs-5" style="margin-left: -35px;">'
+						text+='<span class="mui-col-xs-3 vl-center">'+dsum+'</span>'
+						text+='<span class="mui-col-xs-3 vl-center">'+zsum+'</span>'
+						text+='<span class="mui-col-xs-3 vl-center">'+wsum+'</span>'
+						text+='<span class="mui-col-xs-3 vl-center">'+asum+'</span>'
+						text+='</div>'
+				        text+='</div>' 
+						text+='</li>'		 
+					var uls=document.getElementById("maths")
+					uls.innerHTML=text
+					jQuery("#contList").append(html);
+				} else { // 如果没有长度说明没有数据，提示没有数据
+	//				mui.toast("未查询到数据~")
+					document.getElementById("contList").innerHTML = '';
+					document.getElementById("searching").style.display = "none";
+					document.getElementById("showHint").style.display = "block";
+					document.getElementById("tables").style.display = "none";
+				}
+				plus.nativeUI.closeWaiting();
+		
+			}
+			function eSearch(){
+				document.getElementById("showHint").style.display = "none";
+				document.getElementById("contList").innerHTML = "";
+				document.getElementById("searching").style.display = "block";
+			    document.getElementById("tables").style.display = "none";
+				document.getElementById("maths").style.display = "none";
+				findData()
+			}
+		function st315listAdapter(data){
+        	var oData = {}
+			for(var k in data) {
+				oData[k.slice(0, 5)] = data[k];	
+			}		
+	//		console.log(JSON.stringify(oData))
+			
+        	return {
+        		"liClass"	: "",
+				"rowdata" 	: oData["终端名"],
+				"liTitle" 	: oData["业务员"],
+				"liDate" 	: oData["终端个数"],
+				"liStatus" 	: oData["拜访个数"],
+				"liImgId" 	: "",
+				"liImgName" : oData["未拜访个数"],
+				
+				"liLeftT" 	: oData["拜访次数"],
+				"liLeftM" 	: oData["合格次数"],
+				"liLeftB" 	: oData["销量"],
+				
+				"liRightT" 	: oData["合格率%"],
+				"liRightM" 	: oData["拜访率%"],
+				"liRightB" 	: "",
+			}
+	    }
+		})();
+		</script>
+	</body>
+
+</html>

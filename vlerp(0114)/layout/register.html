@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+    <title>新用户注册</title>
+    <script src="../js/mui.min.js"></script>
+    <link rel="stylesheet" href="../css/common/mui.min.css"/>
+    <link rel="stylesheet" href="../css/fonts/iconfont.css" />
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <style>
+    	body,.mui-content{
+    		background-color: #fff;
+    		font-size:14px;
+    		color:#222;
+    		padding-top:40px;
+    	}
+    	header{
+    		height: 80px;
+    	}
+    	.mui-content .avatar{
+    		padding:30px 20px;
+    		overflow: hidden;
+    	}
+    	.mui-content .avatar img{
+    		width:100px;
+    		height:100px;
+    		vertical-align: middle;
+    		/*border-radius:50%;*/
+    	}
+    	.mui-content .mui-input-group{
+    		width:96%;
+    	}
+    	.mui-content .mui-input-group:before {
+		    height: 0px;
+		}
+		.mui-content .mui-input-group:after {
+		    height: 0px;
+		}
+    	.mui-content .mui-input-group .mui-input-row .text-right{
+    		text-align: right;
+    	}
+    	.mui-content .mui-input-group .password3:after{
+    		background-color:#e75c01;
+    	}
+    	.mui-content .mui-input-group .mui-input-row input{
+    		text-align: left;
+    	}
+    	.mui-content .mui-input-group .login-btn{
+    		background-color: #e75c01;
+    		color:#fff;
+    		border:none;
+    		width:calc(100% - 20px);
+    		margin:30px 0;
+    		margin-left:20px;
+    	}
+    	.mui-input-row.register input[placeholder]{
+    		font-size: 14px;
+    		padding-left:20px;
+    	}
+    	.mui-input-row.register label{
+    		padding-left:0px;
+    		padding-right:0px;
+    	}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav header" id='head' style="height: 70px;">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="line-height: 70px;"></a>
+	    <h1 class="mui-title" style="line-height: 96px;">新用户注册</h1>
+	</header>
+	<div class="mui-content" style="">
+		<form class="mui-input-group">
+		    <div class="mui-input-row register">
+		        <label class="text-right ">手机号：</label>
+		    	<input type="text" class="mui-input-clear" placeholder="请输入手机号" autocomplete="on" name="username">
+		    </div>
+		    <div class="mui-input-row register">
+		        <label class="text-right">输入密码：</label>
+		        <input type="password" class="mui-input-password" placeholder="请输入密码">
+		    </div>
+		    <div class="mui-input-row register password3">
+		        <label class="text-right">确认密码：</label>
+		        <input type="password" class="mui-input-password" placeholder="请再次输入密码">
+		    </div>
+		    <div class="mui-button-row">
+		        <button type="submit" class="mui-btn login-btn" id="btn">提交</button>
+		    </div>
+		</form>
+	</div>
+</body>
+<script src="../js/md5.js"></script>
+<script src="../js/immersed.js"type="text/javascript"></script> 
+<script>
+	mui(document.body).on('tap', '#btn', function() {
+		mui.toast('注册成功',{ duration:'long', type:'div' }) 
+	})
+</script>
+</html>

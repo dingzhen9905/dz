@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>地图</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+		<link href="css/common/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/fonts/iconfont.css" />
+		<style type="text/css">
+			body,
+			html {
+				width: 100%;
+				height: 100%;
+			}
+			
+			#allmap {
+				width: 100%;
+				height: 80%;
+				overflow: hidden;
+				margin: 0;
+				font-family: "微软雅黑";
+				margin-top: 25px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:70px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:white;"></a>
+			<h1 class="mui-title" style="color:white;">位置</h1>
+			<a class=" mui-icon mui-icon   mui-pull-right" id="toEdit" style="font-size: 16px; color:white;margin-top:5px;">保存</a>
+		</header>
+		<div id="allmap"></div>
+		<div class="box" style="height:330px;">
+			<div style="height:30px;">您的经纬度
+				<p id="lnglat"></p>
+			</div>
+			<div style="height:30px; margin-top: 10px;">您的位置：
+				<p id="address"></p>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/mui.min.js"></script> 
+		<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=FQCQkNvWb9g4FnFXN3IGieSwQgLOR2PU&services=&t=20171004185957"></script>
+		<script type="text/javascript" src="js/immersed.js"></script> 
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function() {
+				plus.screen.lockOrientation("portrait-primary");  // 禁止横屏显示
+				var pp = plus.navigator.checkPermission('LOCATION');
+				switch(pp){
+					case 'authorized':
+						console.log('已开启定位权限');
+					break;
+					case 'denied':
+						plus.nativeUI.alert('已关闭定位权限');
+					break;
+					case 'undetermined':
+						plus.nativeUI.alert('未确定定位权限');
+					break;
+					case 'unknown':
+						plus.nativeUI.alert('无法查询定位权限');
+					break;
+					default:
+						plus.nativeUI.alert('不支持定位权限');
+					break;
+				}
+				//接收上个页面传过来的参数
+				var self = plus.webview.currentWebview();
+				var detailInfo = self.detailInfo;
+				var oridetailInfo=self.oridetailInfo;
+				var rqsData = self.rqsData;
+				var fromPage = self.fromPage;
+
+				var map = new BMap.Map("allmap"); //创建地图
+				var point = new BMap.Point(116.404, 39.915); // 初始化地图,设置中心点坐标和地图级别
+				map.centerAndZoom(point, 15);
+				map.addControl(new BMap.MapTypeControl({ //添加地图类型控件
+					mapTypes: [
+						BMAP_NORMAL_MAP,
+						BMAP_HYBRID_MAP
+					]
+				}));
+				map.setCurrentCity("北京"); // 设置地图显示的城市 此项是必须设置的
+				map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+				var marker = new BMap.Marker(point); // 创建标注
+				map.addOverlay(marker); // 将标注添加到地图中
+				marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+				var lnglat = document.getElementById("lnglat");
+				var address = document.getElementById('address');
+				var geolocation = new BMap.Geolocation();
+				geolocation.getCurrentPosition(function(r) {
+					if(this.getStatus() == BMAP_STATUS_SUCCESS) {
+ 						var mk = new BMap.Marker(r.point);
+						map.addOverlay(mk);
+						map.panTo(r.point);
+						lnglat.innerHTML = r.point.lng + ',' + r.point.lat
+						address.innerHTML = r.address.province + " " + r.address.district + " " + r.address.street;
+						var lng = r.point.lng;
+						var lat = r.point.lat;
+						var addresss = r.address.province + " " + r.address.district + " " + r.address.street; 
+						document.getElementById('toEdit').addEventListener("tap", function() {
+							//传值给父页面311—node页面
+							var lngnlat = lng + "," + lat; 
+							var aobj={"linkbd_lngposition_map": ""};
+							var arrobj=[];
+							arrobj.push(aobj)
+							var obj ={"bill_text":arrobj}
+							var obj2 = {"linkbd_lngposition_map": lngnlat};
+							var arrobj2=[];
+							arrobj2.push(obj2)
+							var textobj={"bill_text":arrobj}
+							var textobj2={"bill_text":arrobj2}
+							detailInfo.bill_text=[];
+							detailInfo.bill_text.push(textobj);
+							detailInfo.bill_text.push(textobj2);
+							var str=JSON.stringify(detailInfo.bill_text)
+							detailInfo.bill_text="";
+							detailInfo.bill_text=str
+							detailInfo.bill_task = "d_save"; 
+							if(typeof(detailInfo.cc_user) != "string"){
+								detailInfo.cc_user=JSON.stringify(detailInfo.cc_user);
+							}
+							if(typeof(detailInfo.bill_context) != "string"){
+								detailInfo.bill_context=JSON.stringify(detailInfo.bill_context);
+							}
+							if(vlUtils.isnull(detailInfo.bill_ndate)){
+								detailInfo.bill_ndate = "1900-01-01 00:00:00";
+							}
+							if( vlUtils.isnull(detailInfo.bill_bdate)){
+								detailInfo.bill_bdate = "1900-01-01 00:00:00";
+							}
+							if(vlUtils.isnull(detailInfo.bill_edate)){
+								detailInfo.bill_edate = "1900-01-01 00:00:00";
+							}
+
+ 							mui.ajax(systemURL + 'Api/Task/sendTask', {
+								data: detailInfo,
+								dataType: 'json', //服务器返回json格式数据
+								type: 'post', //HTTP请求类型
+								beforeSend: function() {
+									checkNetState(); // 检查网络链接状态
+								},
+								timeout: 10000, //超时时间设置为10秒
+								headers: {
+									'Content-Type': 'application/json'
+								},
+								success: function(data) {
+									if(data.code == 0) {
+										mui.toast(data.message)
+										mui("#toEdit").button('reset'); 
+										if(detailInfo.bill_task == "d_save") {
+											detailPage = plus.webview.getWebviewById(fromPage);
+											mui.fire(detailPage, 'GPSto311node', {
+												lng: lng,
+												lat: lat,
+												address: addresss,
+												oridetailInfo:oridetailInfo
+											});
+											mui.openWindow({
+												id:fromPage
+											});
+										} 
+									}
+									if(data.code == 1) { 	 
+										ajaxCode1(data.error_code,data.error_description,'layout/login.html');
+										mui("#commit").button('reset');
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									console.log(xhr.responseText);
+									mui("#commit").button('reset');
+									console.log(JSON.stringify(xhr));
+									console.log(errorThrown);
+									console.log(type);
+									if(type == "timeout") {
+										mui.toast("请求超时");
+									}
+
+								}
+							});
+							  
+						})
+					} else {
+						mui.toast('failed' + this.getStatus());
+					}
+				}, {
+					enableHighAccuracy: true
+				})
+
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.min.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			ul li {
+				list-style: none;
+			}
+			
+			.list_font {
+				font-size: 10px;
+				line-height: 12px;
+				height: 12px;
+				display: -webkit-box;
+				margin-bottom: 5px;
+				padding: 0px;
+				/*-webkit-box-orient: vertical;*/
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+			}
+			
+			.list_h5 {
+				font-size: 13px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			
+			.mui-pull-top-pocket {
+				border: transparent;
+			}
+			
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			body {
+				font-size: 16px;
+			}
+			
+			ul#contList {
+				width: 100%;
+				background: #efeff4;
+			}
+			
+			ul#contList li {
+				margin-bottom: 10px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div id="vdst316_list" class="mui-content mui-scroll-wrapper">
+			<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+				<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+			</div>
+			<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+				<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+				<p style="font-size:12px;">正在搜索中......</p>
+			</div>
+			
+			<div id="showError" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-kulian" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">出错啦~</p>
+				<p style="font-size:10px;border-bottom: transparent;">请稍后再试</p>
+			</div>
+			<div class="mui-scroll">
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vdst316_list',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					height: 200,
+					contentnomore: '没有更多数据了',
+					offset: '10px',
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+
+		var startIndex = 1; // 
+		var pageSize = 10;
+		var search = '';
+		var detailInfo = {}; // 用于存储查询到的信息
+		var openlock = false; // 用于区分是首次进入页面还是搜索页面
+		var fbill_no = "ROOT";
+		var queryparmas = {}; //查询参数
+		var pager = {};
+		var bill_task = " ";
+		var bill_user = " ";
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var guid = "";
+		var port = 'Find/Ddata/findDetail';
+		mui.plusReady(function() {
+			//	返回上级
+			window.addEventListener('backAndRefreshList', function(event) {
+				document.getElementById("showHint").style.display = "none";
+				document.getElementById("searching").style.display = "block";
+				teamBillCom = event.detail.teamBillCom; // 管理单位代码
+				fbill_no 	= event.detail.fbill_no; // fbill_no是
+				teamBillComName = event.detail.teamBillComName; // 管理单位名称
+				loginCom 	= event.detail.loginCom; // 登录单位代码
+				loginComName = event.detail.loginComName; // 登录单位名称
+				userbillNo 	= event.detail.userbillNo; // 登录人的代码
+				userName 	= event.detail.userName, // 登录人的姓名
+				privileges 	= event.detail.privileges, // 当前的权限是
+				fromPage 	= event.detail.fromPage, // 从哪个页面来 
+				port = 'Find/Ddata/findDetail';
+				queryparmas = getParams('Y',port);
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas, port, reportData, '../login.html',true);
+			})
+
+			//监听plist页面点击导航拉取不同状态的数据
+			document.addEventListener('differentStatesRefresh210list', function(event) {
+				guid = event.detail.active;
+				search = event.detail.search;
+				port = event.detail.port;
+				document.getElementById("showHint").style.display = "none";
+				document.getElementById("searching").style.display = "block";
+				document.getElementById("contList").innerHTML = '';
+				var f = document.getElementById("contList");
+				var childs = f.childNodes;
+				for(var i = 0; i < childs.length; i++) {　　
+					f.removeChild(childs[i]);
+				}
+				if(guid == "001") { 
+					queryparmas = getParams('Y',port);
+				}else if(guid == "003") { 
+					queryparmas = getParams('S',port);
+				}else if(guid == "002") { 
+					queryparmas = getParams('L',port);
+				}else if(guid == "004") { 
+					queryparmas = getParams('YF',port);
+				} 
+
+
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas, port, reportData, '../login.html',true);
+			}); // 切换结束
+			
+			// 接收传过来的参数
+			var self = plus.webview.currentWebview().parent();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; 
+			teamBillComName = self.teamBillComName; 
+			fbill_no = self.fbill_no; 
+			loginCom = self.loginCom; 
+			loginComName = self.loginComName; 
+			userbillNo = self.userbillNo; 
+			userName = self.userName; 
+			privileges = self.privileges; 
+			fromPage = self.fromPage; 
+
+			// 第一次发ajax拉取数据
+			queryparmas = getParams('Y',port);
+
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas, port , reportData, '../login.html',true);
+
+			//点击查看详情/修改信息
+			mui("#contList").on('tap', 'li', function(e) {
+				var e = this;
+				var li = e;
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow);
+				mui.openWindow({
+					id: 'vdst316_node.html',
+					url: 'vdst316_node.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom, 	
+						teamBillComName: teamBillComName, 	
+						fbill_no: fbill_no, 		
+						loginCom: loginCom, 
+						loginComName: loginComName, 
+						userbillNo: userbillNo, 
+						userName: userName, 
+						privileges: privileges, 
+						fromPage: "vdst316_list.html", 
+						detailInfo: rowObj
+					}
+				});
+			});
+
+		});
+
+		//下拉刷新
+		function pulldownRefresh() {
+			
+			mui.toast("加载中...");
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			//
+			queryparmas.currentPage = 1;
+			queryparmas.pageSize = pageSize;
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas, port, reportData, '../login.html',true);
+			mui('#vdst316_list').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+
+		}
+
+		/*上拉加载具体业务实现 */
+		function pullupRefresh() {
+			if(queryparmas.currentPage < pager.totalPage) {
+				queryparmas.currentPage = queryparmas.currentPage + 1;
+				queryparmas.pageSize = pageSize;
+			} else {
+				plus.nativeUI.toast("~没有更多啦~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdst316_list').pullRefresh().endPullupToRefresh();
+				return;
+			}
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas, port, reportData, '../login.html',false);
+			mui('#vdst316_list').pullRefresh().endPullupToRefresh();
+		}
+		function reportData(data,type) {
+			if(data.code == 0) {
+				var datas = data.data;
+				pager = data.page[0];
+				if(datas.length != 0) {
+					var text = " ";
+					var contList = document.getElementById("contList");
+					for(var i = 0; i < datas.length; i++) {
+						var _maindata = datas[i].values.main;
+						if(_maindata.bill_task == "S") {
+							var bill_task = "待审核";
+						}
+						if(_maindata.bill_task == "Y") {
+							var bill_task = "已审核";
+						}
+						if(_maindata.bill_task == "L") {
+							var bill_task = "待送审";
+						}
+						if(type&&i==0){
+							contList.innerHTML = "";
+						}
+						var li = document.createElement("li");
+						li.setAttribute("data-row",JSON.stringify(data.data[i]));
+						li.setAttribute("class", "mui-table-view-cell");
+						li.style.background = "#fff";
+						li.style.padding = "10px";
+						li.style.height = "70px";
+						li.style.marginBottom = "3px";
+						var text = "";
+						text += '<div class="mui-slider-cell  mui-slider-handle">';
+						text += '<div class="mui-row">';
+						text += '<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;width:55px;">';
+						text += '<img class="vdst316 mui-col-xs-12" src="../../images/icon/default.png"  id="' + _maindata.bill_no + '"/>';
+						text += '</div>';
+						text += '<div class="mui-col-xs-7 mui-row" style="background:;height:50px;">';
+						text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;">' + _maindata["bill_name"] + '</h5>';
+						text += '<p class="list_font mui-col-xs-12">' + _maindata['bill_title'] + '</p>';
+						text += '</div>';
+						text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;">';
+						text += '<p class="list_fonts mui-col-xs-12" style="float:right;">' + _maindata["bill_id"] + '</p>';
+						text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;">' + (_maindata["bill_date"]).slice(5, 16) + '</p>';
+						text += '<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">' + bill_task + '</p>';
+						text += '</div>';
+						text += '</div>';
+						text += '</div>';
+						if(type&&i==0){
+							document.getElementById("searching").style.display = "none";
+						}
+						li.innerHTML = text;
+						contList.appendChild(li);
+						vlUtils.downloadicon(_maindata.bill_id, _maindata.bill_no);
+					}
+				} else {
+					document.getElementById("contList").innerHTML = "";
+					document.getElementById("searching").style.display = "none";
+					document.getElementById("showHint").style.display = "block";
+				}
+			}	
+			plus.nativeUI.closeWaiting();
+		}
+		
+		function getParams(task,port){
+			var res = {
+				name		: 'vdst316',
+				bill_com	: loginCom, 
+				bill_task	: task,
+				currentPage	: startIndex,
+				pageSize	: pageSize,
+			};
+			if(task !== 'Y'){
+				res.bill_user = userbillNo;
+			}
+			if(port === 'Find/Ddata/fuzzy'){
+				res.bill_name = search;
+				res.cc_user = search;
+			}else{
+				res.paramText = search;
+			}
+			return res;
+		}
+	</script>
+
+</html>

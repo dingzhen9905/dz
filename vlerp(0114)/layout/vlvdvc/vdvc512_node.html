@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			/*关联状态*/
+			.list_sts{
+				font-size: 12px;
+				line-height: 14px;
+				color:#f0ad4e;
+				border:1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+			.bottomLine{
+				border-bottom: 1px solid #8f8f94;
+				position:relative;
+				margin: 25px 50px;
+			}
+			.end{
+				position:absolute;
+				top:-8px;
+				left:32%;
+				background: #efeff4;
+				padding:0 10px;
+				z-index:111;
+				font-size: 10px;
+			}
+			.hide{display: none;}
+			.row-bottom-line{border-bottom:1px solid #efeff4;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" style="height:65px;" id="head">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header"></h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="J_btn_edit" style="display:;"></a>	
+			<a class="mui-icon mui-icon-paperclip mui-pull-right hide" id="J_btn_back"></a>	
+		</header>
+		<!---->
+		<div class="mui-content mainBody" style="margin-top:0px !important;padding-top:68px !important;">
+			<div class="mui-input-group hide" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;">
+				<div class="mui-row">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">标识:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_no" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">fbill_no:</span>
+					<span class="mui-col-xs-8" data-field="html.fbill_no" id="fbill_no">ROOT</span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单单位:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_com" id="bill_com"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_user" id="bill_user"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单时间:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_date" id="bill_date"></span>
+					<br/>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row infoItem" style="color:#20B2AA;">
+					<!--<span>基础信息：</span>-->
+					<!--<span class="mui-col-xs-3">物品：</span>-->
+					<span class="mui-col-xs-7" id="bill_name"></span>
+				</div>
+				<div class="mui-row basicInfo">
+					<div class="mui-col-xs-2 imgFrame">
+						<img class="vdvc105" id="userImg" src="../../images/icon/default.png" />
+					</div>
+					<div class="mui-col-xs-9 mui-row mui-pull-right infoFrame">
+						<div class="mui-col-xs-12 mui-row infoItem">
+							<span class="mui-col-xs-3">物品编码：</span>
+							<span class="mui-col-xs-5" id="bill_bid"></span>
+							<span class="mui-col-xs-2 dataState mui-pull-right" id="bill_task"></span>
+						</div>
+						<div class="list_font mui-col-xs-12  mui-row  infoItem lastItem">
+							<span class="mui-col-xs-3">政策编码：</span>
+							<span class="mui-col-xs-7" id="bill_id"></span>
+						</div>
+					</div>
+				</div>
+				<div class="mui-row infoItem" style="">
+					<span class="mui-col-xs-6 mui-row">
+						<span class="mui-col-xs-5">安全库存：</span>
+						<span class="mui-col-xs-7"  id="node_qty"></span>
+					</span>
+					<span class="mui-col-xs-6 mui-row">
+						<span class="mui-col-xs-6">当前库存量：</span>
+						<span class="mui-col-xs-6"  id="node_amt"></span>
+					</span>
+				</div>
+				<div class="mui-row infoItem">
+					<span class="mui-col-xs-6 mui-row">
+						<span class="mui-col-xs-5">订货数量：</span>
+						<span class="mui-col-xs-7"  id="node_nqty"></span>
+					</span>
+					<span class="mui-col-xs-6 mui-row">
+						<span class="mui-col-xs-5">单托数量：</span>
+						<span class="mui-col-xs-7"  id="node_price"></span>
+					</span>
+				</div>
+					
+				<div class="mui-row infoItem ">
+					<span class="mui-col-xs-6 mui-row">
+						<span class="mui-col-xs-7">考虑采购在途：</span>
+						<span class="mui-col-xs-5"  id="node_nprice"></span>
+					</span>
+					<span class="mui-col-xs-6 mui-row">
+						<span class="mui-col-xs-5">采购在途：</span>
+						<span class="mui-col-xs-7"  id="node_rate"></span>
+					</span>
+				</div>
+				<div class="mui-row infoItem lastItem" style="">
+					<span class="mui-col-xs-6 mui-row">
+						<span class="mui-col-xs-7">考虑销售在途：</span>
+						<span class="mui-col-xs-5"  id="node_namt"></span>
+					</span>
+					<span class="mui-col-xs-6 mui-row">
+						<span class="mui-col-xs-5">销售在途：</span>
+						<span class="mui-col-xs-7"  id="node_nrate"></span>
+					</span>
+				</div>
+			</div>
+			<div class="bottomLine" style="">
+				<p class="end" style="">没有更多数据了！</p>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var deptname;
+		var date = new Date();
+		var commit = document.getElementById("commit");
+		var bill_date = vlUtils.dateToString(date);
+		var rqsData = null; //提交的数据
+		var inputData = null; // 表单里的数据
+		var getElem = function(el){return document.getElementById(el);};
+		var oBtnEdit = getElem('J_btn_edit');
+		var oBtnBack = getElem('J_btn_back');
+		var oBtnGoBack = getElem('goBack'); 
+		mui.plusReady(function() {
+			// TODO  0. 重写返回事件
+			var oldBack = mui.back;
+		    mui.back = function(){
+		    	if(fromPage != "vdvc512_list.html" && fromPage != "vdvc512_edit.html"){
+		    		oldBack();
+		    		return;
+		    	}
+		    	var webview = plus.webview.getWebviewById("vdvc512_plist.html");
+		    	webview.show();
+		    }
+		    
+			// TODO　１.页面上的字段
+			var  normalData = {
+				h : {
+					bill_no 	:"",
+					fbill_no 	:"",
+					bill_user 	:"",
+					bill_com 	:"",
+					bill_date 	:"",				
+					bill_bid	: "",
+					bill_id	: "",
+					bill_name	: "",
+					node_qty	: "",
+					node_nqty	: "",
+					node_price  : "",
+					node_nprice : "",
+					node_amt 	: "",
+					node_namt 	: "",
+					node_rate 	: "",
+					node_nrate 	: "",
+				},
+				v : {},
+				c : {}
+			}
+			
+			// TODO 2. 接收传过来的参数===========================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			deptname 		= self.deptname;
+			
+			if(fromPage=="vdvc512_edit.html") {
+				detailInfo = self.rqsData;
+				detailInfo.bill_task = "Y";
+			}else{
+				detailInfo = self.detailInfo;
+			}
+			// TODO 3. 基础设置/赋值 =============================
+			// 查询该条数据
+			if(fromPage == 'vdoa001_node.html'){
+				detailInfo=detailInfo.values.main;
+			}else{
+			}
+			document.getElementById("header").innerHTML 		 = detailInfo.bill_name;
+			setValue(detailInfo,normalData,false);
+			var _temp = {
+				"0" : "否",
+				"1" : "是",
+			}
+			getElem("node_namt").innerHTML = _temp[detailInfo['node_namt']];
+			getElem("node_nprice").innerHTML = _temp[detailInfo['node_nprice']];
+			billstate(detailInfo.bill_task);
+			var oStatus = {"L":"待送审","S":'待审核',"Y":"已审核"};
+			getElem("bill_task").innerHTML = oStatus[detailInfo.bill_task];
+			// 下载图片
+			var imgid= vlUtils.uuid('img', 4, 10);
+		 	$$("#userImg").attr('id',imgid);	
+	 	    //判断有值的话拿到用户的id然后请求小图标
+		    if(!vlUtils.isnull(detailInfo["bill_no"])){
+		    		vlUtils.downloadicon(detailInfo["bill_no"],imgid);
+		   	};
+			
+			// TODO 4. 事件绑定==================================
+			oBtnEdit.addEventListener("tap", eBtnEdit, false);
+			oBtnBack.addEventListener("tap", eBtnBack, false);
+			// TODO 5. 监听自定义事件=============================
+			
+			window.addEventListener('backAndRefreshList', function(event) {
+				teamBillCom 	= event.detail.teamBillCom;		// 管理单位代码
+				fbill_no 		= event.detail.fbill_no;		// fbill_no是
+				teamBillComName = event.detail.teamBillComName; // 管理单位名称
+				loginCom 		= event.detail.loginCom;	 	// 登录单位代码
+				loginComName 	= event.detail.loginComName;	// 登录单位名称
+				userbillNo 		= event.detail.userbillNo;		// 登录人的代码
+				userName 		= event.detail.userName,		// 登录人的姓名
+				privileges 		= event.detail.privileges,		// 当前的权限是
+				fromPage 		= event.detail.fromPage,		// 从哪个页面来
+				bill_no 			= event.detail.bill_no,		// 从哪个页面来
+				queryparmas={
+					name:'vdvc512',    
+					bill_com:loginCom, 
+					bill_task:"L,S,Y,YF",
+					currentPage:1, 
+					pageSize:1, 
+					paramText:"",
+					bill_no:bill_no  
+				}
+				rqsDataAjax(queryparmas,'Find/Ddata/find',rqsDataSuccess,'../login.html')
+				
+			})
+
+ 			
+			// TODO 6. 事件/方法=================================
+			// 收回指令
+			function eBtnBack(){
+				mui.confirm("确认要收回此单据吗？", "收回确认", ["收回", "取消"], function(e) {
+					if(e.index == 0) { // 是
+						rqsBack();
+					} 
+				});
+			}
+			function rqsBack(){
+				var _date = new Date();
+				var _param = {
+					bill_task :	"b_back",
+					bill_no   : getElem('bill_no').innerHTML,
+					bill_com  : teamBillCom,
+					bill_user : userbillNo,
+					bill_date : vlUtils.dateToString(_date),
+				}
+				CRUDajax(_param,'../login.html',callback);
+			}
+			function callback() {
+				oBtnBack.style.display = 'none';
+				oBtnEdit.style.display = 'block';
+				detailInfo.bill_task = 'L';
+				getElem('bill_task').innerHTML = '待送审';
+			}
+			function billstate(task){
+				if(task == "L"){
+					oBtnEdit.style.display = 'block';
+					oBtnBack.style.display = 'none';
+				} else {
+					oBtnEdit.style.display = 'none';
+					oBtnBack.style.display = 'none';
+				}
+			}
+			//
+			function eBtnEdit(){
+				var billUser = detailInfo.bill_user;
+				var privileges = vlUtils.getStorage("newPrivileges");
+				if(detailInfo.bill_task != "L"){
+					mui.toast("  \n不支持编辑！\n单据已经送审或者正在送审中\n若想编辑请先收回！\n ")
+					return;
+				}
+				if(billUser == userbillNo || privileges == "ROOT"){
+					var ws = plus.webview.getWebviewById("vdvc512_edit.html");
+					if(!vlUtils.isnull(ws)){
+						plus.webview.close(ws);
+					}
+					mui.openWindow({
+						url: 'vdvc512_edit.html',
+						id: "vdvc512_edit.html",
+					    createNew:true,
+					    extras:{
+					    	teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 不变 
+							teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变 
+							fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+							loginCom 		: loginCom,			// 4.登录单位代码
+							loginComName 	: loginComName,		// 5.登录单位名称
+							userbillNo 		: userbillNo,		// 6.登录人的代码
+							userName 		: userName,			// 7.登录人的姓名
+							privileges 		: privileges,		// 8.当前的权限是
+							fromPage 		: "vdvc512_node.html",	// 9.从哪个页面来
+							detailInfo 		: detailInfo,
+ 							flagNew 		: "N"
+						},
+					    waiting:{
+							autoShow:true,//自动显示等待框，默认为true
+							title:'正在打开页面...',//等待对话框上显示的提示内容
+						} 
+					})
+				}else{
+					mui.toast("仅制单人或管理员有此权限！");
+				}
+			}
+		}); // plusReady
+	</script>
+
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>商城订单</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			#topNav {
+				padding: 0;
+			}
+			
+			.topNavOut {
+				text-align: center;
+				position: relative;
+				margin-bottom: 0px;
+				height: 35px;
+				color: #353b42;
+			}
+			
+			.active {
+				color: #ea6d10;
+				border-bottom: 2px solid #ea6d10;
+				/*background:pink;*/
+			}
+			
+			.mui-bar .mui-icon:active {
+				background: #0062cc!important;
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			.hide{display: none;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" ></a>
+			<div class="mui-title plistTitle">
+				<p id="TO"></p>
+				<h1 id="header" ></h1>	
+			</div>
+			<a class="mui-icon mui-icon-plusempty mui-pull-right" id="toEdit" style="display: none;"></a>
+			<!--<div class="mui-row" style="position:fixed;top:65px;left:0px;width:100%;height:35px;line-height: 35px;background:#f7f7f7;" id="topNavOut">-->
+			<div class="mui-row navBar topNavRow hide" id="topNavZD">
+				<p class="mui-col-xs-2 topNavOut active" data-active="active" data-type="001">待处理</p>
+				<p class="mui-col-xs-2 topNavOut" data-type="002">已确认</p>
+				<p class="mui-col-xs-2 topNavOut" data-type="003">待配送</p>
+				<p class="mui-col-xs-2 topNavOut" data-type="004">待签收</p>
+				<p class="mui-col-xs-2 topNavOut" data-type="005">已签收</p>
+				<p class="mui-col-xs-2 topNavOut" data-type="006">已取消</p>
+			</div>
+			<div class="mui-row navBar topNavRow hide" id="topNavJXS">
+				<p class="mui-col-xs-2 topNavOut active" data-active="active" data-type="001" style="width: 20%;">待处理</p>
+				<p class="mui-col-xs-2 topNavOut" data-type="002" style="width: 20%;">待发货</p>
+				<p class="mui-col-xs-2 topNavOut" data-type="003" style="width: 20%;">待签收</p>
+				<p class="mui-col-xs-2 topNavOut" data-type="004" style="width: 20%;">已签收</p>
+				<p class="mui-col-xs-2 topNavOut" data-type="005" style="width: 20%;">已取消</p>
+			</div>
+		</header>
+		<div class="mui-content">
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdeb212sc_list.html',
+				id: 'vdeb212sc_list.html',
+				styles: {
+					top: '110px',
+					bottom: '0px',
+				}
+			}]
+		});
+
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if(contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			contentWebview.evalJS("mui('#vdeb212_list').pullRefresh().scrollTo(0,0,100)");
+		});
+
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			var teamBillCom = self.teamBillCom;
+			var teamBillComName = self.teamBillComName;
+			var userbillNo = self.userbillNo;
+			var loginCom = self.loginCom;
+			var loginComName = self.loginComName; 
+			var fromPage = self.fromPage;
+			var oldBack = mui.back;
+			var pageTitle = self.pageTitle;
+			var user = JSON.parse(vlUtils.getStorage('user'));
+			if( user.com_linkvd_userCom === "经销商"){
+				document.getElementById('topNavJXS').style.display = 'block';
+				document.getElementById('topNavZD').style.display = 'none';
+			}else if(user.com_linkvd_userCom === "终端"){
+				document.getElementById('topNavJXS').style.display = 'none';
+				document.getElementById('topNavZD').style.display = 'block';
+			}
+			mui.back = function() {
+				if(fromPage == "vdeb511sc_list.html"){
+					var prevPage = plus.webview.getWebviewById('vdeb511sc_plist.html');
+					prevPage.show();
+					plus.webview.currentWebview().close();
+				}else if(fromPage == "work"){
+					if(user.com_linkvd_userCom=="终端"){
+						var indexId = 'index-cx.html';
+					}else if(user.com_linkvd_userCom=="企业"){
+						var indexId = 'index.html';
+					}else if(user.com_linkvd_userCom=="经销商"){
+						var indexId = 'index-ps.html';
+					}
+					var prevPageP = plus.webview.getWebviewById(indexId);
+					var prevPage = plus.webview.getWebviewById('tab-webview-subpage-work.html');
+					prevPageP.show();
+					prevPage.show();
+					plus.webview.currentWebview().close();
+				}else {
+					oldBack();
+				}
+			}
+			// 更改header的显示信息
+			document.getElementById("header").innerHTML = teamBillComName;//头部显示发货单位名
+			document.getElementById("TO").innerHTML = "订单列表";//头部显示发货单位名
+			document.getElementById("header").setAttribute("teamBillCom", teamBillCom);
+			document.getElementById("header").setAttribute("userbillNo", userbillNo);
+			document.getElementById("header").setAttribute("loginCom", loginCom);
+			document.getElementById("header").setAttribute("loginComName", loginComName);
+		 	vlUtils.setStorage("teamBillCom",teamBillCom)
+		  	vlUtils.setStorage("userbillNo",userbillNo)
+			//跳转到编辑页面
+			document.getElementById("toEdit").addEventListener("tap", function() {
+				mui.openWindow({
+					url: 'vdsa211sc_edit.html',
+					id: "vdsa211sc_edit.html",
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom,
+						teamBillComName: teamBillComName,
+						userbillNo: userbillNo,
+						loginCom: loginCom,
+						loginComName: loginComName,
+						flagNew: "Y"
+					}
+				})
+			})
+			
+ 
+			mui("#topNavZD").on("tap", "p", function() {
+				var self = this;
+				jQuery(this).addClass("active").siblings().removeClass("active");
+				mui.fire(plus.webview.getWebviewById('vdeb212sc_list.html'), 'subpage212list', {
+					active: self.getAttribute("data-type")
+				});
+			})
+			mui("#topNavJXS").on("tap", "p", function() {
+				var self = this;
+				jQuery(this).addClass("active").siblings().removeClass("active");
+				mui.fire(plus.webview.getWebviewById('vdeb212sc_list.html'), 'subpage212list', {
+					active: self.getAttribute("data-type")
+				});
+			})
+		})
+	</script>
+
+</html>

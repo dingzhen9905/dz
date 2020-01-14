@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>二级出库编辑</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" href="../../css/common/mui.poppicker.css" />
+		<style>
+			.topNav {
+				padding: 0;
+			}
+			
+			.topNav p {
+				height: 35px;
+				line-height: 35px;
+			}
+			/*删除*/
+			
+			#sheet1 ul li:after {
+				height: 0;
+			}
+			
+			p.topitem {
+				padding: 0;
+			}
+			#basicTxt p{
+				color:#ACACB4;
+				margin:0;
+				padding:0;
+				font-size: 12px;
+			}
+			#basicTxt p span{
+				color: #000000;
+				width:60%;
+				float:right;
+			}
+			.money{
+				color:crimson;
+			}
+			/*TODO*/
+			.mui-table-view-cell:after,
+			.mui-table-view-cell:before,
+			.mui-table-view:after,
+			.mui-table-view:before{
+				height: 0 !important;
+			}
+			.order-main-li{padding:8px 10px 8px 5px !important;margin-bottom:8px;border-top:1px solid #E0E0E0; box-shadow: 0px 3px 3px #ccc;border-radius: 10px;}
+			/*.order-main-label{padding:0px !important;}*/
+			.main-info{line-height:5px;}
+			.order-main-imgbox{padding:3px;width:auto;margin:0px !important;}
+			ul.order-detail-ul {margin: 0;padding:10px 0 0 0;background:;border-radius:5px;overflow: hidden;}
+			.order-detail-li{margin:0px;border:0px dashed #ACACB4;border-radius:10px;box-sizing:border-box;overflow:hidden;}
+			.order-detail-imgbox{padding:3px;}
+			.order-imgbox{padding:5px;padding-left:0px;box-sizing:border-box;}
+			img{border-radius: 5px;}
+			
+			.order-info-leftbox{}
+			.order-info-left {display: -webkit-box;height: 14px;margin-bottom:3px;font-size: 12px;line-height: 12px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;}
+			.order-info-rightbox{text-align: right;}
+			.order-info-right {float: right;height: 26px;margin:2px auto;padding:0;font-size: 12px;line-height: 14px;}
+			.order-price{color:#000000;}
+			.order-amt{color:#FF5053;}
+			.order-qty{color: #000000;}
+			.vl-center{text-align: center;}
+			.order-statusbox{text-align:right;padding-right:10px;}
+			.order-status {margin-left:10px;font-size: 10px;line-height: 14px;color: #f0ad4e;border: 1px solid #f0ad4e;border-radius: 2px;text-align: center;}
+			.detail-input{display:inline-block;border:none;}
+			.mui-row:before,
+			.mui-row:after,
+			.mui-table-view-cell:after,
+			.mui-table-view-cell:before{
+				height:0px;
+			}
+			.data-row{word-wrap:break-word}
+			.hide{display: none;}
+			.changegray{border: 1px dashed #E0E0E0;border-radius: 5px;}
+			.changegray:hover{background: #C7C7CC;border-radius:5px;color:#fff;}
+			.vl-gray{color: gray;}
+			.vl-count{padding:10px;background: #FFFFFF;line-height: 30px;}
+			.vl-red{color: crimson;}
+			.vl-dark{color: #000000 !important;}
+			.vl-line{min-height: 20px;margin-top:5px;border-bottom: 1px solid #efeff4;line-height: 20px;}
+			.vl-footer{position:fixed;bottom:0;width:100%;height: 50px;background: #FFFFFF;line-height: 50px;text-align: center;margin-top:10px;}
+			.last-line{border-bottom: none;}
+			/**/
+			.goods-type-box{position:relative;top:0px;padding:0;padding-right:5px;margin:0;border: 1px dashed #E0E0E0;border-radius: 5px;height:24px;line-height:24px;text-align: right;}
+			.order-selecttype{color: #2187E7;}
+			.saletype{}
+			.saletype:hover{background: #C7C7CC;border-radius:5px;color:#fff;}
+			/**/
+			.main-input,.detail-input {width:125px;text-align: center;height: 30px !important;margin:0 !important;padding:0;}
+			.detail-input {border:none !important; text-align: center;}
+			/**/
+			.goods-title {padding-top:1px;font-size: 14px;color:#242424;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+			.goods-table{background:;border: 1px dashed #E0E0E0;border-radius: 5px;text-align: center;}
+			.goods-table-title{background:#F0F0F0;line-height: 24px;}
+			.goods-table-row{line-height: 30px;}
+			.goods-table-rightline{border-right: 1px dashed #E0E0E0;}
+			.goods-table-bottomline{border-bottom: 1px dashed #E0E0E0;}
+			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head" style="height: 70px;">
+			<a class="mui-action-back mui-pull-left" id="">返回</a>
+			<div class="mui-title plistTitle">
+				<p id="pageTitle"></p>
+				<h1 id="header"></h1>
+			</div>
+		</header>
+		
+		<div class="mui-content" style="padding-top:75px;margin-top:0px;margin-bottom:30px;">
+			<div class="mui-input-group hide"style="padding:5px 18px 5px 18px;margin:5px auto;">
+				<div id="basicTxt">
+					<div style="border-bottom:1px solid #20B2AA;">
+						<p>单据标识(bill_no):		<span id="bill_no"></span></p>
+						<p>fbill_no:			<span id="fbill_no">ROOT</span></p>
+						<p>订单号(bill_bno):		<span id="bill_bno"></span></p>
+						<p>出库单号(bill_doppo):	<span id="bill_doppo"></span></p>
+						<p>制单人(bill_user):		<span id="bill_user"></span></p>
+						<p>制单单位(bill_com):		<span id="bill_com"></span></p>
+						<p>制单时间(bill_date):	<span id="bill_date"></span></p>
+						<p>制单时间(bill_ndate):	<span id="bill_ndate"></span></p>
+						<p>配送类型(bill_bflow):	<span id="bill_bflow">协议配送</span></p>
+					</div>
+					<div id="">
+						<p>购方代码(bill_oppo):	<span id="bill_oppo"></span></p>
+						<p>供应商(bill_coppo):	<span id="bill_coppo"></span></p>
+						<p>配送员(bill_nuser):	<span id="bill_nuser"></span></p>
+					</div>
+				</div>
+			</div>
+			<div class="mui-slider-cell  mui-slider-handle " style="background:#fff;padding:3px 20px 0px 15px;margin-bottom: 3px;">
+				<div class="mui-row" style="height: 30px;overflow: hidden;">
+					<div class="mui-col-xs-1"><a class="mui-icon mui-icon-home" style="font-size:22px;margin:0;padding:0;margin-top:3px;"></a></div>
+					<div class="mui-col-xs-8" id="bill_name" style="font-size:14px;line-height: 30px;color:#000000;font-weight: bold;"></div>
+				</div>
+				<div class="mui-row" style="margin-bottom: 3px;border-bottom: 1px dashed #007AFF;border-top: 1px solid #007AFF;padding:5px 0;overflow: hidden;">
+					<div class="mui-col-xs-2 mui-row" style="text-align: left;">
+						<img id="J_img" class="mui-col-xs-11" src="../../images/icon/chaxun.png" style="border-radius: 5px;" />
+					</div>
+					<div class="mui-col-xs-10 mui-row" >
+						<p class="list_font vl-line last-line">
+							<a class="mui-icon mui-icon-phone" style="font-size:16px;margin:0;padding:0;"></a>
+							<span class="vl-dark mui-col-xs-12" id="linkvd_termcontact"></span>
+						</p>
+						<p class="list_font vl-line last-line">
+							<a class="mui-icon mui-icon-location" style="font-size:16px;margin:0;padding:0;"></a>
+							<span class="vl-dark mui-col-xs-12" id="linkvd_termaddr"></span>
+						</p>
+					</div>
+				</div>
+				<div class="mui-row ">
+					<p class="list_font vl-line last-line">
+						<span class="vl-gray mui-col-xs-4">经销商：</span>
+						<span class="vl-dark mui-col-xs-8" id="bill_title"></span>
+					</p>
+				</div>
+			</div>
+			<div class="mui-input-group hide" id="selectDlv" style="padding:5px 18px 5px 10px;margin-bottom:5px;height: 40px;line-height: 30px;">
+				<div class="mui-row">
+					<span class="mui-col-xs-3 spn">
+						<a class="mui-icon mui-icon-person" style="font-size:22px;margin:0;padding:0;"></a>
+						<span>配送员：</span>
+					</span>
+ 					<span class="mui-col-xs-8 spn" id="bill_nuserName"></span>
+ 					<span class="mui-icon mui-icon-arrowright mui-col-xs-1" id="" style="float:right;color:#007AFF;"></span>
+				</div>
+			</div>
+			<div style="overflow: hidden;background:#fff;padding:5px 10px;margin-bottom:10px;">
+				<div class="mui-row" style="margin:5px;background:#fff;border-bottom: 1px dashed #007AFF;font-size:14px;overflow: hidden;">
+					<div class="mui-col-xs-10 mui-row" style="margin:0;color:;line-height:24px;">
+						<div class="mui-col-xs-12 del-tip" del-tip style="color: gray;">左滑可以删除已选商品</div>
+					</div>
+					<div class="mui-col-xs-2 mui-pull-right" id="J_btn_sGoods">
+						<button type="button" class="mui-btn mui-btn-primary mui-btn-outlined" id="changeFlow" style="padding:3px 5px;width:80%;"> 新增 </button>
+					</div>
+				</div>
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="border-radius:10px;">
+				</ul>
+				<div class="mui-row gift-goods" id="J_list_goods"></div>
+				<script id="J_temp_goods" type="text/template"></script>
+			</div>
+			
+			<div class="vl-count">
+				<div class="mui-row" style="color:;line-height:24px;">
+					<div class="mui-col-xs-2" style="border-bottom: 1px dashed #C0C0C0;">合计：</div>
+					<div class="mui-col-xs-5 vl-gray" style="">数量：<span id="node_nqty" class="vl-red">0</span>件</div>
+					<div class="mui-col-xs-5 mui-pull-right vl-gray">金额：<span id="node_amt" class="vl-red">0</span>元</div>
+				</div>
+				<!--<div class="mui-col-xs-12" id="" style="background:;color:#262930;">-->
+				<div class="mui-row" id="namtbox">
+					<div class="mui-col-xs-6">实收：</div>
+					<div class="mui-col-xs-4">
+						<input class="amt-input" type="number" name="" id="node_namt" value="" style="padding:3px;margin:0;height: 30px;text-align: right;" />
+					</div>
+					<div class="mui-col-xs-2">
+						元
+					</div>
+				</div>
+				<!--</div>-->
+			</div>
+			<div class="mui-row" style="margin: 10px 0;overflow: hidden;">
+				<div class="mui-col-xs-1"></div>
+				<div class="mui-col-xs-4">
+					<button class="mui-btn mui-btn-red mui-btn-outlined hide" id="J_btn_cancel" style="font-size: 16px;"> 作废</button>
+				</div>
+				<div class="mui-col-xs-2"></div>
+				<button class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-4" id="J_btn_save" style="font-size: 16px;"> 确认送货</button>
+				<div class="mui-col-xs-1"></div>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/arttmpl.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.picker.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.poppicker.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		mui.init()
+		var teamBillCom,teamBillComName,userbillNo,loginCom,loginComName,parentPage,
+			detailInfo,
+			_onlyCode = "",
+			oldBack = mui.back,
+			oType = {},
+			aSelected = {}, // [{"正no1":["赠no1","赠no2"]},{"正no1":["赠no1","赠no2"]}]
+			oSelected = {}, // [{"正no1":["正obj1",["赠obj1","赠obj2"]]}]
+			_oTrueFalse ={"true": true, "false": false},
+			aAllFindGoods=[],
+			aAllFindType = [],
+			trigger = true,
+			isNew = true,
+			oMain,aDetail,
+			pageTitle,commonParams,
+			nDetailCB=0,
+			oOldMain,aOldDetail,aOldDetailBno=[];
+			var sa210Data = [];
+		var sa212Data = [];
+		mui.plusReady(plsReady);
+		var oNormal = {
+			h : {
+				bill_no 	:"",	
+				bill_bno 	:"",	
+				fbill_no	:"",
+				bill_name 	:"",	
+				bill_oppo 	:"",	
+				bill_coppo 	:"",	
+				bill_doppo  :"",
+				bill_bflow 	:"",	
+				node_amt 	:"",	
+				node_nqty 	:"",	
+				bill_user 	:"",	
+				bill_nuser 	:"",	
+				bill_com 	:"",	
+				bill_date 	:"",
+				bill_ndate 	:"",
+				bill_nuser  :"",
+				bill_title  :"",
+			},
+			v : {
+				node_namt 	:"",
+			},
+			c : {}
+		}
+		var oText = {
+			h : {"bill_nuserName":"",},v : {},c : {}
+		}
+		var _oContent = {
+			"规格型号": "",
+			"条码": "",
+			"供应商名称": "",
+			"供应商代码": "",
+			"政策标识": "",
+			"生产厂商名称": "",
+			"生产厂商代码": "",
+			"单位": "",
+			"开始日期": "",
+			"截止日期": "",
+			"商品名称": "",
+			"物品类型":""
+		}
+		var oPage = {
+			"vdst315hn01" : ["block", "VE_vdst315_update_01", "新增配送单", "", "确认送货"],
+			"vdst315hn02" : ["block", "VE_vdst315_update_01", "新增配送单", "业务员配送", "确认送货"],
+			"vdst315hn03" : ["none", "b_send", "新增采购订单", "业务员订单", "提交订单"]
+		}
+		var oPageIni = {
+			"vdst315hn01" : {
+				"name" :"经销商-配送管理",
+				"bill" : "vdst315",
+				"namtType":"block", 
+				"saveTask":"VE_vdst315_update_01", 
+				"pageTitle":"新增配送单", 
+				"wflow": "", 
+				"bflow":"协议配送", 
+				"btnText":"确认送货",
+				"goodsType" : "商品",
+				"canSelectSaleType" : true,
+				"isShowBtnTocancelBill" : "block",
+			},
+			"vdst315hn02" : {
+				"name" :"企业-配送管理",
+				"bill" : "vdst315",
+				"namtType":"block", 
+				"saveTask":"VE_vdst315_update_01", 
+				"pageTitle":"新增配送单", 
+				"wflow":"业务员配送", 
+				"bflow":"协议配送", 
+				"btnText":"确认送货",
+				"goodsType" : "商品",
+				"canSelectSaleType" : true,
+				"isShowBtnTocancelBill" : "none",
+			},
+			"vdst315hn03" : {
+				"name" :"企业-采购订单",
+				"bill" : "vdst315",
+				"namtType":"none", 
+				"saveTask":"b_send", 
+				"pageTitle":"新增采购订单", 
+				"wflow":"业务员订单", 
+				"bflow":"协议配送", 
+				"btnText":"提交订单",
+				"goodsType" : "商品",
+				"canSelectSaleType" : true,
+				"isShowBtnTocancelBill" : "none",
+			},
+			"vdst316hn01" : {
+				"name" :"经销商-回收单",
+				"bill" : "vdst316",
+				"namtType":"none", 
+				"saveTask":"b_send", 
+				"pageTitle":"新增配送单", 
+				"wflow":"配送员回收", 
+				"bflow":"回收入库", 
+				"btnText":"送审",
+				"goodsType" : "包装物",
+				"canSelectSaleType" : false,
+				"isShowBtnTocancelBill" : "none",
+			},
+			"vdst316hn02" : {
+				"name" :"企业-回收单",
+				"bill" : "vdst316",
+				"namtType":"none", 
+				"saveTask":"b_send", 
+				"pageTitle":"新增配送单", 
+				"wflow":"业务员回收", 
+				"bflow":"回收入库", 
+				"btnText":"送审",
+				"goodsType" : "包装物",
+				"canSelectSaleType" : false,
+				"isShowBtnTocancelBill" : "none",
+			},
+		}
+		var oSelectTypeIni = {
+		    // 【新增】isDnew
+			"true" : {
+		        "name" : "选择类型",
+		        "field":"",
+		        "selectIcon" : '<a class="mui-icon mui-icon-compose"></a>',
+		        "class": "order-selecttype"
+		    },
+		    "false" : {
+		        "name" : "",
+		        "field":"bill_bflow",
+		        "selectIcon" : '<a class="mui-icon mui-icon-compose"></a>',
+		        "class": "order-selecttype"
+		    },
+		    "default" : {
+		        "name":"",
+		        "field":"bill_bflow",
+		        "selectIcon" : "",
+		        "class": ""
+		    }
+		};
+		function plsReady(){
+			var self = plus.webview.currentWebview();
+			teamBillCom 	= self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo 		= self.userbillNo;
+			userName 		= self.userName;
+			loginCom 		= self.loginCom;
+			loginComName 	= self.loginComName;
+			parentPage 		= self.parentPage;
+			fromPage 		= self.fromPage;
+			privileges 		= self.privileges;
+			detailInfo 		= self.detailInfo;
+			trigger 		= self.trigger;
+			isNew 			= self.isNew;
+			pageTitle 		= self.pageTitle;
+			commonParams 	= self.commonParams;
+			
+			fillData(trigger);
+			skipToGoodsList(trigger)
+			bindEvent();
+//			findType("销售类型picker");
+			findType("销售类型sheet");
+		}
+		function skipToGoodsList(trigger){
+			if(trigger) {
+				eSelectGoods()
+				trigger = false;
+			}
+		}
+		
+		function fillData() {
+			document.getElementById("J_btn_save").innerHTML = oPageIni[commonParams]['btnText'];
+			document.getElementById("namtbox").style.display = oPageIni[commonParams]['namtType'];
+			
+			var _date = VlDate.get(new Date(), "_ymdhms");
+			var userInfo = JSON.parse(VlStore.pGet("user"));
+			var system = userInfo.com_linkvd_userCom;
+			var _data = detailInfo;
+			if(isNew){
+				var oTask = {
+					"企业" : {
+						"bill_com" 	 : _data["内容"]["供应商代码"],
+						"bill_title" : _data["内容"]["供应商名称"],
+					},
+					"经销商" : {
+						"bill_com" 	 : teamBillCom,
+						"bill_title" : teamBillComName,
+					}
+				}
+				
+				var obj = {
+					bill_title : oTask[system]["bill_title"],
+					bill_com : oTask[system]["bill_com"],
+					bill_user : userbillNo,
+					bill_date : _date,
+					fill_no : "ROOT",
+					bill_no : VlTools.getBno(oPageIni[commonParams]['bill']),
+					bill_oppo : _data['图片'],
+					bill_name : _data['标题'],
+					bill_coppo : _data["内容"]["供应商代码"],
+					node_nqty : 0,
+					node_amt : 0,
+					node_namt: "",
+					bill_text : [{
+						linkvd_termaddr : _data.addr,
+						linkvd_termcontact : _data["内容"]["负责人"]+"("+_data["内容"]["电话"]+")",
+					}]
+				}
+				VlEdit.setValue(obj, oNormal, oText)
+				
+				document.getElementById("linkvd_termaddr").innerHTML = _data.addr;
+				document.getElementById("linkvd_termcontact").innerHTML = _data["内容"]["负责人"]+"("+_data["内容"]["电话"]+")";
+				VlAjax.dlIcon(_data['图片'], "J_img", VlTools.setImg);
+			}else{
+				document.getElementById("J_btn_cancel").style.display = oPageIni[commonParams]['isShowBtnTocancelBill'];
+				mui(".del-tip")[0].style.display = "none";
+				var findMDdata = {
+					name : oPageIni[commonParams]['bill'],
+					bill_no : detailInfo["内容"]["单号"],
+					bill_task : "L,S,Y",
+					currentPage	: 1,
+					pageSize	: 1,
+					paramText	: ''
+				}
+				VlAjax.post({"port" : "detail","headers" : "json","isFirst" : true}, findMDdata, sCBfindMDdata);
+			}
+			document.getElementById("header").innerHTML 		= teamBillComName;
+			document.getElementById("pageTitle").innerHTML 		= oPageIni[commonParams]['pageTitle'];
+			document.getElementById("bill_nuser").innerHTML 	= userbillNo;
+			document.getElementById("bill_nuserName").innerHTML = userName;
+			document.getElementById("bill_ndate").innerHTML 	= _date;
+			//
+			mui.back = function() {
+				mui.confirm("请确保页面上的信息保存后再返回，以免数据丢失！", "返回确认", ["确认要返回", "不返回"], function(e) {
+					if(e.index == 0) {
+						// 是
+						plus.webview.currentWebview().close();
+						if(fromPage === "work"){
+							plus.webview.getWebviewById('tab-webview-subpage-work').show();
+						}else if(fromPage === "vdst315hn01_node.html"){
+							mui.fire(plus.webview.getWebviewById('vdst315hn01_node.html'),'refresh',{
+								bno : document.getElementById('bill_no').innerHTML
+							});
+						  	mui.openWindow({
+						    	id:'vdst315hn01_node.html',
+						  	});
+							oldBack();
+						}else{
+							oldBack();
+						}
+					}
+				});
+				
+			}
+		}
+		function bindEvent(){
+			document.getElementById("J_btn_sGoods").addEventListener("tap", eSelectGoods, false);
+			document.getElementById("J_btn_save").addEventListener("tap", eBtnSave, false);
+			document.getElementById("J_btn_cancel").addEventListener("tap", eBtnCancel, false);
+			
+			mui("#contList").on('tap', '.order-selecttype', function(e) { eaShowType(e, this)});
+			mui("#contList").on('tap', '.salenum', function(e) { eaShowNumBox(this)});
+			jQuery('#contList').on('input propertychange change', 'input.main-input',function (e){eaChangeInput(e, this)});
+			jQuery("#contList").on('tap', '.mui-btn-red', function(e) { eaDelGoods(e, this); });
+			window.addEventListener('vdst315findGoods', function(event) { ecFindGoods(event); });
+		}
+		// 选择商品
+		function eSelectGoods() {
+			VlPage.beforeOpen('vdst315hn01_findGoods.html');
+			mui.openWindow({
+				url: '../vlfind/vdst315hn01_findGoods.html',
+				id: 'vdst315hn01_findGoods.html',
+				createNew: true,
+				extras: {
+					teamBillCom		: document.getElementById("bill_com").innerHTML,
+					teamBillComName	: teamBillComName,
+					userbillNo		: userbillNo,
+					loginCom		: loginCom,
+					loginComName	: loginComName,
+					choice			: "single",
+					toPage			: "vdst315hn01_findGoods.html",
+					fromPage		: "vdst315hn01_edit.html",
+					other			: "VR_vdsa210_query_03",
+					goodsType		: oPageIni[commonParams]['goodsType'],
+					bill			: oPageIni[commonParams]['bill']
+				}
+			});
+		}
+		function ecFindGoods(event){
+			var oData = event.detail.oSelected;
+			VlPage.beforeOpen('vdst315hn01_findGoods.html');
+//			var isExist = setSa210Data(oData);
+//			var canRenderNew && setSa210Data(oData);
+//			renderGoodsList(oData);
+//			if(!isExist){
+				var arr = setSelected(oData);
+				var renderData = JSON.parse(JSON.stringify(arr));
+				renderGoodsList(renderData,true);
+//			}
+		}
+		function eaDelGoods(e, self){
+			e.stopPropagation();
+			var li = jQuery(self).parents('.order-main-li');
+			var rowObj = JSON.parse(li.find(".data-row").eq(0).html());	
+			// 
+			mui.confirm('确认删除该商品？', '删除确认', ["确认","取消"], function(e) {
+				if (e.index == 0) {
+					delGoodsData(li, rowObj);
+					li.remove();
+				} else {
+					setTimeout(function() {
+						mui.swipeoutClose(li);
+					}, 0);
+				}
+			});
+		}
+		function delGoodsData(li, data){
+			var bno = data.bill_no;
+			var buser = data.bill_user;
+			var bcom = data.bill_com;
+			var fbno = data.fbill_no;
+			var aBnos = [bno];
+			var arr = JSON.parse(JSON.stringify(aSelected[bno]));
+			var num = Number(data.node_qty);
+			var amt = Number(data.node_amt);
+			var oArr = JSON.parse(JSON.stringify(oSelected[bno][1]))
+			for(var i = 0 ; i < arr.length; i++){
+				num += Number(oArr[i].node_qty);
+				amt += Number(oArr[i].node_amt);
+				aBnos.push(oArr[i].bill_no);
+			}
+			var nAllQty = Number(jQuery("#node_nqty").html());
+			var nAllAmt = Number(jQuery("#node_amt").html());
+			nAllAmt = nAllAmt - amt;
+			nAllQty = nAllQty - num;
+			delete aSelected[bno];
+			delete oSelected[bno];
+			delete oType[bno];
+			jQuery("#node_nqty").html(nAllQty);
+			jQuery("#node_amt").html(nAllAmt);
+			if(!isNew){
+				for(var j = 0; j < aBnos.length; j++){
+					var p = { 
+						name		: oPageIni[commonParams]['bill'],
+						bill_task	: "d_delete_noftask",	
+						bill_no		: aBnos[i],
+						fbill_no	: fbno,	
+						bill_com	: teamBillCom,	
+						bill_user	: userbillNo,	
+						bill_date	: VlDate.get(new Date(), "_ymdhms"),	// 当前时间
+					};
+					VlAjax.post({
+						"port":"sendTask",
+						"headers":"json",
+					},p,sCBDel);
+//					rqsfun("d_delete", aBnos[i]);
+				}
+			}
+		}
+		function sCBDel(data){
+			console.log(JSON.stringify(data))
+		}
+		function setSa210Data(data){
+			var arr = []
+			for(var k in data){
+				if(data.hasOwnProperty(k)){
+					var arr = data[k];
+					var _buyContent = arr[0]['内容'];
+//					var _buyContent = arr[0]['内容'].indexOf('{') > -1 ? JSON.parse(arr[0]['内容']) : _oContent;
+					var buyNo = _buyContent['政策标识'];
+					
+					for(var i= 0; i < arr[1].length; i ++){
+						var _giftContent = arr[1]['内容'].indexOf('{') > -1 ? JSON.parse(arr[1]['内容']) : _oContent;
+						var giftNo = _buyContent['政策标识'];
+						arr.push(giftNo);
+					}
+				}
+			}
+			return findInSa210Data(sa210Data, buyNo, arr);
+		}
+		
+		function findInSa210Data(data, bno, giftBnos){
+			// 怎么设计会更好?
+			var res = false;
+			var arr = JSON.parse(JSON.stringify(data))
+			var idx =  arr.indexOf(bno);
+			var idxL = arr.lastIndexOf(bno);
+			var _gStr = JSON.parse(JSON.stringify(giftBnos)).sort.toString();
+			if(idx === -1){
+				sa210Data.push(bno);
+				sa210Data.push(giftBnos);
+				return false;
+			}else{
+				if(idx === idxL){
+					var _str = JSON.parse(JSON.stringify(sa212Data[idx])).sort.toString();
+					return _str == _gStr ? true :false;
+				}else{
+					
+				}
+			}
+			
+		}
+		function isGoodsExist(data){
+			var buyNo = '';
+			var giftNo = [];
+			for(var k in oSelected){
+				if(oSelected.hasOwnProperty(k)){
+					buyNo
+				}
+			}
+		}
+		
+		function getMainData(){
+			var res = VlEdit.getValue(oNormal,oText),
+				addr = document.getElementById("linkvd_termaddr").innerHTML,
+				tel = document.getElementById("linkvd_termcontact").innerHTML;
+			res.node_namt = (res.node_namt === "" ? 0 : res.node_namt);
+			res.fbill_no = "ROOT";
+			res.bill_bflow = oPageIni[commonParams]['bflow'];
+//			console.log(oOldMain)
+			res.bill_wflow = oOldMain ? oOldMain.bill_wflow : oPageIni[commonParams]['wflow'];
+			res.bill_context = addr +","+ tel;
+			res.bill_task = "d_new";
+			return res;
+		}
+		function eaChangeInput(e, self){
+			var li = jQuery(self).parents('li'),
+			oDli = li.find('.order-detail-li');
+			changeLineNum(li,"正品");
+			changeAllNum(li);
+			changeOldNumAttr(li);
+			var _n = li.find('input').eq(0).val();
+			changeAllGiftNum(oDli, _n);
+		}
+		function changeLineNum(li, type) {
+			var num = li.find('input').eq(0).val(),
+				oDatarow = li.find(".data-row").eq(0),
+				data = JSON.parse(oDatarow.html());
+				num = num == Number(num) ? Number(num) : 0;
+			data.node_qty = num * 1;
+			data.node_amt = (num * data.node_price).toFixed(2);
+			oDatarow.html(JSON.stringify(data));
+			
+			li.find(".order-amt").eq(0).html(data.node_amt);
+			li.find(".order-qty").eq(0).val(data.node_qty);
+			li.find(".order-qty").eq(0).attr("value", data.node_qty);
+			
+			if(type==="正品"){
+				oSelected[data.bill_no][0] = data;
+			}else if(type==="赠品"){
+				var _aIdx = aSelected[data.bill_title].indexOf(data.bill_no);
+				oSelected[data.bill_title][1][_aIdx] = data;
+			}
+		}
+		function changeAllNum(li){
+			var oAllQty = mui("#node_nqty")[0],
+				oAllAmt = mui("#node_amt")[0],
+				nAllQty = Number(oAllQty.innerHTML), 
+				nAllAmt = Number(oAllAmt.innerHTML),
+				
+				nOldQty = li.find(".order-qty").eq(0).attr("data-oldqty") * 1,
+				nOldAmt = li.find(".order-amt").eq(0).attr("data-oldamt") * 1,
+				
+				nNewQty = li.find(".order-qty").eq(0).val() * 1,
+				nNewAmt = li.find(".order-amt").eq(0).html() * 1;
+				oAllQty.innerHTML = nAllQty + nNewQty - nOldQty;
+				oAllAmt.innerHTML = (nAllAmt + nNewAmt - nOldAmt).toFixed(2);
+		}
+		function changeOldNumAttr(li){
+			var _nQty = li.find(".order-qty").eq(0).val(),
+				_nAmt = li.find(".order-amt").eq(0).html();
+			li.find(".order-qty").eq(0).attr("data-oldqty", _nQty);
+			li.find(".order-amt").eq(0).attr("data-oldamt", _nAmt);
+		}
+		function changeAllGiftNum(arr, buyNum){
+			var len = arr.length,
+				item;
+			for(var i = 0; i < len; i++){
+				var _bno = arr.eq(i).attr("data-no")
+				changeGiftNum(_bno, buyNum);
+			}
+		}
+		function changeGiftNum(bNo, buyNum, isChecked){
+			var _li = jQuery(('.' + bNo)),
+				_idx = _li.index(),
+				_calc = _li.find(".detail-input").attr("data-calc");
+				var _get = Number(_calc.split('赠')[1]),
+				_buy = Number(_calc.split('赠')[0].slice(1)),
+				_newGiftQty = parseInt(parseInt(buyNum / _buy) * _get);
+				if(_newGiftQty === 0){
+					_li.addClass("hide");
+				}else{
+					_li.removeClass("hide");
+				}
+				_li.find(".order-qty").val(_newGiftQty);
+				changeLineNum(_li, "赠品");
+				changeAllNum( _li)
+				changeOldNumAttr(_li)
+		}
+		
+		function eaShowType(e,self){
+//			showPickerView(aAllFindType, self); 
+			showActionSheet(aAllFindType, self); 
+		}
+		function showActionSheet(data, self){
+			plus.nativeUI.actionSheet({
+				title: "切换销售类型",
+				cancel: "取消",
+				buttons: data
+			}, function(e) {
+				if(e.index != -1){
+					var txt = data[(e.index - 1)].title;
+					changeType(txt,self);
+				}
+			});
+		}
+		function showPickerView(data,self) {
+			var picker = VlTools.pickData({
+				data : data,
+				level : 1
+			})
+			picker.show(function(items) { 
+				var txt = items[0].text;
+				changeType(txt,self);
+			});
+		}
+		function changeType(txt,self){
+			var txt = txt,
+			li = jQuery(self).parents(".order-main-li"),
+			
+            oDatarow = li.find(".data-row").eq(0),
+            data = JSON.parse(oDatarow.html()),
+            
+            oSelectedType = li.find(".selected-type"),
+            sOldType = oSelectedType.html(),
+            
+            oliPrice = li.find(".order-price").eq(0),
+            oliAmt = li.find(".order-amt").eq(0),
+            
+            oAmt = jQuery("#node_amt"),
+            nAmt = Number(oAmt.html());
+            data.node_qty = data.node_qty == Number(data.node_qty) ? Number(data.node_qty) : 0;
+            if(txt === "销售" && sOldType == "选择类型" ){
+            }else if(txt === "销售" && sOldType != "选择类型" ){
+            	data.node_price = Number(oSelectedType.attr("data-iniprice")); 
+            	data.node_amt = Number(data.node_price * data.node_qty); 
+            	// 渲染+总金额
+            	nAmt = nAmt + data.node_amt;
+            }else {
+            	//TODO
+            	
+//          	console.log(data.node_qty)
+            	// 总金额
+            	nAmt = nAmt - data.node_price * data.node_qty;
+                data.node_price = 0;
+                data.node_amt = 0;
+            }
+            data.bill_bflow = txt;
+            oDatarow.html(JSON.stringify(data));
+            
+            oSelectedType.html(txt);
+            oliPrice.html(data.node_price);
+            oliAmt.html(Number(data.node_amt).toFixed(2));
+            
+            oAmt.html(nAmt.toFixed(2));
+
+        	oSelected[data.bill_no][0] = data;
+        	oType[data.bill_no]= txt;
+		}
+		function findType(bflow){
+			var user = JSON.parse(VlStore.pGet("user"));
+			var _p = {
+				bill_task : "VR_mapp101_query_01",
+				bill_com : user.bill_coppo,
+				bill_user : userbillNo,
+				bill_bflow : bflow,
+				bill_oppo : oPageIni[commonParams]['bill'],
+				currentPage: 1,
+				pageSize: 1,
+				paramText: ""
+			}
+			VlAjax.post({
+				port : "active",
+				headers : "json",
+			},_p,sCBfind)
+		}
+		function sCBfind(data) {
+			if(data.data.length !== 0){
+				aAllFindType = JSON.parse(data.data[0]['内容选项']);
+			}
+		}
+		
+		var aImg = [];
+		// TODO 			
+		function renderGoodsList(data) {
+			var txt = '';
+			var oNqty = document.getElementById('node_nqty'),
+				nNqty = Number(oNqty.innerHTML),
+				oAmt = document.getElementById('node_amt'),
+				nAmt = Number(oAmt.innerHTML);
+			for(var k in data){
+				if(data.hasOwnProperty(k)){
+					var _giftGoods = data[k][1],
+						len = _giftGoods.length;
+						var _buyGoods = renderAdapter(data[k][0], "正品", len),
+						i,item;
+					txt += salableTemp(JSON.parse(JSON.stringify(_buyGoods)));
+					//
+					nNqty += 1;
+					nAmt += _buyGoods.liLeftT;
+					//
+					mui(".mui-numbox").numbox()
+					VlAjax.dlIcon(_buyGoods.liImgName, _buyGoods.liImgId, VlTools.setImg);
+					for(i = 0; i < len; i++ ){
+						item = renderAdapter(JSON.parse(JSON.stringify(_giftGoods[i])), "赠品");
+						txt += giftTemp(item);
+						nNqty += item.liRightT;
+						VlAjax.dlIcon(item.liImgName, item.liImgId, VlTools.setImg);
+					}
+					txt += '</ul></div></li>';
+					
+					if(arguments[1] && arguments[1] === true){
+//						oNqty.innerHTML = nNqty;
+//						oAmt.innerHTML = nAmt.toFixed(2);
+					}
+				}
+			}
+			var contList = document.getElementById("contList");
+			contList.innerHTML += txt;
+		}
+		
+		
+		function renderAdapter(obj,type, num){
+			var liclass = "";
+			var liRightM = "";
+			var liclassDel = '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+			var canSelectType = oPageIni[commonParams]['canSelectSaleType'],
+				isSaleGoods = (type == "正品" ? true : false),
+				hasGiftGoods = (num !== 0 ? true : false),
+				isDnew = (obj.bill_task === "d_new" ? true : false),
+				oSet;
+			if(canSelectType && isSaleGoods && !hasGiftGoods){
+			    oSet =  oSelectTypeIni[isDnew];
+			}else{
+			    oSet = oSelectTypeIni["default"];
+			}
+			oSet.name = oSet.field === "" ? oSet.name : obj.bill_bflow;
+			return {
+				"liclassDel" : isDnew ? liclassDel : "",
+				"liclass" 	: isSaleGoods ? oSet : (obj.node_qty == 0 ? "hide" : ""),
+				"rowdata"	: JSON.stringify(obj),
+				"liImgId" 	: obj.bill_no,
+				"liImgName" : obj.bill_nspec,
+				"liTitle" 	: obj.bill_name,
+				"liDate"  	: "",
+				"liLeftT" 	: obj.node_price,
+				"liLeftM" 	: obj.node_amt,
+				"liLeftB" 	: obj.bill_context,
+				"liRightT" 	: obj.node_qty,
+				"liRightM" 	: oSet.name,
+				"liRightB" 	: "",
+			}
+		}
+		function setSelected(data){
+			var oRender = {};
+			for(var k in data){
+				if(data.hasOwnProperty(k)){
+					var _giftGoods = data[k][1],
+						len = _giftGoods.length,
+						_buyGoods = GoodsAdapter(len, data[k][0]),
+						i,item;
+//					console.log()
+					oType[_buyGoods.bill_no] = _buyGoods.bill_bflow;
+					aSelected[_buyGoods.bill_no] = [];
+					oSelected[_buyGoods.bill_no] = [_buyGoods,[]];
+					oRender[_buyGoods.bill_no] = [_buyGoods,[]];
+					for(i = 0; i < len; i++ ){
+						item = GoodsAdapter(0, JSON.parse(JSON.stringify(_giftGoods[i])), _buyGoods);
+						
+						aSelected[item.bill_title] = typeof aSelected[item.bill_title] === 'undefined' ? [] : aSelected[item.bill_title];
+						oSelected[item.bill_title] = typeof oSelected[item.bill_title] === 'undefined' ? ["",[]] : oSelected[item.bill_title];
+						oRender[item.bill_title] = typeof oSelected[item.bill_title] === 'undefined' ? ["",[]] : oRender[item.bill_title];
+						
+						aSelected[item.bill_title][0] = item.bill_no;
+						oSelected[item.bill_title][1][0] = item;
+						oRender[item.bill_title][1][0] = item;
+					}
+				}
+			}
+			return oRender;
+		}
+		function GoodsAdapter(giftslen, self, buyData){
+			var date = new Date();
+			var obj,leftM,leftB;
+			for(var k in self) {
+				self[k.slice(0, 2)] = self[k];
+			}
+//			console.log(JSON.stringify(self))
+			var liclass;
+			if(arguments[2]){ // 赠品
+				var _c = self['内容'].indexOf('{') > -1 ? JSON.parse(self['内容']) : _oContent;
+				var _b = buyData;
+				obj = {
+					bill_no		: VlTools.getBno(oPageIni[commonParams]['bill']),
+					bill_task	: "d_new",
+					bill_bid	: _b.bill_id,	// 正品对应的sa210政策码sa210.bill_id(即sa212.bill_nunit)// [20190531]物品物品编码
+					bill_id		: self['标题'],		// 赠品对应的sa210政策码sa210.bill_id(即sa212.bill_id)
+					bill_bno	: self['图片'], 		// 自己的销售vdsa210政策标识sa212.bill_oppo// [20190419]政策号vdsa210
+					bill_doppo	: _b.bill_bno, 	// 正品的销售vdsa210政策标识:bill_bno
+					bill_name	: _c['商品名称'],		// 产品名称
+					bill_spec	: '',				// 产品规格
+					bill_oppo	: '',				// 产品条形码
+					bill_unit	: "件",
+					bill_coppo	: _b.bill_coppo,	// 正品的生产厂商
+					bill_nunit	: self['参数'],		// 赠品本身政策的编码sa212.bill_bid
+					bill_nspec	: self['指令'],		// 赠品本身政策的编码sa212.bill_nspec
+//					bill_title  : _b.bill_no,
+					fbill_no	: document.getElementById("bill_no").innerHTML,
+					bill_bflow	: oPageIni[commonParams]["canSelectSaleType"] ? "促销配送" : self['内容']['物品类型'],
+					bill_context: ("买"+parseInt(self['金额'])+"赠"+parseInt(self['数量'])),
+					bill_text	: _b.bill_text,	// 正品的生产厂商中文名
+					node_qty	: (parseInt(self['金额']) == 1) ? parseInt(self['数量']) : 0,	// 
+					node_price	: 0,
+					node_amt	: 0,
+					bill_user	: userbillNo, 
+					bill_com	: document.getElementById("bill_com").innerHTML, 	// 正品的供应商
+					bill_date	: VlDate.get(date, "_ymdhms"),
+					bill_bdate	: _c['开始日期'],// 开始日期
+					bill_edate	: _c['截止日期'],// 截止日期
+					bill_nuser	: _c['政策标识'],// vdsa212.bill_no
+					bill_title  : _b.bill_no, // 正品的vdst315.bill_no 
+				}
+				liclass = (obj.node_qty == 0 ? "hide" : "")
+			}else {
+				var _content = self['内容'];
+//				var _content = self['内容'].indexOf('{') > -1 ? JSON.parse(self['内容']) : _oContent;
+				var billtext = [{"bill_coppoName":_content["生产厂商名称"],"bill_oppoName":_content["供应商名称"]}];// 生产厂商,供货商	
+				var bno = VlTools.getBno(oPageIni[commonParams]['bill']);
+//				console.log(oPageIni[commonParams]["canSelectSaleType"] ? (giftslen == 0 ? "" : "销售") : self['内容']['物品类型'])
+				obj = {
+					bill_no		: bno,
+					bill_task	: "d_new",
+					bill_bid	: self['参数'], 	// 物品政策码  // [20190531]物品物品编码
+					bill_id		: self['参数'],	// 物品政策码
+					bill_nspec	: self['金额'], 	// 物品编码
+					bill_bno	: _content['政策标识'], 	//销售政策标识// [20190419]政策号vdsa210
+					bill_doppo	: _content['政策标识'], 	//销售政策标识
+					bill_name	: self["标题"],	//产品名称
+					bill_spec	: _content['规格型号'],	//产品规格
+					bill_oppo	: _content['条码'],	// 产品条形码
+					bill_unit	: _content['单位'],	
+					bill_coppo	: _content['生产厂商代码'],	// 生产厂商
+					fbill_no	: document.getElementById("bill_no").innerHTML,
+					bill_bflow	: oPageIni[commonParams]["canSelectSaleType"] ? (giftslen == 0 ? "" : "销售") : self['内容']['物品类型'],
+					bill_text	: JSON.stringify(billtext),
+//					node_qty	: 1,
+					node_qty	: '""',
+					node_price	: Number(self["数量"]),
+					node_amt	: 0.00,
+					bill_user	: userbillNo, 
+					bill_com	: document.getElementById("bill_com").innerHTML, //供应商
+					bill_date	: VlDate.get(date, "_ymdhms"),
+					bill_bdate	: _content['开始日期'],// 开始日期
+					bill_edate	: _content['截止日期'],// 截止日期
+					bill_nuser	: "",//?
+					bill_title  : bno,
+				}
+			}
+			return obj
+		}
+		
+		
+		function st315findAdapter(giftslen, self,buyData){}
+		function salableTemp (item) {
+			var li = '';
+			li = `<li class="mui-table-view-cell order-main-li `+item.liImgId+`" data-no=`+item.liImgId+`>
+						`+item.liclassDel+`
+						<div class="mui-slider-cell  mui-slider-handle">
+						<div class="data-row hide">`+item.rowdata+`</div>
+						<div class="mui-row main-info">
+							<div class="mui-col-xs-2 mui-row" style="text-align: left;">
+								<img class="mui-col-xs-11" src="../../images/icon/chaxun.png" id=`+item.liImgId+` style="border-radius: 5px;" />
+							</div>
+							<div class="mui-col-xs-10">
+								<div class="mui-row">
+									<div class="mui-col-xs-12 mui-row order-info-leftbox" style="background:;">
+										<h5 class="goods-title mui-col-xs-8">`+item.liTitle+`</h5>
+										<p class="mui-col-xs-4 goods-type-box">
+											<span class="`+item.liclass.class+` saletype"><span class="selected-type"  data-iniprice=`+item.liLeftT+` data-oldprice=`+item.liLeftT+`>`+item.liRightM+`</span>`+item.liclass.selectIcon+`</span>
+										</p>
+									</div>
+									<div class="mui-col-xs-12 mui-row goods-table">
+										<div class="mui-col-xs-12 mui-row goods-table-title goods-table-bottomline" >
+											<div class="mui-col-xs-6 goods-table-rightline" >数量</div>
+											<div class="mui-col-xs-2 goods-table-rightline" >单价</div>
+											<div class="mui-col-xs-4" >金额</div>
+										</div>
+										<div class="mui-col-xs-12 mui-row goods-table-row" >
+											<div class="mui-col-xs-6 goods-table-rightline" >
+												<input id="test" class="mui-input-numbox order-qty main-input vl-center" type="number" data-oldqty=`+item.liRightT+` value=`+item.liRightT+`  />
+											</div>
+											<div class="mui-col-xs-2 goods-table-rightline order-price">`+item.liLeftT+`</div>
+											<div class="mui-col-xs-4 order-amt" data-oldamt=`+item.liLeftM+`>`+item.liLeftM+`</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<ul class="order-detail-ul mui-table-view mui-table-view-striped mui-table-view-condensed">
+					</li>`;
+            return li;
+		}
+		function giftTemp(item){
+//			var txt = `<li class=" order-detail-li mui-input-row mui-checkbox mui-left `+item.liImgId+`" data-no=`+item.liImgId+`>
+//								<p class="mui-col-xs-4 vl-center">促销配送</p>
+			var txt = `<li class="`+ item.liclass+` order-detail-li mui-input-row mui-checkbox mui-left `+item.liImgId+`" data-no=`+item.liImgId+`>
+				<div class="data-row hide">`+item.rowdata+`</div>
+				<div class="mui-row">
+					<div class="mui-col-xs-2">
+						<img class="vdfa332 mui-col-xs-11" src="../../images/icon/chaxun.png" id=`+item.liImgId+` />
+					</div>
+					<div class="mui-col-xs-10">
+						<div class="mui-row">
+							<div class="mui-col-xs-12 mui-row order-info-leftbox">
+								<h5 class="goods-title mui-col-xs-8">`+item.liTitle+`</h5>
+								<p class="mui-col-xs-4 goods-type-box">
+									<span class="order-type saletype">促销配送</span>
+								</p>
+							</div>
+							<div class="mui-col-xs-12 mui-row goods-table">
+								<div class="mui-col-xs-12 mui-row goods-table-title goods-table-bottomline" >
+									<div class="mui-col-xs-6 goods-table-rightline" >数量</div>
+									<div class="mui-col-xs-2 goods-table-rightline" >单价</div>
+									<div class="mui-col-xs-4" >金额</div>
+								</div>
+								<div class="mui-col-xs-12 mui-row goods-table-row" >
+									<div class="mui-col-xs-6 goods-table-rightline" >
+										<input id="test" class="mui-input-numbox order-qty detail-input" data-calc=`+item.liLeftB+` readonly="readonly" type="number" data-oldqty=`+item.liRightT+` value=`+item.liRightT+` />
+									</div>
+									<div class="mui-col-xs-2 goods-table-rightline order-price">0</div>
+									<div class="mui-col-xs-4 order-amt" data-oldamt=`+item.liLeftM+`>0</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>`;
+			return txt;
+		}
+		function eBtnSave(){
+			var canContinue = checkRequire();
+//			console.log(canContinue);
+			if(canContinue){
+				oMain = getMainData();
+				oMain = isNew ? oMain : VlEdit.compareData(oOldMain, oMain);
+				oMain.bill_task = isNew ? "d_new" : "d_save_nouser";
+//				console.log("主表"+JSON.stringify(oMain))
+				VlAjax.post({
+					"port":"sendTask",
+					"headers":"json",
+					"async" : false
+				},oMain,sCBSaveMain);
+			}
+			
+		}
+		function checkRequire(){
+			// 检查是否有物品
+			var canSave = checkGoodsList();
+			if(!canSave){
+				mui.toast("请先新增物品~");
+				plus.nativeUI.closeWaiting();
+				return false;
+			}
+			// 检查数量是否全部录入
+			var isAllQtyFill = checkQtyFill();
+			if(!isAllQtyFill){
+				mui.toast("请录入物品数量~");
+				return false;
+			}
+			// 检查销售物品类型
+			var isAllTypeFill = checkTypeFill(oType);
+			if(!isAllTypeFill){
+				mui.alert("请先选择所有正品的销售类型！");
+				return false;
+			}
+			return true;
+		}
+		function checkGoodsList(){
+			var len = jQuery(".order-main-li").length;
+			return len !== 0 ? true : false;
+		}
+		function checkTypeFill(data){
+			for(var k in data){
+				if(data.hasOwnProperty(k)){
+					if(data[k] == ""){
+						return false
+					}
+				}
+			}
+			return true;
+		}
+		function checkQtyFill(){
+			var oInput = mui('.main-input'),
+				len = oInput.length,
+				i, item, 
+				res = true;
+			for(i = 0; i < len; i++){
+				item = oInput[i];
+				var _val = item.value
+				if( _val == "" || _val === 0){
+					res = false
+					return;
+				}
+			}
+			return res;
+		}
+		function sCBSaveMain(){
+			aDetail = getDetailData(oSelected);
+			var i,item,len = aDetail.length;
+			for(i = 0; i < len; i ++){
+				item = aDetail[i];
+				if(!VlUtils.isnull(item)){
+					var idx = aOldDetailBno.indexOf(item.bill_no);
+					item = item.bill_task === "d_new" ? item : VlEdit.compareData(aOldDetail[idx], item);
+//					item.bill_task = isNew ? "d_new" : "d_save_nouser";
+					item.node_qty = (item.node_qty === "" || item.node_qty === '\"\"' ? 0 : item.node_qty);
+//					console.log("明细"+JSON.stringify(item))
+					VlAjax.post({
+						"port":"sendTask",
+						"headers":"json",
+					},item,sCBSaveDetail);
+				}
+			}
+		}
+		function getDetailData(data){
+			// aSelected = {}, // [{"正no1":["赠no1","赠no2"]},{"正no1":["赠no1","赠no2"]}]
+			// oSelected = {}, // [{"正no1":["正obj1",["赠obj1","赠obj2"]]}]
+			var arr = [];
+			for(var k in data){
+				if(data.hasOwnProperty(k)){
+					var _buyGoods = data[k][0],
+						_giftGoods = data[k][1],
+						len = _giftGoods.length,
+						i;
+					
+					_buyGoods = checkNode(_buyGoods)
+					arr.push(JSON.parse(JSON.stringify(_buyGoods)));
+					for(i = 0; i < len; i++ ){
+						if(_giftGoods[i].node_qty  && _giftGoods[i].node_qty != 0){
+							_giftGoods[i] = checkNode(_giftGoods[i]);
+							arr.push(JSON.parse(JSON.stringify(_giftGoods[i])));
+						}
+					}
+				}
+			}
+			return arr;
+		}
+		function rqsfun(task, sCB){
+			var p = { 
+				name		: "msvr",
+				bill_task	: task,				// 结账指令   	
+				bill_no		: oMain.bill_no,	// 要结哪个仓库的账
+				bill_com	: oMain.bill_com,	// 操作人单位
+				bill_user	: oMain.bill_user,	// 操作人代码
+				bill_date	: VlDate.get(new Date(), "_ymdhms"),	// 当前时间
+			};
+//			console.log("送货"+JSON.stringify(p))
+			VlAjax.post({
+				"port":"sendTask",
+				"headers":"json",
+			},p,sCB);
+		}
+		function eBtnCancel(){
+			rqsfun("VE_vdst315_update_02", sCBsureDlv);
+		}
+		
+		function sCBSaveDetail(data) {
+			nDetailCB ++;
+			if(nDetailCB === aDetail.length){
+				rqsfun(oPageIni[commonParams]['saveTask'], sCBsureDlv);
+			}
+		}
+		function sCBsureDlv(data){
+			VlPage.backToPage("vdst315hn01_plist.html","vdst315hn01_list.html");
+		}
+		function sCBfindMDdata(data){
+			oMain = data.data[0].values.main;
+			oOldMain = JSON.parse(JSON.stringify(oMain));
+			oMain.bill_task = "d_save_nouser";
+			VlEdit.setValue(oMain, oNormal, oText);
+			document.getElementById("linkvd_termaddr").innerHTML = oMain.bill_context.split(",")[0];
+			document.getElementById("linkvd_termcontact").innerHTML = oMain.bill_context.split(",")[1];
+			// 处理明细-正品赠品
+			aDetail = data.data[0].values.detail;
+			for(var i = 0; i < aDetail.length; i++){
+				aDetail[i].bill_task = "d_save_nouser";
+				aOldDetailBno.push(aDetail[i].bill_no);
+				selectedOrCancel(aDetail[i])
+			}
+			aOldDetail = JSON.parse(JSON.stringify(aDetail));
+			renderGoodsList(oSelected, false);
+		}
+		function selectedOrCancel(item){
+			if(item.bill_no === item.bill_title) {
+				aSelected[item.bill_no] = [];
+				oSelected[item.bill_no] = [item,[]];
+			}else {
+				aSelected[item.bill_title] = typeof aSelected[item.bill_title] === 'undefined' ? [] : aSelected[item.bill_title];
+				oSelected[item.bill_title] = typeof oSelected[item.bill_title] === 'undefined' ? ["",[]] : oSelected[item.bill_title];
+				
+				aSelected[item.bill_title][0] = item.bill_no;
+				oSelected[item.bill_title][1][0] = item;
+			}
+		}
+		function checkNode(data){
+			var aNode = ["node_amt", "node_namt", "node_qty", "node_nqty", "node_price", "node_nprice", "node_rate", "node_nrate"];
+			for(var n = 0; n < aNode.length; n ++){
+				var _node = aNode[n];
+				data[_node] = data[_node] == Number(data[_node]) ? Number(data[_node]) : 0;
+			}
+			return data;
+		}
+	</script>
+
+</html>

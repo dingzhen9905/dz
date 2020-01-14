@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.zoom.previewimage.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/vlcss/vltable.css" />
+		<style>
+			.mui-row {padding: 8px;}
+			.mui-input-group:before{height: 0;}
+			/* .oprbtn{padding:3px 5px;margin-top:10px;} */
+			.oprbtnbox{padding:5px 18px 5px 18px;margin-bottom:10px;background: #fff;}
+			.res{font-size: 14px; color:#2187E7;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height: 70px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header"></h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="J_btn_edit" style="display: none;"></a>	
+			<a class="mui-icon mui-icon-paperclip mui-pull-right vlel-hide" id="J_btn_back"></a>	
+		</header>
+		<div class="mui-content mainBody nodeBody" style="padding-top: 70px !important;">
+			<div class="mui-input-group" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;display: none;">
+				<div class="mui-row" style="display:;">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">标识:</span>
+					<span class="mui-col-xs-9" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">fbill_no:</span>
+					<span class="mui-col-xs-9" id="fbill_no">ROOT</span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">bill_task:</span>
+					<span class="mui-col-xs-9" id="bill_task"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单人:</span>
+					<span class="mui-col-xs-9" id="bill_user"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单单位:</span>
+					<span class="mui-col-xs-9" id="bill_com"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">制单时间:</span>
+					<span class="mui-col-xs-9" id="bill_date"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" id="find" style="padding:5px 18px 5px 18px;margin-top:5px;position: relative;">
+				<div class="mui-row" >
+					<span class="mui-col-xs-3" style="color:#ACACB4;">终端名称:</span>
+					<span class="mui-col-xs-9" id="bill_name" style="font-size:14px;"></span>
+					<span class="mui-col-xs-9" id="bill_oppo" style="font-size:14px;display: none;"></span>
+					<br/>
+				</div>
+			</div>
+			<div class="mui-input-group" id="aboutFlow" style="padding:5px 18px 5px 25px;margin:0;position: relative;">
+				<div class="mui-row" style="margin: 0;padding:0;background:;min-height:20px;overflow:hidden">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">拜访地址:</span>
+					<span class="mui-col-xs-9" id="bill_title" style="font-size:;"></span>
+				</div>
+				<div class="mui-row" style="margin: 0;padding:0;background:;height: 20px;">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">经纬度:</span>
+					<span class="mui-col-xs-9" style="">
+						<span id="bill_ipaddr"></span> , <span id="bill_gpsaddr"></span>
+					</span>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">拜访人：</span>
+					<span class="mui-col-xs-8" id="bill_unit"></span>
+				</div>
+			</div>
+			<div class="mui-input-group" id="find" style="padding:5px 18px 5px 18px;margin:5px 0;position: relative;">
+				<div class="mui-row" >
+					<span class="mui-col-xs-3" style="color:#ACACB4;">抵达时间:</span>
+					<span class="mui-col-xs-9" id="bill_bdate"></span>
+					<br/>
+					<span class="mui-col-xs-3" style="color:#ACACB4;">离店时间:</span>
+					<span class="mui-col-xs-9" id="bill_edate"></span>
+				</div>
+			</div>
+			
+			<div class="mui-input-group groupInfo">
+				<div style="color: #20B2AA;border-bottom:1px dashed #efeff4;">新鲜度及库存</div>
+				<div class="mui-row" style="background:#F0F0F0">
+					 <div  class="mui-col-xs-4">品牌</div>
+					 <div  class="mui-col-xs-6">生产日期</div>
+					 <div  class="mui-col-xs-2" style="margin-left: -40px;">库存数</div>
+				</div>
+				<div class="mui-row" style="border-bottom: 1px dashed #CCCCCC;padding:0;margin:0;">
+					<div class="mui-col-xs-2" style="text-align: center;line-height: 80px;">
+						本品
+					</div>
+					<div class="mui-col-xs-10">
+						<div class="mui-input-row" style="">
+							<div class="mui-row" style="margin:0;padding:0;">
+								<div class="mui-col-xs-7">
+									<label>听装</label>
+									<span type="date" id="date_own_tin" style="font-size: 13px;line-height:40px;"></span>
+								</div>
+								<div class="mui-col-xs-1" style="color:gray;line-height:40px;">|</div>
+								<div class="mui-col-xs-2">
+									<span type="number" id="node_qty" style="line-height:40px;"></span>
+								</div>
+								<div class="mui-col-xs-1" style="color:gray;line-height:40px;">（件）</div>
+							</div>
+						</div>
+						<div class="mui-input-row lastInput" style="">
+							<div class="mui-row" style="margin:0;padding:0;">
+								<div class="mui-col-xs-7">
+									<label>瓶装</label>
+									<span type="date" id="date_own_bot" style="font-size: 13px;line-height:40px;"></span>
+								</div>
+								<div class="mui-col-xs-1" style="color:gray;line-height:40px;">|</div>
+								<div class="mui-col-xs-2">
+									<span type="number" id="node_price" style="line-height:40px;"></span>
+								</div>
+								<div class="mui-col-xs-1" style="color:gray;line-height:40px;">（件）</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mui-row" style="padding:0;margin:0;">
+					<div class="mui-col-xs-2" style="text-align: center;line-height: 80px;">
+						竞品
+					</div>
+					<div class="mui-col-xs-10">
+						<div class="mui-input-row " style="">
+							<div class="mui-row" style="margin:0;padding:0;">
+								<div class="mui-col-xs-7">
+									<label>听装</label>
+									<span id="date_out_tin"  style="font-size: 13px;line-height:40px;"></span>
+								</div>
+								<div class="mui-col-xs-1" style="color:gray;line-height:40px;">|</div>
+								<div class="mui-col-xs-2">
+									<span type="number" id="node_nqty" style="line-height:40px;"></span>
+								</div>
+								<div class="mui-col-xs-1" style="color:gray;line-height:40px;">（件）</div>
+							</div>
+						</div>
+						<div class="mui-input-row lastInput" style="">
+							<div class="mui-row" style="margin:0;padding:0;">
+								<div class="mui-col-xs-7">
+									<label>瓶装</label>
+									<span type="date" id="date_out_bot"  style="font-size: 13px;line-height:40px;"></span>
+								</div>
+								<div class="mui-col-xs-1" style="color:gray;line-height:40px;">|</div>
+								<div class="mui-col-xs-2">
+									<span type="number" id="node_nprice" class="mui-input-clear " style="line-height:40px;"></span>
+								</div>
+								<div class="mui-col-xs-1" style="color:gray;line-height:40px;">（件）</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div style="color: #20B2AA;border-bottom:1px dashed #efeff4;">价格检查</div>
+				<div class="table-box">
+					<div class="table-title mui-row table-bottomline">
+						<div class="mui-col-xs-2 vl-center  table-rightline">品牌</div>
+						<div class="mui-row mui-col-xs-10">
+							<div class="mui-col-xs-2 table-rightline vl-center">类型</div>
+							<div class="mui-col-xs-4 table-rightline vl-center">品种</div>
+							<div class="mui-col-xs-3 table-rightline vl-center table-ignore">进店价（元/件）</div>
+							<div class="mui-col-xs-3 vl-center table-ignore">零售价（元/件）</div>
+						</div>
+					</div>
+					<div class="table-body">
+						<div class="table-row mui-row table-bottomline">
+							<div class="mui-col-xs-2 table-rowspan vl-center table-rightline">燕京</div>
+							<div class="mui-col-xs-10">
+								<div class="table-inlinerow mui-row table-bottomline">
+									<div class="mui-col-xs-2 table-rightline vl-center">听装</div>
+									<div class="mui-col-xs-4 table-grid table-rightline vl-center" id="col_yjtin_variety"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_yjtin_buyprice"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_yjtin_retailprice"></div>
+								</div>
+								<div class="table-inlinerow mui-row ">
+									<div class="mui-col-xs-2 table-rightline vl-center">瓶装</div>
+									<div class="mui-col-xs-4 table-grid table-rightline vl-center" id="col_yjbot_variety"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_yjbot_buyprice"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_yjbot_retailprice"></div>
+								</div>
+							</div>
+						</div>
+						<div class="table-row mui-row table-bottomline">
+							<div class="mui-col-xs-2 table-rowspan vl-center table-rightline">雪花</div>
+							<div class="mui-col-xs-10">
+								<div class="table-inlinerow mui-row table-bottomline">
+									<div class="mui-col-xs-2 table-rightline vl-center">听装</div>
+									<div class="mui-col-xs-4 table-grid table-rightline vl-center" id="col_xhtin_variety"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_xhtin_buyprice"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_xhtin_retailprice"></div>
+								</div>
+								<div class="table-inlinerow mui-row ">
+									<div class="mui-col-xs-2 table-rightline vl-center">瓶装</div>
+									<div class="mui-col-xs-4 table-grid table-rightline vl-center" id="col_xhbot_variety"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_xhbot_buyprice"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_xhbot_retailprice"></div>
+								</div>
+							</div>
+						</div>
+						<div class="table-row mui-row table-bottomline">
+							<div class="mui-col-xs-2 table-rowspan vl-center table-rightline">青岛</div>
+							<div class="mui-col-xs-10">
+								<div class="table-inlinerow mui-row table-bottomline">
+									<div class="mui-col-xs-2 table-rightline vl-center">听装</div>
+									<div class="mui-col-xs-4 table-grid table-rightline vl-center" id="col_qdtin_variety"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_qdtin_buyprice"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_qdtin_retailprice"></div>
+								</div>
+								<div class="table-inlinerow mui-row ">
+									<div class="mui-col-xs-2 table-rightline vl-center">瓶装</div>
+									<div class="mui-col-xs-4 table-grid table-rightline vl-center" id="col_qdbot_variety"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_qdbot_buyprice"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_qdbot_retailprice"></div>
+								</div>
+							</div>
+						</div>
+						<div class="table-row mui-row table-bottomline">
+							<div class="mui-col-xs-2 table-rowspan vl-center table-rightline">百威</div>
+							<div class="mui-col-xs-10">
+								<div class="table-inlinerow mui-row table-bottomline">
+									<div class="mui-col-xs-2 table-rightline vl-center">听装</div>
+									<div class="mui-col-xs-4 table-grid table-rightline vl-center" id="col_bwtin_variety"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_bwtin_buyprice"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_bwtin_retailprice"></div>
+								</div>
+								<div class="table-inlinerow mui-row ">
+									<div class="mui-col-xs-2 table-rightline vl-center">瓶装</div>
+									<div class="mui-col-xs-4 table-grid table-rightline vl-center" id="col_bwbot_variety"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_bwbot_buyprice"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_bwbot_retailprice"></div>
+								</div>
+							</div>
+						</div>
+						<div class="table-row mui-row">
+							<div class="mui-col-xs-2 table-rowspan vl-center table-rightline">其他</div>
+							<div class="mui-col-xs-10">
+								<div class="table-inlinerow mui-row table-bottomline">
+									<div class="mui-col-xs-2 table-rightline vl-center">听装</div>
+									<div class="mui-col-xs-4 table-grid table-rightline vl-center" id="col_qttin_variety"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_qttin_buyprice"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_qttin_retailprice"></div>
+								</div>
+								<div class="table-inlinerow mui-row ">
+									<div class="mui-col-xs-2 table-rightline vl-center">瓶装</div>
+									<div class="mui-col-xs-4 table-grid table-rightline vl-center" id="col_qtbot_variety"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_qtbot_buyprice"> </div>
+									<div class="mui-col-xs-3 table-grid table-rightline vl-center" id="col_qtbot_retailprice"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				 </div>	 
+			</div>
+			 <div class="mui-input-group" style="color: #20B2AA;">
+			 	<span class="mui-col-xs-10" style="margin-left: 15px;">终端信息</span>
+			 </div>
+			 <div class="mui-input-group groupInfo" style="padding:10px 15px;">
+			  <div class="mui-row" style="border-bottom:1px solid #efeff4;height: 28px;line-height: 20px;">
+			  	<div class="mui-col-xs-6  mui-row lastItem" data-id="col_terminal_type">
+			  		<span class="mui-col-xs-6 vl-gray" style="line-height: 0px;padding: 0;">终端类别：</span>
+			  		<span class="mui-col-xs-6" id="col_terminal_type" style="line-height: 0px;"></span>
+			  	</div>
+			  	<div class="mui-col-xs-6 mui-row lastItem" data-id="col_monopoly">
+			  		<span class="mui-col-xs-6 vl-gray" style="line-height: 0px;padding: 0;">专销类型：</span>
+			  		<span class="mui-col-xs-6" id="col_monopoly" style="line-height: 0px;"></span>
+			  	</div>
+			  	
+			  </div>
+			  <div class="mui-row" style="height: 30px;line-height: 30px;">
+			  	<div class="mui-col-xs-6  mui-row lastItem" data-id="col_business">
+			  		<span class="mui-col-xs-6 vl-gray" style="line-height: 0px;padding: 0;">经营状况：</span>
+			  		<span class="mui-col-xs-6" id="col_business" style="line-height: 0px;"></span>
+			  	</div>
+			  	<div class="mui-col-xs-6  mui-row lastItem" data-id="col_cooperation">
+			  		<span class="mui-col-xs-6 vl-gray" style="line-height: 0px;padding: 0;">合作状态：</span>
+			  		<span class="mui-col-xs-6" id="col_cooperation" style="line-height: 0px;"></span>
+			  	</div>
+			  </div>
+			</div>  
+			
+			 <div class="mui-input-group" style="color: #20B2AA;">
+			 	<span class="mui-col-xs-10" style="margin-left: 15px;">包装物管理</span>
+			 </div>
+			 <div class="mui-input-group groupInfo">
+				 <div class="mui-row" style="background:#F0F0F0;margin-bottom: 10px;">
+					 <div  class="mui-col-xs-3">包装物</div>
+					 <div  class="mui-col-xs-7">是否及时回收</div>
+					 <div  class="mui-col-xs-2" style="margin-left: -5px;">数量</div>
+				 </div>	
+			  	<div class="mui-col-xs-12  mui-row lastItem " data-id="col_bottle_qty" style="border-bottom:1px solid #efeff4;height:25px;">
+			  		<span class="mui-col-xs-4 vl-gray" style="line-height: 0px;padding: 0;">瓶子：</span>
+			  		<span class="mui-col-xs-6" id="col_bottle_bflag" style="line-height: 0px;"></span>
+					<span class="mui-col-xs-2" id="col_bottle_qty" style="line-height: 0px;"></span>
+			  	</div>
+			  	<div class="mui-col-xs-12 mui-row lastItem" data-id="col_lid_qty" style="border-bottom:1px solid #efeff4;height:30px;">
+			  		<span class="mui-col-xs-4 vl-gray" style="line-height: 10px;padding: 0;">盖子：</span>
+			  		<span class="mui-col-xs-6" id="col_lid_bflag" style="line-height: 10px;"></span>
+					<span class="mui-col-xs-2" id="col_lid_qty" style="line-height: 10px;"></span>
+			  	</div>		  			 
+			  	<div class="mui-col-xs-12  mui-row lastItem" data-id="col_box_qty" style="border-bottom:1px solid #efeff4;height: 30px;">
+			  		<span class="mui-col-xs-4 vl-gray" style="line-height: 10px;padding: 0;">箱子：</span>
+			  		<span class="mui-col-xs-6" id="col_box_bflag" style="line-height: 10px;"></span>
+					<span class="mui-col-xs-2" id="col_box_qty" style="line-height: 10px;"></span>
+			  	</div>
+			
+			</div>  
+			
+			
+			<div class="mui-input-group groupInfo">
+				<div class="mui-row lastItem" data-id="bill_remark">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">拜访总结：</span>
+					<span class="mui-col-xs-9" id="bill_remark"></span>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo">
+				<div style="color: #20B2AA;border-bottom:1px dashed #efeff4;">生动化检查</div>
+				<div class="mui-row" style="">
+					<div id="J_pics_box"></div>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="">
+					<span id="yijian" class="mui-col-xs-3" style="color:#ACACB4;">审核意见：</span>
+					<input type="text" class="mui-col-xs-8" id="bill_attachment" placeholder="请录入审核意见"/>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="">
+					<span class="mui-col-xs-3" style="color:#ACACB4;">审核结果：</span>
+					<span class="mui-col-xs-8" id="bill_nunit"></span>
+				</div>
+			</div>		
+			<div class="mui-row vlel-hide oprbtnbox" id="bSendBox">
+				<div class="mui-col-xs-1"></div>
+				<button class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-10 oprbtn" id="J_btn_send"> 确认 </button>
+				<div class="mui-col-xs-1"></div>
+			</div>
+			<div class="mui-row vlel-hide oprbtnbox" id="qualifyBox">
+				<div class="mui-col-xs-1"></div>
+				<button class="mui-btn mui-btn-danger mui-btn-outlined mui-col-xs-4 oprbtn qualifybtn" id="J_btn_disqualify" data-txt="不合格"> 不合格 </button>
+				<div class="mui-col-xs-2"></div>
+				<button class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-4 oprbtn qualifybtn" id="J_btn_qualify" data-txt="合格"> 合格 </button>
+				<div class="mui-col-xs-1"></div>
+			</div>
+		</div>
+		
+		<script id="J_pics_tmpl" type="text/template">
+			<ul id="picsBox" class="mui-row mui-table-view mui-table-view-striped mui-table-view-condensed" style="background: #fff;">
+				<% for(var i in data){ var item=data[i]; %>
+					<li class="mui-table-view-cell mui-col-xs-4" style="padding:10px;background: #fff;">
+						<p width="100px" style="text-align: center;"><%=item.liTitle%> <span class="res"><%=item.liLeftT%></span></p>
+						<div class="vl-center">
+							<img id="ii"
+							src="<%=item.liImgSrc%>" 
+							onerror="this.src='../../images/icon/default.png'" 
+							data-preview-src="" 
+							data-preview-group="1"
+							style="width:95%;border-radius: 5px;height: 90px;object-fit:cover" />
+						</div>
+						<% if (false) { %>
+							<div class="mui-row vl-center" data-bno="<%=item.liLeftM%>">
+								<!--<div class="mui-col-xs-1"></div>-->
+								<button class="mui-col-xs-5 mui-btn mui-btn-blue mui-btn-outlined is-img-qualified" style="padding:2px;font-size: 12px;">不合格</button>
+								<div class="mui-col-xs-2"></div>
+								<button class="mui-col-xs-5 mui-btn mui-btn-blue mui-btn-outlined is-img-qualified" style="padding:2px;font-size: 12px;">合格</button>
+							</div>
+						<% } %>
+					</li>
+				<% } %>
+			</ul>
+		</script>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/arttmpl.js"></script>
+	<script src="../../js/mui.zoom.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.previewimage.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({});
+		mui.previewImage();//图片预览
+		var $$ = jQuery.noConflict();
+		var detailInfo = {},
+			queryparmas,
+			hadChange = false,
+			aImgBno = [],
+			aImgQulified = [];
+		var teamBillCom,teamBillComName,userbillNo,userName,loginCom,loginComName,fromPage,commonParams,bno,activeQtask,otherParams,status,pageType;
+		var oInit = {
+			"vdsa40205" : {"title":"市场检查","role":"管理员","needText" : true,"backbtn":"none","needCheckImgs":false},
+			"vdsa40206" : {"title":"市场检查","role":"经理/部长","needText" : true,"backbtn":"none","needCheckImgs":false},
+		}
+		var normalData = {
+			h: {
+				bill_no: "", // 唯一标识	
+				fbill_no: "", // 唯一标识	
+				bill_name: "", // 终端名称
+				bill_oppo: "", // 终端101代码
+				bill_coppo: "", // 终端312代码
+				bill_title: "", // 定位地址
+				bill_ipaddr: "", // 定位经度
+				bill_gpsaddr: "", // 定位纬度
+				bill_bflow: "", // 业务员拜访
+				bill_com: "", // 制单单位（燕京代码）			
+				bill_user: "", // 制单人
+				bill_unit: "", // 制单人姓名
+				bill_task: "", // 
+				bill_date: "", // 制单时间
+				bill_bdate: "", // 抵达时间
+				node_qty: 0, // 本品听装
+				node_price: 0, // 本品瓶装
+				node_nqty: 0, // 竞品听装
+				node_nprice: 0, // 竞品瓶装
+				bill_remark: 0, // 备注
+				bill_edate: "", // 离店时间
+			},
+			v: {},
+			c: {}
+		}
+		var testa = {
+			h: {
+				"col_yjtin_variety":"",
+				"col_yjtin_buyprice":"",
+				"col_yjtin_retailprice":"",
+				"col_yjbot_variety":"",
+				"col_yjbot_buyprice":"",
+				"col_yjbot_retailprice":"",
+				
+				"col_xhtin_variety":"",
+				"col_xhtin_buyprice":"",
+				"col_xhtin_retailprice":"",
+				"col_xhbot_variety":"",
+				"col_xhbot_buyprice":"",
+				"col_xhbot_retailprice":"",
+				
+				"col_qdtin_variety":"",
+				"col_qdtin_buyprice":"",
+				"col_qdtin_retailprice":"",
+				"col_qdbot_variety":"",
+				"col_qdbot_buyprice":"",
+				"col_qdbot_retailprice":"",
+				
+				"col_bwtin_variety":"",
+				"col_bwtin_buyprice":"",
+				"col_bwtin_retailprice":"",
+				"col_bwbot_variety":"",
+				"col_bwbot_buyprice":"",
+				"col_bwbot_retailprice":"",
+				
+				"col_qttin_variety":"",
+				"col_qttin_buyprice":"",
+				"col_qttin_retailprice":"",
+				"col_qtbot_variety":"",
+				"col_qtbot_buyprice":"",
+				"col_qtbot_retailprice":"",
+				"date_own_tin":"",//本品听装日期
+				"date_own_bot":"",//本品瓶装日期
+				"date_out_tin":"",//竞品听装日期
+				"date_out_bot":"",//竞品瓶装日期
+				"col_bottle_qty" :"", //瓶子数量
+				"col_lid_qty" :"",    //盖子数量
+				"col_box_qty" :"",    //箱子数量
+				col_terminal_type : "",
+				col_monopoly :"",
+				col_business :"",
+				col_cooperation :"",
+				col_bottle_bflag :"", //瓶子是否回收
+				col_lid_bflag :"",    //盖子是否回收
+				col_box_bflag :"",    //箱子是否回收
+			},
+			v: {},
+			c: {}
+		}
+		
+		mui.plusReady(function() {
+			var oldBack = mui.back;
+			mui.back = function() {
+				if(hadChange){
+					reloadPage('vdsa402hn_plist.html', 'vdsa402hn_list.html')
+				}else{
+					oldBack();
+				}
+			}
+			// 获取上个页面传过来的参数
+			var self = plus.webview.currentWebview();
+				teamBillCom = self.teamBillCom;
+				teamBillComName = self.teamBillComName;
+				userbillNo = self.userbillNo;
+				userName = self.userName;
+				loginCom = self.loginCom;
+				loginComName = self.loginComName;
+				fromPage = self.fromPage;
+				commonParams = self.commonParams;
+				otherParams 	= self.otherParams;
+				activeQtask 	= self.activeQtask;	
+				bdate = self.bill_bdate;
+				edate = self.bill_edate;
+				pageType = otherParams.indexOf('{') !== -1 ? (JSON.parse(otherParams))['node-type'] : "";
+				// console.log("----> "+activeQtask+" ---->  "+pageType)
+				
+			
+			if(self.detailInfo) {
+				detailInfo = self.detailInfo;
+			}
+			if(self.rqsData) {
+				detailInfo = self.rqsData;
+				detailInfo.bill_task = "S";
+				detailInfo.bill_text = JSON.parse(detailInfo.bill_text);
+			}
+			
+			bno = detailInfo["参数"];
+			initBtn(pageType, activeQtask);
+			var date = new Date();
+			var commit = document.getElementById("commit");
+			var bill_date = VlDate.get(date, "_ymdhms");
+			var rqsData = null; //提交的数据
+			var inputData = null; // 表单里的数据
+			
+			// 获取当前用户详情信息
+			queryparmas = {
+				name: 'vdsa402',
+				bill_com: loginCom,
+				bill_task:"L,S,Y",
+				currentPage: 1,
+				pageSize: 1,
+				paramText: "",
+				bill_no: bno
+			}
+			VlAjax.post({
+				"port" : "find",
+				"headers" : "json",
+			}, queryparmas, sCBfind)
+			// 点击编辑
+			document.getElementById("J_btn_back").addEventListener("tap", eBtnBack, false);
+			document.getElementById("J_btn_send").addEventListener("tap", eBtnSend, false);
+			document.getElementById("J_btn_edit").addEventListener("tap", eBtnEdit, false);
+			mui('#qualifyBox').on('tap', '.qualifybtn', function(e){ eaQualifyBtn(e, this); });
+			mui('#J_pics_box').on('tap', '.is-img-qualified', function(e){ eaIsImgQulified(e, this); });
+			// 编辑结束
+			function sCBfind(data,type){
+//				console.log(JSON.stringify(data.data[0]))
+				if(data.data.length != 0) {
+					if(data.data[0].bill_text == ""){
+						data.data[0].bill_text = [testa.h];
+					}
+					detailInfo = data.data[0];
+				    VlEdit.setValue(data.data[0], normalData, testa)
+					
+					document.getElementById("header").innerHTML = data.data[0].bill_name;
+					if(data.data[0].bill_qtask=="已审核"){
+						var attachment=$$("#yijian").next()
+						attachment.replaceWith("<span class='mui-col-xs-8' id='bill_attachment'></span>")
+						document.getElementById("bill_attachment").innerHTML=data.data[0].bill_attachment;
+					}				
+					// 查询图片
+					var queryImgparmas = {
+						name		: 'msvr',
+						bill_com	: loginCom,
+						bill_user	: userbillNo,
+						bill_task	:"VR_find_vdvc801_01",
+						currentPage	: 1,
+						pageSize	: 100,
+						paramText	: "",
+						bill_no		: data.data[0].bill_no
+					}
+					VlAjax.post({
+                        "port" : "active",
+                        "headers" : "json",
+                    }, queryImgparmas, sCBfindImgs);
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					mui.toast("未查询到数据~")
+				}
+				plus.nativeUI.closeWaiting();
+			}
+			function sCBfindImgs(data,type){
+				var arr = [];
+				if(data.data.length != 0) {
+					for(var i = 0; i < data.data.length; i++) {
+						var item = dataAdapter(data.data[i]);
+						arr.push(item);
+					}
+					mui('#J_pics_box')[0].innerHTML = template('J_pics_tmpl', {"data":arr});
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					mui('#J_pics_box')[0].innerHTML = "无照片数据";
+				}
+			}
+			function dataAdapter(data, type){
+//				console.log(JSON.stringify(data))
+				var oData = {};
+				for(var k in data) {
+					oData[k.slice(0, 2)] = data[k];
+				}
+		
+				return {
+					"rowdata" 	: JSON.stringify(oData),
+					"liTitle" 	: oData["内容"],
+					"liImgSrc"  : VlAjax.getImgPath(oData["图片"], "vdsa402"),
+					"liLeftT"  : oData["标题"],
+					"liLeftM"  : oData["图片"],
+					"liLeftB"  : (pageType === "vdsa402-audit" && activeQtask === "L")
+				}
+		    }
+			function initBtn(type, status){
+				var oBtnEdit = document.getElementById("J_btn_edit"),
+					oBtnBack = document.getElementById("J_btn_back"),
+					obSendBox = document.getElementById("bSendBox"),
+					oQualifyBox =  document.getElementById("qualifyBox");
+					
+				oBtnEdit.style.display = "none";
+				oBtnBack.style.display = 'none';
+				obSendBox.style.display = 'none';
+				oQualifyBox.style.display = "none";
+//				console.log(JSON.stringify(status))
+				if(type === "vdsa402-audit" && status === ""){
+					oQualifyBox.style.display = "block";
+				}else if(type === "vdsa402-details" && status === "L"){
+					oBtnEdit.style.display = 'block';
+					obSendBox.style.display = 'block';
+				}
+			}
+			function eBtnEdit() {
+				mui.openWindow({
+					url: 'vdsa403hn_edit.html',
+					id: "vdsa403hn_edit.html",
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom,
+						teamBillComName: teamBillComName,
+						userbillNo: userbillNo,
+						userName : userName,
+						loginCom: loginCom,
+						loginComName: loginComName,
+						detailInfo: detailInfo,
+						commonParams:commonParams,
+						otherParams :otherParams,
+						hadSave: true
+					}
+				})
+			}
+			function eBtnBack(){ 
+				var date = new Date();
+				var params = {
+					bill_com  : loginCom,
+					fbill_no  : detailInfo.fbill_no,
+					bill_no   : detailInfo.bill_no,
+					bill_user  : userbillNo,
+					bill_date  : VlDate.get(date, "_ymdhms"),
+					bill_task  : "b_back",
+				};
+				VlAjax.post({
+					"port" : "sendTask",
+					"headers" : "json",
+				}, params, reloadnode);
+			}
+			function reloadnode(){
+				hadChange = true;
+				detailInfo.bill_task = activeQtask =  "L";
+				initBtn(pageType, activeQtask);
+			}
+			function eBtnSend(){
+				var _date = VlDate.get(new Date(), "_ymdhms");
+				modified(_date);
+				var params = {
+					bill_com	: loginCom,
+					fbill_no	: detailInfo.fbill_no,
+					bill_no 	: detailInfo.bill_no,
+					bill_user 	: userbillNo,
+					bill_task 	: "b_send",
+					bill_date 	: _date,
+				};
+				VlAjax.post({
+					"port" : "sendTask",
+					"headers" : "json",
+				}, params, sCBsend);
+			}
+			function sCBsend(data){
+				hadChange = true;
+				detailInfo.bill_task = activeQtask = "Y";
+				initBtn(pageType, activeQtask);
+				var _p = {
+					name 		: "msvr",
+					bill_task	: "VE_vdvc312_update_02",
+					bill_com	: teamBillCom,
+					bill_user	: userbillNo,
+					bill_no		:detailInfo.bill_coppo,// 312代码
+					bill_unit	:detailInfo.bill_ipaddr,// 经度
+					bill_nunit	:detailInfo.bill_gpsaddr,// 纬度
+					bill_title	:detailInfo.bill_title,// 地址
+					bill_date 	: VlDate.get(new Date(), "_ymdhms"),
+				}
+				VlAjax.post({
+					"port" : "sendTask",
+					"headers" : "json",
+				}, _p, sCBChangeIp);
+			}
+			function sCBChangeIp(){}
+			
+			function modified(_date){
+				var p = JSON.parse(JSON.stringify(detailInfo));
+				var _text = [
+					{bill_edate: detailInfo.bill_edate},
+					{bill_edate: _date},
+				]
+				p.bill_text = JSON.stringify(_text);
+				p.bill_task = "d_save";
+				// console.log("sss"+JSON.stringify(p))
+				VlAjax.post({
+					"port" : "sendTask",
+					"headers" : "json",
+				}, p, sCBModified);
+			}
+			function sCBModified(){}
+			function downloadImgs(strNo,imgId) {}
+			function eaQualifyBtn(e, self){
+				
+				var _imgLen = jQuery("#J_pics_box li").length,
+					_imgBnoLen = aImgBno.length,
+					_unit = jQuery(self).attr('data-txt'),
+					_qualified,
+					_needCheckImgs = oInit[commonParams]["needCheckImgs"];
+//					console.log(_needCheckImgs);
+				if(_needCheckImgs && (_imgBnoLen === 0 || _imgLen !== _imgBnoLen)){
+					VlTools.toast("请先审核完所有照片再提交审核～", "top");
+					return;
+				}
+				_qualified = aImgQulified.join();
+				
+//				return;
+				var _p = {
+					name 		: "msvr",
+					bill_task	: "VE_vdsa402_update_01",
+					bill_com	: teamBillCom,
+					bill_user	: userbillNo,
+					bill_no 	: detailInfo.bill_no,
+					bill_user 	: userbillNo,
+					cc_user		: _qualified,
+					bill_unit	: _unit,
+					bill_date 	: VlDate.get(new Date(), "_ymdhms"),
+		            bill_remark : document.getElementById("bill_attachment").value,
+				}
+				// console.log(JSON.stringify(_p));
+				// return;
+				VlAjax.post({
+					"port" : "sendTask",
+					"headers" : "json",
+				}, _p, sCBQUalify);
+			}
+			function eaIsImgQulified(e, self){
+				var _res = self.innerHTML,
+					_bno = jQuery(self).parent().attr("data-bno"),
+					_idx = aImgBno.indexOf(_bno),
+					_bnoAndRes = _bno+_res;
+				if(_idx > -1){
+					aImgQulified[_idx] = _bnoAndRes;
+				}else{
+					aImgBno.push(_bno);
+					aImgQulified.push(_bnoAndRes);
+				}
+//				console.log("bno="+aImgBno)
+//				console.log("res="+aImgQulified)
+//				console.log(_bnoAndRes);
+				jQuery(self).parent().attr("data-qulified", _res);
+//				jQuery(self).parents("li").find(".res").html(_res);
+				jQuery(self).removeClass("mui-btn-outlined").addClass("mui-btn-outline");
+				jQuery(self).siblings().addClass("mui-btn-outlined").removeClass("mui-btn-outline");
+			}
+			function sCBQUalify(data){
+//				console.log(JSON.stringify(data));
+				reloadPageback('vrsa403_list.html');
+			}
+			function reloadPage(page1, page2){
+				var webview = plus.webview.getWebviewById(page1);
+				webview.show();
+				webview.reload();
+				if(arguments[1]){
+					var subview = plus.webview.getWebviewById(page2);
+					subview.reload();
+				}
+			}
+			function reloadPageback(page1){
+				var webview = plus.webview.getWebviewById(page1);
+			    mui.fire(webview, 'backmath', {  
+			        bdate : bdate,
+					edate : edate,
+			    });
+				mui.back()
+			}
+		}); // plusReady
+	</script>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/index.css" />
+	</head>
+	<body> 
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id='head' style="height: 75px;" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>	
+			<h1 class="mui-title headText" id="header">燕京啤酒官方旗舰店</h1>
+		</header>
+		<div class="mui-content" style="margin-top:30px">
+		    <iframe id="iframe" src="" width="100%" frameborder="0" scrolling="auto">
+	    </iframe>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/jquery-2.1.0.js"></script>
+	
+	<script src="../js/md5.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../js/index.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../js/immersed.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		var $$ = jQuery.noConflict();
+        mui.plusReady(function() {
+        	plus.nativeUI.showWaiting("正在打开页面...\n 请耐心等待");
+        	// 获取上个页面传过来的参数
+        	var self = plus.webview.currentWebview();
+			var fromPage = self.fromPage;
+			var urls = self.urls;
+			//
+			var ifm =document.getElementById("iframe");
+			ifm.setAttribute("src",urls);
+			ifm.height= document.documentElement.clientHeight;
+			plus.nativeUI.closeWaiting();
+        });  // plusready
+ 				
+    </script>  
+</html>

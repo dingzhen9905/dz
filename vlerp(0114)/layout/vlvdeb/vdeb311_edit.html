@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			#linkvd_stcode li {
+				list-style: none;
+			}
+			
+			ul,
+			li {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			#linkvd_stcode li::before {
+				content: "+ ";
+				/*color:blue;*/
+				/*font-size:30px;*/
+			}
+			
+			form {
+				margin: 10px 0;
+			}
+			
+			.topInput,
+			.topInput a {
+				/*height:40px;
+				line-height: 40px;*/
+				height: 50px;
+				line-height: 50px;
+			}
+			
+			.topInput a {
+				padding-top: 0;
+				padding-bottom: 0;
+				line-height: 14px;
+			}
+			
+			.topInput a input {
+				padding-top: 0;
+				color: #929292;
+			}
+			
+			.topInput a input#linkvd_term {
+				/*border:1px solid #E0E0E0;*/
+				padding-top: 5px;
+				padding-bottom: 5px;
+				color: #555;
+				height: 28px;
+				width: auto;
+				border-radius: 5px;
+				background-color: #E0E0E0;
+			}
+			
+			.topInput a input[placeholder] {
+				font-size: 14px;
+			}
+			/*ul {
+				margin-top: 5px;
+				margin-bottom: 5px;
+				padding: 5px;
+				background: #fff;
+			}*/
+			
+			.mui-row:before,
+			.mui-row:after {
+				display: none;
+			}
+			
+			.threeBottom {
+				overflow: hidden;
+			}
+			
+			.m {
+				overflow: hidden;
+				margin-top: -28px !important;
+				padding: 0 !important;
+			}
+			
+			.topNav {
+				padding: 0;
+			}
+			
+			.topNav p {
+				height: 35px;
+				line-height: 35px;
+			}
+			/*删除*/
+			
+			#sheet1 ul li:after {
+				height: 0;
+			}
+			
+			p.topitem {
+				padding: 0;
+			}
+			
+			.mui-slider-item {
+				height: 500px !important;
+				overflow: hidden !important;
+			}
+			
+			.imgSpan img {
+				vertical-align: middle !important;
+				margin-top: -5px;
+			}
+			
+			#inputs {
+				height: 100px;
+			}
+			
+			.message {
+				background: #FFFFFF;
+				border-style: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--头部-->
+		<header class="mui-bar mui-bar-nav" id='head' style="height:60px;border-bottom:0.5px solid #C0C0C0;background-color:;background:white">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" style="color:#4F4F4F;background-color:;height:60px;line-height: 60px;"></a>
+			<h1 class="mui-title" id="header" style="color:#4F4F4F;background-color:;font-weight:normal;height:60px;line-height: 85px;">提交订单</h1>
+			<!--<span class="mui-icon mui-icon-info  mui-pull-right" style="color:#4F4F4F;background-color:;background-color:;height:60px;line-height: 60px;" id="Help"></span>-->
+		</header>
+		<div id="nosuccess" style="display:;margin-top:80px;">
+
+			<div style="margin-top:60px;width:100%;height:80px;margin-left:10px;display: none;">
+				<span class="mui-icon mui-icon-location" style="float:left;font-size:30px;line-height: 80px;"></span>
+				<div style="float:left;line-height: 35px;margin-left:20px;">
+					<div>收货人：<span>张三</span> <span style="margin-left:20px;">10011111111</span></div>
+					<div style="font-size: 12px;">收货地址:<span style="font-size: 12px;">北京市海淀区善缘街立方庭大厦</span> </div>
+				</div>
+			</div>
+			<div>
+				<ul style="list-style: none;width:100%;">
+					<li style="width:100%;height:80px;background: #E0E0E0;margin-left: 0px;margin-top:10px;margin-bottom: 10px;">
+						<div style="width:80px;height:80px;float:left;margin-left:10px">
+							<img src="../../images/icon/default.png" alt="" width="80px" id="imgs" />
+						</div>
+						<div style="margin-left:90px;">
+							<div style="font-size: 12px; margin-left:5px;line-height: 30px;" id="node">恋香北京花店订花送粉色花束粉色绣球花名扬花坊南京鲜花速度</div>
+							<div style="font-size: 10px;margin-left:5px;" id="bill_name">颜色分类：<span>红色</span></div>
+
+						</div>
+						<span style="color:red;margin-left:5px;font-size: 12px;">￥<span style="font-size:14px;" id="node_price">2388</span>积分 </span>
+						<span style="float:right;margin-right: 10px;">X<span id="node_qty">1</span></span>
+
+					</li>
+				</ul>
+			</div>
+			<div style="width:100%;background:#FFFFFF;;clear: both; padding-left:10px;">
+				<div style="width:100%;height:80px; background:#FFFFFF;clear: both;line-height: 80px;border-bottom: 0.1px solid #BBBBBB;">
+					<div style="float:left">兑换数量:</div>
+					<div id="" style="float:right;margin-right:20px;">
+						<input type="button" value="-" style="float:left;margin-top:25px;" id="min" />
+						<input type="number" style="width:50px;height:20px; float:left ;margin-top:30px;border-style:none;" value="0" id="num" />
+						<input type="button" value="+" style="float:left;margin-top:25px;" id="add" />
+					</div>
+
+				</div>
+
+				<div style="clear: both;border-bottom: 0.1px solid #BBBBBB;line-height: 80px;">配送方式:<span style="float:right;margin-right:20px;">快递免邮</span></div>
+				<div style="line-height: 80px;"><span>买家留言:</span>
+					<input type="text" id="message" style="border-style:none;width:80%;height:30px;float:right;margin-top:25px;" placeholder="选填"></input>
+				</div>
+			</div>
+			<nav class="mui-bar mui-bar-tab" id="footer" style="display:;height:45px;position: fixed;">
+				<div style="width:40%;line-height: 45px;float:left;text-align: center;">
+					<span>合计：<span id="total">2388</span>积分</span>
+				</div>
+				<div style="background:#1296db;line-height: 45px;width:50%;text-align: center;color:white;float:right;" id="submit">
+					确认提交
+				</div>
+			</nav>
+		</div>
+
+		<div id="yessuccess" style="display:none;margin-top:70px;text-align: center;">
+			<div><img src="../../images/success.png" alt="" /></div>
+			<span style="line-height: 50px;">提交成功</span>
+			<div style="width:100%;line-height: 50px;float: left; ">
+				<div id="org" style="width:40%;float: left;margin-left:30px;border-bottom: 1px solid #797979;"><span>查看订单</span><span style="width:50px;height:50px;"><img src="../../images/org.png" alt="" width="20px"/></span></div>
+				<div id="home" style="width:40%;float: left;border-bottom: 1px solid #797979;margin-left:20px; ">返回首页<span><img src="../../images/shouye.png" alt="" width="20px"/></span></div>
+			</div>
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/index.js"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		var $$ = jQuery.noConflict();
+		mui.plusReady(function() {
+			var Add = document.getElementById("add"); //+按钮
+			var Min = document.getElementById("min"); //-按钮
+			var Num = document.getElementById("num"); //数量
+			var Submit = document.getElementById("submit"); //提交按钮
+			var Tatal = document.getElementById("total"); //最后合计积分
+			var Node = document.getElementById("node"); //介绍
+			var Node_price = document.getElementById("node_price"); //积分价格
+			var Bill_name = document.getElementById("bill_name"); //
+			var Node_qty = document.getElementById("node_qty"); //数量
+			var Yessuccess = document.getElementById("yessuccess");
+			var Nosuccess = document.getElementById("nosuccess");
+			var message = document.getElementById("message");
+			var date = new Date();
+			var bill_date = vlUtils.dateToString(date);
+			var DataSoure = {
+				main: {},
+				detail: []
+			}
+			var self = plus.webview.currentWebview();
+			var userBillNo = self.userbillNo; //登录人唯一的bill_no
+			var teamBillCom = self.teamBillCom; //单位
+			var detailInfo = self.detailInfo;
+			var teamBillComName = self.teamBillComName;
+			Node.innerHTML = detailInfo.bill_id;
+			Bill_name.innerHTML = detailInfo.bill_name;
+			Node_price.innerHTML = detailInfo.node_price;
+			if(detailInfo.node_price == undefined){
+				detailInfo.node_price = "";
+			}
+			Num.value = Node_qty.innerHTML;
+			Tatal.innerHTML = detailInfo.node_price * Num.value;
+			var comImgid = vlUtils.uuid('comImg', 4, 10);
+			vlUtils.downloadicon(detailInfo.bill_text[0].linkbd_bEANcode, comImgid);
+			document.getElementById("imgs").id = comImgid;
+			DataSoure.detail.push(detailInfo);
+			Add.addEventListener("tap", function() {
+				var Number = Num.value;
+				Number++;
+				Num.value = Number;
+				Tatal.innerHTML = detailInfo.node_price * Num.value;
+			});
+			Min.addEventListener("tap", function() {
+				var Number = Num.value;
+				Number--;
+				if(Number <= 1) {
+					Num.value = 1;
+					Tatal.innerHTML = detailInfo.node_price * Num.value;
+					return;
+				}
+				Num.value = Number;
+				Tatal.innerHTML = detailInfo.node_price * Num.value;
+			})
+			Submit.addEventListener("tap", function() {
+				var onlyCode = getDataCode("vdeb312");
+				DataSoure.main.bill_com = teamBillCom;
+				DataSoure.main.bill_task = "L";
+				DataSoure.main.bill_no = onlyCode;
+				DataSoure.main.bill_date = bill_date;
+				DataSoure.main.bill_context = message.value;
+				DataSoure.main.node_qty = Num.value;
+				DataSoure.main.node_price = detailInfo.node_price;
+				DataSoure.main.bill_gpsaddr = "";
+				DataSoure.main.flag_urgent = "";
+				DataSoure.main.bill_dept = "";
+				DataSoure.main.bill_title = "";
+				DataSoure.main.deal_no = "";
+				DataSoure.main.bill_user = userBillNo;
+				DataSoure.main.bill_name = detailInfo.bill_name;
+				DataSoure.main.bill_ipaddr = "";
+				DataSoure.main.deal_sts = "";
+				DataSoure.main.link_next = "";
+				DataSoure.main.fbill_no = "ROOT";
+				DataSoure.main.node_amt = Tatal.innerHTML;
+				for(var i = 0; i < DataSoure.detail.length; i++) {
+					onlyCode = getDataCode("vdeb312");
+					DataSoure.detail[i].bill_no = onlyCode;
+					DataSoure.detail[i].fbill_no = DataSoure.main.bill_no;
+					DataSoure.detail[i].bill_text = JSON.stringify(DataSoure.detail[i].bill_text);
+					DataSoure.detail[i].bill_date = bill_date;
+					DataSoure.detail[i].bill_task = "L";
+					DataSoure.detail[i].node_amt = Tatal.innerHTML;
+				}
+				saveAjax(DataSoure);
+			})
+			
+			function saveAjax(parameter) {
+				mui.ajax(systemURL + 'Buy/deductScore', {
+					data: parameter,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					beforeSend: function() {
+						checkNetState(); // 检查网络链接状态
+					},
+					timeout: 10000, //超时时间设置为10秒
+					async: false,
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						if(data.code == 0) {
+							mui.toast(data.message);
+							flagsave = true;
+							Nosuccess.style.display = "none";
+							Yessuccess.style.display = "block";
+							// mui("#saveBtn").button('reset');
+							//
+							//for(var i = 0; i < saveDeleteData.length; i++) {
+							//for(var j = 0; j < saveDataSourse.length; j++) {
+							//for(var k = 0; k < saveDataSourse[j].detail.length; k++) {
+							//			deleteData(saveDeleteData[i], userbillNo, teamBillCom, saveDataSourse[j].detail[k].node_qty, saveDataSourse[j].detail[k].node_price);
+							//		}
+							//	}
+							//
+							//}
+						}
+						if(data.code == 1) {
+							console.log(data.error_description);
+							return;
+							if(data.error_code == 403) {
+								var btnArray = ['重新登录', '退出'];
+								mui.confirm(data.error_description, '下线通知', btnArray, function(e) {
+									if(e.index == 0) {
+										loginAgainAjax();
+									} else {
+										setTimeout(function() {
+											outLogining();
+										}, 0);
+									}
+								});
+							}
+							mui("#saveBtn").button('reset');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						mui("#saveBtn").button('reset');
+						console.log(JSON.stringify(xhr));
+						console.log(errorThrown);
+						console.log(type);
+						if(type == "timeout") {
+							mui.toast("请求超时");
+						}
+
+					}
+				});
+			}
+
+			document.getElementById("org").addEventListener("tap", function() {
+				mui.openWindow({
+					id: 'vdeb312_plist.html',
+					url: 'vdeb312_plist.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom,
+						userbillNo: userBillNo,
+						teamBillComName: teamBillComName
+					}
+				});
+			})
+			document.getElementById("home").addEventListener("tap", function() {
+				mui.openWindow({
+					url: '../../integral.html',
+					id: 'integral.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom,
+						userbillNo: userBillNo
+					}
+				});
+			})
+		}); // PlusReady 结束
+	</script>
+
+</html>

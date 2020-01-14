@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		
+		<style>
+			body{
+				font-size: 12px;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			.bottomLine{
+				border-bottom: 1px solid #8f8f94;
+				position:relative;
+				margin: 25px 50px;
+			}
+			.end{
+				position:absolute;
+				top:-8px;
+				left:32%;
+				background: #efeff4;
+				padding:0 10px;
+				z-index:111;
+				font-size: 10px;
+			}
+			#toEdit{
+				display:none;
+			}
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body> 
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id='head'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>	
+			<h1 class="mui-title headText" id="header">用户信息</h1>
+			<a class="mui-icon mui-icon-compose mui-pull-right" id="toEdit"></a>	
+			<div class="mui-row navBar nodeTopNav">
+				<p class="mui-col-xs-3" id="worklocus">
+					<a class="icon iconfont icon-xuexiguiji unclickable"></a>
+					<span>工作轨迹</span>
+				</p>
+				<p class="mui-col-xs-3" id="CRM">
+					<a class="icon iconfont icon-yejichaxun1 unclickable"></a>
+					<span>业绩查询</span>
+				</p>
+				<p class="mui-col-xs-3"  id="freezeBtn">
+					<a class="icon iconfont icon-freeze unclickable" id="freezeIcon"></a>
+					<span id="freezeText">冻结处理</span>
+				</p>
+				<p class="mui-col-xs-3"  id="changeDept">
+					<a class="icon iconfont icon-kuabumentiaodong unclickable" id="deptIcon"></a>
+					<span id="deptText">部门调动</span>
+				</p>
+			</div>
+		</header>
+		<div class="mui-content" style="padding-top:100px;margin-top:30px">
+		    <div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+		    	<div style="padding:0px;height:72px;">
+					<div class="mui-row"  style="background:;padding:0px;border-bottom:1px solid #efeff4;">
+						<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;margin-right:10px;">
+							<img class="vdvc105 mui-col-xs-12" 
+								 id="userImg" 
+								 src="../../images/defult/vdvc001.png" 
+								 onerror="this.src='../../images/defult/vdvc001.png'"  
+								 style="padding:0px;width:60px;border:1px solid #ccc;border-radius:10px;" />
+ 						</div>
+						<div class="mui-col-xs-9 mui-row mui-pull-right" style="background:;padding-right:0;padding-left:0px;margin-left:15px;">
+							<div class="list_h5 mui-col-xs-12" style="color:#242424;border-bottom:1px solid #efeff4;padding:5px 0;height:28px;">
+								<span class="mui-col-xs-4 spn">用户编码：</span>
+								<span class="mui-col-xs-5 spn" id="bill_id"></span>
+								<span class="list_sts mui-col-xs-3 mui-pull-right" id="bill_task" style="float:right;margin-top:3px;height: 16px;width:60px;"></span>
+							</div>
+							<div class="list_font mui-col-xs-12" style="padding:5px 0;height:28px;">
+								<span class="mui-col-xs-3 spn">用户名称：</span>
+								<span class="mui-col-xs-9 spn" id="bill_name"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			    <div class="mui-row" style="border-bottom:1px solid #efeff4;">
+			   		<span class="mui-col-xs-4 spn">用户部门：</span>
+			   		<span class="mui-col-xs-8 spn" id="fbill_no"></span>
+			    </div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+			   		<span class="mui-col-xs-4 spn">用户类型：</span>
+			   		<span class="mui-col-xs-8 spn" id="bill_bflow"></span>
+			    </div>
+			    <div class="mui-row" style="border-bottom:1px solid #efeff4;">
+			     	<span class="mui-col-xs-4 spn">注册手机号：</span>
+			     	<span class="mui-col-xs-8 spn" id="linkbd_linktel"></span>
+			    </div>
+			    <div class="mui-row" style="border-bottom:1px solid #efeff4;">
+			     	<span class="mui-col-xs-4 spn">说明：</span>
+			     	<span class="mui-col-xs-8 spn"  id="bill_context"></span>
+			    </div>
+			     <div class="mui-row">
+			     	<span class="mui-col-xs-4 spn">标签：</span>
+			     	<span class="mui-col-xs-8 spn"  id="bill_label"></span>
+			    </div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">制单人：</span>
+					<span class="mui-col-xs-8 spn"  id="bill_userName"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;display:none;">
+					<span class="mui-col-xs-4 spn">制单人代码：</span>
+					<span class="mui-col-xs-8 spn"  id="bill_user"></span>
+				</div>
+				<div class="mui-row">
+					<span class="mui-col-xs-4 spn">制单时间：</span>
+					<span class="mui-col-xs-8 spn"  id="bill_date"></span>
+				</div>
+			</div>
+		    <div>
+		        <div class="fold" id="fold">
+		        	<p id="" class="mui-h5" style="padding-left:25px;font-size: 12px;">关联编码：<span class='state' id="linkvd_linkuser"></span><span></span></p>
+		        	<p id="" class="mui-h5" style="padding-left:25px;font-size: 12px;">关联用户：<span class='state' id="linkvd_linkuserName"></span></p>
+		        	<p id="" class="mui-h5" style="padding-left:25px;padding-right:25px;font-size: 12px;">
+		        		关联时间：
+		        		<span class='state mui-col-xs-4' id="linkvd_linkdate"></span>
+		        		<span class="list_sts mui-col-xs-3 mui" id="linkbd_linksts" style="float:right;margin-top:3px;height: 16px;width:60px;">已关联</span>
+		        	</p>
+		        </div>
+			</div>
+			<div class="bottomLine" style="">
+				<p class="end" style="">没有更多数据了！</p>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../js/vlindex.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		mui.init();
+	    var oldBack = mui.back;
+	    mui.back = newBack;
+		var teamBillCom,teamBillComName,
+			userbillNo,
+			loginCom,loginComName,
+			fromPage,privileges,
+			business,
+			detailInfo;
+		var vc105Field = {
+			commonField : {
+				h : {
+					"bill_name":"", 
+					"fbill_no":"", 
+					"bill_bflow":"", 
+					"bill_label":"", 
+					"bill_context":"",
+					"bill_user"	:"",	// 用户标签
+					"bill_userName" : "", // 用户类型
+					"bill_date" : "", // 用户类型
+				},
+				v : {},
+				c : {}
+			},
+			textField : {
+				h : {"linkbd_linktel" : "","linkvd_linkdate" : "", "linkvd_linkuser" : ""},
+				v : {},
+				c : {}
+			}
+		};
+		var bTask = {"L" : "待送审","S" : "待审核","Y" : "已审核","YF": "已冻结"};
+        mui.plusReady(function() {
+        	// 获取上个页面传过来的参数
+        	var self = plus.webview.currentWebview();
+				teamBillCom = self.teamBillCom;
+				teamBillComName = self.teamBillComName;
+				userbillNo = self.userbillNo;
+				loginCom = self.loginCom;
+				loginComName = self.loginComName;
+				fromPage = self.fromPage;
+				business = self.business;
+				privileges = self.privileges;
+			if(fromPage=="105list") {
+				detailInfo = self.detailInfo;
+			}else if(fromPage=="105edit") {
+				detailInfo = self.rqsData;
+				detailInfo.bill_task = "S";
+				if((typeof detailInfo.bill_text) == "string"){
+					detailInfo.bill_text = JSON.parse(detailInfo.bill_text);
+				}
+			}
+			if(business == "103" || business == "部门"){
+				teamBillCom = loginCom;
+				document.getElementById("toEdit").style.display="block";
+			}
+				
+			// 查询该条数据
+			var queryObj={
+				"name"	  :'vdvc105',    
+				"bill_com": detailInfo.bill_com, 
+				"bill_no" : detailInfo.bill_no  
+			}
+			VlAjax.rqsOneBill(queryObj, sCBFind);
+			
+			document.getElementById("header").innerHTML = detailInfo.bill_name;
+			document.getElementById("freezeBtn").addEventListener("tap", eFreeze, false);
+			document.getElementById("toEdit").addEventListener("tap", eToEdit, false);
+        });  // plusready
+		function newBack(){
+			var webview = plus.webview.getWebviewById('vdvc105hn_plist.html');
+			webview.show();
+		}
+		function eToEdit(e){
+			var billUser = document.getElementById("toEdit").getAttribute("billUser");
+			if(billUser == userbillNo || privileges == "ROOT"){
+				mui.openWindow({
+					url: 'vdvc105hn_edit.html',
+					id: "vdvc105hn_edit.html",
+					createNew:true,
+					extras:{
+						teamBillCom : teamBillCom ,
+						teamBillComName : teamBillComName,
+						userbillNo : userbillNo,
+						loginCom : loginCom,
+						loginComName : loginComName,
+						detailInfo : detailInfo,
+						fbill_no : detailInfo.fbill_no,
+						privileges: privileges,
+						business : business,
+						flagNew : "N"
+					} 
+				})
+			}else{
+				mui.toast("仅制单人或管理员有此权限！");
+			}
+		}
+		function eFreeze(e){
+			// 状态是Y的情况下才可以执行冻结操作
+			var billTask = document.getElementById("freezeBtn").getAttribute("billTask");
+			var billUser = document.getElementById("toEdit").getAttribute("billUser");
+			var billNo = detailInfo.bill_no;
+
+			var date = new Date();
+			var params = {
+				bill_com  : teamBillCom,
+				bill_no   : billNo,
+				bill_user : userbillNo,
+				bill_task : "b_frozen",
+				bill_date : VlDate.get(date, "_ymdhms"),
+				bill_qtask : _task=="Y"? "YF" : "Y"    //冻结 YF ,解冻 Y
+			};
+			// VlAjax.post({"port":"sendTask"}, sCBFreeze);
+			console.log(JSON.stringify(params))
+			VlAjax.post({"port":"sendTask"}, params, sCBFreeze);
+		}
+		
+		function sCBFind(data){
+			var datas = data.data[0],
+				_btext, // 大字段
+				boppo,
+				blinkuser,
+				bstatus = "未关联";
+			if(datas.length != 0){
+				detailInfo = datas;
+				_task = datas["bill_task"];
+				_btext = datas.bill_text[0];
+				// 关联状态判断
+				boppo = datas.bill_oppo; // 关联的001
+				blinkuser = _btext["linkbd_linkuser"];// 关联的001
+				if(!VlUtils.isnull(boppo) || !VlUtils.isnull(blinkuser)){
+					bstatus = "已关联";
+				}
+				// 头像
+				jQuery("#userImg").attr('src', VlAjax.getImgPath(datas["bill_text"][0]["linkvd_linkuser"]));
+				// 赋值
+				VlEdit.setValue(datas,vc105Field.commonField,vc105Field.textField);
+				//console.log(JSON.stringify(data))
+				document.getElementById("bill_task").innerHTML 			= bTask[_task];
+				document.getElementById("bill_id").innerHTML 			= (datas.bill_id == "") ? _btext["linkbd_clerkid"] :  datas.bill_id;
+				document.getElementById("linkbd_linksts").innerHTML 	= bstatus;
+				document.getElementById("linkvd_linkuserName").innerHTML= datas.bill_name + " ( "+ _btext.linkbd_linktel +" ) ";
+				// 按钮状态
+				document.getElementById("toEdit").setAttribute("billUser", datas.bill_user);
+				document.getElementById("freezeBtn").setAttribute("billTask", _task);
+				if(_task == "Y" && privileges == "ROOT"){
+					document.getElementById("freezeIcon").style.color = "#0062cc";
+					document.getElementById("freezeBtn").addEventListener("tap",freezeBtn);
+				}else{ 
+					removeFreezeEvent((_task == "YF"));
+				}
+			}else{
+				mui.toast("未查询到数据");
+			}				
+		}
+		// 冻结
+		function sCBFreeze(data){
+			mui.toast(data.message);
+			removeFreezeEvent(true);
+			var currentPage = plus.webview.currentWebview();
+			currentPage.reload();
+		}
+ 		function removeFreezeEvent(isFY){
+			if(isFY){
+				document.getElementById("freezeText").innerHTML = "解冻处理";
+				jQuery("#freezeIcon").removeClass("icon-freeze").addClass("icon-thaw");
+			}
+			document.getElementById("freezeIcon").style.color = "#8f8f94";
+			document.getElementById("freezeBtn").removeEventListener("tap",freezeBtn);
+			document.getElementById("freezeBtn").setAttribute("billTask", "YF");
+		}		
+    </script>  
+</html>

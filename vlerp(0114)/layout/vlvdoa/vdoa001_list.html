@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.list_font {
+				font-size: 10px;
+				line-height: 12px;
+				height: 16px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+			}
+			
+			.list_h5 {
+				font-size: 13px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.list_p{
+				font-size: 12px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.list_sts {
+				/*font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;*/
+				/*border:1px solid #dd524d;*/
+				/*border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;*/
+				/*background-color: pink;*/
+				margin-top:3px;
+				padding:0 5px;
+				font-size:10px;
+				line-height: 14px;
+			}
+			
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view:before,.mui-table-view-cell:after {
+				height: 0 !important;
+			}
+			#contList li {
+				padding:6px;
+				height:70px;
+				/*border-bottom:1px solid #eee;*/
+			}
+			input[type="checkbox"]:before {
+				font-size: 20px !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="vdoa001_list" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll" style="border: transparent;">
+				<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+					<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+					<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+					<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+				</div>
+				<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+					<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+					<p style="font-size:12px;">正在搜索中......</p>
+				</div>
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-bottom:50px;background:none;">
+				</ul>
+			</div>
+		 	<nav class="mui-bar mui-bar-tab" id="footer">
+			    <a class="mui-tab-item" id="selectAll" style="font-size:18px;background:;color:#2187E7;">全选</a>
+			    <a class="mui-tab-item"></a>
+			    <a class="mui-tab-item"></a>
+			    <a class="mui-tab-item" id="dealAccount" style="background:#FB6F18;color: #FFFFFF;">审批</a>
+			</nav>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vdoa001_list',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					height: 200,
+					contentnomore: '没有更多数据了',
+					offset: '10px',
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+
+		var detailInfo = {}; // 用于存储查询到的信息
+		var fbill_no = "ROOT"; // 查询的fbill_no
+		var queryparmas = {}; //查询参数
+		var pager = {};
+		var startIndex = 1; // 起始页码
+		var pageSize = 10; // 每页显示几条信息
+		var search = ''; // 要查询的内容，paramText的value
+		var bill_task = " ";
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var totalRecord = "";
+		mui.plusReady(function() {
+			//监听自定义事件，获取新闻详情
+			document.addEventListener('subpage203list', function(event) {
+				var guid = event.detail.active;
+				document.getElementById("contList").innerHTML = "";
+				document.getElementById("showHint").style.display = "none";
+				document.getElementById("searching").style.display = "block";
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				if(guid == "001") { // 
+					document.getElementById("footer").style.display = "block";
+					queryparmas = {
+						name		: 'vdoa001',
+						bill_com	: teamBillCom,
+						cc_user		: userbillNo,
+						bill_task	: "S", //默认001
+						currentPage	: startIndex,
+						pageSize	: pageSize,
+						paramText	: search
+					}
+				}else if(guid == "002") { //
+					document.getElementById("footer").style.display = "none";
+					queryparmas = {
+						name		: 'vdoa001',
+						bill_com	: teamBillCom,
+						cc_user		: userbillNo,
+						bill_task	: "Y", //默认001
+						currentPage	: startIndex,
+						pageSize	: pageSize,
+						paramText	: search
+					}
+				}
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas,'/workFlow/workFind', pendingData, '../login.html',true);
+
+			}); // 切换结束
+
+			//接收传过来的参数
+			var self = plus.webview.currentWebview().parent();
+			var teamBillCom = self.teamBillCom;
+			var teamBillComName = self.teamBillComName;
+			var userbillNo = self.userbillNo;
+			var userName = self.userName;
+			var loginCom = self.loginCom;
+			var loginComName = self.loginComName;
+			var fromPage = self.fromPage;
+			var fbill_no = self.fbill_no;
+			var privileges = self.privileges;
+
+			queryparmas = {
+				name: 'vdoa001',
+				bill_com: teamBillCom,
+				cc_user:userbillNo,
+				bill_task: "S", //默认001
+				currentPage: startIndex,
+				pageSize: pageSize,
+				paramText: search
+			}
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas,'/workFlow/workFind', pendingData, '../login.html',true);
+			// 全选
+			document.getElementById("selectAll").addEventListener("tap",function(){
+				var allCheckBoxs = document.getElementsByName("checkbox"); 
+				var ckeckedAll=false; // 没有全选 
+//				isAllcheckde(allCheckBoxs); // 判断当前有没有全选
+
+				for(var i = 0; i < allCheckBoxs.length; i ++ ) { 
+					if(allCheckBoxs[i].checked){ 
+						ckeckedAll=true;  
+						break; 
+					} 
+				} 
+				if (ckeckedAll) { 
+					_allUnchecked(allCheckBoxs); 
+//					document.getElementById("selectAll").innerHTML = "全选";
+				}else { 
+					_allchecked(allCheckBoxs); 
+//					document.getElementById("selectAll").innerHTML = "取消全选";
+				} 
+				function isAllcheckde(allCheckBoxs){
+					for(var i = 0; i < allCheckBoxs.length; i ++ ) { 
+						if(allCheckBoxs[i].checked == false){ // 只要有一个没有选就是没有全选
+							ckeckedAll = false;
+						}
+					} 
+				}
+				function _allchecked(allCheckBoxs){ 
+					for(var i = 0; i < allCheckBoxs.length; i ++ ) { 
+						allCheckBoxs[i].checked = true; 
+					} 
+				} 
+				function _allUnchecked(allCheckBoxs){ 
+					for(var i = 0; i < allCheckBoxs.length; i ++ ) { 
+						allCheckBoxs[i].checked = false; 
+					} 
+				}
+			});
+			// 报账处理
+			document.getElementById("dealAccount").addEventListener("tap",function(){
+				var rowObjArr = [];
+				var liLens = mui("#contList li").length;
+				for(var i = 0 ; i < liLens ; i ++ ){
+					// 检查是否选中，选中则取对应的li的dataRow 放在数组里面
+					var rmStatus = jQuery("#contList li .liinput").eq(i).children("input").is(":checked");
+					if(rmStatus){
+						var dataRow = jQuery("#contList li").eq(i).attr("data-row");
+						var rowObj = JSON.parse(dataRow);
+						rowObjArr.push(rowObj);
+						// 移除dom
+//						jQuery("#contList li").eq().removeChild(li);
+					}
+				}
+				if(rowObjArr.length == 0){
+					mui.toast("请先选择单据！");
+					return;
+				}
+				// 
+				for(var k = 0; k < rowObjArr.length; k++){
+					if(vlUtils.isnull(rowObjArr[k].bill_text)){
+						rowObjArr[k].bill_text = [{}]; // 审批意见
+					}
+					rowObjArr[k].bill_text[0].opinion = "同意"; // 审批意见
+					//
+					if(rowObjArr[k].bill_title == "审批"){
+						var context = "同意";
+					}else if(rowObjArr[k].bill_title == "审阅"){
+						var context = "已阅";
+					}
+					var date = new Date();
+					var params = JSON.parse(JSON.stringify(sendTaskData));
+					params.bill_no 	 	= rowObjArr[k].bill_no;
+					params.fbill_no  	= rowObjArr[k].fbill_no;
+					params.bill_oppo 	= rowObjArr[k].bill_oppo;
+					params.bill_id 	 	= rowObjArr[k].bill_id;
+					params.bill_bno 	= rowObjArr[k].bill_bno;
+					params.bill_dept 	= rowObjArr[k].bill_dept;
+					params.bill_nflag   = rowObjArr[k].bill_nflag;
+					params.bill_unit    = rowObjArr[k].bill_unit;
+					params.bill_com	 	= teamBillCom;
+					params.bill_user 	= userbillNo;
+					params.bill_task 	= "w_send";
+					params.bill_context = context;
+					params.cc_user 		= JSON.stringify(rowObjArr[k].cc_user);
+					params.bill_text 	= JSON.stringify(rowObjArr[k].bill_text);
+					params.bill_date 	= vlUtils.dateToString(date);
+					//
+					auditing(params);// 送审方法
+				}
+			})
+			//点击查看详情/修改信息
+			mui("#contList").on('tap', 'li .libody', function(e) {
+				var rowObjArr = []
+				var e = this;
+				var li = e.parentNode;
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow);
+				rowObjArr.push(rowObj);
+				mui.openWindow({
+					id: 'vdoa001_node.html',
+					url: 'vdoa001_node.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom,
+						teamBillComName: teamBillComName,
+						userbillNo: userbillNo,
+						userName: userName,
+						loginCom: loginCom,
+						loginComName: loginComName,
+						fbill_no: fbill_no,
+						fromPage:"vdoa001list",
+						privileges:privileges,
+						detailInfo: rowObjArr
+					}
+				});
+			});
+		});
+
+		//下拉刷新
+		function pulldownRefresh() {
+			mui.toast("加载中...");
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			//
+			queryparmas.currentPage = 1;
+			queryparmas.pageSize = pageSize;
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas,'/workFlow/workFind', pendingData, '../login.html',true);
+			mui('#vdoa001_list').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+
+		}
+
+		/*上拉加载具体业务实现 */
+		function pullupRefresh() {
+			if(queryparmas.currentPage < pager.totalPage) {
+				queryparmas.currentPage = queryparmas.currentPage + 1;
+				queryparmas.pageSize = pageSize;
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas,'/workFlow/workFind', pendingData, '../login.html',false);
+				mui('#vdoa001_list').pullRefresh().endPullupToRefresh();
+			} else {
+				plus.nativeUI.toast("~没有更多啦~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdoa001_list').pullRefresh().endPullupToRefresh();
+				return;
+			}
+		}
+		// 渲染dom
+		function pendingData(data,type) {
+			pager = data.page[0];
+			mui.fire(plus.webview.getWebviewById('vdoa001_plist.html'), 'totalRecord', {
+				totalRecord:data.page[0].totalRecord
+			});
+			document.getElementById("showHint").style.display = "none";
+			var comImgid = vlUtils.uuid('comImg', 4, 10);
+			if(data.data.length != 0) {
+				for(var i = 0; i < data.data.length; i++) {
+					var contList = document.getElementById("contList");
+					//
+					datas= data.data;
+					if(type&&i==0){
+						contList.innerHTML = "";
+					}
+					if(datas[i].bill_title=="审批"){
+						var btnclass = 'royal'
+					}else if(datas[i].bill_title == '审阅'){
+						var btnclass = 'primary';
+					}else if(datas[i].bill_title == '会签'){
+						var btnclass = 'warning';
+					}
+					// 按钮 
+					if(datas[i].bill_context == "同意"){
+						var btncolor = 'success';
+					}else if(datas[i].bill_context == "已阅"){
+						var btncolor = 'primary';
+					}else{
+						var btncolor = 'danger';
+					}
+					var li = document.createElement("li");
+					li.setAttribute("data-row",JSON.stringify(datas[i]));
+					li.style.padding = "5px 10px";
+					li.style.height = "70px";
+					li.style.marginBottom = "3px";
+					li.style.background = "#fff";
+					var text = "";
+					if(datas[i].bill_task == "Y"){
+						li.setAttribute("class", "mui-table-view-cell");
+						document.getElementById("footer").style.display = "none";
+						text += '<div class="mui-slider-cell  mui-slider-handle libody mui-row ">';
+						text += '<div class="mui-col-xs-2 mui-row" style="background:;padding:5px 5px;width:55px;">';
+						text += '<img class="vdoa001 mui-col-xs-12" src="../../images/icon/default.png"  id="' + datas[i]["bill_no"] + '" />';
+						text += '</div>';
+						text += '<div class="mui-col-xs-7 mui-row" style="background:;height:50px;">';
+						text += '<div class="mui-col-xs-12" style="color:#242424;margin-top:3px;">';
+						text += '<span class="mui-btn mui-btn-'+btnclass+' mui-btn-outlined" type="button" style="padding:2px  2px 0;font-size: 10px;margin-right:1px;line-height:12px;">'+datas[i].bill_title+'</span>';
+						text += '<span class="list_h5" style="line-height:12px;display: inline-block;padding-top:3px;font-weight:bold;">'+datas[i].bill_text[0].title +'</span></div>';
+						text += '<p class="mui-col-xs-12 list_font" style="color:#242424;">原始单据制单人：' + datas[i].bill_text[0].linkvd_linkusername + '</p> ';
+						text += '<p class="mui-col-xs-12 list_font" style="color:#242424;">制单部门：' + datas[i].bill_text[0].linkvd_linkdeptname + '</p> ';
+						text += '</div>';
+						text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;padding-top:3px;padding-right:8px;">';
+						text += '<p class="list_fonts mui-col-xs-12" style="float:right;color:#FF5053;">' + datas[i].bill_text[0].amount + '</p>';
+						text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;">' + datas[i].bill_date.slice(5,16) + '</p>';
+						text += '<p class="mui-col-xs-12" style="float:right;margin-top:3px;">';
+						text += '<button type="button" class="list_sts mui-btn mui-btn-'+btncolor+' mui-btn-outlined">'+datas[i].bill_context+'</button>';
+						// ↑ 1024 
+						text += '</p>';
+						text += '</div>';
+						text += '</div>';
+					}else{
+						document.getElementById("footer").style.display = "block";
+						li.setAttribute("class", "mui-table-view-cell mui-row");
+						text += '<div class="mui-col-xs-1 mui-input-row mui-checkbox mui-left liinput" style="padding: 0;line-height:60px;">';
+						text += '<input name="checkbox" value="Item 1" type="checkbox" style="padding:0;margin-top:12px;position: relative;left:0px;top:0;">';
+						text += '</div>';
+						text += '<div class="mui-slider-cell  mui-slider-handle mui-col-xs-11 libody mui-row">';
+						text += '<div class="mui-col-xs-2 mui-row" style="background:;padding:5px 0px;">';
+						text += '<img class="vdoa001 mui-col-xs-12" src="../../images/icon/default.png"  id="' + datas[i].bill_no + '" style="width: 50px;" />';
+						text += '</div>';
+						text += '<div class="mui-col-xs-7 mui-row" style="background:;height:50px;">';
+						// ↓ 1024
+						text += '<div class="mui-col-xs-12" style="color:#242424;margin-top:3px;">';
+						text += '<span class="mui-btn mui-btn-'+btnclass+' mui-btn-outlined" type="button" id="stepTitle" style="padding:2px  2px 0;font-size: 10px;margin-right:1px;line-height:12px;">'+datas[i].bill_title+'</span>';
+						text += '<span class="list_h5" style="line-height:12px;display: inline-block;padding-top:3px;font-weight:bold;">'+datas[i].bill_text[0].title +'</span></div>';
+						text += '<p class="mui-col-xs-12 list_font" style="color:#242424;">原始单据制单人：' + datas[i].bill_text[0].linkvd_linkusername + '</p> ';
+						text += '<p class="mui-col-xs-12 list_font" style="color:#242424;">制单部门：' + datas[i].bill_text[0].linkvd_linkdeptname + '</p> ';
+						text += '</div>';
+						text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;padding-top:3px;padding-right:8px;">';
+						text += '<p class="list_fonts mui-col-xs-12" style="float:right;color:#FF5053;">' + datas[i].bill_text[0].amount + '</p>';
+						text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;">' + datas[i].bill_date.slice(5,16) + '</p>';
+						text += '<p class="mui-col-xs-12" style="float:right;margin-top:3px;">';
+						text += '<button type="button" class="list_sts mui-btn mui-btn-warning mui-btn-outlined">待审核</button>';
+						// ↑ 1024 
+						text += '</p>';
+						text += '</div>';
+						text += '</div>';
+					}
+					if(type&&i==0){
+						document.getElementById("searching").style.display = "none";
+					}
+					li.innerHTML = text;
+					contList.appendChild(li);
+					vlUtils.downloadicon(datas[i].bill_user, datas[i].bill_no);
+				}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("searching").style.display = "none";
+				document.getElementById("showHint").style.display = "block";
+			}
+			plus.nativeUI.closeWaiting();
+		}
+		// 同意ajax
+		function auditing(params){
+			mui.ajax(systemURL + 'Api/Task/sendTask', {
+				data: params,
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				beforeSend: function() {
+					checkNetState(); // 检查网络链接状态
+				},
+				timeout: 10000, //超时时间设置为10秒
+				async:false,
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				success: function(rps) {
+					if(rps.code == 0) {
+						mui.toast(rps.message);
+						plus.webview.currentWebview().reload();
+					}
+					if(rps.code == 1) {
+						ajaxCode1(data.error_code,data.error_description,'../login.html');
+						mui("#saveBtn").button('reset');
+					}
+				},
+				error: function(xhr, type, errorThrown) { 
+					mui("#saveBtn").button('reset');
+					console.log(JSON.stringify(xhr));
+					console.log(errorThrown);
+					console.log(type);
+					if(type == "timeout") {
+						mui.toast("请求超时");
+					}
+				}
+			});
+		}
+	</script>
+
+</html>

@@ -1,0 +1,102 @@
+[
+    {
+        "bill_context": "可以",
+        "bill_date": "20170102",
+        "bill_dept": "vdvc00100_20170707_0707A003",
+        "bill_no": "vdim10100_20170707_0707A004",
+        "bill_title": "张瑞",
+        "fbill_no": "vdvc00100_20170707_0707A004",
+        "cc_user":"vdvc00100_20170707_0707A004",
+        "bill_user": "vdvc00100_20170707_0707A005",
+        "link_lnext": "vdim102_list"
+    },
+    {
+        "bill_context": "可以",
+        "bill_date": "20170102",
+        "bill_dept": "vdvc00100_20170707_0707A003",
+        "bill_no": "vdim10100_20170707_0707A002",
+        "bill_title": "常新梅",
+        "fbill_no": "vdvc00100_20170707_0707A002",
+        "cc_user":"vdvc00100_20170707_0707A002",
+        "bill_user": "vdvc00100_20170707_0707A003",
+        "link_lnext": "vdim102_list"
+    },
+
+     {
+        "bill_context": "可以",
+        "bill_date": "20170102",
+        "bill_dept": "vdvc00100_20170707_0707A003",
+        "bill_no": "vdim10100_20170707_0707A003",
+        "bill_title": "刘亚",
+        "fbill_no": "vdvc00100_20170707_0707A003",
+        "cc_user":"vdvc00100_20170707_0707A003",
+        "bill_user": "vdvc00100_20170707_0707A002",
+        "link_lnext": "vdim102_list"
+    },
+    {   
+        "bill_context": "好的",
+        "bill_date": "20170101",
+        "bill_dept": "vdvc00100_20170707_0707A001",
+        "bill_no": "vdim10100_20170707_0707A002",
+        "fbill_no": "vdvc00100_20170707_0707A002",
+        "bill_title": "常新梅",
+        "cc_user":"vdvc00100_20170707_0707A002",
+        "bill_user": "vdvc00100_20170707_0707A004",
+        "link_lnext": "vdim102_list"
+    } 
+    ,
+    {   
+        "bill_context": "hello",
+        "bill_date": "20170101",
+        "bill_dept": "vdvc10300_20170801_0101C100",
+        "bill_no": "vdim10100_20170707_0707A002",
+        "fbill_no": "vdvc00100_20170707_0707A001",
+        "bill_title": "刘宇洲",
+        "cc_user":"vdvc00100_20170707_0707A001",
+        "bill_user": "vdvc00100_20170707_0707A007",
+        "link_lnext": "vdim102_list"
+    } 
+    ,
+    {   
+        "bill_context": "hello",
+        "bill_date": "20170101",
+        "bill_dept": "vdvc10300_20170707_0101D100",
+        "bill_no": "vdim10100_20170707_0707A002",
+        "fbill_no": "vdvc00100_20170707_0707A007",
+        "bill_title": "谢广军'",
+        "cc_user":"vdvc00100_20170707_0707A007",
+        "bill_user": "vdvc00100_20170707_0707A001",
+        "link_lnext": "vdim102_list"
+    } 
+    ,
+    {
+        "bill_context": "收到",
+        "bill_date": "20170103",
+        "bill_dept": "vdvc10300_20170707_0101D001",
+        "bill_no": "vdim10100_20170707_0707A005",
+        "fbill_no": "vdvc00100_20170707_0707A005",
+        "bill_title": "张佳宁",
+        "cc_user":"vdvc00100_20170707_0707A005",
+        "bill_user": "vdvc00100_20170707_0707A002",
+        "link_lnext": "vdim102_list"
+    },
+    {
+        "bill_context": "嗯",
+        "bill_date": "20170103",
+        "bill_dept": "vdim10100_20170707_0707A002",
+        "bill_no": "quanzu1",
+        "fbill_no": "vdim10100_20170707_0707A002",
+        "bill_title": "销售一部",
+        "bill_user": "vdvc00100_20170707_0707A002"
+    },
+    {
+        "bill_context": "明白",
+        "bill_date": "20170103",
+        "bill_dept": "vdim10100_20170707_0707D001",
+        "bill_no": "vdim10100_20170707_0707D001",
+        "fbill_no": "vdim10100_20170707_0707A002",
+        "bill_title": "销售二部",
+        "bill_user": "vdvc00100_20170707_0707A002",
+        "link_lnext": "vdim102_list"
+    }
+]

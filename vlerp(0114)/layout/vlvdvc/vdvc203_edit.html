@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>拜访</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			body {font-size: 14px;}
+			.mui-row {padding: 8px;}
+			input[placeholder] {font-size: 12px;}
+			.mui-input-row.lastInput:after {height: 0;}
+			.mui-input-row {position: relative;}
+			.hide-el {display: none;}
+			.auto-fill {display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;height: 14px;padding:1px;padding-left:5px;color: #242424;font-size: 14px;line-height: 14px;overflow: hidden;}
+			.auto-fill-title{color: gray;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head" style="height:75px;">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle">
+				<p id="title">意见反馈</p>
+				<h1 id="header"></h1>
+			</div>
+		</header>
+		<div class="mui-content" style="padding-top:75px;margin-bottom:30px;">
+			<div class="mui-row hide-el" style="padding:10px 0 0 16px;margin:0;background: #FFFFFF;font-size: 12px;">
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">标识：</p><p id="bill_no" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">fbill_no：</p><p id="fbill_no" class="auto-fill mui-col-xs-8">ROOT</p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">bill_task：</p><p id="bill_task" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">制单人代码：</p><p id="bill_user" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">制单人姓名：</p><p id="bill_name" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">制单单位：</p><p id="bill_com" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">制单单位名称：</p><p id="bill_title" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">燕京代码：</p><p id="bill_coppo" class="auto-fill mui-col-xs-8"></p>
+				<p class="auto-fill mui-col-xs-4 auto-fill-title">制单时间：</p><p id="bill_date" class="auto-fill mui-col-xs-8"></p>
+			</div>
+			<div class="mui-input-group" style="padding:8px 18px 5px 32px;margin-bottom:5px;">
+				<label class="blabel">反馈内容</label>
+				<textarea name="" rows="10" cols="2" placeholder="录入反馈内容" id="cc_user" class="" style="border:1px solid #eee;width:100%;margin-top:5px;font-size:12px;line-height: 16px;"></textarea>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;display:;">
+				<div class="mui-input-row lastInput">
+					<label><span style="color:crimson;">*</span>联系方式</label>
+					<input id="bill_bid" type="number" class="mui-input-clear" placeholder="录入联系方式">
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;display:;">
+				<div class="mui-row oprbtnbox" id="qualifyBox">
+					<div class="mui-col-xs-4"></div>
+					<button class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-4 oprbtn qualifybtn" id="J_btn_save" data-txt="提交"> 提交 </button>
+					<div class="mui-col-xs-4"></div>
+				</div>
+			</div>
+			
+		</div>
+		<!-- 点击退出时底部弹出-->
+		<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<!-- 可选择菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" id="sureDelBtn">
+					<a>确认</a>
+				</li>
+			</ul>
+			<!-- 取消菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#sheet1"><b>取消</b></a>
+				</li>
+			</ul>
+		</div>
+		
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/arttmpl.js"></script>
+	<script src="../../js/vlindex.js"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "",
+			teamBillComName = "",
+			userbillNo = "",
+			loginCom = "",
+			loginComName = "",
+			sa402bno = "",
+			fbill_no = "",
+			hadSend = false, // 用于判断是否送审
+			vc801bno = "",
+			rqsData = null,//提交的数据
+			inputData = null,// 表单里的数据
+			reciveInfo = {},
+			newdataInfo = {},
+			task = null;
+		var userName,privileges,fromPage,linkName,detailInfo,bill_task, commonParams,hadSave;
+		var oldBack = mui.back;
+		var sa402Init = {
+			bstatus: {
+				"L": "待送审",
+				"S": "待审核",
+				"Y": "已审核",
+				"YF": "已失效",
+				"new": "录入中"
+			},
+			newBill: {
+				"false": {
+					"title": "新增拜访",
+					"btask": "d_new",
+					"flagsave": false,
+					"bno": VlTools.getBno('vdvc203'),
+					"bstatus": "new",
+					"setValue": false,
+					"backFn": newBack
+				},
+				"true": {
+					"title": "拜访信息编辑",
+					"btask": "d_save",
+					"flagsave": true,
+					"bno": "",
+					"bstatus": "",
+					"setValue": true,
+					"backFn": oldBack
+				}
+			},
+		}
+		var oInit = {
+			"vdsa40201" : {"needText" : false,"bflow":"业务员拜访"},
+			"vdsa40202" : {"needText" : true,"bflow":"主管检查"},
+		}
+		// TODO 1. 页面上的字段========================
+		var normalData = {
+			h: {
+				bill_no: "",
+				fbill_no: "", 	
+				bill_user: "", // 制单人
+				bill_name: "", // 制单人姓名
+				bill_com: "", // 制单单位			
+				bill_title: "", // 制单单位
+				bill_coppo: "", // 燕京代码
+				bill_task: "", // 
+				bill_date: "", // 制单时间
+			},
+			v: {
+				cc_user: "", 
+				bill_bid: "",
+			},
+			c: {}
+		}
+		var testa = {}
+		mui.plusReady(function() {
+			//2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no = self.fbill_no; // 3.fbill_no是
+			loginCom = self.loginCom; // 4.登录单位代码 
+			loginComName = self.loginComName; // 5.登录单位名称 
+			userbillNo = self.userbillNo; // 6.登录人的代码
+			userName = self.userName; // 7.登录人的名称
+			privileges = self.privileges; // 8.当前的权限是
+			fromPage = self.fromPage; // 9.从哪个页面来
+			hadSave = self.hadSave === true ? "N" : "Y";
+			hadSave = self.hadSave;
+			detailInfo = self.detailInfo;
+			commonParams = self.commonParams;
+			var userInfo = JSON.parse(VlStore.pGet('user'));
+			document.getElementById('bill_bid').value = userInfo.usertel;
+			//TODO 3. 基础设置/赋值 
+			mui.back = function() {
+				var btn = ["确定", "取消"];
+				mui.confirm('您确认要返回吗？', '温馨提示', btn, function(e) {
+					if(e.index == 0) {
+						//执行mui封装好的窗口关闭逻辑；
+						sa402Init['newBill'][hadSave]['backFn']();
+					}
+				});
+			}
+			if(hadSave) { // 修改  
+				var detailInfo = self.detailInfo;
+				detailInfo = rqsData = self.detailInfo;
+				findMainData(detailInfo["参数"], sCBFindMainData)
+			}
+			// console.log(hadSave)
+			document.getElementById("header").innerHTML = teamBillComName;
+			// 新增修改不一样
+			document.getElementById("bill_no").innerHTML = sa402Init['newBill'][hadSave]['bno'];
+			//
+			document.getElementById("bill_user").innerHTML = userbillNo;
+			document.getElementById("bill_name").innerHTML = userName;
+			document.getElementById("header").innerHTML = teamBillComName;
+			document.getElementById("bill_com").innerHTML = teamBillCom;
+			document.getElementById("bill_title").innerHTML = teamBillComName;
+			document.getElementById("bill_coppo").innerHTML = VlStore.pGet("newBillcoppo");
+			document.getElementById("bill_date").innerHTML = VlDate.get(new Date(), "_ymdhms");
+			document.getElementById("bill_task").innerHTML = sa402Init['newBill'][hadSave]["btask"];
+			bill_task = sa402Init['newBill'][hadSave]["btask"];
+
+			document.getElementById("J_btn_save").addEventListener("tap", eBtnSend, false);
+
+			//
+		}); //plusReady
+		// function setButton(task) {}
+
+		function billstate(task) {
+			var _json = {
+				"L": "待送审",
+				"S": "待审核",
+				"Y": "已审核"
+			}
+			document.getElementById("billState").innerHTML = _json[task] ? _json[task] : "录入中";
+		}
+		var _oTrueFalse ={"true": true, "false": false};
+		
+		
+		// 提交前数据处理
+		function vd511Process(data) {
+
+			data.bill_date = VlDate.get(new Date(), '_ymdhms');
+			var _brfore = VlUtils.deepCopy(detailInfo, {});
+			var _after = VlUtils.deepCopy(data, {});
+			data = sa402Init['newBill'][hadSave]['bstatus'] === "L" ? VlEdit.compareData(_brfore, _after) : data;
+			data.bill_task = bill_task;
+
+			return data;
+		}
+
+		function getParam(task) {
+			var date = new Date();
+			var params = {
+				bill_com: teamBillCom,
+				bill_no: document.getElementById('bill_no').innerHTML,
+				fbill_no: document.getElementById("fbill_no").innerHTML,
+				bill_user: userbillNo,
+				bill_task: task,
+				bill_date: VlDate.get(date, '_ymdhms')
+			};
+			return params
+		}
+
+		function sendTask(p, sCB, type) {
+			VlAjax.post({
+				"port": "sendTask",
+				"headers": "json",
+				"async": (typeof arguments[2] === "undefined" ? true : arguments[2])
+			}, p, sCB);
+		}
+
+		function eBtnSave() {
+			plus.nativeUI.showWaiting("正在保存数据...");
+
+			var checkResults = VlEdit.checkRequired();
+			if(checkResults == false) {
+				plus.nativeUI.closeWaiting();
+				return false;
+			}
+			rqsData =  VlEdit.getValue(normalData);
+			rqsData = vd511Process(rqsData);
+			console.log(JSON.stringify(rqsData))
+			sendTask(rqsData, sCBsave, false);
+			return true;
+		}
+
+		function eBtnSend() {
+
+			var _p = getParam('b_send');
+			var canSend1 = eBtnSave();
+			var canSend2 = true;
+			if(canSend1 && canSend2) {
+				sendTask(_p, sCBsend)
+			};
+		}
+
+		function eBtnDel() {
+			mui('#sheet1').popover('show', document.getElementById("deleteBtn"));
+		}
+
+		function eBtnSureDel() {
+			var _p = getParam('d_delete');
+			sendTask(_p, sCBdel);
+		}
+
+		function sCBsave(data) {
+//			console.log("baocun")
+			mui.toast("操作成功~");
+			hadSave = true;
+			sa402Init['newBill'][hadSave]['bstatus'] = "L";
+			// setButton("L");
+			bill_task = sa402Init['newBill'][hadSave]["btask"];
+			detailInfo = VlUtils.deepCopy(rqsData, {});
+			plus.nativeUI.closeWaiting();
+		}
+		
+		function sCBsend(data) {
+			plus.nativeUI.closeWaiting();
+			sa402Init['newBill'][hadSave]['bstatus'] = "S";
+			deleteSuccess("vdvc203_plist.html", "vdvc203_list.html");
+		}
+
+		function deleteSuccess(parentview, childview) {
+			var plistview = plus.webview.getWebviewById(parentview);
+			plistview.reload();
+			if(arguments[1]){
+				var listview = plus.webview.getWebviewById(childview);
+				listview.reload();
+			}
+			var oldBack = mui.back;
+			mui.back = function() {
+				var webview = plus.webview.getWebviewById(parentview);
+				webview.show();
+			}
+			mui.back();
+		}
+		function newBack() {
+			var webview = plus.webview.getWebviewById('vdvc203_plist.html');
+			webview.show();
+		}
+
+		function findMainData(bno, sCB){
+			queryparmas = {
+				name: 'vdsa402',
+				bill_com: loginCom,
+				bill_task:"L,S,Y",
+				currentPage: 1,
+				pageSize: 1,
+				paramText: "",
+				bill_no: bno
+			}
+			VlAjax.post({
+				"port" : "find",
+				"headers" : "json",
+			}, queryparmas, sCB)
+		}
+		function sCBFindMainData(data){
+				if(data.data.length != 0) {
+					if(data.data[0].bill_text == ""){
+						data.data[0].bill_text = [testa.h];
+					}
+					detailInfo = data.data[0];
+					VlEdit.setValue(data.data[0], normalData);
+					document.getElementById("bill_edateshow").value = data.data[0].bill_edate.indexOf("1900") > -1 ? "" : data.data[0].bill_edate.slice(0, -3);
+					document.getElementById("bill_bdateshow").value = data.data[0].bill_bdate.slice(0, -3);
+					sa402Init['newBill'][hadSave]['bno'] = data.data[0].bill_no;
+					sa402Init['newBill'][hadSave]['bstatus'] = data.data[0].bill_task;
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					mui.toast("未查询到数据~")
+				}
+				plus.nativeUI.closeWaiting();
+			}
+	</script>
+
+</html>

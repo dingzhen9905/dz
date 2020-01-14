@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>配送管理</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.list_font {
+				font-size: 10px;
+				line-height: 12px;
+				height: 16px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+				margin-top:3px;
+			}
+			
+			.list_h5 {
+				font-size: 13px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			
+			.list_sts {
+				margin-left:10px;
+				margin-top:-3px;
+				font-size: 10px;
+				line-height: 14px;
+				color: #f0ad4e;
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+			
+			.mui-pull-top-pocket {
+				border: transparent;
+			}
+			
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			body {
+				font-size: 16px;
+			}
+			
+			ul#contList {
+				width: 100%;
+				background: #efeff4;
+			}
+			
+			ul#contList li {
+				margin-bottom: 10px;
+			}
+			
+			ul.detail li {
+				height: 70px;
+				padding: 5px 5px;
+				background: ;
+				margin: 3px 10px;
+			}
+			
+			.money{
+				font-size: 10px;
+			}
+			/* 订单主明细表样式*/
+			ul.order-main-ul{margin-bottom:50px;background:#efeff4;}
+			/*.order-main-li{margin-bottom: 3px;overflow: hidden;}*/
+			.order-main-li{background: #fff;margin-bottom:8px;border-top:1px solid #E0E0E0; box-shadow: 3px 3px 3px #ccc}
+			.main-top{overflow: hidden;border-bottom:1px solid #eee;color:#20B2AA;}
+			.main-top-right{text-align:right;color: darkgray;}
+			.order-num{font-size:18px !important;color: #20B2AA;}
+			.main-middle{overflow:hidden;margin-left:0px;}
+			.main-bottom{overflow: hidden;border-bottom:1px solid #eee;color:#333;font-size:12px;}
+			.main-bottom-status{text-align:right;padding-right:10px;}
+			ul.order-detail-ul {margin: 0;padding:0;overflow: hidden;}
+			.order-detail-li{background:#f6f6f6;border-radius:10px;margin-bottom:3px;overflow:hidden;}
+			.order-detail-imgbox{padding:5px;width:45px;}
+			.order-imgbox{padding:5px;padding-left:0px;box-sizing:border-box;}
+			.order-info-title {font-size: 13px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;;color:#242424;padding-top:1px;}
+			.order-info-leftbox{}
+			.order-info-left {font-size: 10px;line-height: 12px;height: 14px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;}
+			.order-info-rightbox{text-align: right;}
+			.order-info-right {font-size: 12px;line-height: 14px;float: right;margin-top:3px;}
+			.order-price{color:#FF5053;font-size: 14px;}
+			.order-qty{font-size: 16px;color: #000000;}
+			.order-statusbox{text-align:right;padding-right:10px;}
+			.order-status {margin-left:10px;font-size: 10px;line-height: 14px;color: #f0ad4e;border: 1px solid #f0ad4e;border-radius: 2px;text-align: center;}
+			.mui-row:before,
+			.mui-row:after,
+			.mui-table-view-cell:after,
+			.mui-table-view-cell:before{
+				height:0px;
+			}
+			.mui-table-view-cell:hover,
+			.mui-slider-cell:hover{
+				background:#E0E0E0 !important;
+			}
+			.hide{display: none;}
+		</style>
+	</head>
+
+	<body>
+		<div id="vdst315hn_list" class="mui-content mui-scroll-wrapper">
+			<div class="mui-input-group" id="aboutFlow" style="padding:5px 18px 5px 18px;margin:5px 0;position: relative;font-size: 10px;height: 70px;">
+				<div class="mui-row" style="margin: 0;padding:0;height:40px;overflow:hidden;">
+					<span class="mui-col-xs-2" style="color:#ACACB4;">当前地址:</span>
+					<span class="mui-col-xs-10" id="bill_title" style="font-size:12px;"></span>
+				</div>
+				<div class="mui-row" style="margin: 0;padding:0;height: 20px;">
+					<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+						<span class="mui-col-xs-3" style="color:#ACACB4;">经度:</span>
+						<span class="mui-col-xs-8" id="bill_ipaddr"></span>
+					</div>
+					<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+						<span class="mui-col-xs-3" style="color:#ACACB4;">纬度:</span>
+						<span class="mui-col-xs-8" id="bill_gpsaddr"></span>
+					</div>
+				</div>
+			</div>
+			<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+				<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+			</div>
+			<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+				<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+				<p style="font-size:12px;">正在搜索中......</p>
+			</div>
+			<div class="mui-scroll">
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed order-main-ul">
+				</ul>
+			</div>
+		</div>
+		
+
+	</body>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FQCQkNvWb9g4FnFXN3IGieSwQgLOR2PU&services=&t=20171004185957"></script>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vdst315hn_list',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					height: 200,
+					contentnomore: '没有更多数据了',
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		var teamBillCom,teamBillComName,userbillNo,loginCom,loginComName,fromPage,userName,privileges,
+		pageSize = 10,
+		search = '',
+		_p = {},
+		pager = {},
+		activeType = "001",
+		activeTask = "VR_vdvc312_query_04",
+		activeText = "附近的店",
+		bill_ipaddr = 0,
+		bill_gpsaddr = 0,
+		oUl = document.getElementById("contList");
+		mui.plusReady(function() {
+
+			var self 		= plus.webview.currentWebview().parent();
+			teamBillCom 	= self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo 		= self.userbillNo;
+			loginCom 		= self.loginCom;
+			loginComName 	= self.loginComName;
+			fromPage 		= self.fromPage;
+			userName 		= self.userName;
+			privileges 		= self.privileges;
+
+			document.addEventListener('subpage133list', function(e) { ecChangeTab(e) });
+			mui("#contList").on('tap', 'li.nearbyli', function(e) {eaLiNearby(this) });
+			mui("#contList").on('tap', 'li.normalli', function(e) { eaLiNormal(this) });
+			VlTools.getLocate(sCBgetLocate, eCBgetLocate);
+		}); // plusReady
+		
+		
+		function pulldownRefresh() {
+			mui.toast("加载中...");
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			_p = findData();
+			VlAjax.post({"port" : "active","headers" : "json","isFirst" : true}, _p, sCBfind);
+			mui('#vdst315hn_list').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+		}
+		
+		function pullupRefresh() {
+			if(_p.currentPage < pager.totalPage) {
+				_p.currentPage = _p.currentPage + 1;
+			} else {
+				plus.nativeUI.toast("~没有更多啦~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdst315hn_list').pullRefresh().endPullupToRefresh();
+				return;
+			}
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			VlAjax.post({"port" : "active","headers" : "json","isFirst" : false}, _p, sCBfind);
+			mui('#vdst315hn_list').pullRefresh().endPullupToRefresh();
+		}
+		function ecChangeTab(event) {
+			activeTask = event.detail.activeTask;
+			activeType = event.detail.activeType;
+			activeText = event.detail.activeText;
+			search = event.detail.activeSearch;
+			console.log(search)
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			oUl.innerHTML = '';
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			_p = findData();
+			console.log(JSON.stringify(_p))
+			VlAjax.post({"port" : "active","headers" : "json","isFirst" : true}, _p, sCBfind);
+		}
+		function eaLiNormal(self){}
+		function eaLiNearby(self) {
+			var num = jQuery(self).index();
+			var dataRow = JSON.parse(self.getAttribute("data-row"));
+			VlPage.beforeOpen('vdst315hn_edit.html')
+			open315edit(dataRow)
+		}
+		function open315edit(mdinfo){
+			mui.openWindow({
+				url: 'vdst315hn_edit.html',
+				id: 'vdst315hn_edit.html',
+				createNew: true,
+				extras: {
+					teamBillCom		: teamBillCom,
+					teamBillComName	: teamBillComName,
+					userbillNo		: userbillNo,
+					userName		: userName,
+					loginCom		: loginCom,
+					loginComName	: loginComName,
+					toPage			: "vdst315hn_edit.html",
+					fromPage		: "vdst315hn_list.html",
+					detailInfo		: mdinfo,
+				}
+			});
+		}
+		
+		function findData(){
+			var _p = { // 默认我的客户001
+				name: 'msvr',
+				bill_com	: teamBillCom,
+				bill_user	: userbillNo,
+				bill_task	: activeTask, 
+				bill_title  : search,
+				bill_ipaddr : bill_ipaddr,
+				bill_gpsaddr: bill_gpsaddr,
+				bill_qtask 	: activeText,
+				currentPage	: 1,
+				pageSize	: pageSize,
+				paramText	: ''
+			}
+			return _p;
+		}
+		function sCBgetLocate(p){
+			if(plus.os.name ==="Android"){
+				bill_ipaddr = p.coords.longitude;
+				bill_gpsaddr = p.coords.latitude;
+				document.getElementById("bill_ipaddr").innerHTML = bill_ipaddr;
+				document.getElementById("bill_gpsaddr").innerHTML = bill_gpsaddr;
+				document.getElementById("bill_title").innerHTML = p.addresses;
+			}else{
+				var provinces=p.address.province
+				var citys=p.address.city
+				var districts=p.address.district
+				var streets=p.address.street
+				var titles=provinces+citys+districts+streets
+				document.getElementById("bill_title").innerHTML = titles;
+				document.getElementById("bill_ipaddr").innerHTML = p.longitude;
+				document.getElementById("bill_gpsaddr").innerHTML = p.latitude;
+			}
+			
+			plus.nativeUI.showWaiting("正在查询数据...");
+			_p = findData();
+			VlAjax.post({"port" : "active","headers" : "json","isFirst" : true}, _p, sCBfind);
+		}
+		function eCBgetLocate(e){
+			alert(JSON.stringify(e))
+		}
+		var _oContent = {
+			"负责人":"",
+			"电话":"",
+			"地址":"",
+			"供应商代码":"",
+			"供应商名称":"",
+			"厂编":""
+		}
+		var _oAddr = {
+			"linkbd_linkprov":"",
+			"linkbd_linkstreet": "",
+			"linkvd_corraddr":"",
+			"linkbd_lngposition":""
+		}
+		function st315listAdapter(data){
+        	var oData = {};
+			for(var k in data) {
+				oData[k.slice(0, 2)] = data[k];
+			}
+	        if(activeType === "001"){
+	        	var _content = oData['内容'] = (oData['内容'].indexOf('{') > -1) ? JSON.parse(oData['内容']) : _oContent;
+	        	var _addr = oData['指令']= (oData['指令'].indexOf('{') > -1) ? JSON.parse(oData['指令'])[0] : _oAddr;
+	        	oData.addr = oData['指令']["linkbd_linkprov"] + " " + oData['指令']["linkbd_linkstreet"] + " " + oData['指令']["linkvd_corraddr"];
+				return {
+					"rowdata" 	: JSON.stringify(oData),
+					"addiClass" : "nearbyli",
+					"liTitle" 	: oData["标题"],
+					"liDate" 	: oData["日期"].slice(5,16),
+					"liStatus" 	: "",
+					"liImgId" 	: oData["图片"],
+					"liImgName" : oData["图片"],
+					
+					"liLeftM" 	: oData.addr,
+					"liLeftB" 	: "",
+					
+					"liRightT" 	: oData["数量"],
+					"liRightM" 	: _content["厂编"],
+					"liRightB" 	: "",
+				}
+	        }else{
+	        	var cInfo = {
+					'addr':'地址：',
+					'tel' :'联系电话：'
+				}
+				if(!VlUtils.isnull(oData["内容"])){
+					cInfo = {
+						'addr':'地址：' + oData["内容"].split(",")[0],
+						'tel' :'联系电话：' + oData["内容"].split(",")[1]
+					}
+				}
+				return {
+					"rowdata" 	: JSON.stringify(oData),
+					"addiClass" : "normalli",
+					"liTitle" 	: oData["标题"],
+					"liDate" 	: oData["日期"].slice(5,16),
+					"liStatus" 	: "",
+					"liImgId" 	: oData["图片"],
+					"liImgName" : oData["指令"],
+					
+					"liLeftM" 	: ('联系人：'+ oData["内容"].split(",")[1]),
+					"liLeftB" 	: ('地址：'+ oData["内容"].split(",")[0]),
+					
+					"liRightT" 	: '<span style="font-size:18px;color:#242424;">' + oData["金额"] + '</span>件',
+					"liRightM" 	: oData["数量"],
+					"liRightB" 	: "",
+				}
+	        }
+	        
+	    }
+		function setImg(id, path){
+			document.getElementById(id).setAttribute("src", path);
+		}
+		
+		
+		function sCBfind(data,type){
+			pager = data.page;
+			document.getElementById("showHint").style.display = "none";
+			var contList = document.getElementById("contList");
+			if(data.data.length != 0) {
+				var text = '';
+				for(var i = 0; i < data.data.length; i++) {
+
+					var _rowd = st315listAdapter(data.data[i]);
+					//
+					if(type&&i==0){
+						contList.innerHTML="";
+					}
+					var li = document.createElement("li");
+					li.setAttribute("data-row",_rowd.rowdata);	
+					li.setAttribute("class", ("mui-table-view-cell order-main-li " + _rowd.addiClass));
+					li.setAttribute("data-load","false");
+					li.setAttribute("data-show","false");
+					li.style.overflow = "hidden";
+					li.style.background = "#fff";
+					var txt = "";
+					txt += '<div class="mui-slider-cell  mui-slider-handle">';
+					txt += '<div class="mui-row maintxt main-top hide">';
+					txt += '<span class="mui-col-xs-7 ">'+_rowd.liTitle+'</span>';
+					txt += '<span class="mui-col-xs-5 main-top-right">'+_rowd.liRightM+'</span>';
+					txt += '</div>';
+					txt += '<div class="mui-row main-middle">';
+					txt += '<div class="mui-col-xs-2 mui-row order-imgbox">';
+					txt += '<img class="mui-col-xs-12" src="../../images/icon/default.png" id="'+_rowd.liImgId+'" />';
+					txt += '</div>';
+					txt += '<div class="mui-col-xs-7 order-info-leftbox">';
+					txt += '<h5 class="order-info-title mui-col-xs-12 ">'+_rowd.liTitle+'</h5>';
+					txt += '<p class="order-info-left mui-col-xs-12 ">'+_rowd.liLeftM+'</p>';
+					txt += '<p class="order-info-left mui-col-xs-12 ">'+_rowd.liLeftB+'</p>';
+					txt += '</div>';
+					txt += '<div class="mui-col-xs-3 mui-row order-info-rightbox" style="text-align: right;">';
+					txt += '<p class="order-info-right mui-col-xs-12">'+_rowd.liRightT+'</p>';
+					txt += '<p class="order-info-right mui-col-xs-12 money">'+_rowd.liRightM+'</p>';
+					txt += '<p class="order-info-right mui-col-xs-12">'+_rowd.liDate+'</p>';
+					txt += '</div>';
+					txt += '</div>';
+					txt += '<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed order-detail-ul hide">';
+					txt += '</ul>';
+					txt += '<div class="mui-row main-bottom hide">';
+					txt += '<span class="mui-col-xs-5 ">'+""+'</span>';
+					txt += '<span class="mui-col-xs-7 order-statusbox"><span class="order-status">'+""+'</span></span>';
+					txt += '</div>';
+					txt += '</div>';
+					if(type&&i==0){
+						document.getElementById("searching").style.display = "none";
+					}
+					li.innerHTML = txt;
+					contList.appendChild(li);
+					
+					VlAjax.dlIcon(_rowd.liImgName, _rowd.liImgId, setImg);
+				}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+//				mui.toast("未查询到数据~")
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("searching").style.display = "none";
+				document.getElementById("showHint").style.display = "block";
+			}
+			plus.nativeUI.closeWaiting();
+		}
+		// 点击“待接单”列下的数据，渲染子表信息
+		function detaillist(liclass,data,type){
+			var detailList = jQuery(".order-detail-ul").eq(liclass);
+			if(data.data.length != 0) {
+				mui.toast("搜索完成，正在加载...");
+				var text = '';
+				for(var i = 0; i < data.data.length; i++) {
+					var newdataArr = {};
+					for(var k in data.data[i]) {
+						newdataArr[k.slice(0, 2)] = data.data[i][k];
+					}
+					var _obj = {
+						"规格型号": "",
+						"物品名称": "",
+						"单位": "",
+						"单价": "",
+						"政策码": "",
+						"商品属性": "",
+						"商品编码": "",
+						"生产厂家代码": ""
+					};
+					var _content = newdataArr['内容'].indexOf('{') > -1 ? JSON.parse(newdataArr['内容']) : _obj;
+					//
+					if(type){
+						text += '<li class="order-detail-li" data-row=\'' + JSON.stringify(newdataArr) + '\'>';
+						text += '<div class="mui-slider-cell  mui-slider-handle">';
+						text += '<div class="mui-row">';
+						text += '<div class="mui-col-xs-2 order-detail-imgbox">';
+						text += '<img class="vdfa332 mui-col-xs-12" src="../../images/icon/default.png" id="'+newdataArr["指令"]+'" />';
+						text += '</div>';
+						text += '<div class="mui-col-xs-6 mui-row" style="height:35px;">';
+						text += '<h5 class="order-info-title mui-col-xs-12">'+_content["物品名称"]+'</h5>';
+						text += '<p class="order-info-left mui-col-xs-12">'+_content["政策码"]+'-'+_content['商品属性']+'</span></p>';
+						text += '</div>';
+						text += '<div class="mui-col-xs-4 mui-row order-info-rightbox">';
+						text += '<p class="order-info-right mui-col-xs-12"><span class="order-qty ">'+newdataArr["数量"]+'</span>件</p>';
+						text += '<p class="order-info-right mui-col-xs-12"><span class="order-price "></span> </p>';
+						text += '</div>';
+						text += '</div>';
+						text += '</div>';
+						text += '</li>';
+						detailList.html(text);
+					}
+					vlUtils.downloadicon(_content['商品编码'], newdataArr["指令"]);
+				}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				mui.toast("未查询到数据~");
+				detailList.html("");
+			}
+		}
+		function openEditPage(e,needScan){
+				var li = e.parentNode.parentNode;
+				var num = jQuery(li).index();
+				var dataRow = JSON.parse(li.getAttribute("data-row"));
+				var hasload = li.getAttribute("data-load");
+				var isNew = "";
+				var hadSend;
+				var isScan = needScan;
+				var mdinfo = {
+					main:{},
+					detail:[],
+				};
+				mdinfo.main=dataRow;
+				isNew = false;
+				hadSend = false;
+				if(hasload == "false"){
+					detailparmas = {
+						name: 'msvr',
+						bill_com: teamBillCom,
+						bill_task: "VR_query_vdeb212_12",
+						bill_no:dataRow["图片"],
+						currentPage: 1,
+						pageSize: pageSize,
+						paramText: "",
+						bill_user: userbillNo
+					}
+					rqsDataAjax(detailparmas,'/Find/Ddata/activity', detailtxt, '../login.html',true);
+					function detailtxt(data,type){
+	
+						li.setAttribute("data-load","true");
+						detaillist(num,data,type);
+						var len = jQuery(li).find(".order-detail-ul li").length;
+						for(var i = 0; i < len; i++){
+							mdinfo.detail.push(JSON.parse(jQuery(li).find(".order-detail-ul li").eq(i).attr("data-row")));
+						}
+						open315edit(mdinfo,isNew,hadSend,isScan,activeType);
+					}
+				}else{}
+				
+				
+			}
+	</script>
+
+</html>

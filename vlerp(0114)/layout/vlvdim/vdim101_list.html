@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>消息</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title{
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.oa-contact-cell.mui-table .mui-table-cell {
+				padding: 3px 0 ;
+				vertical-align: middle;	
+			}
+			.oa-contact-cell.mui-table .mui-table-middle {
+				padding: 3px 0;
+				vertical-align: middle;
+			}
+			.oa-contact-cell {
+				position: relative;
+				margin: -11px 0;
+			}
+			.oa-contact-avatar {
+				width: 75px;
+			}
+			.oa-contact-avatar img {
+				width: 70%;
+			}
+			.oa-contact-content {
+				width: 100%;
+			}
+			.oa-contact-name {
+				margin-right: 20px;
+				color: #000000;
+				font-size: 15px;
+				font-weight: bold;
+			}
+			.oa-contact-name {
+				float: left;
+			}
+		    .oa-contact-position{
+				float: right !important;
+			}
+			.oa-contact-email{
+				font-size: 13px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">消息</h1>
+			<a class=" mui-icon mui-icon mui-icon-plusempty  mui-pull-right" href="#"></a>
+		</header>
+		<div class="mui-content" id="refreshContainer">
+			<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+				<!--<li class="mui-table-view-cell news">2332323223</li>-->
+			</ul>
+		</div>
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item" id="indexPage" href="#tabbar">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">工作</span>
+			</a>
+			<a class="mui-tab-item  mui-active" id="news">
+				<span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>
+				<span class="mui-tab-label">消息</span>
+			</a>
+			<a class="mui-tab-item" id="items">
+				<span class="mui-icon mui-icon-contact"></span>
+				<span class="mui-tab-label">资料</span>
+			</a>
+			<a class="mui-tab-item"  id="set">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">设置</span>
+			</a>
+		</nav>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+mui.init({
+  pullRefresh : {
+    container:"#refreshContainer",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+    down : {
+      auto: true,//可选,默认false.首次加载自动下拉刷新一次
+      style:'circle',
+      color:'#2BD009'
+    },
+    up : {
+      auto: true //可选,默认false.首次加载自动上拉加载一次
+    }
+  }
+});
+		
+		mui.plusReady(function(){
+		   var $$=jQuery.noConflict();
+			$$(document).ready(function(){
+			    $$("body").on("tap",".news",function(){
+			    	var fgroupCode = $$(this).children("input").val();
+
+			    	 mui.openWindow({
+			    	 	url:'../vlvdim/vdim102_list.html',
+			    	 	extras:{ 
+			    	 		fsend_group: fgroupCode
+			    	 	}
+			    	 })
+			    })
+			});
+		})
+
+		 // 扩展API加载完毕后调用onPlusReady回调函数 
+		document.addEventListener( "plusready", onPlusReady, false );
+			// 扩展API加载完毕，现在可以正常调用扩展API
+			function onPlusReady() {
+				 var user = JSON.parse(vlUtils.getStorage('user'));
+		         var useName = user.bill_no;
+				 plus.io.resolveLocalFileSystemURL("_documents/vlddata/vdim101.json", function( entry ) {
+					entry.file( function(file){
+						var fileReader = new plus.io.FileReader();
+						fileReader.readAsText(file, 'utf-8');
+						fileReader.onloadend = function(evt) {
+							 var data2 = evt.target.result
+							 var data = JSON.parse(data2); 
+							 var text = " ";
+							 for(var i=0 ;i<data.length; i++){
+							 	var selfUesrName = data[i]["bill_user"];
+							 	var bill_no = data[i]["fbill_no"];
+							 	 if(useName == selfUesrName){
+								 		var contList = document.getElementById("contList");
+								 		
+								text +='<li class="mui-table-view-cell news">';
+								text +='<input value = '+data[i]["fbill_no"]+' style="display: none;">'
+						 	    text +='<div class="mui-slider-cell">';
+							 	text +='<div class="oa-contact-cell mui-table">';
+							 	text +='<div class="oa-contact-avatar mui-table-cell">';
+							 	var imgadrr="../../images/"+bill_no+".jpg";
+								text +='<img src="'+imgadrr+'" /></div>';
+							 	text +='<div class="oa-contact-content mui-table-cell "><div class="mui-clearfix oa-maging">';
+							 	text +='<span class="oa-contact-name">'+data[i]["bill_title"]+'</span>';
+							 	text +='<span class="oa-contact-position mui-h6">'+data[i]["bill_date"]+'</span></div>';
+							 	text +='<p class="oa-contact-email mui-h6">'+data[i]["bill_context"]+'</p></div></div></div></li>';
+								 contList.innerHTML=text;
+							    }
+							 }
+						}
+					} );
+				}, function ( e ) {
+//					console.log( "Resolve file URL failed: " + e.message );
+				} );
+			}
+		
+		//
+		//
+	   	document.getElementById("indexPage").addEventListener("tap",function(){
+			mui.openWindow({
+				url: '../../index.html',
+				id: "index.html"
+			})
+		});
+		document.getElementById("set").addEventListener("tap",function(){
+				mui.openWindow({
+					url:'../lmain_set.html',
+				    id: "set"
+				})
+			})
+		document.getElementById("items").addEventListener("tap",function(){
+			mui.openWindow({
+				url:'../lmain_org.html',
+				id: "items"
+			})
+		})
+	</script>
+</html>

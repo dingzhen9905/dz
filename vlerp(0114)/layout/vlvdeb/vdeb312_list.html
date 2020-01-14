@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			ul,li{
+				margin:0;
+				padding: 0;
+			}
+			#linkvd_stcode li {
+				list-style: none;
+			}
+			
+			#linkvd_stcode li::before {
+				content: "+ ";
+				/*color:blue;*/
+				/*font-size:30px;*/
+			}
+			
+			form {
+				margin: 10px 0;
+			}
+			
+			.topInput,
+			.topInput a {
+				/*height:40px;
+				line-height: 40px;*/
+				height: 50px;
+				line-height: 50px;
+			}
+			
+			.topInput a {
+				padding-top: 0;
+				padding-bottom: 0;
+				line-height: 14px;
+			}
+			
+			.topInput a input {
+				padding-top: 0;
+				color: #929292;
+			}
+			
+			.topInput a input#linkvd_term {
+				/*border:1px solid #E0E0E0;*/
+				padding-top: 5px;
+				padding-bottom: 5px;
+				color: #555;
+				height: 28px;
+				width: auto;
+				border-radius: 5px;
+				background-color: #E0E0E0;
+			}
+			
+			.topInput a input[placeholder] {
+				font-size: 14px;
+			}
+			
+			ul {
+				/*margin-top: 5px;*/
+				margin-bottom: 5px;
+				/*padding: 5px;*/
+				background: #fff;
+			}
+			
+			.mui-row:before,
+			.mui-row:after {
+				display: none;
+			}
+			
+			.threeBottom {
+				overflow: hidden;
+			}
+			
+			.m {
+				overflow: hidden;
+				margin-top: -28px !important;
+				padding: 0 !important;
+			}
+			
+			.topNav {
+				padding: 0;
+			}
+			
+			.topNav p {
+				height: 35px;
+				line-height: 35px;
+			}
+			/*删除*/
+			
+			#sheet1 ul li:after {
+				height: 0;
+			}
+			
+			p.topitem {
+				padding: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<ul id="contList">
+		</ul>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var $$ = jQuery.noConflict();
+		var mianOnlyCode = getDataCode("vdeb211");
+		var detail_vInfo = [];
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var parentPage = "";
+		var search = ""; // 要查询的内容
+		var startIndex = 1;
+		var pageSize = 10;
+		var linkvd_stcode = ''; //用于存储扫描的码 
+		var inputData = null; // 表单里的数据
+		var hadSend = false; // 用于判断是否送审
+		var billnoSave = ""; // 修改时的主表bill_no 
+		var detailInfo = {};
+
+		mui.plusReady(function() {
+			window.addEventListener('subpage312list', function(event) {
+				var active = event.detail.active;
+				if(active == "002") {//已付款订单 
+					queryparmas = {
+						name: 'vdeb312',
+						bill_com: teamBillCom,
+						bill_task: "L",
+						currentPage: 1,
+						pageSize: 30,
+						paramText: "",
+						bill_user: userbillNo
+					}
+					searchAjax(queryparmas);
+				} else if(active == "004") {//退货订单 
+					alert("暂无退货功能");
+					queryparmas = {
+						name: 'vdeb312',
+						bill_com: teamBillCom,
+						bill_task: "Y",
+						currentPage: 1,
+						pageSize: 30,
+						paramText: "",
+						bill_user: userbillNo
+					}
+					searchAjax(queryparmas);
+				} 
+				return;
+			});
+
+			// 获取上个页面传过来的参数**********
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			parentPage = self.parentPage;
+			flagNew = self.flagNew;
+			// 查询
+			teamBillCom = vlUtils.getStorage("teamBillCom")
+			userbillNo = vlUtils.getStorage("userbillNo")
+
+			queryparmas = {
+				name: 'vdeb312',
+				bill_com: teamBillCom,
+				//bill_com: "vdvc10100_20171122_c6ac5b3d",
+				bill_task: "L",
+				currentPage: 1,
+				pageSize: 30,
+				paramText: "",
+				bill_user: userbillNo
+			}
+			searchAjax(queryparmas);
+			// 管理单位
+			vlUtils.setStorage("agencyTeamBillCom", teamBillCom);
+			mui("#contList").on('tap', 'li', function(e) {
+				var e = this;
+				var li = e;
+				var dataRow = li.getAttribute("data-row");
+				var rowObj = JSON.parse(dataRow); 
+				// mui.openWindow({});
+			});
+			 
+			 
+
+			// 查询
+			function searchAjax(queryparmas) {
+				mui.ajax(systemURL + 'Find/Ddata/findDetail', { 
+					data: queryparmas,
+					beforeSend: function() {
+						var network = true;
+						checkNetState(); // 检查网络链接状态
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 60000, //超时时间设置为10秒；
+					async: false,
+					contentType: "application/x-www-form-urlencoded; charset=utf-8",
+					success: function(data) {
+						//node_qty 数量
+						//node_amt 总价
+						//node_ price   单价 
+						if(data.code == 0) {
+							var text = " ";
+							var datas = data.data;
+							if(datas.length != 0) {
+								for(var i = 0; i < datas.length; i++) {
+									var contList = document.getElementById("contList");
+									for(var k = 0; k < datas[i].values.detail.length; k++) {
+										var comImgid = vlUtils.uuid('comImg', 4, 10);
+										var contList = document.getElementById("contList");
+										text += '<li class="mui-table-view-cell" style="padding:5px;margin-top:5px;" data-row=\'' + JSON.stringify(datas[i].values.detail) + '\'>';
+										text += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+										text += '<div class="mui-slider-cell  mui-slider-handle">';
+										text += '<div class="mui-row m">';
+										text += '<div class="mui-col-xs-3 mui-row" style="background:;padding:5px;width:;">';
+										text += '<img class="vdeb211 mui-col-xs-12" src="../../images/icon/default.png"  id="' + comImgid + '" style="width:60px;height:60px;" />';
+										text += '</div>';
+										text += '<div class="mui-col-xs-8 " >';
+										text += '<div class="mui-row addNumBox1" id="add" style="display:none;overflow:hidden;">';
+										text += '<div class="mui-col-xs-1 mui-row" style="background:;height:50px;position: relative;">';
+										text += '<div style="position: absolute;top:18px;left:30px;width:60%;border:1px solid #ddd;border-radius: 4px;">';
+										text += '<div class="subfun" style="width:25px;height:25px;float:left; text-align:center;line-height:30px;border-right:1px solid #ddd;">-</div>';
+										text += '<input id="num"  value="' + datas[i].values.detail[k].node_qty + '" style="width:50%; float:left;text-align:center;height:30px;border:0;"></input>';
+										text += '<div class="addfun" style="width:25px;height:25px;float:left;text-align:center;line-height:30px;padding:0;border-left:1px solid #ddd;">+</div>';
+										text += '</div>';
+										// ↑自己写
+										text += '</div>';
+										text += '<div class="mui-col-xs-12 mui-row list_three" style="text-align:right;padding-right:5px">';
+										text += '<p class="list_fonts mui-col-xs-12 addnum" num="' + i + '" style="float:right;background:#f0ad4e;height:65px;line-height:65px;width:50px;text-align: center;color:#fff;">完成</p>';
+										text += '</div>';
+										text += '</div>';
+										text += '<div class="mui-row addNumBox0" style="display:block;overflow:hidden;height:70px;">';
+										text += '<div class="mui-col-xs-9 mui-row" style="background:;height:50px;">';
+										text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;">' + datas[i].values.detail[k].bill_name + '</h5>';
+										text += '<p class="list_font mui-col-xs-12" >' + datas[i].values.detail[k].bill_id + '</p>';
+										text += '<p class="list_font mui-col-xs-12" style="background:;font-size:12px; color:red;line-height:10px"><span>￥</span>&nbsp' + datas[i].values.detail[k].node_price + '积分</p>';
+										text += '</div>';
+										text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align:right;padding-right:5px">'; 
+										text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;"></p>';
+										text += '<p id="number" class="list_sts mui-col-xs-8" style="float:right;margin-top:23px;height: 16px;width:60px;">×' + datas[i].values.detail[k].node_qty + '</p>';
+										text += '</div>';
+										text += '</div>';
+										text += '</div>';
+										text += '</div>';
+										text += '</div>';
+										text += '</li>';
+										vlUtils.downloadicon(datas[i].values.detail[k]["bill_text"][0]["linkbd_bEANcode"], comImgid);
+									}
+									contList.innerHTML = text;
+								}
+
+							} else {
+								mui.toast("未查询到数据");
+								document.getElementById("contList").innerHTML = "";
+							}
+						}
+						if(data.code == 1) {
+							mui.toast(data.error_description);
+							console.log(data.error_description);
+							//******************
+							if(data.error_code == 403) { // 掉线
+								var btnArray = ['重新登录', '退出'];
+								mui.confirm(data.error_description, '下线通知', btnArray, function(e) {
+									if(e.index == 0) {
+										loginAgainAjax();
+									} else {
+										setTimeout(function() {
+											outLogining();
+										}, 0);
+									}
+								});
+							}
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(xhr.responseText);
+						console.log(errorThrown);
+						console.log(type);
+					}
+				});
+			}
+
+			// 判断为新增还是修改
+			if(flagNew == "N") { // 修改  
+
+			}
+			if(flagNew == "Y") { // 新增状态
+				onlyCode = getDataCode("vdeb211"); //bill_no字段
+				var bill_task = "d_new";
+			}
+			// 
+
+			//获取每个输入框的值
+			function getInputValue() {
+				return;
+				//第一部分
+				var linkvd_term = $$("#linkvd_term").html(); //收货单位     	
+				var linkvd_linkcom = $$("#linkvd_linkcom").html(); //收货单位     	
+				var linkvd_termaddr = $$("#linkvd_termaddr").html(); //收货地址        	
+				var linkvd_termcontact = $$("#linkvd_termcontact").html(); //联系信息  
+				// 提交数据
+				inputData = [{
+					linkvd_termaddr: linkvd_termaddr, // 
+					linkvd_termcontact: linkvd_termcontact, //
+					linkbd_ERP_itemid: "", // 产品id
+					linkbd_ERP_itemname: "", // 产品id
+					linkbd_ERP_corrid: linkvd_linkcom, // 经销商id
+					linkbd_ERP_corrname: linkvd_term, // 经销商
+					linkbd_ERP_orderno: "", // 订单号
+					linkbd_ERP_invname: "", //仓库名称
+					linkbd_ERP_invid: "" //仓库id
+				}]
+				rqsData = {
+					bill_id: bill_id,
+					cc_user: "",
+					bill_title: "",
+					bill_no: onlyCode,
+					bill_task: bill_task,
+					fbill_no: fbill_no,
+					bill_user: userbillNo, // 登陆人
+					bill_com: teamBillCom, //登录人单位
+					bill_dept: "",
+					link_next: "",
+					node_qty: "",
+					bill_ipaddr: "",
+					bill_gpsaddr: "",
+					bill_context: "",
+					bill_name: bill_name,
+					bill_date: vlUtils.dateToString(date),
+					bill_text: JSON.stringify(inputData)
+				}
+				return rqsData;
+			}
+
+		}); // PlusReady 结束
+	</script>
+
+</html>

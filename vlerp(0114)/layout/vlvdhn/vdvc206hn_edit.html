@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			.hide{display: none;}
+			.BMapLabel{
+				display: none !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head" style="height: 65px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<div class="mui-title plistTitle">
+				<p id="TO">拜访轨迹</p>
+				<h1 id="header"></h1>
+			</div>
+		</header>
+		<div  style="width:1000px;height:800px;border:1px solid gray" id="container"></div>
+
+	</body>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FQCQkNvWb9g4FnFXN3IGieSwQgLOR2PU&services=&t=20171004185957"></script> 
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdvc206hn_list.html',
+				id: 'vdvc206hn_list.html',
+				styles: {
+					top: '145px',
+					bottom: '5px',
+				}
+			}]
+		});
+		
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; 
+			teamBillComName = self.teamBillComName; 
+			fbill_no = self.fbill_no; 
+			loginCom = self.loginCom; 
+			loginComName = self.loginComName; 
+			userbillNo = self.userbillNo; 
+			userName = self.userName; 
+			privileges = self.privileges; 
+			fromPage = self.fromPage;	
+	        // 更改header的显示信息
+	        document.getElementById("header").innerHTML = teamBillComName; //头部显示发货单位名
+			queryparmas = getParams()
+			//console.log(JSON.stringify(queryparmas))
+			VlAjax.post({"port":"active","headers":"json", "isFirst" :true}, queryparmas, sCBFind)		
+		}); // plusReady
+        
+		function getParams(task,port){
+		 var bdate = new Date(new Date(new Date().toLocaleDateString()).getTime()) //当天零点
+		 var edate = new Date();   //当前时间
+			var res = {
+				bill_task	: "VR_vdsa402_query_03",
+				bill_com	: loginCom, 
+				bill_user 	: userbillNo,
+				bill_qtask	: "Y",
+				bill_bdate  : VlDate.get(bdate, "_ymdhms"),
+				bill_edate  : VlDate.get(edate, "_ymdhms"),
+			};
+			return res;
+		}
+		var  _oContent={
+			"姓名" : "",
+			"经度" : "",
+			"纬度" : "",
+			"离店时间" : "",
+			"终端代码" : "",
+			}
+		function sCBFind(data){
+			
+			if(data.data==""){
+				mui.back()
+				mui.toast("无拜访数据")
+			}
+			var datas=data.data
+			var oData={}
+			longitude=[] //经度纬度
+			ip=[]        //店铺名称
+			bdata=[]     //时间
+			route=[]     //地址
+			username=[]  //姓名
+			wait=[]      //停留时间
+			for(var i=0;i<datas.length;i++){	
+				for(var k in datas[i]){
+					oData[k.slice(0, 2)] = datas[i][k];
+				}				
+				var _counted=oData["内容"]=oData["内容"].indexOf("{") > -1? JSON.parse(oData["内容"]) : _oContent
+				var ig=_counted["经度"]+","+_counted["纬度"]	
+				longitude.push(ig)
+				ip.push(oData["标题"])
+				bdata.push(oData["日期"])
+				route.push(oData["指令"])
+				username.push(_counted["姓名"])
+				wait.push(oData["图片"])
+			}
+			wait.reverse()
+			username.reverse()
+			route.reverse()
+			bdata.reverse()
+			ip.reverse()
+			longitude.reverse()	//翻转数组	
+			map()
+		}
+		function map(){
+		    	var map = new BMap.Map("container");  
+		        map.centerAndZoom(new BMap.Point(116.404, 39.915), 13);  
+		        map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件  
+		        map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件  
+		        map.addControl(new BMap.OverviewMapControl());              //添加缩略地图控件  
+		
+		        map.clearOverlays();                        //清除地图上所有的覆盖物  
+		        var driving = new BMap.DrivingRoute(map);    //创建驾车实例  
+				
+				var pointArr=[]
+				//循环经度
+				for(var i=0;i<longitude.length;i++){
+					pointArr.push({
+						lng:longitude[i].split(",")[0],
+						lat:longitude[i].split(",")[1]
+					})
+				}
+				
+				
+                //	console.log(typeof(pointArr))
+		    	// 坐标点数据
+		    	//var pointArr = [{lng: 120.37330074071, lat: 31.498294737149},{lng: 120.57330074071, lat: 31.498294737149},{lng: 120.87330074071, lat: 31.498294737149},{lng: 121.37330074071, lat: 31.498294737149}];
+		                        
+		    	
+				// 生成坐标点
+				var trackPoint = [];
+				for (var i = 0, j = pointArr.length; i < j; i++) {
+					trackPoint.push(new BMap.Point(pointArr[i].lng, pointArr[i].lat));
+				}
+		
+		
+		    	for (var i = 0; i < trackPoint.length; i++) {
+		        	if(i != trackPoint.length -1 ){
+		        		driving.search(trackPoint[i], trackPoint[i+1]);
+		           	}
+		    	} 
+
+
+		        driving.setSearchCompleteCallback(function(){  
+		            var pts = driving.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组  
+		      
+		            var polyline = new BMap.Polyline(pts);       
+		            map.addOverlay(polyline);  
+		            
+					var opts = {
+							width : 250,     // 信息窗口宽度
+							height: 130,     // 信息窗口高度
+						  };
+		        	// 画图标、想要展示的起点终点途经点
+		        	for (var i = 0; i < trackPoint.length; i++) {
+		        		var lab;
+		            	if(i == 0){
+		            		lab = new BMap.Label(`${ip[0]}</br>${bdata[0]}</br>${route[0]}</br>${wait[0]}</br>${username[0]}`);
+		                }else if(i == trackPoint.length - 1){
+		                	lab = new BMap.Label(`${ip[ip.length-1]}</br>${bdata[ip.length-1]}</br>${route[ip.length-1]}</br>${wait[ip.length-1]}</br>${username[ip.length-1]}`);
+		                }else{
+		                	lab = new BMap.Label(`${ip[i]}</br>${bdata[i]}</br>${route[i]}</br>${wait[i]}</br>${username[i]}`) 
+		                }
+						//{position:trackPoint[i]}
+						var alls=lab.content
+		        	    var marker = new BMap.Marker(trackPoint[i])
+		        	    map.addOverlay(marker);
+		        	    map.addOverlay(lab);		
+						addClickHandler(alls,marker)
+		        	}
+					function addClickHandler(alls,marker){						    
+							marker.addEventListener("click",function(e){
+								openInfo(alls,e)}
+							);
+						}
+					function openInfo(alls,e){
+							var p = e.target;
+							var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+							var infoWindow = new BMap.InfoWindow(alls,opts);  // 创建信息窗口对象 
+							map.openInfoWindow(infoWindow,point); //开启信息窗口
+						}	
+		        	map.setViewport(trackPoint);  			
+		        });  	
+			
+		    }
+	</script>
+
+</html>

@@ -1,0 +1,5262 @@
+{
+  "index.html": {
+    "resources": [
+      "images/mipmap-xxhdpi/vdoa011_b.png",
+      "images/mipmap-xxhdpi/vdas011_b.png",
+      "css/common/mui.css",
+      "images/mipmap-xxhdpi/vdoa023_b.png",
+      "images/mipmap-xhdpi/vdhr135_b.png",
+      "fonts/mui.ttf",
+      "images/mipmap-xxhdpi/vdsa214_b.png",
+      "images/mipmap-xxhdpi/vdoa001_b.png",
+      "images/mipmap-xxhdpi/vdsa213_b.png",
+      "images/banner2b.fw.png",
+      "images/banner1.fw.png",
+      "images/mipmap-xxhdpi/vdsa201_b.png",
+      "images/banner5b.fw.png",
+      "images/banner4b.fw.png",
+      "js/mui.min.js",
+      "images/mipmap-xxhdpi/vdoa022_b.png",
+      "css/common/app.css",
+      "images/mipmap-xxhdpi/vdhr134_b.png",
+      "images/mipmap-hdpi/vdoa012_b.png",
+      "images/mipmap-xxhdpi/vdsa202_b.png",
+      "images/mipmap-xxhdpi/vdoa012_b.png",
+      "js/vue.min.js",
+      "data/vdsoa022.json",
+      "data/data.json",
+      "data/data1.json",
+      "js/mui.js",
+      "js/common.js",
+      "layout/list.html",
+      "layout/tonggaolist.html",
+      "layout/vdoa023_list.html",
+      "layout/vdoa001_list.html",
+      "layout/vdoa011_list.html",
+      "layout/vdoa022_list.html",
+      "layout/vdvc802_list.html",
+      "layout/vdsa202_list.html",
+      "layout/vdas011_list.html",
+      "vdoa011_list.html",
+      "layout/vdoa024_list.html",
+      "layout/vdhr134_list.html",
+      "layout/vdsa201_list.html",
+      "layout/kaifa.html",
+      "js/index.js",
+      "js/jquery-2.1.0.js",
+      "js/writeJsonFile.js",
+      "layout/vlvdsa/vdsa202_list.html",
+      "layout/vlvdoa/vdoa022_list.html",
+      "layout/vlvdoa/vdoa001_list.html",
+      "layout/vlvdhr/vdhr134_list.html",
+      "layout/vlvdsa/vdsa201_list.html",
+      "layout/vlvdoa/vdoa011_list.html",
+      "layout/vlvdoa/vdoa023_list.html",
+      "layout/vlvdas/vdas011_list.html",
+      "layout/vlvdoa/vdoa024_list.html",
+      "barcode_scan.html",
+      "barcode.html",
+      "new_file.html",
+      "layout/vlvdsa/vdsa211_list.html",
+      "layout/vlvdsa/vdsa213_list.html",
+      "tab-webview-subpage-work.html",
+      "tab-webview-subpage-perinfo.html",
+      "tab-webview-subpage-chat.html",
+      "js/vl-websocket.js",
+      "tab-webview-subpage-setting.html",
+      "css/iconfont.css",
+      "images/scan.png",
+      "js/immersed.js",
+      "js/md5.js",
+      "css/fonts/iconfont.css"
+    ],
+    "refer": [
+      "layout/guide.html",
+      "layout/list.html",
+      "layout/vdvc801_list.html",
+      "layout/vdoa001_list.html",
+      "layout/vdoa011_list.html",
+      "layout/vdoa023_list.html",
+      "layout/vdoa022_list.html",
+      "layout/vdas011_list.html",
+      "vdoa011_list.html",
+      "layout/lmain_set.html",
+      "layout/vdoa024_list.html",
+      "layout/lmain_org.html",
+      "layout/vdsa202_list.html",
+      "layout/vdvc103_list.html",
+      "layout/kaifa.html",
+      "layout/vdsa201_list.html",
+      "layout/father.html",
+      "layout/vlvdsa/vdsa202_list.html",
+      "layout/vlvdoa/vdoa022_list.html",
+      "layout/vlvdoa/vdoa001_list.html",
+      "layout/vlvdhr/vdhr134_list.html",
+      "layout/vlvdsa/vdsa201_list.html",
+      "layout/vlvdoa/vdoa011_list.html",
+      "layout/vlvdvc/vdim101_list.html",
+      "layout/vlvdoa/vdoa023_list.html",
+      "layout/vlvdas/vdas011_list.html",
+      "layout/vlvdoa/vdoa024_list.html",
+      "barcode_scan.html",
+      "barcode.html",
+      "new_file.html",
+      "layout/vlvdsa/vdsa211_list.html",
+      "layout/vlvdsa/vdsa213_list.html",
+      "layout/vlvdim/vdim101_list.html",
+      "tab-webview-subpage-setting.html",
+      "tab-webview-subpage-chat.html",
+      "tab-webview-subpage-work.html",
+      "tab-webview-subpage-perinfo.html",
+      "layout/vlvdsa/vdsa211_new.html",
+      "indexed-list-select.html",
+      "tab-webview-subpage-chats.html",
+      "layout/vlvdvc/vdvc105_find.html",
+      "layout/vlvdsa/vdsa214_edit.html",
+      "layout/vlvdst/vdst315_edit.html",
+      "index-tabbar-notice.html"
+    ]
+  },
+  "layout/guide.html": {
+    "resources": [
+      "images/g2.jpg",
+      "images/g1.jpg",
+      "css/common/mui.css",
+      "images/g3.jpg",
+      "images/g4.jpg",
+      "js/mui.min.js",
+      "images/g6.jpg",
+      "images/g5.jpg"
+    ],
+    "refer": []
+  },
+  "layout/add.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/app.css",
+      "js/immersed.js",
+      "fonts/mui.ttf",
+      "layout/list.html",
+      "js/jquery-2.1.0.js",
+      "layout/add.html",
+      "layout/tonggaolist.html",
+      "layout/vdoa001_list.html",
+      "layout/vdvc802_list.html",
+      "layout/vdoa011_list.html",
+      "layout/vdas011_list.html",
+      "layout/vdvc801_list.html",
+      "layout/lmain_org.html",
+      "layout/vdvc103_list.html",
+      "layout/vdoa022_list.html"
+    ],
+    "refer": [
+      "layout/list.html",
+      "layout/add.html",
+      "layout/vdoa001_list.html",
+      "layout/vdoa011_list.html",
+      "layout/vdas011_list.html",
+      "layout/vdvc801_list.html",
+      "layout/lmain_org.html",
+      "layout/vdvc103_list.html",
+      "layout/vdoa022_list.html"
+    ]
+  },
+  "layout/list.html": {
+    "resources": [
+      "layout/add.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "index.html",
+      "fonts/mui.ttf",
+      "images/mipmap-xxhdpi/vdoa012_b.png"
+    ],
+    "refer": [
+      "layout/add.html",
+      "index.html"
+    ]
+  },
+  "layout/tonggaolist.html": {
+    "resources": [
+      "layout/add.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "index.html",
+      "fonts/mui.ttf",
+      "images/mipmap-xxhdpi/vdoa012_b.png"
+    ],
+    "refer": [
+      "layout/add.html"
+    ]
+  },
+  "layout/vdoa001_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "index.html",
+      "js/mui.min.js",
+      "layout/add.html",
+      "fonts/mui.ttf",
+      "images/mipmap-xxhdpi/vdoa012_b.png",
+      "js/jquery-2.1.0.js"
+    ],
+    "refer": [
+      "index.html",
+      "layout/add.html"
+    ]
+  },
+  "layout/vdas011_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "layout/add.html",
+      "index.html",
+      "fonts/mui.ttf",
+      "images/mipmap-xxhdpi/vdoa012_b.png",
+      "js/jquery-2.1.0.js"
+    ],
+    "refer": [
+      "layout/add.html",
+      "index.html"
+    ]
+  },
+  "layout/vdvc802_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "index.html",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "layout/add.html",
+      "layout/vdvc801_list.html",
+      "images/mipmap-hdpi/vdoa012_b.png"
+    ],
+    "refer": [
+      "index.html",
+      "layout/vdvc801_list.html"
+    ]
+  },
+  "layout/vdvc801_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "fonts/mui.ttf",
+      "images/mipmap-hdpi/vdoa012_b.png",
+      "layout/add.html",
+      "layout/vdvc802_list.html"
+    ],
+    "refer": [
+      "layout/add.html",
+      "layout/vdvc802_list.html",
+      "layout/chat.html",
+      "layout/im_chat.html"
+    ]
+  },
+  "layout/vdoa011_list.html": {
+    "resources": [
+      "layout/add.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "index.html",
+      "fonts/mui.ttf",
+      "layout/vdoa011_new.html",
+      "images/mipmap-hdpi/vdoa012_b.png"
+    ],
+    "refer": [
+      "layout/add.html",
+      "index.html",
+      "layout/vdoa011_new.html"
+    ]
+  },
+  "vdoa011_list.html": {
+    "resources": [
+      "js/mui.min.js",
+      "index.html",
+      "css/common/mui.css",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vdoa011_new.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "layout/vdoa011_list.html"
+    ],
+    "refer": [
+      "layout/vdoa011_list.html"
+    ]
+  },
+  "layout/lmain_set.html": {
+    "resources": [
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/mui.js",
+      "js/common.js",
+      "js/mui.min.js",
+      "js/easymob-webim-sdk/easemob.im-1.0.5.js",
+      "js/easymob-webim-sdk/strophe-custom-2.0.0.js",
+      "js/easymob-webim-sdk/json2.js",
+      "js/easymob-webim-sdk/jquery-1.11.1.js",
+      "css/common/mui.min.css",
+      "js/mui.view.js",
+      "images/headImg.jpg",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/guide.html",
+      "layout/login.html",
+      "layout/vlvdvc/vdim101_list.html",
+      "layout/lmain_org.html",
+      "index.html",
+      "layout/vlvdim/vdim101_list.html",
+      "tab-webview-subpage-chat.html",
+      "tab-webview-subpage-perinfo.html"
+    ]
+  },
+  "layout/lmain_org.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "images/mipmap-hdpi/vdoa012_b.png",
+      "layout/add.html",
+      "layout/vdvc103_list.html",
+      "layout/vdvc121_list.html",
+      "layout/vdvc311_list.html",
+      "layout/vdvc312_list.html"
+    ],
+    "refer": [
+      "layout/add.html",
+      "layout/vdvc103_list.html",
+      "layout/vdvc121_list.html",
+      "layout/vdvc311_list.html",
+      "layout/vdvc312_list.html",
+      "layout/vlvdvc/vdim101_list.html",
+      "index.html",
+      "layout/lmain_set.html",
+      "layout/vlvdim/vdim101_list.html"
+    ]
+  },
+  "layout/vdvc103_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "images/mipmap-hdpi/vdoa012_b.png",
+      "layout/add.html",
+      "layout/lmain_org.html"
+    ],
+    "refer": [
+      "layout/add.html",
+      "layout/lmain_org.html"
+    ]
+  },
+  "layout/vdvc121_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "layout/lmain_org.html",
+      "js/jquery-2.1.0.js"
+    ],
+    "refer": [
+      "layout/lmain_org.html"
+    ]
+  },
+  "layout/vdvc311_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "layout/lmain_org.html"
+    ],
+    "refer": [
+      "layout/lmain_org.html"
+    ]
+  },
+  "layout/vdvc312_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "layout/lmain_org.html",
+      "js/jquery-2.1.0.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "layout/lmain_org.html"
+    ]
+  },
+  "layout/vdoa022_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "index.html",
+      "js/mui.min.js",
+      "layout/add.html",
+      "fonts/mui.ttf",
+      "images/mipmap-xxhdpi/vdoa012_b.png"
+    ],
+    "refer": [
+      "index.html",
+      "layout/add.html"
+    ]
+  },
+  "layout/vdoa023_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "index.html",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vdoa024_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "index.html",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vdhr134_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "fonts/mui.ttf",
+      "index.html"
+    ],
+    "refer": []
+  },
+  "layout/vdsa201_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "index.html"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vdsa202_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "fonts/mui.ttf",
+      "index.html",
+      "layout/vdsa202_new.html",
+      "images/mipmap-hdpi/vdoa012_b.png",
+      "layout/spl.html",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vdsa202_new.html",
+      "index.html",
+      "layout/spl.html"
+    ]
+  },
+  "layout/kaifa.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "index.html"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vdsa202_new.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "layout/vdsa202_list.html"
+    ],
+    "refer": [
+      "layout/vdsa202_list.html",
+      "layout/middlePage.html"
+    ]
+  },
+  "layout/middlePage.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "layout/vdsa202_new.html"
+    ]
+  },
+  "layout/chat.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/mui.imageviewer.css",
+      "js/arttmpl.js",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/mui.min.js",
+      "images/headImg.jpg",
+      "js/chat.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": []
+  },
+  "layout/im_chat.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/im-chat.css",
+      "css/common/app.css",
+      "css/common/mui.min.css",
+      "js/mui.js",
+      "css/mui.imageviewer.css",
+      "js/arttmpl.js",
+      "fonts/mui.ttf",
+      "js/app.js",
+      "js/Cloud.js",
+      "js/im-chat.js",
+      "js/chatList.js"
+    ],
+    "refer": []
+  },
+  "layout/father.html": {
+    "resources": [
+      "layout/son.html",
+      "js/mui.min.js"
+    ],
+    "refer": [
+      "layout/son.html"
+    ]
+  },
+  "layout/son.html": {
+    "resources": [
+      "js/mui.min.js"
+    ],
+    "refer": []
+  },
+  "layout/spl.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "fonts/mui.ttf",
+      "layout/vdsa202_list.html",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/middlePage.html",
+      "layout/vm.html",
+      "layout/vdsa202_list.html"
+    ]
+  },
+  "layout/vm.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vdsa202_new.html",
+      "layout/spl.html"
+    ]
+  },
+  "layout/login.html": {
+    "resources": [
+      "js/app.js",
+      "js/mui.min.js",
+      "js/Cloud.js",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "js/index.js",
+      "js/jquery-2.1.0.js",
+      "index.html",
+      "images/vl_logo.png",
+      "js/md5.js",
+      "css/common/mui.min.css",
+      "images/vl-Logo.jpg",
+      "outLogin.html",
+      "images/login(1).png",
+      "js/vl-websocket.js",
+      "js/immersed.js",
+      "js/createimdirctory.js",
+      "js/immersed-login.js",
+      "images/vlLogo.png",
+      "images/logo/1024x1024.png",
+      "css/fonts/iconfont.css",
+      "images/logo/vlerpLogo.png",
+      "js/vlindex.js",
+      "js/vljs/createimdirctory.js",
+      "js/vljs/account.js",
+      "js/arttmpl.js"
+    ],
+    "refer": [
+      "index.html",
+      "layout/lmain_set.html",
+      "layout/register.html",
+      "tab-webview-subpage-setting.html",
+      "outLogin.html",
+      "index-ps.html",
+      "index-cx.html",
+      "layout/forget_password.html",
+      "layout/login.html",
+      "layout/vlvdsu/scan_signup.html",
+      "index.1.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa202_list.html": {
+    "resources": [
+      "index.html",
+      "layout/vlvdsa/spl.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "layout/vlvdsa/vdsa202_new.html"
+    ],
+    "refer": [
+      "index.html",
+      "layout/vlvdsa/spl.html",
+      "layout/vlvdsa/vdsa202_new.html"
+    ]
+  },
+  "layout/vlvdoa/vdoa022_list.html": {
+    "resources": [
+      "index.html",
+      "js/mui.min.js",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "images/mipmap-xxhdpi/vdoa012_b.png"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vlvdsa/spl.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "layout/vlvdsa/vdsa202_list.html",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa202_list.html"
+    ]
+  },
+  "layout/vlvdim/vdim102_list.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "js/chat.js",
+      "css/mui.imageviewer.css",
+      "js/arttmpl.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "images/headImg.jpg",
+      "fonts/mui.ttf",
+      "js/vl-websocket.js",
+      "css/mui.min.css",
+      "js/immersed.js",
+      "css/common/mui.min.css",
+      "css/common/mui.imageviewer.css"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdim101_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "images/mipmap-hdpi/vdoa012_b.png",
+      "images/quanzu1.png",
+      "images/quanzu2.png",
+      "images/vdvc00100_20170707_0707A004.jpg",
+      "images/quanzu1.jpg",
+      "images/quanzu2.jpg",
+      "images/vdvc00100_20170707_0707A002.jpg",
+      "images/vdvc00100_20170707_0707A005.jpg",
+      "images/quanzu3.jpg",
+      "images/vdim10100_20170707_0707A002.jpg",
+      "images/vdvc00100_20170707_0707A003.jpg"
+    ],
+    "refer": [
+      "layout/vlvdim/vdim102_list.html"
+    ]
+  },
+  "layout/vlvdoa/vdoa023_list.html": {
+    "resources": [
+      "index.html",
+      "js/mui.min.js",
+      "css/common/mui.css",
+      "js/jquery-2.1.0.js"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vlvdoa/vdoa001_list.html": {
+    "resources": [
+      "index.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/placeholder.png"
+    ],
+    "refer": [
+      "index.html",
+      "layout/vlvdoa/vdoa001_node.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa202_new.html": {
+    "resources": [
+      "layout/vlvdsa/vdsa202_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/mui.imageViewer.js",
+      "images/banner1b.fw.png",
+      "css/mui.imageviewer.css",
+      "fonts/mui.ttf",
+      "layout/vlvdsa/vdsa211_list.html",
+      "layout/vlvdsa/vdsa213_list.html"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa202_list.html",
+      "layout/vlvdvc/vdvc801_list.html",
+      "layout/vlvdsa/vdsa211_list.html",
+      "layout/vlvdsa/vdsa213_list.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa201_list.html": {
+    "resources": [
+      "index.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vlvdoa/vdoa011_list.html": {
+    "resources": [
+      "index.html",
+      "css/common/mui.css",
+      "js/mui.min.js"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vlvdoa/vdoa024_list.html": {
+    "resources": [
+      "index.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vlvdas/vdas011_list.html": {
+    "resources": [
+      "index.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr134_list.html": {
+    "resources": [
+      "index.html",
+      "js/mui.min.js",
+      "css/common/mui.css",
+      "js/jquery-2.1.0.js"
+    ],
+    "refer": [
+      "index.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc801_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "layout/vlvdvc/vdvc802_list.html"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc802_list.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc802_list.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc801_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc801_list.html"
+    ]
+  },
+  "barcode.html": {
+    "resources": [
+      "js/common.js",
+      "css/common/mui.min.css",
+      "css/common/common.css",
+      "index.html",
+      "js/mui.min.js",
+      "js/immersed.js",
+      "tab-webview-subpage-work.html"
+    ],
+    "refer": [
+      "barcode_scan.html",
+      "index.html",
+      "tab-webview-subpage-work.html"
+    ]
+  },
+  "barcode_scan.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/common.js",
+      "css/common/common.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": []
+  },
+  "new_file.html": {
+    "resources": [
+      "js/jquery-2.1.0.js",
+      "saveimg.php",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/mui.js",
+      "css/fonts/iconfont.css",
+      "css/icons-extra.css",
+      "images/placeholder.png"
+    ],
+    "refer": []
+  },
+  "layout/vlvdsa/vdsa211_list.html": {
+    "resources": [
+      "js/mui.min.js",
+      "layout/vlvdsa/vdsa202_new.html",
+      "index.html",
+      "layout/vlvdsa/vdsa211_new.html",
+      "css/common/mui.css",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "fonts/mui.ttf",
+      "layout/vlvdsa/vdsa211_list_subpage.html",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/loading.gif",
+      "images/placeholder.png",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa202_new.html",
+      "index.html",
+      "layout/vlvdsa/vdsa211_new.html",
+      "layout/vlvdsa/vdsa211_list_subpage.html",
+      "layout/vlvdsa/vdsa211_node.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa211_new.html": {
+    "resources": [
+      "layout/vlvdsa/vdsa211_list.html",
+      "js/mui.imageViewer.js",
+      "css/mui.imageviewer.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "layout/vlvdsa/vdsa211_new.html"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa211_list.html",
+      "barcode.html",
+      "barcode_scan.html",
+      "layout/vlvdsa/vdsa211_new.html",
+      "layout/vlvdvc/vdvc313_list.html",
+      "layout/vlvdvc/vdvc311_list_app.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc313_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "layout/vlvdvc/vdvc313_list_subpage.html"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc313_list_subpage.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa213_list.html": {
+    "resources": [
+      "js/mui.min.js",
+      "layout/vlvdsa/vdsa202_new.html",
+      "index.html",
+      "layout/vlvdsa/vdsa213_new.html",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/mui.imageViewer.js",
+      "css/mui.imageviewer.css",
+      "css/common/app.css",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/placeholder.png",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa202_new.html",
+      "index.html",
+      "layout/vlvdsa/vdsa213_new.html",
+      "barcode_scan.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa213_new.html": {
+    "resources": [
+      "layout/vlvdsa/vdsa213_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa213_list.html"
+    ]
+  },
+  "layout/vlvdim/vdim101_list.html": {
+    "resources": [
+      "js/mui.min.js",
+      "images/vdvc00100_20170707_0707A002.jpg",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdim/vdim102_list.html",
+      "index.html",
+      "layout/lmain_org.html",
+      "layout/lmain_set.html"
+    ]
+  },
+  "tab-webview-subpage-work.html": {
+    "resources": [
+      "images/banner5b.fw.png",
+      "images/banner4b.fw.png",
+      "js/mui.min.js",
+      "images/mipmap-hdpi/vdoa012_b.png",
+      "images/banner2b.fw.png",
+      "images/banner1.fw.png",
+      "css/common/mui.css",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/common.js",
+      "js/writeJsonFile.js",
+      "js/mui.js",
+      "js/index.js",
+      "barcode.html",
+      "images/mipmap-xxhdpi/vdoa011_b.png",
+      "images/mipmap-xxhdpi/vdsa201_b.png",
+      "images/mipmap-xxhdpi/vdas011_b.png",
+      "images/mipmap-xxhdpi/vdoa022_b.png",
+      "layout/vlvdsa/vdsa211_list.html",
+      "images/mipmap-xxhdpi/vdoa001_b.png",
+      "images/mipmap-xxhdpi/vdsa202_b.png",
+      "images/mipmap-xxhdpi/vdoa012_b.png",
+      "layout/vlvdsa/vdsa202_list.html",
+      "layout/vlvdoa/vdoa022_list.html",
+      "images/mipmap-xxhdpi/vdoa023_b.png",
+      "images/mipmap-xhdpi/vdhr135_b.png",
+      "images/mipmap-xxhdpi/vdsa213_b.png",
+      "images/mipmap-xxhdpi/vdhr134_b.png",
+      "layout/vlvdsa/vdsa201_list.html",
+      "images/icon/vdvc311.png",
+      "images/mipmap-xxhdpi/vdsa214_b.png",
+      "images/icon/vdfa332.png",
+      "js/md5.js",
+      "images/icon/vdvc103.png",
+      "css/fonts/iconfont.css",
+      "images/icon/vdsa331.png",
+      "images/icon/balance.png",
+      "images/icon/vdsa412.png",
+      "images/icon/vdeb212.png",
+      "images/icon/vdvc001.png",
+      "images/icon/vdeb211.png",
+      "images/icon/vdvc000.png",
+      "images/icon/vdeb511.png",
+      "images/icon/vdsa214.png",
+      "images/icon/chaxun.png"
+    ],
+    "refer": [
+      "barcode.html",
+      "layout/vlvdsa/vdsa211_list.html",
+      "layout/vlvdsa/vdsa202_list.html",
+      "layout/vlvdoa/vdoa022_list.html",
+      "layout/vlvdsa/vdsa201_list.html",
+      "layout/login.html",
+      "layout/vlvdsa/vdsa213_list.html",
+      "layout/vlvdas/vdas011_list.html",
+      "layout/vlvdoa/vdoa011_list.html",
+      "layout/vlvdoa/vdoa001_list.html",
+      "layout/vlvdoa/vdoa024_list.html",
+      "layout/kaifa.html",
+      "layout/vlvdhr/vdhr134_list.html",
+      "layout/vlvdsa/vdsa133_list.html",
+      "layout/vlvdsa/vdsa133_edit.html",
+      "layout/vlvdvc/vdvc311_list.html",
+      "layout/vlvdsa/vdsa133_plist.html",
+      "layout/vlvdvc/vdvc311_plist.html",
+      "layout/vlvdvc/vdvc103_plist.html",
+      "layout/vlvdsa/vdsa211_node.html",
+      "layout/vlvdsa/vdsa211_edit.html",
+      "layout/vlvdsa/vdsa402_plist.html",
+      "layout/vlvrst/vrst001_plist.html",
+      "layout/vlvdeb/vdeb511_plist.html",
+      "layout/vlvdsa/vdsa331_plist.html",
+      "layout/vlvdhr/vdhr000_plist.html",
+      "layout/vlvdsa/vdsa211_plist.html",
+      "layout/vlvdeb/vdeb212_plist.html",
+      "layout/vlvdfa/vdfa332_plist.html",
+      "layout/vlvrst/vrst003_plist.html",
+      "layout/vlvdoa/vdoa001_plist.html",
+      "layout/vlvdsa/vdsa213_plist.html",
+      "layout/vlvdsa/vdsa212_plist.html",
+      "layout/vlvdfa/vdfa322_plist.html",
+      "layout/vlvdfa/vdfa322_plist1.html",
+      "layout/vlvdvc/vdvc312_plist.html",
+      "layout/vlvdsa/vdsa412_plist.html",
+      "layout/vlvdac/vdac301_plist.html",
+      "layout/vlvrsa/vrsa001_plist.html",
+      "layout/vlvdsa/vdsa210_plist.html",
+      "layout/vlvdsa/vdsa214_plist.html",
+      "layout/vlvdst/vdst215_plist.html",
+      "layout/vlvdhr/vdhr000_index.html",
+      "layout/vlvdhr/vdhr401_sche_plist.html",
+      "layout/vlvshr/vshr001_clerk.html",
+      "layout/vlvdac/vdac402_node.html",
+      "layout/vlvdhr/vdhr401_plist.html",
+      "layout/vlvdhr/vdhr412_edit.html",
+      "layout/vlvdhr/vdhr_calendar.html",
+      "layout/vlvrst/vrst215_plist.html",
+      "layout/vlvdst/vdst315_plist.html",
+      "layout/vlvdeb/vdeb212_edit.html",
+      "layout/vlvdeb/vdeb212_plist_01.html",
+      "layout/vlvdeb/vdeb212_plist_02.html",
+      "layout/vlvdeb/vdeb211_list.html",
+      "layout/vlvdsa/vdsa331_plist_01.html",
+      "layout/vdvv000_plist.html",
+      "layout/vlvrsa/vrsa002_plist.html",
+      "layout/jd.html",
+      "layout/vlvrsa/vrsa003_plist.html",
+      "balance.html",
+      "layout/vlvdhr/zzz.html",
+      "layout/vlvdhr/vdhr104_plist.html",
+      "layout/vlvdhr/vdhr103_plist.html",
+      "layout/vlvdhr/vdhr105_plist.html",
+      "layout/vlvdhr/vdhr422_plist.html",
+      "layout/vlvdhr/vdhr424_plist.html",
+      "layout/vlvdvc/vdvc204_plist.html",
+      "layout/vlvdhr/vdhr425_plist.html",
+      "layout/vlvdhr/vdhr423_plist.html",
+      "layout/vlvrvd/vrvd002_plist.html",
+      "layout/vlvrvd/vrsa402_plist.html",
+      "layout/vlvdhr/vdhr426_plist.html",
+      "layout/vlvdvc/vdvc105_plist.html",
+      "layout/vlvrst/vrsa412_plist.html",
+      "layout/vlvrvd/vrsa412_plist.html",
+      "layout/vlvrvd/vrst215_plist.html",
+      "CodeCard.html",
+      "layout/vlvdvc/vdvc311_plist01.html",
+      "layout/vlvrvd/vrsa214_plist.html",
+      "downloadApp.html",
+      "layout/loadUrl.html",
+      "layout/vlvrvd/vrst315_plist.html",
+      "layout/vlvrvd/vrac203_list.html",
+      "layout/vlvdvc/vdvc311_select.html",
+      "layout/vlvdsu/vdsu000_select.html",
+      "layout/vlvdvc/vdvc512_plist.html",
+      "layout/vlvdst/vdst316_plist.html",
+      "layout/vlvdst/vdst315_plist01.html",
+      "layout/vlvdst/vdst313_plist.html",
+      "layout/vlvdst/vdst314_plist.html",
+      "layout/vlvdst/vdst216_plist.html",
+      "layout/vlvrvd/vrst316_plist.html",
+      "layout/vlvrvd/vrsa211_plist.html",
+      "layout/vlvrvd/vrac203_plist.html",
+      "layout/vlvrvd/vrac203_plist01.html",
+      "layout/vlvdeb/vdeb212_plist_03.html",
+      "layout/vlvdst/vdst313_plist_01.html",
+      "layout/vlvdst/vdst313_plist_02.html",
+      "layout/vlvdst/vdst314_plist_01.html",
+      "layout/vlvdst/vdst315hn_plist.html",
+      "layout/vlvdsa/vdsa402hn_plist.html",
+      "layout/vlvdhn/vdvc312hn_plist.html",
+      "layout/vlvdhn/vdvc312sh_plist.html",
+      "layout/vlvdhn/vdst315hn01_plist.html",
+      "layout/vlvdhn/vdsa402hn_plist.html",
+      "layout/vlvdhn/vdst316sh_plist.html",
+      "layout/vlvdhn/vdvc105hn_plist.html",
+      "layout/vlreport/vdvr001_list.html",
+      "layout/vlreport/vrsa402_list.html"
+    ]
+  },
+  "tab-webview-subpage-setting.html": {
+    "resources": [
+      "js/mui.min.js",
+      "js/easymob-webim-sdk/easemob.im-1.0.5.js",
+      "js/easymob-webim-sdk/strophe-custom-2.0.0.js",
+      "js/easymob-webim-sdk/json2.js",
+      "js/easymob-webim-sdk/jquery-1.11.1.js",
+      "js/mui.view.js",
+      "/css/common/mui.min.css",
+      "/css/common/app.css",
+      "js/mui.js",
+      "js/index.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "css/common/mui.min.css",
+      "images/vl-Logo.jpg",
+      "images/1.jpg",
+      "css/iconfont.css",
+      "fonts/mui-icons-extra.ttf",
+      "css/icons-extra.css",
+      "/js/immersed.js",
+      "css/fonts/iconfont.css",
+      "css/fonts/iconfont.ttf",
+      "css/common/icons-extra.css",
+      "images/liwu.png",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/login.html",
+      "outLogin.html",
+      "new_file.html",
+      "layout/vlvdeb/vdeb312_plist.html",
+      "integral.html",
+      "releaseNotes.html",
+      "pullrefresh_main.html",
+      "ztextPage/test.html",
+      "ztextPage/releaseNotes.html",
+      "PIM.html",
+      "balance.html",
+      "report.html",
+      "layout/vlvdst/vdst212_search.html",
+      "layout/vlvdst/vdst212_findone.html",
+      "addons.html",
+      "layout/addons.html",
+      "layout/outLogin.html",
+      "layout/logout.html",
+      "layout/PIM.html"
+    ]
+  },
+  "tab-webview-subpage-chat.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/mui.js",
+      "js/index.js",
+      "js/vl-websocket.js",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/info.png",
+      "js/md5.js",
+      "css/fonts/iconfont.css"
+    ],
+    "refer": [
+      "layout/vlvdim/vdim102_list.html",
+      "layout/vlvdim/vdim102_plist.html"
+    ]
+  },
+  "tab-webview-subpage-perinfo.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "layout/vlvdsa/vdsa211_list.html",
+      "js/index.js",
+      "images/vdvc311.png",
+      "images/vdvc311_105.png",
+      "images/vdvc311_311.png",
+      "images/mipmap-hdpi/vdoa011_b.png",
+      "images/mipmap-hdpi/vdsa201_b.png",
+      "images/mipmap-xxhdpi/vdsa201_b.png",
+      "images/mipmap-xxhdpi/vdoa011_b.png",
+      "images/icon/vdvc311.png",
+      "images/icon/vdvc103.png",
+      "images/icon/vdvc511.png",
+      "js/md5.js",
+      "css/fonts/iconfont.css",
+      "images/icon/chaxun.png"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa211_list.html",
+      "layout/vlvdvc/vdvc313_list.html",
+      "layout/vlvdvc/vdvc311_list.html",
+      "layout/vlvdvc/vdvc101_edit.html",
+      "layout/vlvdvc/vdvc101_list.html",
+      "layout/vlvdvc/vdvc105_list.html",
+      "layout/vlvdvc/vdvc311_list_1.html",
+      "layout/vlvdvc/vdvc311_list_3.html",
+      "layout/vlvdvc/vdvc311_list_app.html",
+      "layout/vlvdvc/vdvc311_plist.html",
+      "layout/vlvdvc/vdvc103_plist.html",
+      "layout/vlvdvc/vdvc511_plist.html",
+      "layout/vlvdvc/vdvc203_plist.html",
+      "layout/vlvdhr/vdhr001_plist.html",
+      "layout/vlvdhr/vdhr002_plist.html",
+      "layout/vlvdvc/vdvc701_plist.html",
+      "layout/vlvdvc/vdvc702_plist.html",
+      "layout/vlvdsa/vdsa212_plist.html",
+      "layout/vlvdoa/vdoa001_plist.html",
+      "layout/vlvdvc/vdvc204_plist.html",
+      "layout/vlvrsa/vrsa001_plist.html",
+      "layout/vlvdhr/vdhr103_plist.html",
+      "layout/vlvdhr/vdhr105_plist.html",
+      "layout/vlvdhr/vdhr104_plist.html",
+      "layout/vlvdhr/vdhr401_plist.html",
+      "layout/vlvdsa/vdsa210_plist.html",
+      "layout/vlvdhr/vdhr412_edit.html",
+      "layout/vdvv000_plist.html",
+      "layout/vlvdac/vdac402_node.html",
+      "layout/vlvdhr/vdhr401_sche_plist.html",
+      "layout/login.html",
+      "layout/vlvdhr/vdhr412_plist.html",
+      "layout/vlvdac/vdac402_m_plist.html",
+      "layout/vlvdvc/vdvc311_select.html",
+      "CodeCard.html",
+      "downloadApp.html",
+      "layout/add-ons.html",
+      "layout/vlvdsu/vdsu000_select.html",
+      "layout/vlvdvc/vdvc312_plist.html",
+      "layout/vlvdhn/vdvc103hn_plist.html"
+    ]
+  },
+  "outLogin.html": {
+    "resources": [
+      "js/easymob-webim-sdk/easemob.im-1.0.5.js",
+      "js/easymob-webim-sdk/strophe-custom-2.0.0.js",
+      "js/easymob-webim-sdk/json2.js",
+      "js/mui.min.js",
+      "js/easymob-webim-sdk/jquery-1.11.1.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "css/common/mui.min.css",
+      "js/mui.js",
+      "js/index.js",
+      "js/mui.view.js",
+      "layout/login.html",
+      "js/md5.js",
+      "layout/update_password.html",
+      "js/jquery-2.1.0.js",
+      "css/fonts/iconfont.css",
+      "images/logo/vlerp-logo.png",
+      "js/immersed.js"
+    ],
+    "refer": [
+      "layout/login.html",
+      "layout/update_password.html",
+      "update_record.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa211_list_subpage.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa211_modif.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "layout/vlvdvc/vdvc311_list_subpage.html",
+      "js/index.js",
+      "js/md5.js",
+      "images/mipmap-hdpi/vdhr134_b.png",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/70x70.png",
+      "images/loading.gif",
+      "css/mui.min.css",
+      "images/defaultLinkCom.png",
+      "images/house.png",
+      "css/common/mui.min.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_list_subpage.html",
+      "layout/vlvdvc/vdvc311_edit.html",
+      "layout/login.html",
+      "layout/vlvdvc/vdvc311_node.html",
+      "layout/vlvdvc/vdvc311_plist.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_list_subpage.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_list.html",
+      "layout/vlvdvc/vdvc311_modif.html",
+      "layout/login.html",
+      "layout/vlvdvc/menu.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/mui.imageviewer.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/areas(1).js",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "css/mui.min.css",
+      "css/mui.poppicker.css",
+      "css/mui.picker.css",
+      "js/areas(2).js",
+      "js/immersed.js",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.picker.css",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_node.html",
+      "layout/vlvdvc/vdvc105_plist.html",
+      "layout/login.html",
+      "layout/vlvdvc/vdvc105_find.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc101_list.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc101_list_subpage.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_edit.html",
+      "layout/vlvdvc/vdvc101_list_subpage.html",
+      "layout/vlvdvc/vdvc101_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc101_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.imageviewer.css",
+      "js/index.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc101_list_subpage.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc105_list.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc105_list_subpage.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/loading.gif",
+      "images/mipmap-hdpi/vdhr134_b.png",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_list_subpage.html",
+      "layout/vlvdvc/vdvc105_edit.html",
+      "layout/vlvdvc/vdvc105_node.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc105_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.imageviewer.css",
+      "js/index.js",
+      "js/immersed.js",
+      "css/common/mui.imageviewer.css",
+      "css/index.css",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_modif.html",
+      "layout/vlvdvc/vdvc105_node.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc105_list_subpage.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_modif.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_list_1.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc311_list_subpage.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "layout/vlvdvc/vdvc311_list_subpage_1.html"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_list_subpage.html",
+      "layout/vlvdvc/vdvc311_list_subpage_1.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_list_subpage_1.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_edit.html",
+      "layout/vlvdvc/vdvc311_edit_1.html",
+      "layout/vlvdvc/vdvc311_list.html",
+      "layout/vlvdvc/vdvc311_list_2.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_edit_1.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.imageviewer.css",
+      "js/index.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc311_list_2.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "layout/vlvdvc/vdvc311_list_subpage_2.html"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_list_subpage_2.html",
+      "layout/vlvdvc/vdvc311_edit.html",
+      "layout/vlvdvc/vdvc311_edit_2.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_list_subpage_2.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_edit_2.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_edit_2.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.imageviewer.css",
+      "js/index.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc311_list_3.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc311_list_subpage_2.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "layout/vlvdvc/vdvc311_list_subpage_3.html"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_list_subpage_2.html",
+      "layout/vlvdvc/vdvc311_list_subpage_3.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_list_subpage_3.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_list.html",
+      "layout/vlvdvc/vdvc105_list_1.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc105_list_1.html": {
+    "resources": [
+      "css/common/mui.css",
+      "layout/vlvdvc/vdvc105_list_subpage.html",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "layout/vlvdvc/vdvc105_list_subpage_1.html"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_list_subpage.html",
+      "layout/vlvdvc/vdvc105_list_subpage_1.html",
+      "layout/vlvdvc/vdvc105_edit_1.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc105_list_subpage_1.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc105_edit_1.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/mui.imageviewer.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": []
+  },
+  "layout/update_password.html": {
+    "resources": [
+      "js/app.js",
+      "js/Cloud.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/md5.js",
+      "outLogin.html"
+    ],
+    "refer": [
+      "outLogin.html",
+      "layout/logout.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_list_app.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc311_list_subpage_app.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_list_subpage_app.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_list_subpage_app.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_list.html",
+      "layout/vlvdvc/vdvc311_list.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa133_list.html": {
+    "resources": [
+      "fonts/mui.ttf",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "layout/vlvdsa/vdsa133_list_subpage.html",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/loading.gif"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa133_list_subpage.html",
+      "layout/vlvdsa/vdsa133_edit.html",
+      "layout/vlvdsa/vdsa133_node.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa133_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "images/1.jpg",
+      "css/mui.imageviewer.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "fonts/mui.ttf",
+      "js/immersed.js",
+      "css/common/mui.imageviewer.css"
+    ],
+    "refer": [
+      "barcode_scan.html",
+      "layout/vlvdsa/vdsa133_list.html",
+      "layout/vlvdvc/vdvc105_plist.html",
+      "layout/vlvdvc/vdvc105_find.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc105_modif.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/mui.imageviewer.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc311_modif.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.imageviewer.css",
+      "js/index.js",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "css/mui.min.css",
+      "js/areas(1).js",
+      "css/mui.poppicker.css",
+      "css/mui.picker.css",
+      "js/areas(2).js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_list.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa133_list_subpage.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa133_modif.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa133_modif.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.imageviewer.css",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa133_list.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc313_list_subpage.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": []
+  },
+  "layout/vlvdsa/vdsa211_modif.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.imageviewer.css",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_list_app.html",
+      "barcode_scan.html"
+    ]
+  },
+  "layout/register.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/mui.min.css",
+      "js/immersed.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/menu.html": {
+    "resources": [
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "images/mipmap-hdpi/vdoa011_b.png"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_list.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_plist.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc311_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/immersed.js",
+      "css/index.css",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_list.html",
+      "layout/vlvdvc/vdvc311_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "css/common/app.css",
+      "css/mui.min.css",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "js/areas(2).js",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/mui.min.js",
+      "js/index.js",
+      "images/mipmap-hdpi/vdhr134_b.png",
+      "js/immersed.js",
+      "images/loading.gif",
+      "css/icons-extra.css",
+      "iconfonts/iconfont.ttf",
+      "iconfonts/iconfont.woff",
+      "css/fonts/iconfont.css",
+      "fonts/mui-icons-extra.ttf",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/icons-extra.css",
+      "css/common/mui.picker.css",
+      "css/index.css",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_edit.html",
+      "layout/vlvdvc/vdvc105_list.html",
+      "layout/vlvdvc/vdvc105_plist.html",
+      "layout/vlvdvc/vdvc311_plist.html",
+      "layout/vlvdvc/vdvc311_list.html",
+      "layout/vlvdvc/Gps.html",
+      "Gps.html",
+      "lonlat.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc105_plist.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc105_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/immersed.js",
+      "css/index.css",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_list.html",
+      "layout/vlvdvc/vdvc105_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc105_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.imageviewer.css",
+      "js/index.js",
+      "images/loading.gif",
+      "js/immersed.js",
+      "css/iconfont.css",
+      "css/fonts/iconfont.css",
+      "css/common/mui.imageviewer.css",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc103_plist.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc103_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/immersed.js",
+      "css/index.css",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc103_list.html",
+      "layout/vlvdvc/vdvc103_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc103_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/app.css",
+      "css/mui.min.css",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/immersed.js",
+      "images/loading.gif",
+      "fonts/mui.ttf",
+      "iconfonts/iconfont.woff",
+      "css/fonts/iconfont.css",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.picker.css",
+      "css/index.css",
+      "images/placeholder.png",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc106_plist.html",
+      "layout/vlvdvc/vdvc105_plist.html",
+      "layout/vlvdvc/vdvc103_edit.html",
+      "layout/vlvdim/vdim102_plist.html",
+      "layout/vlvdim/vdim102_list.html",
+      "layout/vlvdvc/vdvc103_edit01.html",
+      "layout/vlvdvc/vdvc312_plist.html",
+      "layout/vlvdvc/vdvc105_find.html",
+      "layout/vlvdvc/vdvc103_edit02.html",
+      "layout/vlvdvc/vdvc103_edit03.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc103_list.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc103_node.html",
+      "layout/vlvdvc/vdvc105_plist.html",
+      "layout/vlvdvc/vdvc312_plist.html",
+      "layout/login.html"
+    ],
+    "resources": [
+      "images/loading.gif",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "images/house.png"
+    ]
+  },
+  "layout/vlvdvc/vdvc106_plist.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc106_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc106_list.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc106_list.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc106_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdvc/vdvc106_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "css/mui.min.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_plist.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc103_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "css/mui.min.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "js/index.js",
+      "js/immersed.js",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.picker.css",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc103_node.html",
+      "layout/vlvdvc/vdvc105_find.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa133_plist.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "layout/vlvdsa/vdsa133_list.html",
+      "js/index.js",
+      "fonts/mui.ttf",
+      "fonts/mui-icons-extra.ttf",
+      "css/icons-extra.css"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa133_list.html",
+      "layout/vlvdsa/vdsa133_edit.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa133_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "css/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "css/common/mui.imageviewer.css"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa133_edit.html"
+    ]
+  },
+  "layout/vlvdvc/Gps.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "Gps.html": {
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/immersed.js",
+      "fonts/mui.ttf",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_node.html"
+    ]
+  },
+  "lonlat.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc511_plist.html": {
+    "resources": [
+      "fonts/mui.ttf",
+      "layout/vlvdvc/vdvc511_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "layout/vlvdvc/vdvc103_list.html",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc511_list.html",
+      "layout/vlvdvc/vdvc511_edit.html",
+      "layout/vlvdvc/vdvc103_list.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc511_list.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "css/mui.min.css",
+      "js/md5.js",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "css/common/mui.css",
+      "images/loading.gif"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc511_node.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc511_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "js/areas(2).js",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/mui.min.js",
+      "css/common/app.css",
+      "css/mui.min.css",
+      "js/index.js",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.picker.css",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc511_node.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc511_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/mui.min.css",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "css/common/mui.css",
+      "images/loading.gif",
+      "css/common/app.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "css/fonts/iconfont.css",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.picker.css",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc511_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc103_find.html": {
+    "resources": [
+      "images/loading.gif",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc105_find.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc103_find.html",
+      "layout/vlvdim/vdim102_list.html"
+    ],
+    "resources": [
+      "images/loading.gif",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "images/placeholder.png",
+      "js/md5.js"
+    ]
+  },
+  "layout/vlvdvc/vdvc203_plist.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc203_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc203_list.html",
+      "layout/vlvdvc/vdvc203_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc203_list.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/loading.gif",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc203_node.html",
+      "layout/vlvdvc/vdvc204_plist.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc203_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/mui.min.css",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.picker.css",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc203_node.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc203_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "images/loading.gif",
+      "css/common/app.css",
+      "css/mui.min.css",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/mui.imageviewer.css",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc203_edit.html",
+      "layout/vlvdvc/vdvc204_plist.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc204_plist.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc204_list.html",
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "css/mui.min.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "js/immersed.js",
+      "js/index.js",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc204_list.html",
+      "layout/vlvdvc/vdvc204_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc204_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "css/mui.min.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "js/immersed.js",
+      "js/index.js",
+      "css/index.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.min.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc204_node.html",
+      "layout/vlvdvc/vdvc105_find.html",
+      "layout/vlvdvc/vdvc204_dedit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc204_node.html": {
+    "resources": [
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "js/areas(2).js",
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "css/mui.picker.css",
+      "js/immersed.js",
+      "js/mui.min.js",
+      "images/loading.gif",
+      "css/common/app.css",
+      "css/mui.min.css",
+      "css/mui.imageviewer.css",
+      "css/mui.poppicker.css",
+      "js/index.js",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.poppicker.css",
+      "css/fonts/iconfont.css",
+      "css/common/icons-extra.css",
+      "css/common/mui.picker.css",
+      "images/placeholder.png"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc204_edit.html",
+      "layout/vlvdvc/vdvc205_plist.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc204_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "images/loading.gif",
+      "css/common/mui.min.css",
+      "js/md5.js",
+      "images/placeholder.png"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc204_node.html",
+      "layout/vlvdvc/vdvc205_plist.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc205_plist.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc205_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc205_list.html",
+      "layout/vlvdvc/vdvc205_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc205_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "css/mui.min.css",
+      "js/jquery-2.1.0.js",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "js/immersed.js",
+      "js/index.js",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.picker.css",
+      "css/index.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc205_node.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc205_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "css/mui.picker.css",
+      "js/immersed.js",
+      "js/mui.min.js",
+      "images/loading.gif",
+      "css/common/app.css",
+      "css/mui.min.css",
+      "css/mui.imageviewer.css",
+      "css/mui.poppicker.css",
+      "js/index.js",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.picker.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc205_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc205_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "images/loading.gif"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc205_node.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa211_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "css/mui.imageviewer.css",
+      "images/loading.gif",
+      "css/index.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/md5.js",
+      "images/placeholder.png"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa211_edit.html",
+      "layout/vlvdsa/vdsa331_edit.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa211_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "css/mui.imageviewer.css",
+      "images/loading.gif",
+      "js/mui.min.js",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "images/placeholder.png",
+      "js/index.js",
+      "css/common/mui.imageviewer.css",
+      "fonts/mui.ttf",
+      "images/g6.jpg",
+      "css/index.css",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_find.html",
+      "barcode_scan.html",
+      "layout/vlvdsa/vdsa211_plist.html",
+      "layout/vlvdvc/vdvc311_VRfind.html",
+      "layout/vlvdsa/vdsa211_dedit.html",
+      "layout/vlvdeb/vdeb312_plist.html",
+      "layout/vlvdvc/vdvc311_VRfind01.html",
+      "layout/vlfind/vdvc311_VRfind.html",
+      "layout/vlvdsa/vdsa211_node.html",
+      "layout/vlfind/vdvc312_VRfind.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_find.html": {
+    "resources": [
+      "css/common/mui.css",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/loading.gif",
+      "images/house.png",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "images/placeholder.png",
+      "js/md5.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdsa/vdsa402_plist.html": {
+    "resources": [
+      "css/common/mui.css",
+      "layout/vlvdsa/vdsa402_list.html",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "css/icons-extra.css",
+      "js/index.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa402_list.html",
+      "layout/vlvdsa/vdsa402_edit.html",
+      "layout/vlvdvc/vdvc103_VRfind.html",
+      "layout/vlvdsu/vcsu312_edit.html",
+      "CodeCard.html",
+      "layout/verificationCode.html",
+      "layout/vlvdvc/vdvc311_select.html",
+      "layout/vlvdsu/vdsu312_edit.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa402_list.html": {
+    "resources": [
+      "images/loading.gif",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "css/common/mui.css"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa402_node.html",
+      "layout/vlvdsa/vdsa402_edit.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa402_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/mui.imageviewer.css",
+      "css/common/mui.css",
+      "css/common/app.css",
+      "js/immersed.js",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_find.html",
+      "layout/vlvdsa/vdsa402_node.html",
+      "layout/vlvdvc/vdvc312_find.html",
+      "layout/vlvdsa/vdsa402_test.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa402_node.html": {
+    "resources": [
+      "css/common/mui.css",
+      "images/loading.gif",
+      "css/mui.min.css",
+      "css/mui.poppicker.css",
+      "css/mui.imageviewer.css",
+      "css/mui.picker.css",
+      "js/mui.imageViewer.js",
+      "css/common/app.css",
+      "js/immersed.js"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa402_edit.html",
+      "layout/login.html"
+    ]
+  },
+  "indexed-list-select.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "js/immersed.js",
+      "css/mui.indexedlist.css",
+      "js/mui.indexedlist.js",
+      "images/placeholder.png",
+      "fonts/mui.ttf"
+    ],
+    "refer": []
+  },
+  "layout/vlvdim/vdim102_plist.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "layout/vlvdim/vdim102_list.html",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdim/vdim102_list.html"
+    ]
+  },
+  "tab-webview-subpage-chats.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc103_edit01.html": {
+    "resources": [
+      "css/common/mui.css",
+      "css/common/app.css",
+      "css/mui.imageviewer.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.picker.css"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc103_find.html"
+    ]
+  },
+  "index-ps.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/vl-websocket.js",
+      "js/common.js",
+      "js/writeJsonFile.js",
+      "images/scan.png",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/mui.js",
+      "tab-webview-subpage-work.html",
+      "js/immersed.js",
+      "js/index.js",
+      "tab-webview-subpage-setting.html",
+      "js/md5.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "tab-webview-subpage-setting.html",
+      "tab-webview-subpage-work.html",
+      "layout/vlvdsa/vdsa211_edit.html",
+      "layout/vlvdsa/vdsa211_plist.html",
+      "layout/vlvdsa/vdsa211_list.html",
+      "layout/vlvdst/vdst215_edit.html",
+      "layout/vlvdst/vdst315_edit.html"
+    ]
+  },
+  "layout/vlvrst/vrst001_list.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png"
+    ],
+    "refer": []
+  },
+  "layout/vlvrst/vrst001_plist.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "layout/vlvrst/vrst001_list.html",
+      "js/index.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "layout/vlvrst/vrst001_list.html",
+      "layout/vlvdvc/vdvc105_find.html"
+    ]
+  },
+  "layout/vlvdeb/vdeb511_list.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png"
+    ],
+    "refer": [
+      "layout/vlvdeb/vdeb511_node.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdeb/vdeb511_plist.html": {
+    "resources": [
+      "css/common/mui.css",
+      "layout/vlvdeb/vdeb511_list.html",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "css/icons-extra.css",
+      "images/cart (1).png",
+      "css/index.css",
+      "css/fonts/iconfont.css"
+    ],
+    "refer": [
+      "layout/vlvdeb/vdeb511_list.html",
+      "layout/vlvdvc/vdvc311_find.html",
+      "layout/vlvdeb/vdeb211_list.html",
+      "layout/vlvdeb/vdeb212_plist.html"
+    ]
+  },
+  "layout/vlvdeb/vdeb511_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/fonts/iconfont.css",
+      "css/common/app.css",
+      "css/common/mui.css",
+      "images/loading.gif",
+      "js/mui.min.js",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.min.css",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/mui.picker.css"
+    ],
+    "refer": [
+      "layout/vlvdeb/vdeb211_list.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa331_plist.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "layout/vlvdsa/vdsa331_list.html",
+      "fonts/mui.ttf",
+      "css/index.css",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa331_list.html",
+      "layout/vlvdsa/vdsa331_edit.html",
+      "layout/vlvdvc/vdvc204_find.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa331_list.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "css/common/mui.min.css",
+      "js/md5.js",
+      "images/loading.gif",
+      "images/placeholder.png",
+      "images/house.png",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa331_node.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa331_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "css/common/mui.poppicker.css",
+      "css/fonts/iconfont.css",
+      "css/common/app.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/icons-extra.css",
+      "css/common/mui.picker.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "fonts/mui.ttf",
+      "images/placeholder.png",
+      "images/house.png",
+      "css/icons-extra.css"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa331_edit.html",
+      "barcode_scan.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa331_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/mui.poppicker.css",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/mui.picker.css",
+      "js/mui.picker.js",
+      "css/index.css",
+      "js/mui.dtpicker.js",
+      "css/common/mui.dtpicker.css",
+      "images/placeholder.png",
+      "images/house.png"
+    ],
+    "refer": [
+      "barcode_scan.html",
+      "layout/vlvdvc/vdvc311_find.html",
+      "layout/vlvdsa/vdsa331_node.html",
+      "layout/vlvdsa/vdsa331_dedit.html",
+      "layout/vlvdvc/vdvc511_find.html",
+      "layout/vlvdvc/vdvc312_find.html",
+      "layout/login.html",
+      "layout/vlvdvc/vdvc204_edit.html",
+      "layout/vlvdvc/vdvc204_find.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr001_plist.html": {
+    "resources": [
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "layout/vlvdhr/vdhr001_list.html",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr001_edit.html",
+      "layout/vlvdhr/vdhr001_list.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr001_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/mui.poppicker.css",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/mui.picker.css",
+      "fonts/mui.ttf",
+      "css/common/app.css"
+    ],
+    "refer": []
+  },
+  "layout/vlvdhr/vdhr001_list.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/loading.gif",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/arttmpl.js"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr103_plist.html",
+      "layout/vlvdhr/vdhr001_node.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr103_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "images/loading.gif",
+      "images/mipmap-hdpi/vdoa001_b.png"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr103_node.html",
+      "layout/vlvdhr/vdhr104_plist.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr103_plist.html": {
+    "resources": [
+      "css/index.css",
+      "css/common/mui.css",
+      "fonts/mui.ttf",
+      "layout/vlvdhr/vdhr103_list.html",
+      "js/immersed.js",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr103_list.html",
+      "layout/vlvdhr/vdhr103_edit.html",
+      "layout/vlvdhr/vdhr103_dedit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr103_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "css/common/app.css",
+      "css/common/mui.imageviewer.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr103_node.html",
+      "layout/vlvdhr/vdhr103_dedit.html",
+      "layout/vlvdhr/vdhr103_VRfind.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr103_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "images/loading.gif"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr103_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr001_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "images/loading.gif"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr001_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr000_plist.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/mui.poppicker.css",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/mui.picker.css",
+      "images/mipmap-xxhdpi/vdoa011_b.png",
+      "images/mipmap-xxhdpi/vdsa201_b.png",
+      "images/icon/vdvc311.png",
+      "css/common/app.css",
+      "images/mipmap-xxhdpi/vdsa202_b.png",
+      "js/arttmpl.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdhr/vdhr002_plist.html": {
+    "resources": [
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "layout/vlvdhr/vdhr002_list.html",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr002_list.html",
+      "layout/vlvdhr/vdhr002_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr002_list.html": {
+    "resources": [
+      "images/loading.gif",
+      "images/mipmap-hdpi/vdoa001_b.png"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr104_plist.html",
+      "layout/vlvdhr/vdhr002_node.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr104_plist.html": {
+    "resources": [
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "layout/vlvdhr/vdhr104_list.html",
+      "js/immersed.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr104_list.html",
+      "layout/vlvdhr/vdhr104_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr104_list.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/loading.gif",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr105_plist.html",
+      "layout/vlvdhr/vdhr104_node.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr104_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "css/common/app.css",
+      "css/common/mui.imageviewer.css",
+      "css/index.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc105_VRfind.html",
+      "layout/vlvdhr/vdhr104_node.html",
+      "layout/vlvdhr/vdhr103_VRfind.html",
+      "layout/vlvdhr/vdhr104_dedit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr105_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "css/common/mui.poppicker.css",
+      "css/common/app.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.picker.css",
+      "css/common/mui.css"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr105_node.html",
+      "layout/vlvdhr/vdhr104_VRfind.html",
+      "layout/vlvdhr/vdhr103_VRfind.html",
+      "layout/vlvdvc/vdvc103_VRfind.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr105_plist.html": {
+    "resources": [
+      "css/index.css",
+      "layout/vlvdhr/vdhr105_list.html",
+      "fonts/mui.ttf",
+      "js/immersed.js"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr105_edit.html",
+      "layout/vlvdhr/vdhr105_list.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr105_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/mui.poppicker.css",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/mui.picker.css",
+      "images/loading.gif"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr105_edit.html",
+      "layout/vlvdhr/vdhr103_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr105_list.html": {
+    "resources": [
+      "images/loading.gif"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr105_node.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr104_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "images/loading.gif",
+      "css/common/app.css",
+      "css/common/mui.imageviewer.css"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr104_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr002_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "css/common/app.css",
+      "css/common/mui.imageviewer.css",
+      "images/loading.gif"
+    ],
+    "refer": []
+  },
+  "layout/vlvdhr/vdhr002_edit.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "css/common/mui.poppicker.css",
+      "css/common/app.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.picker.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdeb/vdeb312_plist.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "layout/vlvdeb/vdeb312_list.html",
+      "js/index.js",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "layout/vlvdeb/vdeb312_list.html"
+    ]
+  },
+  "integral.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "css/common/mui.imageviewer.css"
+    ],
+    "refer": [
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdeb/vdeb312_list.html": {
+    "resources": [
+      "css/common/mui.css",
+      "css/common/app.css",
+      "css/common/mui.imageviewer.css"
+    ],
+    "refer": []
+  },
+  "layout/vlvdsa/vdsa211_plist.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "layout/vlvdsa/vdsa211_list.html",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "fonts/mui.ttf",
+      "js/md5.js",
+      "layout/vlvdsa/vdsa210_list.html"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa211_edit.html",
+      "layout/vlvdsa/vdsa211_list.html",
+      "layout/vlvdsa/vdsa210_list.html"
+    ]
+  },
+  "layout/vlvdeb/vdeb211_list.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "css/common/app.css",
+      "images/placeholder.png",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "css/common/mui.imageviewer.css"
+    ],
+    "refer": [
+      "layout/vlvdeb/vdeb212_edit.html",
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdeb/vdeb212__list.html": {
+    "resources": [
+      "css/common/app.css",
+      "images/placeholder.png",
+      "css/common/mui.css",
+      "css/common/mui.imageviewer.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdeb/vdeb511_node.html"
+    ]
+  },
+  "layout/vlvdeb/vdeb212_plist.html": {
+    "resources": [
+      "css/common/mui.css",
+      "layout/vlvdeb/vdeb212__list.html",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "layout/vlvdeb/vdeb212_list.html"
+    ],
+    "refer": [
+      "layout/vlvdeb/vdeb212__list.html",
+      "layout/vlvdeb/vdeb212_list.html"
+    ]
+  },
+  "releaseNotes.html": {
+    "resources": [
+      "css/index.css",
+      "css/common/mui.css",
+      "js/jquery-2.1.0.js",
+      "js/mui.js",
+      "css/fonts/iconfont.css",
+      "fonts/mui.ttf",
+      "css/icons-extra.css"
+    ],
+    "refer": []
+  },
+  "pullrefresh_main.html": {
+    "resources": [
+      "pullrefresh_sub.html"
+    ],
+    "refer": [
+      "pullrefresh_sub.html"
+    ]
+  },
+  "PIM.html": {
+    "refer": [
+      "bankcard_list.html",
+      "layout/vlvdac/vdac301_list.html",
+      "layout/vlvdvc/vdvc811_list.html",
+      "layout/vlvdvc/vdvc811_plist.html",
+      "CodeCard.html",
+      "layout/vlvdvc/vdvc311_select.html"
+    ],
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/mui.poppicker.css",
+      "css/fonts/iconfont.css",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/mui.picker.css",
+      "fonts/mui.ttf",
+      "css/common/app.css",
+      "js/md5.js"
+    ]
+  },
+  "bankcard_list.html": {
+    "refer": [
+      "bankcard_edit.html"
+    ],
+    "resources": []
+  },
+  "balance.html": {
+    "refer": [
+      "layout/vdab/vdab2_edit.html",
+      "layout/vlvdab/vdab2_edit.html",
+      "layout/vlvdfa/vdfa312_edit.html",
+      "layout/vlvdfa/vdfa312_plist.html"
+    ],
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "css/common/mui.poppicker.css",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "css/index.css",
+      "js/mui.min.js",
+      "css/fonts/iconfont.css",
+      "css/common/app.css",
+      "css/common/mui.imageviewer.css",
+      "js/index.js",
+      "css/common/mui.picker.css",
+      "js/md5.js"
+    ]
+  },
+  "layout/vlvdac/vdac301_list.html": {
+    "refer": [
+      "layout/vlvdac/vdac301_edit.html",
+      "layout/vlvdac/vdac301_dlist.html"
+    ],
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/placeholder.png"
+    ]
+  },
+  "layout/vlvdfa/vdfa312_edit.html": {
+    "refer": [
+      "layout/vlvdfa/vdfa312_list.html",
+      "layout/vlvdfa/vdfa312_plist.html",
+      "layout/vlvdvc/vdvc811_plist.html",
+      "layout/vlvdvc/vdvc811_edit.html"
+    ],
+    "resources": [
+      "images/placeholder.png",
+      "css/common/mui.css",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.picker.css",
+      "css/index.css"
+    ]
+  },
+  "layout/vlvdfa/vdfa312_plist.html": {
+    "resources": [
+      "layout/vlvdfa/vdfa312_list.html",
+      "css/common/mui.css"
+    ],
+    "refer": [
+      "layout/vlvdfa/vdfa312_list.html",
+      "layout/vlvdfa/vdfa312_edit.html"
+    ]
+  },
+  "layout/vlvdfa/vdfa312_list.html": {
+    "refer": [
+      "layout/vlvdfa/vdfa312_node.html"
+    ],
+    "resources": [
+      "images/loading.gif",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "css/common/mui.css"
+    ]
+  },
+  "layout/vlvdvc/vdvc811_plist.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc811_list.html"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc811_list.html",
+      "layout/vlvdvc/vdvc811_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc811_list.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc811_node.html"
+    ],
+    "resources": [
+      "css/common/mui.css",
+      "images/loading.gif",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/placeholder.png"
+    ]
+  },
+  "layout/vlvdvc/vdvc811_node.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc811_edit.html"
+    ],
+    "resources": [
+      "css/common/mui.css"
+    ]
+  },
+  "layout/vlvdvc/vdvc811_edit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc811_node.html",
+      "layout/vlvdvc/vdvc811_plist.html"
+    ],
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/mui.poppicker.css",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/mui.picker.css",
+      "js/md5.js"
+    ]
+  },
+  "layout/vlvdvc/vdvc701_list.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "css/common/mui.min.css",
+      "images/house.png"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc701_node.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc701_plist.html": {
+    "resources": [
+      "css/index.css",
+      "css/common/mui.css",
+      "layout/vlvdvc/vdvc701_list.html"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc701_list.html",
+      "layout/vlvdvc/vdvc701_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc701_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "css/common/mui.poppicker.css",
+      "images/loading.gif",
+      "css/common/mui.imageviewer.css",
+      "css/common/icons-extra.css",
+      "js/areas(2).js",
+      "css/common/mui.picker.css"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc701_edit.html": {
+    "resources": [
+      "css/common/mui.css",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/mui.picker.css",
+      "js/mui.imageViewer.js",
+      "css/index.css"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc702_plist.html": {
+    "resources": [
+      "css/common/mui.css",
+      "css/index.css",
+      "js/mui.min.js",
+      "layout/vlvdvc/vdvc702_list.html",
+      "fonts/mui.ttf",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc702_list.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc702_list.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/loading.gif"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc702_node.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa212_plist.html": {
+    "resources": [
+      "css/common/mui.css",
+      "layout/vlvdsa/vdsa212_list.html",
+      "layout/vlvdsa/vdsa211_list.html"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa212_list.html",
+      "layout/vlvdsa/vdsa211_edit.html",
+      "layout/vlvdsa/vdsa211_list.html",
+      "layout/vlvdsa/vdsa212_edit.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa212_list.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "css/common/mui.css",
+      "images/loading.gif"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa212_node.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc702_node.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "css/common/mui.imageviewer.css",
+      "images/loading.gif"
+    ],
+    "refer": []
+  },
+  "layout/vlvdfa/vdfa332_plist.html": {
+    "resources": [
+      "layout/vlvdfa/vdfa332_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "css/index.css",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdfa/vdfa332_list.html"
+    ]
+  },
+  "layout/vlvrst/vrst003_plist.html": {
+    "resources": [
+      "layout/vlvrst/vrst001_list.html",
+      "layout/vlvrst/vrst003_list.html"
+    ],
+    "refer": [
+      "layout/vlvrst/vrst001_list.html",
+      "layout/vlvrst/vrst003_list.html"
+    ]
+  },
+  "layout/vlvdfa/vdfa332_list.html": {
+    "refer": [
+      "layout/vlvdfa/vdfa332_edit.html",
+      "layout/vlvdfa/vdfa332_dplist.html"
+    ],
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png"
+    ]
+  },
+  "layout/vlvdoa/vdoa001_plist.html": {
+    "resources": [
+      "layout/vlvdoa/vdoa001_list.html",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdoa/vdoa001_list.html",
+      "layout/vlvdoa/vdoa001_edit.html"
+    ]
+  },
+  "layout/vlvdoa/vdoa001_node.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc204_plist.html",
+      "layout/vlvdoa/vdoa001_edit.html",
+      "layout/vlvdvc/vdvc103_node.html",
+      "layout/vlvdsa/vdsa331_node.html",
+      "layout/vlvdsa/vdsa210_node.html",
+      "layout/vlvdhr/vdhr422_node.html",
+      "layout/vlvdhr/vdhr425_node.html"
+    ],
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "js/md5.js"
+    ]
+  },
+  "layout/vlvdoa/vdoa001_edit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc105_find.html"
+    ],
+    "resources": []
+  },
+  "index-cx.html": {
+    "resources": [
+      "tab-webview-subpage-work.html",
+      "css/common/mui.css",
+      "js/vl-websocket.js",
+      "js/common.js",
+      "js/writeJsonFile.js",
+      "images/scan.png",
+      "js/jquery-2.1.0.js",
+      "js/mui.js",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/app.css",
+      "js/md5.js",
+      "fonts/mui.ttf",
+      "tab-webview-subpage-setting.html"
+    ],
+    "refer": [
+      "tab-webview-subpage-setting.html",
+      "tab-webview-subpage-work.html",
+      "layout/vlvdsa/vdsa213_edit.html",
+      "layout/vlvdsa/vdsa214_edit.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa213_plist.html": {
+    "resources": [
+      "layout/vlvdsa/vdsa213_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa213_list.html",
+      "layout/vlvdsa/vdsa213_edit.html"
+    ]
+  },
+  "layout/vlvdfa/vdfa322_plist.html": {
+    "resources": [
+      "layout/vlvdfa/vdfa322_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "css/index.css",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdfa/vdfa322_list.html"
+    ]
+  },
+  "layout/vlvdfa/vdfa322_list.html": {
+    "refer": [
+      "layout/vlvdfa/vdfa322_edit.html",
+      "layout/vlvdvc/vdvc311_find.html",
+      "layout/login.html"
+    ],
+    "resources": [
+      "images/placeholder.png",
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/md5.js"
+    ]
+  },
+  "layout/vlvdfa/vdfa322_edit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc311_find.html"
+    ],
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/mui.poppicker.css",
+      "css/fonts/iconfont.css",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "js/md5.js",
+      "css/common/mui.picker.css"
+    ]
+  },
+  "layout/vlvdfa/vdfa322_plist1.html": {
+    "resources": [
+      "layout/vlvdfa/vdfa322_list1.html",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdfa/vdfa322_list1.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc204_dedit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc105_find.html",
+      "layout/vlvdvc/vdvc103_find.html",
+      "layout/vlvdvc/vdvc103_VRfind.html"
+    ],
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/mui.min.css",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "css/common/mui.imageviewer.css",
+      "css/index.css"
+    ]
+  },
+  "layout/vlvdvc/vdvc312_plist.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc312_list.html",
+      "css/common/mui.css",
+      "css/index.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc312_list.html",
+      "layout/vlvdvc/vdvc312_edit.html",
+      "layout/vlvdvc/vdvc103_find.html",
+      "layout/vlvdvc/vdvc103_VRfind.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc312_list.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc312_node.html",
+      "layout/login.html"
+    ],
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "css/common/mui.min.css",
+      "images/loading.gif"
+    ]
+  },
+  "layout/vlvdvc/vdvc312_node.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc311_plist.html",
+      "layout/vlvdvc/vdvc105_plist.html",
+      "layout/vlvdvc/vdvc312_edit.html",
+      "Gps.html",
+      "layout/vlvdsu/scan_signup.html"
+    ],
+    "resources": [
+      "css/common/mui.css",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/icons-extra.css",
+      "css/common/mui.picker.css",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "js/areas(2).js"
+    ]
+  },
+  "layout/vlvdvc/vdvc103_edit02.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc105_find.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdvc/vdvc312_edit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc105_find.html",
+      "layout/vlvdvc/vdvc311_VRfind.html",
+      "layout/vlvdvc/vdvc312_VRfind.html",
+      "layout/vlvdvc/vdvc312_node.html"
+    ],
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "js/areas(2).js",
+      "css/common/mui.picker.css"
+    ]
+  },
+  "layout/vlvdsa/vdsa412_plist.html": {
+    "resources": [
+      "layout/vlvdsa/vdsa211_list.html",
+      "layout/vlvdsa/vdsa412_list.html",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/md5.js"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa211_list.html",
+      "layout/vlvdsa/vdsa412_list.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc103_edit03.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc103_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdvc/vdvc204_find.html": {
+    "refer": [
+      "layout/vlvdsa/vdsa331_plist.html",
+      "layout/vlvdsa/vdsa331_edit.html",
+      "layout/vlvdsa/vdsa210_edit.html"
+    ],
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/index.css",
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "css/common/mui.min.css",
+      "js/jquery-2.1.0.js",
+      "css/common/mui.imageviewer.css",
+      "js/immersed.js",
+      "js/index.js",
+      "js/md5.js",
+      "images/placeholder.png"
+    ]
+  },
+  "layout/vlvdsa/vdsa331_dedit.html": {
+    "resources": [
+      "css/common/mui.css",
+      "css/common/mui.dtpicker.css",
+      "css/common/mui.picker.css",
+      "css/index.css",
+      "css/common/mui.imageviewer.css",
+      "js/mui.imageViewer.js",
+      "js/mui.picker.js",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/mui.dtpicker.js",
+      "js/immersed.js",
+      "js/index.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc511_find.html": {
+    "refer": [
+      "layout/vlvdsa/vdsa331_edit.html",
+      "layout/login.html"
+    ],
+    "resources": [
+      "css/common/mui.css",
+      "images/loading.gif",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js"
+    ]
+  },
+  "layout/vlvdac/vdac301_plist.html": {
+    "resources": [
+      "layout/vlvdac/vdac301_list.html",
+      "css/common/mui.css"
+    ],
+    "refer": [
+      "layout/vlvdac/vdac301_list.html",
+      "layout/vlvdac/vdac301_acct.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa412_list.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "css/common/mui.css",
+      "images/placeholder.png"
+    ],
+    "refer": [
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa213_edit.html": {
+    "resources": [
+      "css/common/mui.css",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/index.js",
+      "js/md5.js"
+    ],
+    "refer": []
+  },
+  "layout/vlvdvc/vdvc312_find.html": {
+    "resources": [
+      "images/placeholder.png",
+      "css/common/mui.css",
+      "js/md5.js",
+      "js/mui.min.js",
+      "js/jquery-2.1.0.js",
+      "js/immersed.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "layout/login.html"
+    ]
+  },
+  "layout/vlvdfa/vdfa322_list1.html": {
+    "resources": [
+      "images/mipmap-hdpi/vdoa001_b.png",
+      "images/placeholder.png",
+      "css/common/mui.css"
+    ],
+    "refer": []
+  },
+  "layout/vlvdac/vdac301_dlist.html": {
+    "resources": [
+      "js/mui.imageViewer.js",
+      "css/common/mui.poppicker.css",
+      "css/common/mui.imageviewer.css",
+      "css/common/icons-extra.css",
+      "css/common/mui.picker.css",
+      "css/common/mui.css"
+    ],
+    "refer": []
+  },
+  "layout/vlvdfa/vdfa312_node.html": {
+    "resources": [
+      "css/common/mui.css"
+    ],
+    "refer": []
+  },
+  "layout/vlvdac/vdac301_acct.html": {
+    "refer": [
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvrsa/vrsa001_plist.html": {
+    "resources": [
+      "layout/vlvrsa/vrsa001_list.html"
+    ],
+    "refer": [
+      "layout/vlvrsa/vrsa001_list.html",
+      "layout/vlvdvc/vdvc105_find.html",
+      "layout/vlvrsa/vrsa001_qm_find.html"
+    ]
+  },
+  "layout/vlvrsa/vrsa001_list.html": {
+    "refer": [
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsa/vdsa210_plist.html": {
+    "resources": [
+      "layout/vlvdsa/vdsa331_list.html",
+      "layout/vlvdsa/vdsa210_list.html"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa331_list.html",
+      "layout/vlvdvc/vdvc204_find.html",
+      "layout/vlvdsa/vdsa210_list.html",
+      "layout/vlvdsa/vdsa210_edit.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa210_list.html": {
+    "refer": [
+      "layout/vlvdsa/vdsa331_node.html",
+      "layout/vlvdsa/vdsa210_node.html"
+    ],
+    "resources": [
+      "images/icon/placeholder.png"
+    ]
+  },
+  "layout/vlvdsa/vdsa210_node.html": {
+    "refer": [
+      "layout/vlvdsa/vdsa331_edit.html",
+      "layout/vlvdsa/vdsa210_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsa/vdsa210_edit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc511_find.html",
+      "layout/vlvdvc/vdvc312_find.html",
+      "layout/login.html",
+      "layout/vlvdsa/vdsa210_node.html",
+      "layout/vlvdvc/vdvc311_VRfind.html",
+      "layout/vlvdvc/vdvc204_find.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdeb/vdeb212_edit.html": {
+    "refer": [
+      "layout/vlvdeb/vdeb212_list.html",
+      "layout/vlvdeb/vdeb212_plist.html",
+      "layout/vlvdeb/vdeb212_plist_02.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsa/vdsa214_plist.html": {
+    "resources": [
+      "layout/vlvdsa/vdsa214_list.html"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa214_list.html",
+      "layout/vlvdsa/vdsa214_edit.html"
+    ]
+  },
+  "layout/vlvdst/vdst215_plist.html": {
+    "resources": [
+      "layout/vlvdst/vdst215_list.html"
+    ],
+    "refer": [
+      "layout/vlvdst/vdst215_list.html",
+      "layout/vlvdst/vdst215_edit.html",
+      "layout/vlvdac/vdac301_plist.html"
+    ]
+  },
+  "layout/vlvdst/vdst215_edit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc311_VRfind.html",
+      "barcode_scan.html",
+      "layout/vlvdvc/vdvc511_find.html",
+      "layout/vlvdvc/vdvc511_VRfind.html",
+      "layout/vlvdvc/vdvc105_VRfind.html",
+      "layout/vlvdeb/vdeb212_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst215_node.html": {
+    "refer": [
+      "layout/vlvdst/vdst215_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst215_list.html": {
+    "refer": [
+      "layout/vlvdst/vdst215_node.html",
+      "layout/login.html",
+      "layout/vlvdst/vdst215_edit.html"
+    ],
+    "resources": [
+      "images/placeholder.png"
+    ]
+  },
+  "layout/vlvdsa/vdsa214_edit.html": {
+    "refer": [
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr401_sche_plist.html": {
+    "resources": [
+      "layout/vlvdhr/vdhr401_sche_list.html",
+      "layout/vlvdhr/vdhr401_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr401_sche_list.html",
+      "layout/vlvdhr/vdhr401_list.html",
+      "layout/vlvdhr/vdhr401_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr401_sche_list.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr401_sche_edit.html",
+      "layout/vlvdhr/vdhr401_edit.html",
+      "layout/vlvdhr/vdhr401_node.html",
+      "layout/login.html",
+      "layout/vlvdhr/vdhr401_sche_node.html",
+      "layout/vlvdhr/vdhr401_sche_node01.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvshr/vshr001_clerk.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr422_edit.html",
+      "layout/vlvdhr/vdhr425_edit.html",
+      "layout/vlvdhr/vdhr423_edit.html",
+      "layout/vlvdhr/vdhr424_edit.html",
+      "layout/vlvdhr/vdhr426_edit.html",
+      "layout/vlvdhr/vdhr426_plist.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr401_plist.html": {
+    "resources": [
+      "layout/vlvdhr/vdhr401_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr401_list.html",
+      "layout/vlvdhr/vdhr401_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr401_edit.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr401_dedit.html",
+      "layout/vlvdvc/vdvc105_VRfind.html",
+      "layout/vlvdhr/vdhr104_VRfind.html",
+      "layout/vlvdvc/vdvc103_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr401_list.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr401_node.html",
+      "layout/vlvdhr/vdhr401_edit.html",
+      "layout/vlvdhr/vdhr401_sche_edit.html",
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr401_node.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr401_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdac/vdac402_node.html": {
+    "refer": [
+      "layout/vlvdac/vdac402_edit.html",
+      "layout/login.html",
+      "layout/vlvdac/vdac402_edit01.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr412_edit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc105_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvrst/vrst215_plist.html": {
+    "resources": [
+      "layout/vlvrst/vrst215_list.html"
+    ],
+    "refer": [
+      "layout/vlvrst/vrst215_list.html"
+    ]
+  },
+  "layout/vlvdfa/vdfa332_dplist.html": {
+    "resources": [
+      "layout/vlvdfa/vdfa332_dlist.html"
+    ],
+    "refer": [
+      "layout/vlvdfa/vdfa332_dlist.html"
+    ]
+  },
+  "layout/vlvdst/vdst315_plist.html": {
+    "resources": [
+      "layout/vlvdst/vdst215_list.html",
+      "layout/vlvdst/vdst315_list.html"
+    ],
+    "refer": [
+      "layout/vlvdst/vdst215_list.html",
+      "layout/vlvdst/vdst315_list.html",
+      "layout/vlvdst/vdst315_edit.html"
+    ]
+  },
+  "layout/vlvdst/vdst315_edit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc311_VRfind.html",
+      "layout/vlvdst/vdst315_dedit.html",
+      "layout/vlvdst/vdst215_VRfind.html",
+      "layout/vlvdvc/vdvc511_VRfind.html",
+      "layout/vlvdvc/vdvc105_VRfind.html",
+      "layout/vlvdst/vdst315_plist.html",
+      "layout/vlfind/vdst315_findClient.html",
+      "layout/vlfind/vdst315_findGoods.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdeb/vdeb212_list.html": {
+    "refer": [
+      "layout/vlvdst/vdst215_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst315_list.html": {
+    "refer": [
+      "layout/vlvdst/vdst315_node.html",
+      "layout/login.html",
+      "layout/vlvdst/vdst215_edit.html",
+      "layout/vlvdst/vdst315_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst315_node.html": {
+    "refer": [
+      "layout/vlvdst/vdst315_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdeb/vdeb212_plist_01.html": {
+    "resources": [
+      "layout/vlvdeb/vdeb212_list.html",
+      "layout/vlvdeb/vdeb212_list_01.html"
+    ],
+    "refer": [
+      "layout/vlvdeb/vdeb212_list.html",
+      "layout/vlvdeb/vdeb212_list_01.html",
+      "layout/vlvdst/vdst315_edit.html",
+      "layout/vlvdst/vdst215_edit.html"
+    ]
+  },
+  "layout/vlvdeb/vdeb212_list_01.html": {
+    "refer": [
+      "layout/vlvdst/vdst215_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdeb/vdeb212_plist_02.html": {
+    "resources": [
+      "layout/vlvdeb/vdeb212_list_02.html"
+    ],
+    "refer": [
+      "layout/vlvdeb/vdeb212_list_02.html",
+      "layout/vlvdst/vdst215_edit.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa331_plist_01.html": {
+    "resources": [
+      "layout/vlvdsa/vdsa331_list.html",
+      "layout/vlvdsa/vdsa331_list_01.html"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa331_list.html",
+      "layout/vlvdsa/vdsa331_list_01.html"
+    ]
+  },
+  "layout/vdvv000_plist.html": {
+    "resources": [
+      "layout/vdvv000_list.html"
+    ],
+    "refer": [
+      "layout/vdvv000_list.html"
+    ]
+  },
+  "layout/vlvrsa/vrsa002_plist.html": {
+    "resources": [
+      "layout/vlvrsa/vrsa001_list.html",
+      "layout/vlvrsa/vrsa002_list.html"
+    ],
+    "refer": [
+      "layout/vlvrsa/vrsa001_list.html",
+      "layout/vlvrsa/vrsa002_list.html"
+    ]
+  },
+  "layout/vlvrsa/vrsa003_plist.html": {
+    "resources": [
+      "layout/vlvrsa/vrsa002_list.html",
+      "layout/vlvrsa/vrsa003_list.html"
+    ],
+    "refer": [
+      "layout/vlvrsa/vrsa002_list.html",
+      "layout/vlvrsa/vrsa003_list.html",
+      "layout/vlvdvc/vdvc103_VRfind.html"
+    ]
+  },
+  "layout/vlvrsa/vrsa002_list.html": {
+    "refer": [
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr425_edit.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr103_node.html",
+      "layout/vlvdhr/vdhr425_node.html",
+      "layout/vlvdvc/vdvc204_find.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr401_sche_edit.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr105_VRfind.html",
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr401_sche_node.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr105_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr422_plist.html": {
+    "resources": [
+      "layout/vlvdhr/vdhr422_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr422_list.html",
+      "layout/vlvdhr/vdhr422_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr424_plist.html": {
+    "resources": [
+      "layout/vlvdhr/vdhr424_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr424_list.html",
+      "layout/vlvdhr/vdhr424_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr422_edit.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr103_node.html",
+      "layout/vlvdvc/vdvc204_find.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr422_list.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr422_node.html",
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr422_node.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr103_edit.html",
+      "layout/vlvdhr/vdhr422_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr424_list.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr424_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr424_node.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr424_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr425_plist.html": {
+    "resources": [
+      "layout/vlvdhr/vdhr425_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr425_list.html",
+      "layout/vlvdhr/vdhr425_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr423_edit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc204_find.html",
+      "layout/vlvdhr/vdhr105_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr426_plist.html": {
+    "resources": [
+      "layout/vlvdhr/vdhr426_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr426_list.html",
+      "layout/vlvdhr/vdhr426_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr423_plist.html": {
+    "resources": [
+      "layout/vlvdhr/vdhr423_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr423_edit.html",
+      "layout/vlvdhr/vdhr423_list.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr412_plist.html": {
+    "resources": [
+      "layout/vlvdhr/vdhr422_list.html",
+      "layout/vlvdhr/vdhr412_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhr/vdhr422_list.html",
+      "layout/vlvdhr/vdhr412_list.html",
+      "layout/vlvdhr/vdhr412_edit.html"
+    ]
+  },
+  "layout/vlvdhr/vdhr412_list.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr412_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr412_node.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr412_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr423_list.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr423_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr423_node.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr423_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr425_list.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr425_node.html",
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr425_node.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr425_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr426_list.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr426_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr426_node.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr426_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvrvd/vrvd002_plist.html": {
+    "refer": [
+      "layout/vlvrvd/vrvd002_list.html"
+    ],
+    "resources": [
+      "layout/vlvrvd/vrvd002_list.html"
+    ]
+  },
+  "layout/vlvrvd/vrsa402_plist.html": {
+    "resources": [
+      "layout/vlvrvd/vrvd002_list.html",
+      "layout/vlvrvd/vrsa402_list.html"
+    ],
+    "refer": [
+      "layout/vlvrvd/vrvd002_list.html",
+      "layout/vlvrvd/vrsa402_list.html",
+      "layout/vlvdvc/vdvc103_VRfind.html"
+    ]
+  },
+  "layout/forget_password.html": {
+    "refer": [
+      "outLogin.html",
+      "layout/forget_password.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdac/vdac402_m_plist.html": {
+    "resources": [
+      "layout/vlvdac/vdac402_m_list.html"
+    ],
+    "refer": [
+      "layout/vlvdac/vdac402_m_list.html"
+    ]
+  },
+  "layout/vlvdac/vdac402_m_list.html": {
+    "refer": [
+      "layout/vlvdac/vdac402_m_dplist.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdac/vdac402_m_dplist.html": {
+    "resources": [
+      "layout/vlvdac/vdac402_m_dlist.html"
+    ],
+    "refer": [
+      "layout/vlvdac/vdac402_m_dlist.html"
+    ]
+  },
+  "layout/vlvdac/vdac402_m_dlist.html": {
+    "refer": [
+      "layout/vlvdac/vdac402_m_dplist.html",
+      "layout/vlvdac/vdac402_m_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhr/vdhr426_edit.html": {
+    "refer": [
+      "layout/vlvdhr/vdhr105_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsu/scan_signup.html": {
+    "refer": [
+      "layout/vlvdsu/vcsu105_edit.html",
+      "layout/vlvdsu/vcsu311_edit.html",
+      "layout/verificationCode.html",
+      "layout/login.html",
+      "layout/vlvdsu/vdsu311_edit_test.html",
+      "layout/vlvdsu/vdsu105_edit.html",
+      "layout/vlvdsu/vdsu105_edit01.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsu/vcsu105_edit.html": {
+    "refer": [
+      "layout/login.html",
+      "layout/vlvdsu/vcsu101_find.html",
+      "layout/vlvdsu/scan_signup.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsu/vcsu311_edit.html": {
+    "refer": [
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsu/vcsu312_edit.html": {
+    "refer": [
+      "layout/vlvdsu/scan_signup.html"
+    ],
+    "resources": []
+  },
+  "layout/verificationCode.html": {
+    "refer": [
+      "layout/vlvdsu/vcsu105_edit.html",
+      "layout/vlvdsu/vcsu311_edit.html",
+      "layout/vlvdsu/vcsu312_edit.html",
+      "layout/vlvdsu/vcsu101_find.html",
+      "layout/vlvdsu/vcsu101_list.html",
+      "layout/vlvdsu/vdsu105_edit.html",
+      "layout/vlvdsu/vdsu101_list.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsu/vcsu101_list.html": {
+    "refer": [
+      "layout/vlvdsu/vcsu311_edit.html",
+      "layout/vlvdsu/vcsu101_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsu/vcsu101_edit.html": {
+    "refer": [
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdvc/vdvc311_select.html": {
+    "refer": [
+      "CodeCard.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvrst/vrsa412_plist.html": {
+    "resources": [
+      "layout/vlvrst/vrsa412_list.html"
+    ],
+    "refer": [
+      "layout/vlvrst/vrsa412_list.html"
+    ]
+  },
+  "layout/vlvrvd/vrsa412_plist.html": {
+    "resources": [
+      "layout/vlvrvd/vrsa412_list.html"
+    ],
+    "refer": [
+      "layout/vlvrvd/vrsa412_list.html"
+    ]
+  },
+  "layout/vlvrvd/vrst215_plist.html": {
+    "resources": [
+      "layout/vlvrvd/vrst215_list.html"
+    ],
+    "refer": [
+      "layout/vlvrvd/vrst215_list.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_plist01.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc311_list.html",
+      "layout/vlvdvc/vdvc311_list01.html"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc311_list.html",
+      "layout/vlvdvc/vdvc311_list01.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc311_list01.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc311_node01.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdvc/vdvc311_node01.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc105_plist.html",
+      "Gps.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvrvd/vrsa214_plist.html": {
+    "resources": [
+      "layout/vlvrvd/vrsa214_list.html"
+    ],
+    "refer": [
+      "layout/vlvrvd/vrsa214_list.html"
+    ]
+  },
+  "layout/vlvdsu/vdsu312_edit.html": {
+    "refer": [
+      "layout/vlvdsu/scan_signup.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsu/vdsu101_list.html": {
+    "refer": [
+      "layout/vlvdsu/vdsu101_edit.html",
+      "layout/vlvdsu/vdsu311_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsu/vdsu105_edit.html": {
+    "refer": [
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsu/vdsu311_edit.html": {
+    "refer": [
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/add-ons.html": {
+    "refer": [
+      "layout/vlvdadd/vdst212_search.html",
+      "layout/vlvdst/vdst212_report.html"
+    ],
+    "resources": []
+  },
+  "addons.html": {
+    "refer": [
+      "layout/vlvdadd/vdst212_search.html",
+      "layout/vlvdst/vdst212_findone.html",
+      "layout/vlvdst/vdst212_report.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvrvd/vrst315_plist.html": {
+    "resources": [
+      "layout/vlvrvd/vrsa402_list.html",
+      "layout/vlvrvd/vrst315_list.html"
+    ],
+    "refer": [
+      "layout/vlvrvd/vrsa402_list.html",
+      "layout/vlvrvd/vrst315_list.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa211_dedit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc511_find.html",
+      "layout/vlfind/vdvc511_VRfind.html",
+      "layout/vlfind/vdsa210_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsu/vdsu000_select.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc311_select.html",
+      "layout/vlfind/vdvc311_VRfind.html",
+      "CodeCard.html",
+      "layout/vlvdsu/vdsu312_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdvc/vdvc512_plist.html": {
+    "resources": [
+      "layout/vlvdvc/vdvc511_list.html",
+      "layout/vlvdvc/vdvc512_list.html"
+    ],
+    "refer": [
+      "layout/vlvdvc/vdvc511_list.html",
+      "layout/vlvdvc/vdvc512_list.html",
+      "layout/vlvdvc/vdvc512_edit.html"
+    ]
+  },
+  "layout/vlvdvc/vdvc512_edit.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc512_node.html",
+      "layout/vlfind/vdsa210_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdvc/vdvc512_node.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc512_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdvc/vdvc512_list.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc512_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst316_plist.html": {
+    "resources": [
+      "layout/vlvdst/vdst316_list.html"
+    ],
+    "refer": [
+      "layout/vlvdst/vdst316_edit.html",
+      "layout/vlvdst/vdst316_list.html"
+    ]
+  },
+  "layout/vlvdst/vdst316_dedit.html": {
+    "refer": [
+      "layout/vlfind/vdvc511_VRfind.html",
+      "layout/vlfind/vdsa210_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst316_edit.html": {
+    "refer": [
+      "layout/vlvdst/vdst316_dedit.html",
+      "layout/vlfind/vdvc311_VRfind.html",
+      "layout/vlvdst/vdst316_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst316_list.html": {
+    "refer": [
+      "layout/vlvdst/vdst316_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst316_node.html": {
+    "refer": [
+      "layout/vlvdst/vdst316_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst315_plist01.html": {
+    "resources": [
+      "layout/vlvdst/vdst315_list01.html"
+    ],
+    "refer": [
+      "layout/vlvdst/vdst316_edit.html",
+      "layout/vlvdst/vdst315_list01.html",
+      "layout/vlvdst/vdst315_edit01.html"
+    ]
+  },
+  "layout/vlvdst/vdst315_edit01.html": {
+    "refer": [
+      "layout/vlvdst/vdst315_node01.html",
+      "layout/vlvdst/vdst315_dedit01.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst315_node01.html": {
+    "refer": [
+      "layout/vlvdst/vdst315_edit01.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst315_list01.html": {
+    "refer": [
+      "layout/vlvdst/vdst316_node.html",
+      "layout/vlvdst/vdst315_node01.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst315_dedit01.html": {
+    "refer": [
+      "layout/vlfind/vdsa210_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst313_plist.html": {
+    "resources": [
+      "layout/vlvdst/vdst313_list.html"
+    ],
+    "refer": [
+      "layout/vlvdst/vdst313_list.html",
+      "layout/vlvdst/vdst313_edit.html"
+    ]
+  },
+  "layout/vlvdst/vdst313_edit.html": {
+    "refer": [
+      "layout/vlvdst/vdst313_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst313_list.html": {
+    "refer": [
+      "layout/vlvdst/vdst313_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst313_node.html": {
+    "refer": [
+      "layout/vlvdst/vdst313_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst314_plist.html": {
+    "resources": [
+      "layout/vlvdst/vdst313_list.html",
+      "layout/vlvdst/vdst314_list.html"
+    ],
+    "refer": [
+      "layout/vlvdst/vdst313_list.html",
+      "layout/vlvdst/vdst314_list.html",
+      "layout/vlvdst/vdst314_edit.html"
+    ]
+  },
+  "layout/vlvdst/vdst314_list.html": {
+    "refer": [
+      "layout/vlvdst/vdst314_node.html",
+      "layout/vlvdst/vdst314_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst216_plist.html": {
+    "resources": [
+      "layout/vlvdst/vdst216_list.html"
+    ],
+    "refer": [
+      "layout/vlvdst/vdst216_list.html",
+      "layout/vlvdst/vdst216_edit.html"
+    ]
+  },
+  "layout/vlvdst/vdst216_edit.html": {
+    "refer": [
+      "layout/vlvdst/vdst216_dedit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst216_dedit.html": {
+    "refer": [
+      "layout/vlfind/vdsa210_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst216_list.html": {
+    "refer": [
+      "layout/vlvdst/vdst216_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvrvd/vrst316_plist.html": {
+    "resources": [
+      "layout/vlvrvd/vrsa214_list.html",
+      "layout/vlvrvd/vrst316_list.html"
+    ],
+    "refer": [
+      "layout/vlvrvd/vrsa214_list.html",
+      "layout/vlvrvd/vrst316_list.html"
+    ]
+  },
+  "layout/vlvrvd/vrsa211_plist.html": {
+    "resources": [
+      "layout/vlvrvd/vrsa214_list.html",
+      "layout/vlvrvd/vrsa211_list.html"
+    ],
+    "refer": [
+      "layout/vlvrvd/vrsa214_list.html",
+      "layout/vlvrvd/vrst316_list.html",
+      "layout/vlvrvd/vrsa211_list.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa212_edit.html": {
+    "refer": [
+      "layout/vlvdsa/vdsa212_node.html",
+      "layout/vlfind/vdsa210_VRfind.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvrvd/vrac203_plist.html": {
+    "resources": [
+      "layout/vlvrvd/vrst315_list.html"
+    ],
+    "refer": [
+      "layout/vlvrvd/vrst315_list.html"
+    ]
+  },
+  "layout/vlvrvd/vrac203_plist01.html": {
+    "resources": [
+      "layout/vlvrvd/vrac203_list01.html"
+    ],
+    "refer": [
+      "layout/vlvrvd/vrac203_list01.html"
+    ]
+  },
+  "layout/vlvdeb/vdeb212_plist_03.html": {
+    "resources": [
+      "layout/vlvdeb/vdeb212_list_03.html"
+    ],
+    "refer": [
+      "layout/vlvdeb/vdeb212_list_03.html"
+    ]
+  },
+  "layout/vlvdst/vdst313_plist_01.html": {
+    "resources": [
+      "layout/vlvdst/vdst313_list.html",
+      "layout/vlvdst/vdst313_list_01.html"
+    ],
+    "refer": [
+      "layout/vlvdst/vdst313_list.html",
+      "layout/vlvdst/vdst313_list_01.html"
+    ]
+  },
+  "layout/vlvdst/vdst313_list_01.html": {
+    "refer": [
+      "layout/vlvdst/vdst313_node.html",
+      "layout/vlvdst/vdst313_node_01.html",
+      "layout/vlvdst/vdst313_edit_01.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst313_plist_02.html": {
+    "resources": [
+      "layout/vlvdst/vdst313_list_02.html"
+    ],
+    "refer": [
+      "layout/vlvdst/vdst313_list_02.html",
+      "layout/vlvdst/vdst313_edit.html"
+    ]
+  },
+  "layout/vlvdst/vdst313_edit_01.html": {
+    "refer": [
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst313_list_02.html": {
+    "refer": [
+      "layout/vlvdst/vdst313_node_02.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst314_edit.html": {
+    "refer": [
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst314_plist_01.html": {
+    "resources": [
+      "layout/vlvdst/vdst314_list.html",
+      "layout/vlvdst/vdst314_list_01.html"
+    ],
+    "refer": [
+      "layout/vlvdst/vdst314_list.html",
+      "layout/vlvdst/vdst314_list_01.html"
+    ]
+  },
+  "layout/vlvdst/vdst314_list_01.html": {
+    "refer": [
+      "layout/vlvdst/vdst314_node_01.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsa/vdsa212_node.html": {
+    "refer": [
+      "layout/vlvdsa/vdsa212_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst315hn_plist.html": {
+    "resources": [
+      "layout/vlvdst/vdst315hn_list.html"
+    ],
+    "refer": [
+      "layout/vlvdst/vdst315hn_list.html",
+      "layout/vlvdst/vdst315hn_edit.html"
+    ]
+  },
+  "layout/vlvdst/vdst315hn_edit.html": {
+    "refer": [
+      "layout/vlfind/vdst315_findClient.html",
+      "layout/vlvdvc/vdvc105_VRfind.html",
+      "layout/vlfind/vdst315_findGoods.html",
+      "layout/vlvdst/vdst315hn_confirm.html",
+      "layout/vlfind/vdst315hn_findGoods.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst315hn_list.html": {
+    "refer": [
+      "layout/vlvdst/vdst315hn_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsa/vdsa402hn_plist.html": {
+    "resources": [
+      "layout/vlvdsa/vdsa402hn_list.html"
+    ],
+    "refer": [
+      "layout/vlvdsa/vdsa402hn_list.html"
+    ]
+  },
+  "layout/vlvdsa/vdsa402hn_list.html": {
+    "refer": [
+      "layout/vlvdsa/vdsa402hn_edit.html",
+      "layout/vlvdsa/vdsa402hn_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdsa/vdsa402hn_node.html": {
+    "refer": [
+      "layout/vlvdsa/vdsa402hn_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdst/vdst315hn_confirm.html": {
+    "refer": [
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/addons.html": {
+    "refer": [
+      "layout/vlvdst/vdst212_report.html",
+      "layout/vlvdst/vdst212_findone.html"
+    ],
+    "resources": []
+  },
+  "layout/logout.html": {
+    "refer": [
+      "layout/update_password.html",
+      "layout/update_record.html",
+      "layout/login.html"
+    ],
+    "resources": []
+  },
+  "layout/PIM.html": {
+    "refer": [
+      "layout/vlvdvc/vdvc811_plist.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhn/vdvc103hn_plist.html": {
+    "resources": [
+      "layout/vlvdhn/vdvc103hn_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhn/vdvc103hn_list.html"
+    ]
+  },
+  "layout/vlvdhn/vdvc103hn_list.html": {
+    "refer": [
+      "layout/vlvdhn/vdvc103hn_node.html",
+      "layout/vlvdhn/vdvc105hn_plist.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhn/vdvc103hn_node.html": {
+    "refer": [
+      "layout/vlvdhn/vdvc103hn_edit.html",
+      "layout/vlvdhn/vdvc105hn_plist.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhn/vdvc105hn_plist.html": {
+    "resources": [
+      "layout/vlvdhn/vdvc105hn_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhn/vdvc105hn_list.html",
+      "layout/vlvdhn/vdvc105hn_edit.html"
+    ]
+  },
+  "layout/vlvdhn/vdvc105hn_edit.html": {
+    "refer": [
+      "layout/vlvdhn/vdvc105hn_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhn/vdvc312hn_plist.html": {
+    "resources": [
+      "layout/vlvdhn/vdvc312hn_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhn/vdvc312hn_list.html",
+      "layout/vlvdhn/vdvc312hn_edit.html"
+    ]
+  },
+  "layout/vlvdhn/vdvc105hn_list.html": {
+    "refer": [
+      "layout/vlvdhn/vdvc105hn_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhn/vdvc312hn_edit.html": {
+    "refer": [
+      "layout/vlvdhn/vdvc312hn_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhn/vdvc312hn_list.html": {
+    "refer": [
+      "layout/vlvdhn/vdvc312hn_node.html",
+      "layout/vlvdhn/vdvc312hn_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhn/vdvc312sh_plist.html": {
+    "resources": [
+      "layout/vlvdhn/vdvc312sh_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhn/vdvc312sh_list.html"
+    ]
+  },
+  "layout/vlvdhn/vdvc312sh_list.html": {
+    "refer": [
+      "layout/vlvdhn/vdvc312sh_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhn/vdst315hn01_plist.html": {
+    "resources": [
+      "layout/vlvdhn/vdst315hn01_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhn/vdst315hn01_list.html"
+    ]
+  },
+  "layout/vlvdhn/vdst315hn01_list.html": {
+    "refer": [
+      "layout/vlvdhn/vdst315hn01_edit.html",
+      "layout/vlvdhn/vdst315hn01_node.html"
+    ],
+    "resources": [
+      "images/icon/placeholder.png"
+    ]
+  },
+  "layout/vlvdhn/vdst315hn01_edit.html": {
+    "refer": [
+      "layout/vlfind/vdst315hn_findGoods.html",
+      "layout/vlfind/vdst315hn01_findGoods.html",
+      "layout/vlvdhn/vdst315hn01_confirm.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhn/vdsa402hn_plist.html": {
+    "resources": [
+      "layout/vlvdhn/vdsa402hn_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhn/vdsa402hn_list.html"
+    ]
+  },
+  "layout/vlvdhn/vdsa402hn_list.html": {
+    "refer": [
+      "layout/vlvdhn/vdsa402hn_edit.html",
+      "layout/vlvdhn/vdsa402hn_node.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvdhn/vdst316sh_plist.html": {
+    "resources": [
+      "layout/vlvdhn/vdst316sh_list.html"
+    ],
+    "refer": [
+      "layout/vlvdhn/vdst316sh_list.html"
+    ]
+  },
+  "layout/vlvdhn/vdst316sh_list.html": {
+    "refer": [
+      "layout/vlvdhn/vdst316sh_confirm.html",
+      "layout/vlvdhn/vdst316sh_node.html",
+      "layout/vlvdhn/vdst316sh_edit.html"
+    ],
+    "resources": []
+  },
+  "layout/vlvrvd/vrst315detail_plist.html": {
+    "resources": [
+      "layout/vlvrvd/vrst315detail_list.html"
+    ],
+    "refer": [
+      "layout/vlvrvd/vrst315detail_list.html"
+    ]
+  },
+  "layout/vlvrvd/vrst315_list.html": {
+    "refer": [
+      "layout/vlvrvd/vrst315detail_plist.html"
+    ],
+    "resources": []
+  },
+  "layout/vlreport/vrsa402_list.html": {
+    "refer": [
+      "layout/vlvdhn/vdsa402hn_node.html"
+    ]
+  },
+  "layout/vlvdhn/vdsa402hn_edit.html": {
+    "resources": [
+      "layout/vlvdhn/%3C%\u003ditem.liImgSrc%%3E"
+    ]
+  },
+  "layout/vlvdhn/vdsa402hn_node.html": {
+    "refer": [
+      "layout/vlvdhn/vdsa402hn_edit.html"
+    ]
+  },
+  "layout/vlreport/vdvr001_list.html": {
+    "refer": [
+      "layout/vlvrvd/vrst315detail_plist.html"
+    ]
+  },
+  "index.1.html": {
+    "resources": [
+      "tab-webview-subpage-work.html"
+    ],
+    "refer": [
+      "tab-webview-subpage-setting.html",
+      "index-tabbar-notice.html",
+      "tab-webview-subpage-work.html"
+    ]
+  }
+}

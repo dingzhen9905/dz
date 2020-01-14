@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>拍照列表</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title{
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.oa-contact-cell.mui-table .mui-table-cell {
+				padding: 3px 0 ;
+				vertical-align: middle;	
+			}
+			.oa-contact-cell.mui-table .mui-table-middle {
+				padding: 3px 0;
+				vertical-align: middle;
+			}
+			.oa-contact-cell {
+				position: relative;
+				margin: -11px 0;
+			}
+			.oa-contact-avatar {
+				width: 75px;
+			}
+			.oa-contact-avatar img {
+				width: 70%;
+			}
+			.oa-contact-content {
+				width: 100%;
+			}
+			.oa-contact-name {
+				margin-right: 20px;
+				color: #000000;
+				font-size: 15px;
+				font-weight: bold;
+			}
+			.oa-contact-name {
+				float: left;
+			}
+		    .oa-contact-position{
+				float: right;
+			}
+			.oa-contact-email{
+				font-size: 13px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav" id='head'>
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">拍照列表</h1>
+	    <a class=" mui-icon mui-icon mui-icon-plusempty  mui-pull-right" href="vdvc802_list.html"></a>		
+		</header>
+		<div class="mui-content">
+			<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+			</ul>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.plusReady(function(){
+			   //用户信息
+
+//      mui.ajax('http://192.168.1.20:8808/vl8/Find/Ddata/find',{
+//				data:{
+//					name:'vdvc801'
+//				},
+//				dataType:'json',//服务器返回json格式数据
+//				type:'post',//HTTP请求类型
+//				timeout:60000,//超时时间设置为10秒；
+//				contentType:"application/x-www-form-urlencoded; charset=utf-8",
+//				success:function(data){
+//					 var datas = data.msg;
+//					 var dataStr = JSON.stringify(data.msg);
+//					 //写到文件
+//                   plus.io.resolveLocalFileSystemURL("_documents/vlddata/vdsa202.json", function(entry){
+//						entry.createWriter( function ( writer ) {
+//							writer.onwrite = function ( e ) {
+//							};
+//							w = writer;
+//							writer.seek(0);
+//							writer.write( dataStr);
+//						}, function ( e ) {
+//							concole.log( e.message );
+//						} );
+//						
+//                   },function(e){
+//                   	concole.log( "Resolve file URL failed: " + e.message );
+//                   })
+//				},
+//				error:function(xhr,type,errorThrown){
+//				}
+//		    });
+		})
+		    // 扩展API加载完毕后调用onPlusReady回调函数 
+		    document.addEventListener( "plusready", writeFileJson, false );
+			// 扩展API加载完毕，现在可以正常调用扩展API
+			function writeFileJson() {
+			 plus.io.resolveLocalFileSystemURL("_documents/vlddata/vdvc801.json", function( entry ) {
+									entry.file( function(file){
+										var fileReader = new plus.io.FileReader();
+													fileReader.readAsText(file, 'utf-8');
+													fileReader.onloadend = function(evt) {
+														 var data2 = evt.target.result
+														 var data = JSON.parse(data2); 
+														 var text = " ";
+														 for(var i=0 ;i<data.length; i++){
+														 	var contList = document.getElementById("contList");
+														 	text +='<li class="mui-table-view-cell">';
+/*														 	text +='<a href="'+data[i]['link_lnext']+'.html">';
+*/														 	text +='<div class="mui-slider-cell">';
+														 	text +='<div class="oa-contact-cell mui-table">';
+														 	text +='<div class="oa-contact-avatar mui-table-cell">';
+														 	text +='<img src="/storage/emulated/0/Android/data/io.dcloud.HBuilder/.HBuilder/_downloads/Vldicon/'+data[i]["bill_user"]+'.png"/></div>';
+														 	text +='<div class="oa-contact-content mui-table-cell "><div class="mui-clearfix oa-maging">';
+														 	text +='<span class="oa-contact-name">'+data[i]["bill_title"]+'</span>';
+														 	text +='<span class="oa-contact-position mui-h6">'+data[i]["bill_date"]+'</span></div>';
+														 	text +='<p class="oa-contact-email mui-h6">定位信息正文</p></div></div></div></li>';
+/*														 	text +='</a>';
+*/														 	contList.innerHTML=text;	
+														 }
+													}
+												});
+											}, function ( e ) {
+//					concole.log( "Resolve file URL failed: " + e.message );
+				} );
+			}
+	</script>
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			/* list内容*/
+			
+			.list_font {
+				font-size: 10px;
+				line-height: 12px;
+				height: 24px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+			}
+			
+			.list_h5 {
+				font-size: 13px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			
+			.topNav {
+				text-align: center;
+				padding-top: 10px;
+				color: #353b42;
+				margin-bottom: 0;
+			}
+			
+			.active {
+				color: #ea6d10;
+				border-bottom: 2px solid #ea6d10;
+				/*background:cyan;*/ 
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px; 
+			}
+			
+			#searchBtn {
+				position: relative;
+				top: 4px;
+				padding: 6px 8px;
+				margin-left: 5px;
+			}
+			
+			#searchBox {
+				margin-left: 5px;
+				border-radius: 10px;
+			}
+			
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+			
+			.chosen{
+				background: blanchedalmond !important;
+				border-radius: 3px;
+			}
+			.chosen h5{
+				color: #999 !important; 
+			}
+		
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:60px;border-bottom:0.5px solid #C0C0C0;background-color:;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" style="color:white;background-color:;"></a>
+			<h1 class="mui-title" id="header" style="color:white;background-color:;font-weight:normal;">选择用户</h1>
+			<!--<a class=" mui-icon mui-icon mui-icon-plusempty  mui-pull-right" id="toEdit" href="vdsa211_new.html"></a>-->
+			<a class="mui-pull-right" id="save" style="color:white;background-color:;padding-top:12px;">确认</a>
+			<div class="mui-row" style="height:;position: fixed;top:59px;width:100%; background-color:#efeff4;margin-left:-10px;z-index:1000000;" id="topNav">
+				<div class="mui-row">
+					<div class="mui-col-sm-10 mui-col-xs-10">
+						<div class="mui-input-row mui-search">
+							<input type="search" id="searchBox" class="mui-input-clear" onkeyup="enterSearch(event)" placeholder="" style='margin-bottom:5px;'>
+						</div>
+					</div>
+					<div class="mui-col-sm-2 mui-col-xs-2">
+						<button type="button" id="searchBtn" class="mui-btn">搜索</button>
+					</div>
+				</div>
+			</div>
+
+		</header>
+		<div class="mui-content" id="list" style="padding-top:173px;">
+			<div id="" style="position:fixed;top:99px;width: 100%;z-index: 999; background: #efeff4;">
+				<div class="mui-input-group" id="selectDept" style="width:100%;padding:5px 18px 5px 25px;margin-bottom:5px;height:;position:;top:;">
+					<div class="mui-row">
+						<span class="mui-col-xs-2 spn">部门：</span>
+						<span class="mui-icon mui-icon-arrowright" id="" style="float:right;font-size:12px;margin-top:5px;"></span>
+						<span class="mui-col-xs-1 spn" id="deptCode" style="display: none;font-size:13px;"></span>
+						<span class="mui-col-xs-8 spn" id="deptName"></span>
+					</div>
+				</div>
+				<div class="mui-input-group" id="sendTo" style="width:100%;padding:5px 18px 5px 25px;margin-bottom:5px;height:;position:;top:;">
+					<div class="mui-row">
+						<span class="mui-col-xs-2 spn">选择：</span>
+						<span class="mui-icon mui-icon-close" id="clearIcon" style="float:right;"></span>
+						<span class="mui-col-xs-1 spn" id="userLinkCode" style="display: none;font-size:13px;"></span>
+						<div class="mui-col-xs-8 spn" style="position: relative;overflow: hidden;">
+							<div class="mui-col-xs-8 spn" id="swipeBar" style="width:500%;background:;">
+								<span class="spn" id="userName" style="background:;"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+				<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+			</div>
+			<!--<ul id="example" class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+				<li class="mui-table-view-cell" style="padding:5px;height:55px;background:;">
+					<div class="mui-slider-cell  mui-slider-handle chosen">
+						<div class="mui-row">
+							<div class="mui-col-xs-2 mui-row" style="background:;padding:2px;width:45px;margin-right:8px;">
+								<img class="vdvc105 mui-col-xs-12" src="../../images/icon/default.png" />
+							</div>
+							<div class="mui-col-xs-7 mui-row" style="background:;height:30px;">
+								<h5 class="list_h5 mui-col-xs-12" style="color:#242424;padding-top:2px;">姓名<span class="">[管理员]</span></h5>
+								<p class="list_font mui-col-xs-12">说明</p>
+							</div>
+							<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;">
+								<p class="list_fonts mui-col-xs-12" style="float:right;padding-top:2px;">id</p>
+								<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;"></p>
+								<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">状态</p>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>-->
+			<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-bottom:50px;border: transparent;">
+			</ul>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			gestureConfig: {
+				tap: true, 			//默认为true
+				doubletap: true, 	//默认为false
+				longtap: true, 		//默认为false
+				swipe: true, 		//默认为true
+				drag: true, 		//默认为true
+				hold: false, 		//默认为false，不监听
+				release: false 		//默认为false，不监听
+			}
+		});
+		var teamBillCom = "";		// 管理单位代码
+		var teamBillComName = "";	// 管理单位名称
+		var userbillNo = "";		// 登录人代码
+		var loginCom = "";			// 登录单位代码
+		var loginComName = "";		// 登录单位名称
+		var fromPage = "";			// 从哪个页面来
+		var startIndex = 1; 		// 查询的起始页码
+		var pageSize = 10; 			// 每页显示几条信息
+		var search = ''; 			// 要查询的内容，paramText的value
+		var fbill_no = ""; 			// 查询的fbill_no
+		var detailInfo = {}; 		// 把查询到的东西放到数组里面
+		var queryparmas = {}; 		// 查询参数
+		var pager = {}; 			// 分页
+		var backToUrl = ""; 		// mui.fire返回到的页面的url
+		var backToId = "" ; 		// mui.fire 返回到的页面的id
+		var oldUserCode = ""; 		// 存储原来的用户代码
+		var oldUserName = ""; 		// 存储原来的用户名称
+		var choice = ""; 			// 单选or多选
+		var userLinkCodeArr = []; 	// 字符窜转为数组，用于判断当前选择的用户是否已经被选中
+		var startClientX; 			// 滑动：初始位置
+		var dirX; 					// 滑动：横向滑动的距离
+		var nowLeft = 0; 			// 滑动：当前的left值
+		mui.plusReady(function() {
+			var loginCom1 = vlUtils.getStorage("newTeamBillCom");
+			// 接收103find传送过来的部门名称和代码		
+			window.addEventListener('103findselectedDept', function(event) {
+				//	接收传过来的部门及部门代码并赋值
+				var deptName = event.detail.deptName;
+				var deptCode = event.detail.deptCode;
+
+				document.getElementById("deptCode").innerHTML = deptCode;
+				document.getElementById("deptName").innerHTML = deptName;
+				
+				// 把105去103find页面之前选中的人的名字和代码传回来
+				oldUserName = event.detail.oldUserName;
+				oldUserCode = event.detail.oldUserCode;
+				document.getElementById("userName").innerHTML=oldUserName;
+				document.getElementById("userLinkCode").innerHTML=oldUserCode;
+				
+				// 默认查询
+				queryparmas = { // 默认全部004
+					name: 'vdvc105',
+					bill_com: loginCom1,
+					bill_task: "Y", //默认004
+					currentPage: 1,
+					pageSize: 30,
+					paramText: '',
+					fbill_no: deptCode
+				}
+				searchAjax(queryparmas, 'Business/allocated');
+				return;
+			}); // 103findTo105find结束
+
+			//接收上个页面传过来的参数(311edit/chat)
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			oldUserCode = self.oldUserCode;
+			oldUserName = self.oldUserName;
+			fromPage = self.fromPage;
+			choice = self.choice;
+			sign   = self.sign;
+			liLens  =self.liLens;
+			flagNew =self.flagNew;
+			fbill_no = "";
+			//
+			// 判断进入
+//			if(vlUtils.isnull(ccUserCode)) {
+//				ccUserCode = self.ccUserCode;
+//			} else {
+//				oldUserCode += "," + self.ccUserCode;
+//			}
+//			if(vlUtils.isnull(ccUserName)) {
+//				oldUserName = self.ccUserName;
+//			} else {
+//				oldUserCode += "," + self.ccUserName;
+//			}
+
+			// 把原来的名字先放到页面上相应的地方
+			document.getElementById("userName").innerHTML = oldUserName;
+			document.getElementById("userLinkCode").innerHTML = oldUserCode;
+
+			// 默认查询参数
+			queryparmas = { // 默认全部004
+				name: 'vdvc105',
+				bill_com: loginCom1, // 105查询时用登录单位查询
+				bill_task: "Y", //默认004
+				currentPage: 1,
+				pageSize: 30,
+				paramText: '',
+				fbill_no: fbill_no
+			}
+			searchAjax(queryparmas, 'Business/allocated');
+			
+		}) // plusReady
+		
+		//点进选择、放入列表中
+		
+		mui("#contList").on('tap', 'li', function(e) {
+			var e = this;
+			var li = e;
+			var dataRow = li.getAttribute("data-row");
+			var dataRow = JSON.parse(dataRow);
+			var teamBillCom = dataRow.bill_com;
+			// 先获取当前的已经被选中的名称和代码
+			oldUserName = document.getElementById("userName").innerHTML;
+
+			oldUserCode = document.getElementById("userLinkCode").innerHTML;
+			// 当前已经选中的用户，字符窜转为数组
+			userLinkCodeArr = oldUserCode.split(","); 
+			var isRepeat = false; // 用于来判断
+			// 单选
+//			if(choice == "single"){
+
+//				oldUserName = dataRow.bill_name;
+//				oldUserCode = dataRow.bill_text[0].linkvd_linkuser;
+//			}
+			// 多选
+//			if(choice == "multiple"){
+
+//				if(vlUtils.isnull(oldUserName)) {
+//					// 判断当前是否有已经选中的用户，没有则直接赋值
+//					oldUserName = dataRow.bill_name;
+//					oldUserCode = dataRow.bill_text[0].linkvd_linkuser;
+//				} else {
+//					// 不为空则判断里面有没有这个值，有则不再增加
+//					for(var j = 0; j < userLinkCodeArr.length; j++) {
+
+//						if(userLinkCodeArr[j] == dataRow.bill_text[0].linkvd_linkuser) {
+//							isRepeat = true;
+//							break;
+//						}
+//					}
+//					if(isRepeat == false) {
+//						oldUserName += "," + dataRow.bill_name;
+//						oldUserCode += "," + dataRow.bill_text[0].linkvd_linkuser;
+//					}
+//				}
+//			}
+			// 0104--
+			if(choice == "single"){ // 如果单选
+
+				// 切换选中状态
+//				var chosenStates = Boolean(Number(jQuery(this).attr("data-chosen")));
+//				chosenStates = !chosenStates;
+//				jQuery(this).attr("data-chosen",Number(chosenStates));
+				// 判断选中状态
+//				if(chosenStates){  // 如果选中
+
+					// 自己添加类，兄弟移除类
+					jQuery(this).children().addClass("chosen").parent().siblings().children().removeClass("chosen");
+					jQuery(this).addClass("chosen").siblings().removeClass("chosen");
+					// 显示在页面上
+					oldUserName = dataRow.bill_name;
+					oldUserCode = dataRow.bill_text[0].linkvd_linkuser;
+//				}else{  // 没有选中/取消选中
+
+					// 自己移除类
+//					jQuery(this).children().removeClass("chosen");
+//					jQuery(this).removeClass("chosen");
+					// 显示在页面上
+//					oldUserName = "";
+//					oldUserCode = "";
+//				}
+			}
+//			 如果多选
+			if(choice == "multiple"){
+				// 切换选中状态
+				var chosenStates = Boolean(Number(jQuery(this).attr("data-chosen")));
+				chosenStates = !chosenStates;
+				jQuery(this).attr("data-chosen",Number(chosenStates));
+				// 判断选中状态
+				if(chosenStates){  // 如果选中
+					// 自己添加类
+					jQuery(this).children().addClass("chosen");
+					jQuery(this).addClass("chosen");
+					
+					var oldUserNameArr=oldUserName.split(",");
+					var oldUserCodeArr=oldUserCode.split(",");
+					
+					var flg = false;
+					
+					for(var i in oldUserCodeArr){
+						if(oldUserCodeArr[i] == dataRow.bill_text[0].linkvd_linkuser){
+							flg = true;
+							break;
+						}
+					}
+					
+					if(flg==true){
+
+					}else if(vlUtils.isnull(oldUserName)){
+						 oldUserName = dataRow.bill_name;
+						 oldUserCode = dataRow.bill_text[0].linkvd_linkuser;	
+					}else{
+						 oldUserName += "," + dataRow.bill_name;
+						 oldUserCode += "," + dataRow.bill_text[0].linkvd_linkuser;
+					}
+				}else{  // 没有选中/取消选中
+					// 自己移除类
+					// 显示在页面上 
+					var oldUserNameArr=oldUserName.split(",");
+					var oldUserCodeArr=oldUserCode.split(",");
+					var yn = false;
+
+					for(var i in oldUserNameArr){
+						var name = dataRow.bill_name;
+						var nameCode = dataRow.bill_text[0].linkvd_linkuser
+						var index = oldUserNameArr.indexOf(name);
+						var indexs = oldUserCodeArr.indexOf(nameCode);
+						if(oldUserCodeArr[i] == dataRow.bill_text[0].linkvd_linkuser){
+							oldUserNameArr.splice(index,1);
+							oldUserCodeArr.splice(indexs,1);
+						}
+					}
+					oldUserName=oldUserNameArr.join(",");
+					oldUserCode=oldUserCodeArr.join(",");
+					jQuery(this).children().removeClass("chosen");
+					jQuery(this).removeClass("chosen");
+				}
+			}
+			// 0104==
+			// 赋值
+			document.getElementById("userName").innerHTML = oldUserName;
+			document.getElementById("userLinkCode").innerHTML = oldUserCode;
+		});
+		
+		// 去103选择部门
+		document.getElementById("selectDept").addEventListener("tap", function() {
+			var loginCom1 = vlUtils.getStorage("newTeamBillCom");
+			var oldUserName = document.getElementById("userName").innerHTML;   // 获取当前ccUserName
+			var oldUserCode = document.getElementById("userLinkCode").innerHTML; // 获取当前ccUserCode
+			
+			mui.openWindow({
+				url: 'vdvc103_find.html',
+				id: 'vdvc103_find.html',
+				createNew: true,
+				extras: {
+					teamBillCom: teamBillCom,
+					teamBillComName: teamBillComName,
+					userbillNo: userbillNo,
+					loginCom: loginCom,
+					loginComName: loginComName,
+					oldUserName : oldUserName,
+					oldUserCode : oldUserCode,
+					choice: "single", // 单选
+					// choice:"multiple", // 多选
+					fromPage: "vdvc105find"
+				}
+			});
+		})
+		
+		// 右上角点击返回edit.html
+		document.getElementById("save").addEventListener("tap", function() {
+			
+			var userNameStr = document.getElementById("userName").innerHTML;
+			var userCodeStr = document.getElementById("userLinkCode").innerHTML;
+			var deptName    = document.getElementById("deptName").innerHTML;
+			var deptCode    = document.getElementById("deptCode").innerHTML;
+
+			// 聊天
+			if(fromPage == "chat"){
+				mui.openWindow({
+					url:"../vlvdim/vdim102_list.html",
+					id:"vdim102_list.html",
+					createNew:true,
+					extras:{
+						teamBillCom: teamBillCom,
+						teamBillComName: teamBillComName, 
+						userbillNo: userbillNo,
+						loginCom: loginCom,
+						loginComName: loginComName,
+						fsend_group: userCodeStr,
+						chatMen: userNameStr,
+						fromPage:"105find"
+					}
+				});
+				return;
+			}
+			// 不是聊天页面
+			var _backPage = {
+				"311edit" : "vdvc311_edit.html",
+				"312edit" : "vdvc312_edit.html",
+				"133edit" : "vdsa133_edit.html",
+				"204dedit": "vdvc204_dedit.html",
+				"204edit" : "vdvc204_edit.html",
+				"vdvc103_edit02.html" : "vdvc103_edit02.html",
+				"vdvc103_edit.html" : "vdvc103_edit.html",
+			};
+			var pageId = _backPage[fromPage];
+			if(pageId){
+				backToUrl = plus.webview.getWebviewById(pageId);
+				backToId = pageId;
+			}
+			if(fromPage == "vdvc103_edit02.html"){
+				backToUrl = plus.webview.getWebviewById('vdvc103_edit02.html');
+				backToId = "vdvc103_edit02.html";
+			}
+			if(fromPage == "vdvc103_edit.html"){
+				backToUrl = plus.webview.getWebviewById('vdvc103_edit.html');
+				backToId = "vdvc103_edit.html";
+			}
+
+			//触发详情页面的vdvc105ToVdvc311事件
+			mui.fire(backToUrl, '105findselectedUser', {
+				userNameStr: userNameStr,
+				userCodeStr: userCodeStr,
+				deptName   :deptName,
+				deptCode   :deptCode,
+				sign       :sign,
+				liLens     :liLens,
+				flagNew    :flagNew,
+			});
+			console.log(json)
+			document.getElementById("userName").innerHTML = "";
+			document.getElementById("userLinkCode").innerHTML = "";
+			//打开详情页面          
+			mui.openWindow({  
+				id: backToId
+			});
+			plus.webview.currentWebview().clear();
+			plus.webview.currentWebview().close();
+		});
+		
+		// 清空抄送
+		document.getElementById("clearIcon").addEventListener("tap", function() {
+
+			document.getElementById("userLinkCode").innerHTML = "";
+			document.getElementById("userName").innerHTML = "";
+			jQuery("ul li").children().removeClass("chosen");
+			jQuery("ul li").removeClass("chosen");
+		
+			var webviewvdvc311_edit = plus.webview.getWebviewById('vdvc311_edit.html');
+			mui.fire(webviewvdvc311_edit, '105findEmptySelected', {
+				// 暂时仅支持全部清空
+				close: true
+			});
+			webviewvdvc311_edit.opener().hide();
+		})
+		
+		
+		// 开始触摸
+		document.getElementById("swipeBar").addEventListener("touchstart", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			startClientX = event.touches[0].clientX; // 获取初始位置
+		}, false)
+		// 触摸移动
+		document.getElementById("swipeBar").addEventListener("touchmove", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			dirX = event.touches[0].clientX - startClientX; // 获取结束位置与初始位置的距离
+			document.getElementById("swipeBar").style.transform = "translate(" + dirX + "px,0px)";
+		}, false)
+		// 触摸结束
+		document.getElementById("swipeBar").addEventListener("touchend", function(event) {
+			var event = event || window.event;
+			event.preventDefault(); // 阻止默认事件
+			document.getElementById("swipeBar").style.transform = "none";
+			nowLeft += dirX; // 获取结束位置
+
+			if(nowLeft > 0) {
+				document.getElementById("swipeBar").style.left = "0px";
+			} else {
+				document.getElementById("swipeBar").style.left = nowLeft + "px"; // 记住结束位置
+			}
+		}, false)
+		// ===选择列表滑动事件结束=============================
+		
+		// 搜索框事件
+		function enterSearch(e) {
+			if(e.keyCode == 13) {
+				startIndex = 1;
+				detailInfo.length = 0;
+				document.getElementById("searchBox").blur();
+				var search = document.getElementById("searchBox").value;
+				var loginCom1 = vlUtils.getStorage("newTeamBillCom");
+				document.getElementById("showHint").style.display = "none"; // 先隐藏再判断
+				queryparmas = { // 默认全部004 
+					name: 'vdvc105',
+					bill_com: loginCom1,
+					bill_task: "Y", //默认004
+					currentPage: 1,
+					pageSize: 30,
+					paramText: search,
+					fbill_no: fbill_no
+				}
+				searchAjax(queryparmas, 'Find/Ddata/find');
+			}
+		}
+		
+		// 搜索按钮事件
+		document.getElementById("searchBtn").addEventListener("tap", function() {
+			var search = document.getElementById("searchBox").value;
+			document.getElementById("showHint").style.display = "none"; // 先隐藏再判断
+			var loginCom1 = vlUtils.getStorage("newTeamBillCom");
+			queryparmas = { // 默认全部004 
+				name: 'vdvc105',
+				bill_com: loginCom1,
+				bill_task: "Y", //默认004
+				currentPage: 1,
+				pageSize: 30,
+				paramText: search,
+				fbill_no: fbill_no
+			}
+			searchAjax(queryparmas, 'Find/Ddata/find');
+		});
+
+		// ajax 查询
+		function searchAjax(queryparmas, port) {
+			mui.ajax(systemURL + port, {
+				data: queryparmas,
+				beforeSend: function() {
+					checkNetState(); // 检查网络链接状态
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 60000, //超时时间设置为10秒；
+//				contentType: "application/x-www-form-urlencoded; charset=utf-8",
+				contentType: "application/json;charset=utf-8",
+
+				success: function(data) {
+					if(data.code == 0) {
+						var datas = data.data;
+						pager = data.page[0];
+						if(datas.length != 0) {
+							document.getElementById("showHint").style.display = "none";
+							var text = " ";
+							
+							var oldUserNameArr=oldUserName.split(",");
+							var oldUserCodeArr=oldUserCode.split(",");
+
+							for(var i = 0; i < datas.length; i++) {
+								var flagExistUser = false; // false：抄送上没有这个名字
+								if(datas[i]["bill_context"] == '') {
+									datas[i]["bill_context"] = '【说明】';
+								}
+								var contList = document.getElementById("contList");
+								var comImgid = vlUtils.uuid('comImg', 4, 10);
+
+								// 状态
+								if(datas[i].bill_task == "S") {
+									var bill_task = "待审核";
+								}
+								if(datas[i].bill_task == "Y") {
+									var bill_task = "已审核";
+								}
+								if(datas[i].bill_task == "L") {
+									var bill_task = "待送审";
+								}
+								// 身份
+								if(datas[i].fbill_no == "ROOT") {
+									var fbill_no = "管理员";
+								} else {
+									var fbill_no = "成员";
+								}
+								// 用户编码
+								if(datas[i]["bill_id"] == ""){
+									datas[i]["bill_id"] = datas[i]["bill_text"][0]["linkbd_clerkid"]
+								}
+								// 动态生成li
+//								text += '<li class="mui-table-view-cell" style="padding:10px;height:70px;" data-row=\'' + JSON.stringify(datas[i]) + '\'>';
+
+								for(var j in oldUserNameArr){
+									if(datas[i]["bill_name"] == oldUserNameArr[j]){
+										flagExistUser = true;	// 存在这个人
+									}
+								}
+								if(flagExistUser){
+								text+= '<li class="mui-table-view-cell chosen" style="padding:5px;height:55px;" data-chosen=0 data-row=\'' + JSON.stringify(datas[i]) + '\'>';
+								
+								}else{
+								text+= '<li class="mui-table-view-cell" style="padding:5px;height:55px;" data-chosen=0 data-row=\'' + JSON.stringify(datas[i]) + '\'>';
+
+								}
+								if(flagExistUser){
+									text += '<div class="mui-slider-cell  mui-slider-handle chosen">';
+								}else{
+									text += '<div class="mui-slider-cell  mui-slider-handle">';
+								}
+								text += '<div class="mui-row">';
+//								text += '<div class="mui-col-xs-2 mui-row" style="background:;padding:2px;width:45px;">';
+								text += '<div class="mui-col-xs-2 mui-row" style="background:;padding:2px;width:45px;margin-right:8px;">';
+								text += '<img class="vdvc105 mui-col-xs-12" src="../../images/icon/default.png" id="' + comImgid + '"/>';
+								text += '</div>';
+//								text += '<div class="mui-col-xs-7 mui-row" style="background:;height:50px;">';
+								text += '<div class="mui-col-xs-7 mui-row" style="background:;height:30px;">';
+//								text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;">' + datas[i]["bill_name"] + '<span class="">[' + fbill_no + ']</span></h5>';
+								text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;padding-top:2px;">' + datas[i]["bill_name"] + '<span class="">[' + fbill_no + ']</span></h5>';
+								text += '<p class="list_font mui-col-xs-12" id="bill_context">' + datas[i]["bill_context"] +'</p>';
+								text += '</div>';
+								text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;">';
+								text += '<p class="list_fonts mui-col-xs-12" style="float:right;padding-top:2px;">' + datas[i]["bill_id"] + '</p>';
+//								text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;">' + (datas[i]["bill_date"]).slice(2, 10) + '</p>';
+								text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;"></p>';
+								text += '<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">' + bill_task + '</p>';
+								text += '</div>';
+								text += '</div>';
+								text += '</div>';
+								
+								text += '</li>';
+								contList.innerHTML = text;
+
+								vlUtils.downloadicon(datas[i]["bill_text"][0]["linkvd_linkuser"], comImgid);
+								var bill_context = document.getElementById("bill_context").innerHTML;
+
+							}
+							setTimeout(function() {
+								for(var i = 0; i < datas.length; i++) {
+									var filename = datas[i]["bill_text"][0]["linkvd_linkuser"] + ".png";
+									var relativePath = "_downloads/Vldicon/" + filename;
+									var sd_path = plus.io.convertLocalFileSystemURL(relativePath);
+									document.getElementsByClassName("vdvc105")[i].setAttribute("src", sd_path);
+								}
+							}, 500)
+							// =======================================================
+						} else {
+
+							document.getElementById("showHint").style.display = "block";
+							document.getElementById("contList").innerHTML = "";
+						}
+					}
+					if(data.code == 1) {
+						ajaxCode1(data.error_code,data.error_description,'../login.html');
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					if(xhr.status.substring(0,1) == "5"){
+						mui.toast("服务出错!");
+					}
+					console.log(xhr.responseText);
+					console.log(errorThrown);
+					console.log(type);
+				}
+			});
+		} // searchAjax
+	</script>
+	
+</html>

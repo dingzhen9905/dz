@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>出库报表</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+			body {
+				font-size: 16px;
+			}
+			.mui-table-view:after,
+			.mui-table-view:before,
+			.mui-table-view-cell:after {
+				height: 0 !important;
+			}
+			ul#contList {
+				width: 100%;
+				background: #efeff4;
+			}
+			
+			ul#contList li {
+				margin-bottom: 3px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="vdac402_m_list" class="mui-content mui-scroll-wrapper" style="background: ;">
+			<div class="mui-scroll">
+				<div id="showHint" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+					<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+					<p style="color:#000000;margin-top:10px;margin-bottom:0;padding-bottom:0;">未查询到相关的数据</p>
+					<p style="font-size:10px;">可以尝试其他查询</p>
+				</div>
+				<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:none;">
+					<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+					<p style="font-size:12px;">正在搜索中......</p>
+				</div>
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-bottom:50px;">
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vdac402_m_list',
+				down: {
+					contentrefresh: "正在刷新...",
+					callback: pulldownRefresh
+				},
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		var startIndex = 1;
+		var pageSize = 10;
+		var search = '';
+		var detailInfo = [];
+		var queryparmas = {}; //查询参数
+		var openlock = false; // 用于区分是首次进入页面还是搜索页面
+		var pager = {};
+		var fbill_no = "";
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var fiscalperiod = "";
+		var billtask = "";
+		var queryparmas = null;
+		var canRefresh = false;
+		var userName = "";
+		var fp = "";
+		var bname="";
+		var btask="";
+		// TODO
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview().parent();
+			teamBillCom 	= self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo 		= self.userbillNo;
+			loginCom 		= self.loginCom;
+			loginComName 	= self.loginComName;
+			fromPage 		= self.fromPage;
+			privileges 		= vlUtils.getStorage("newPrivileges");
+			commonParams 	= self.commonParams;
+			fbill_no 		= self.fbill_no;
+			userName 		= self.userName;
+
+			// 选择报表名称后进行查询
+			// 【选择班组】，【核算年】，【核算月】的查询条件都有事
+			window.addEventListener('changeReport', function(event) {
+				fp = event.detail.fp;
+				bname = event.detail.bname;
+				btask = event.detail.commonParams;
+				queryparmas = {
+					name: 'msvr',
+					bill_task	: btask, // 查询的指令
+					bill_com	: teamBillCom, // 当前单位
+					bill_user	: userbillNo, // 当前登陆人
+					bill_name	: bname,
+					fiscal_period: fp,
+					currentPage	: 1,
+					pageSize	: pageSize,
+					paramText	: ""
+				};
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData, '../login.html',true);
+				//return;
+			});
+			// TODO
+			// 左滑点击【详情】
+			mui("#contList").on('tap', '.mui-btn-yellow', function(e) {
+				var e 				= this;
+				var li 				= e.parentNode.parentNode;
+				var dataRow 		= li.getAttribute("data-row");
+				var rowObj 			= JSON.parse(dataRow);
+				mui.openWindow({
+					id: 'vdac402_m_dplist.html',
+					url: 'vdac402_m_dplist.html',
+					createNew: true,
+					extras: {
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码	// 不变
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变
+						fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+						loginCom 		: loginCom,			// 4.登录单位代码
+						loginComName 	: loginComName,		// 5.登录单位名称
+						userbillNo 		: userbillNo,		// 6.登录人的代码
+						userName 		: userName,			// 7.登录人的姓名
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vdac402_m_list.html",	// 9.从哪个页面来
+						detailInfo		: rowObj,
+						fp				: fp,
+						bname			: bname,
+						btask			: "VR_query_vdac402_02",
+						
+					}
+				});
+			});
+
+		}); // plusReady
+
+		//下拉刷新
+		function pulldownRefresh() {
+			if(vlUtils.isnull(queryparmas)){
+				plus.nativeUI.toast("请先选择查询条件~",{"verticalAlign":"top"});
+				mui('#vdac402_m_list').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+				return
+			};
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			//
+			queryparmas.currentPage = 1;
+			queryparmas.pageSize = pageSize;
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData, '../login.html',true);
+			mui('#vdac402_m_list').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+		}
+		//上拉加载具体业务实现 
+		function pullupRefresh() {
+			if(vlUtils.isnull(queryparmas)){
+				plus.nativeUI.toast("请先选择查询条件~",{"verticalAlign":"top"});
+				mui('#vdac402_m_list').pullRefresh().endPullupToRefresh();
+				return
+			};
+			if(queryparmas.currentPage < pager.totalPage) {
+				queryparmas.currentPage = queryparmas.currentPage + 1;
+				queryparmas.pageSize = pageSize;
+			} else {
+				plus.nativeUI.toast("~没有更多啦~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdac402_m_list').pullRefresh().endPullupToRefresh();
+				return;
+			}
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas, '/Find/Ddata/activity', reportData, '../login.html',false);
+			mui('#vdac402_m_list').pullRefresh().endPullupToRefresh();
+		}
+
+		//发送ajax
+		function reportData(data, type) {
+			pager=data.page;
+			//将数据传给Plist进行表头更换
+			mui.fire(plus.webview.getWebviewById('vrsa402_plist.html'), 'changeReportPlist', {
+				data: data
+			});
+			document.getElementById("showHint").style.display = "none";
+			if(data.data.length != 0) {
+				for(var i = 0; i < data.data.length; i++) {
+					var newdataArr = {};
+					for(var k in data.data[i]) {
+						newdataArr[k.slice(0, 2)] = data.data[i][k];
+					}
+					var contList = document.getElementById("contList");
+					if(type&&i==0){
+						contList.innerHTML="";
+					}
+					var li = document.createElement("li");
+					li.setAttribute("data-row",JSON.stringify(newdataArr));
+					li.setAttribute("class", "mui-table-view-cell");
+					li.style.padding = "0";
+					li.style.height = "40px";
+					li.style.lineHeight = "40px";
+					li.style.borderBottom = "1px solid #20B2AA";
+					var text = "";
+					text += '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-yellow">详情</a></div>';
+					text += '<div class="mui-slider-cell  mui-slider-handle">';
+					text += '<div class="mui-row" style="padding:0;font-size: 12px;text-align: center;">';
+					text += '<div  class="mui-col-xs-3" style="padding-left:10px;">';
+					text += '<h4 id="" style="text-align:left;font-size:14px;padding-top:1px;font-weight:normal;line-height:30px;background:;">' + newdataArr["标题"] + '</h4>';
+					text += '</div>';
+					text += '<span class="mui-col-xs-2" style="background:">' +newdataArr["数量"] + '</span>';
+					text += '<span class="mui-col-xs-4" style="background:">' +newdataArr["金额"] + '</span>';
+					text += '<span class="mui-col-xs-3" style="background:">' +newdataArr["日期"] + '</span>';
+					text += '</div>';
+					text += '</div>';
+					if(type&&i==0){
+						document.getElementById("searching").style.display = "none";
+					}
+					li.innerHTML = text;
+					contList.appendChild(li);
+				}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				mui.toast("未查询到数据~")
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("showHint").style.display = "block";
+				document.getElementById("searching").style.display = "none";
+			}
+			plus.nativeUI.closeWaiting();
+		}
+	</script>
+
+</html>
