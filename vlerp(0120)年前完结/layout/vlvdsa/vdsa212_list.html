@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.min.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" href="../../css/vlcss/vllist.css" />
+		<style>
+			.list_sts{padding:3px;}
+		</style>
+	</head>
+
+	<body>
+		<div id="vdsa212_list" class="mui-content mui-scroll-wrapper">
+			<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+				<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+			</div>
+			<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+				<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+				<p style="font-size:12px;">正在搜索中......</p>
+			</div>
+			
+			<div id="showError" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-kulian" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">出错啦~</p>
+				<p style="font-size:10px;border-bottom: transparent;">请稍后再试</p>
+			</div>
+			<div class="mui-scroll">
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="background: transparent;">
+				</ul>
+			</div>
+		</div>
+		<script type="text/template" id="listTmpl">
+			<li class="mui-table-view-cell" style="height:80px;margin-bottom:3px;padding:10px;background:#fff;">
+				<div class="data-row vlel-hide"><%=rowdata%></div
+				<div class="mui-slider-cell mui-slider-handle">
+					<div class="mui-row">
+						<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;width:55px;">
+							<img class="vdst316 mui-col-xs-12" src="<%=liImgSrc%>" onerror="this.src='../../images/icon/default.png'"/>
+						</div>
+						<div class="mui-col-xs-7 mui-row" style="background:;min-height:40px;">
+							<h5 class="list_h5 vltxt-ellipsis mui-col-xs-12" style="color:#242424;padding-top:3px;"><%=liTitle%></h5>
+							<p class="list_font mui-col-xs-12"><%=liLeftT%></p>
+							<p class="list_font mui-col-xs-12"><%=liLeftM%></p>
+							<p class="list_font vltxt-ellipsis mui-col-xs-12"><%=liLeftB%></p>
+						</div>
+						<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;">
+							<p class="list_fonts mui-col-xs-12" style="float:right;"><%=liRightT%></p>
+							<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;"><%=liDate%></p>
+							<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;">
+								<button class="list_sts mui-btn-outlined mui-btn-<%=liRightB%>"><%=liStatus%></button>
+							</p>
+						</div>
+					</div>
+				</div>
+			</li>
+		</script>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/arttmpl.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vdsa212_list',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					height: 200,
+					contentnomore: '没有更多数据了',
+					offset: '10px',
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+
+		var startIndex = 1; // 
+		var pageSize = 10;
+		var search = '';
+		var detailInfo = {}; // 用于存储查询到的信息
+		var openlock = false; // 用于区分是首次进入页面还是搜索页面
+		var fbill_no = "ROOT";
+		var queryparmas = {}; //查询参数
+		var pager = {};
+		var bill_task = " ";
+		var bill_user = " ";
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var guid = "001";
+//		var port = 'Find/Ddata/findDetail';
+		// var port = 'Business/newAllocated';
+		var port = 'newAll';
+		var _oSearch = {
+			"001" : {
+				task: "VR_vdsa212_query_03",
+				// port: "Find/Ddata/activity",
+				port: "active",
+				pfun: getActiveParams
+			},
+			"002" : {
+				task: "S",
+				// port: "Business/newAllocated",
+				port: "newAll",
+				pfun: getParams
+			},
+			"003" : {
+				task: "L",
+				// port: "Business/newAllocated",
+				port: "newAll",
+				pfun: getParams
+			},
+			"004" : {
+				task: "VR_vdsa212_query_02",
+				// port: "Find/Ddata/activity",
+				port: "active",
+				pfun: getActiveParams
+			},
+		}
+		mui.plusReady(function() {
+			//	返回上级
+			window.addEventListener('backAndRefreshList', function(event) {
+				document.getElementById("showHint").style.display = "none";
+				document.getElementById("searching").style.display = "block";
+				teamBillCom = event.detail.teamBillCom; // 管理单位代码
+				fbill_no 	= event.detail.fbill_no; // fbill_no是
+				teamBillComName = event.detail.teamBillComName; // 管理单位名称
+				loginCom 	= event.detail.loginCom; // 登录单位代码
+				loginComName = event.detail.loginComName; // 登录单位名称
+				userbillNo 	= event.detail.userbillNo; // 登录人的代码
+				userName 	= event.detail.userName, // 登录人的姓名
+				privileges 	= event.detail.privileges, // 当前的权限是
+				fromPage 	= event.detail.fromPage, // 从哪个页面来 
+				guid = '001';
+				queryparmas = _oSearch[guid]["pfun"](_oSearch[guid]["task"],_oSearch[guid]["port"]);
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				VlAjax.post({
+					"port":_oSearch[guid]["port"],
+					"headers":"json",
+					"isFirst":true,
+				}, queryparmas, sCBQuery)
+				// rqsDataAjax(queryparmas, _oSearch[guid]["port"], sCBQuery, '../login.html',true);
+			})
+
+			//监听plist页面点击导航拉取不同状态的数据
+			document.addEventListener('differentStatesRefresh210list', function(event) {
+				guid = event.detail.active;
+				search = event.detail.search;
+				port = event.detail.port;
+				document.getElementById("showHint").style.display = "none";
+				document.getElementById("searching").style.display = "block";
+				document.getElementById("contList").innerHTML = '';
+				var f = document.getElementById("contList");
+				var childs = f.childNodes;
+				for(var i = 0; i < childs.length; i++) {　　
+					f.removeChild(childs[i]);
+				}
+				queryparmas = _oSearch[guid]["pfun"](_oSearch[guid]["task"],_oSearch[guid]["port"]);
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				// rqsDataAjax(queryparmas, _oSearch[guid]["port"], sCBQuery, '../login.html',true);
+				VlAjax.post({
+					"port":_oSearch[guid]["port"],
+					"headers":"json",
+					"isFirst":true,
+				}, queryparmas, sCBQuery)
+			}); // 切换结束
+			
+			// 接收传过来的参数
+			var self = plus.webview.currentWebview().parent();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; 
+			teamBillComName = self.teamBillComName; 
+			fbill_no = self.fbill_no; 
+			loginCom = self.loginCom; 
+			loginComName = self.loginComName; 
+			userbillNo = self.userbillNo; 
+			userName = self.userName; 
+			privileges = self.privileges; 
+			fromPage = self.fromPage; 
+
+			// 第一次发ajax拉取数据
+			queryparmas = _oSearch[guid]["pfun"](_oSearch[guid]["task"],_oSearch[guid]["port"]);
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			VlAjax.post({
+				"port":_oSearch[guid]["port"],
+				"headers":"json",
+				"isFirst":true,
+			}, queryparmas, sCBQuery)
+//			console.log(_oSearch[guid]["port"])
+			// VlAjax.post({"port":"all","headers":"json","isFirst":true},queryparmas,sCBfind)
+			// rqsDataAjax(queryparmas, _oSearch[guid]["port"], sCBQuery, '../login.html',true);
+
+			//点击查看详情/修改信息
+			mui("#contList").on('tap', 'li', function(e) {
+				var li = this;
+				var dataRow = jQuery(li).find(".data-row").eq(0).html();
+				var rowObj = JSON.parse(dataRow);
+				mui.openWindow({
+					id: 'vdsa212_node.html',
+					url: 'vdsa212_node.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom, 	
+						teamBillComName: teamBillComName, 	
+						fbill_no: fbill_no, 		
+						loginCom: loginCom, 
+						loginComName: loginComName, 
+						userbillNo: userbillNo, 
+						userName: userName, 
+						privileges: privileges, 
+						fromPage: "vdsa212_list.html", 
+						detailInfo: rowObj,
+						guid	: guid
+					}
+				});
+			});
+
+		});
+
+		//下拉刷新
+		function pulldownRefresh() {
+			
+			mui.toast("加载中...");
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			//
+			queryparmas.currentPage = 1;
+			queryparmas.pageSize = pageSize;
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			VlAjax.post({
+				"port":_oSearch[guid]["port"],
+				"headers":"json",
+				"isFirst":true,
+			}, queryparmas, sCBQuery)
+			// rqsDataAjax(queryparmas, _oSearch[guid]["port"], sCBQuery, '../login.html',true);
+			mui('#vdsa212_list').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+
+		}
+
+		/*上拉加载具体业务实现 */
+		function pullupRefresh() {
+			if(queryparmas.currentPage < pager.totalPage) {
+				queryparmas.currentPage = queryparmas.currentPage + 1;
+				queryparmas.pageSize = pageSize;
+			} else {
+				plus.nativeUI.toast("~没有更多啦~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdsa212_list').pullRefresh().endPullupToRefresh();
+				return;
+			}
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			VlAjax.post({
+				"port":_oSearch[guid]["port"],
+				"headers":"json",
+				"isFirst":false,
+			}, queryparmas, sCBQuery)
+			// rqsDataAjax(queryparmas, _oSearch[guid]["port"], sCBQuery, '../login.html',false);
+			mui('#vdsa212_list').pullRefresh().endPullupToRefresh();
+		}
+		function sCBQuery(data,type) {
+			if(data.code == 0) {
+				var datas = data.data;
+				pager = mui.type(data.page) === 'array' ? data.page[0] : data.page;
+				if(datas.length != 0) {
+					var text = " ";
+					var contList = document.getElementById("contList");
+					for(var i = 0; i < datas.length; i++) {
+						
+							var html = " ";
+							var contList = document.getElementById("contList");
+							for(var i = 0; i < datas.length; i++) {
+						
+								var _rowd = dataAdapter(datas[i]);
+								var source = document.getElementById('listTmpl').innerHTML;
+						        var render = template.compile(source);
+						        html += render(_rowd);
+								if(type&&i==0){
+									contList.innerHTML = "";
+									document.getElementById("searching").style.display = "none";
+								}
+							}
+							jQuery("#contList").append(html);
+					}
+				} else {
+					document.getElementById("contList").innerHTML = "";
+					document.getElementById("searching").style.display = "none";
+					document.getElementById("showHint").style.display = "block";
+				}
+			}	
+			plus.nativeUI.closeWaiting();
+		}
+		
+		function getParams(task,port){
+			var res = {
+				name		: 'vdsa212',
+				bill_com	: loginCom, 
+				bill_task	: task,
+				currentPage	: startIndex,
+				pageSize	: pageSize,
+				sort_col	: "bill_date",
+				sort_type   : "倒序",
+				fuzzy_col   : "bill_name,bill_id",
+			};
+			if(task !== 'Y'){
+				res.bill_user = userbillNo;
+			}
+			if(port === 'Find/Ddata/fuzzy'){
+				res.bill_name = search;
+				res.cc_user = search;
+			}else{
+				res.paramText = search;
+			}
+			return res;
+		}
+		function getActiveParams(task){
+			var res = {
+				bill_com	: loginCom, 
+				bill_user 	: userbillNo,
+				bill_task	: task,
+				currentPage	: startIndex,
+				pageSize	: pageSize,
+				paramText   : "",
+				bill_title  : search,
+			};
+			return res;
+		}
+		var _json = {"L": "待送审", "S": "待审核", "Y": "已审核"}
+		var _oContent = {
+			"商品名称": "",
+			"开始日期": "",
+			"截止日期": "",
+			"赠品销售政策标签":""
+		}
+		function dataAdapter(data) {
+	        if(guid === "004" || guid === "001"){
+	        	var newdataArr = {};
+				for(var k in data) {
+					newdataArr[k.slice(0, 2)] = data[k];
+				}
+				var _content = (newdataArr['内容'].indexOf('{') > -1) ? JSON.parse(newdataArr['内容']) : _oContent;
+				return {
+					"rowdata" 	: JSON.stringify(newdataArr),
+					"liTitle" 	: _content['商品名称'],
+					"liDate" 	: (newdataArr["日期"]).slice(5, 16),
+					"liStatus" 	: guid === "001" ? "已审核" : "已失效",
+					"liImgId" 	: newdataArr['图片'],
+					"liImgName" : newdataArr['指令'],
+					"liImgSrc"  : VlAjax.getImgPath(newdataArr["指令"]),
+					
+					"liLeftT" 	: newdataArr['标题'],
+					"liLeftM" 	:  (_content['开始日期'].slice(0, 16)+' 至 '+_content['截止日期'].slice(0, 16)),
+					"liLeftB" 	: "标签："+_content['赠品销售政策标签'],
+					
+					"liRightT" 	: newdataArr["参数"] ,
+					"liRightM" 	: "",
+					"liRightB" 	: "",
+				}
+	        }else{
+	        	return {
+					"rowdata" 	: JSON.stringify(data),
+					"liTitle" 	: data["bill_name"],
+					"liDate" 	: (data["bill_date"]).slice(5, 16),
+					"liStatus" 	: (_json[data.bill_task] ? _json[data.bill_task] : ""),
+					"liImgId" 	: data.bill_no,
+					"liImgName" : data.bill_nspec,
+					"liImgSrc"  : VlAjax.getImgPath(data.bill_nspec),
+					
+					"liLeftT" 	: data['bill_id'],
+					"liLeftM" 	: (data['bill_bdate'].slice(0,16) + " 至 " +  data['bill_edate'].slice(0,16)),
+					"liLeftB" 	: "标签："+data['bill_remark'],
+					
+					"liRightT" 	: data["bill_bid"] ,
+					"liRightM" 	: "",
+					"liRightB" 	: "",
+				}
+	        }
+	        
+	    }
+	</script>
+
+</html>
