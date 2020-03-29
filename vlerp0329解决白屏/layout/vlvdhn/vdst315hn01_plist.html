@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>配送管理hn</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.top-nav {
+				text-align: center;
+				position: relative;
+				margin-bottom: 0px;
+				height: 35px;
+				color: #353b42;
+			}
+			
+			.active {
+				color: #ea6d10;
+				border-bottom: 2px solid #ea6d10;
+				/*background:pink;*/
+			}
+			
+			.mui-bar .mui-icon:active {
+				background: #0062cc!important;
+			}
+			
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			.price{
+				color:#FF5053;
+				font-size: 20px;
+			}
+			.money{
+				margin-top:15px;
+				font-size: 10px;
+			}
+			input{width:90% !important; height:30px !important;padding:0 0 0 10px !important;margin:5px 0 3px 10px  !important;}
+			input[placeholder]{padding: 2px 10px !important;}
+			.mui-input-clear{right:40px !important;}
+			.hide{display: none;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head" style="height: 138px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" ></a>
+			<div class="mui-title plistTitle">
+				<p id="pageTitle">配送单列表</p>
+				<h1 id="header" ></h1>	
+			</div>
+			<div class="mui-row navBar topNavRow" id="topNavOut">
+			</div>
+			<div class="mui-row searchBar">
+				<div class="mui-col-xs-9 mui-input-row" style="padding:auto 10px;">
+					<input type="text" id="searchBox" class="mui-input-clear mui-pull-right" onkeyup="enterSearch(event)" placeholder="">
+				</div>
+				<div class="mui-col-xs-1">
+					<div id="clearIcon" class="hide">
+						<span class="mui-icon mui-icon-clear" style="color:#999;"></span>
+					</div>
+				</div>
+				<div class="mui-col-xs-2">
+					<button type="button" id="searchBtn" class="mui-btn">查询</button>
+				</div>
+			</div>
+		</header>
+		<div class="mui-content" ></div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdst315hn01_list.html',
+				id: 'vdst315hn01_list.html',
+				styles: {
+					top: '140px',
+					bottom: '0px',
+				}
+			}]
+		});
+		var oInit = {
+		    // 经销商-配送管理（配送员）
+		    "vdst315hn01" : {
+		        "001" : {
+		            "task":"VR_vdvc312_query_20", 
+		            "title":"附近的店", 
+		            "qtask" : "附近的店",
+		            "tabClass":"mui-col-xs-3 active", 
+		            "liClass":"nearbyli",
+		            "searchPerson" : true,
+		            "canSelectPerson" : false
+		        },
+		        "002" : {
+		            "task": "VR_vdst315_query_07", 
+		            "title": "待送货", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"nearbyli",
+		            "qtask":"待送货",
+		            "canSelectPerson" : true
+		        },
+		        "003" : {
+		            "task": "VR_vdst315_query_08", 
+		            "title": "已送货", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"normalli",
+		            "qtask":"已送货",
+		            "canSelectPerson" : false
+		        },
+		        "004" : {
+		            "task": "VR_vdst315_query_08", 
+		            "title": "已审核", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"normalli",
+		            "qtask":"已审核",
+		            "canSelectPerson" : false
+		        },
+		    },
+		    // 企业-配送管理（业务员）
+		    "vdst315hn02" : {
+		        "001" : {
+		            "task": "VR_vdvc312_query_19", 
+		            "title": "附近的店",
+		            "tabClass": "mui-col-xs-3 active", 
+		            "liClass":"nearbyli",
+		            "qtask":"附近的店",
+		            "searchPerson" : false,
+		            "canSelectPerson" : false
+		        },
+		        "002" : {
+		            "task": "VR_vdst315_query_16", 
+		            "title": "待送货", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"nearbyli",
+		            "qtask":"待送货",
+		            "canSelectPerson" : false
+		        },
+		        "003" : {
+		            "task": "VR_vdst315_query_10", 
+		            "title": "已送货", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"normalli",
+		            "qtask":"已送货",
+		            "canSelectPerson" : false
+		        },
+		        "004" : {
+		            "task": "VR_vdst315_query_10", 
+		            "title": "已审核", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"normalli",
+		            "qtask":"已审核",
+		            "canSelectPerson" : false
+		        },
+		    },
+		    // 企业-业务下单（业务员）-原采购订单
+		    "vdst315hn03" : {
+		        "001" : {
+		            "task": "VR_vdvc312_query_06", 
+		            "title": "附近的店",
+		            "tabClass": "mui-col-xs-4 active", 
+		            "liClass":"nearbyli",
+		            "qtask":"附近的店",
+		            "searchPerson" : false,
+		            "canSelectPerson" : false
+		        },
+		        "002" : {
+		            "task": "VR_vdst315_query_06", 
+		            "title": "待送货", 
+		            "tabClass":"mui-col-xs-4", 
+		            "liClass":"normalli",
+		            "qtask":"待送货",
+		            "canSelectPerson" : false
+		        },
+		        "003" : {
+		            "task": "VR_vdst315_query_09", 
+		            "title": "已送货", 
+		            "tabClass":"mui-col-xs-4", 
+		            "liClass":"normalli",
+		            "qtask":"已送货",
+		            "canSelectPerson" : false
+		        },
+		    },
+			// 企业-业务下单（管理员）
+			"vdst315hn04" : {
+			    "001" : {
+			        "task":"VR_vdst315_query_22", 
+			        "title":"待送货", 
+			        "tabClass":"mui-col-xs-6 active", 
+			        "liClass":"normalli",
+			        "qtask":"待送货",
+			        "canSelectPerson" : false
+			    },
+			    "002" : {
+			        "task":"VR_vdst315_query_22", 
+			        "title":"已送货", 
+			        "tabClass":"mui-col-xs-6", 
+			        "liClass":"normalli",
+			        "qtask":"已送货",
+			        "canSelectPerson" : false
+			    },
+			},
+			// 企业-物品配送（管理员）
+			"vdst315hn05" : {
+			    "001" : {
+			        "task":"VR_vdst315_query_23", 
+			        "title":"待送货", 
+			        "tabClass":"mui-col-xs-4 active", 
+			        "liClass":"normalli",
+			        "qtask":"待送货",
+			        "canSelectPerson" : false
+			    },
+			    "002" : {
+			        "task":"VR_vdst315_query_23", 
+			        "title":"已送货", 
+			        "tabClass":"mui-col-xs-4", 
+			        "liClass":"normalli",
+			        "qtask":"已送货",
+			        "canSelectPerson" : false
+			    },
+				"003" : {
+				    "task":"VR_vdst315_query_23", 
+				    "title":"已审核", 
+				    "tabClass":"mui-col-xs-4", 
+				    "liClass":"normalli",
+				    "qtask":"已审核",
+				    "canSelectPerson" : false
+				},
+			},
+		    // 经销商-物品回收（配送员）
+		    "vdst316hn01" : {
+		        "001" : {
+		            "task": "VR_vdvc312_query_20", 
+		            "title": "附近的店",
+		            "tabClass": "mui-col-xs-3 active", 
+		            "liClass":"nearbyli",
+		            "qtask":"附近的店",
+		            "searchPerson" : false,
+		            "canSelectPerson" : false
+		        },
+		        "002" : {
+		            "task": "VR_vdst316_query_12", 
+		            "title": "待确认", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"nearbyli",
+		            "qtask":"待送审",
+		            "canSelectPerson" : false
+		        },
+		        "003" : {
+		            "task": "VR_vdst316_query_04", 
+		            "title": "已确认", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"normalli",
+		            "qtask":"待审核",
+		            "canSelectPerson" : false
+		        },
+		        "004" : {
+		            "task": "VR_vdst316_query_05", 
+		            "title": "已审核", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"normalli",
+		            "qtask":"已审核",
+		            "canSelectPerson" : false
+		        },
+		    },
+		    // 企业-物品回收（业务员）
+		    "vdst316hn02" : {
+		        "001" : {
+		            "task": "VR_vdvc312_query_19", 
+		            "title": "附近的店",
+		            "tabClass": "mui-col-xs-3 active", 
+		            "liClass":"nearbyli",
+		            "qtask":"附近的店",
+		            "searchPerson" : false,
+		            "canSelectPerson" : false
+		        },
+		        "002" : {
+		            "task": "VR_vdst316_query_10", 
+		            "title": "待确认", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"nearbyli",
+		            "qtask":"待送审",
+		            "canSelectPerson" : false
+		        },
+		        "003" : {
+		            "task": "VR_vdst316_query_02", 
+		            "title": "已确认", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"normalli",
+		            "qtask":"待审核",
+		            "canSelectPerson" : false
+		        },
+		        "004" : {
+		            "task": "VR_vdst316_query_03", 
+		            "title": "已审核", 
+		            "tabClass":"mui-col-xs-3", 
+		            "liClass":"normalli",
+		            "qtask":"已审核",
+		            "canSelectPerson" : false
+		        },
+		    },
+		    // 企业-回收下单（业务员）
+		    "vdst316hn03" : {
+		        "001" : {
+		            "task":"VR_vdvc312_query_06", 
+		            "title":"附近的店",
+		            "tabClass": "mui-col-xs-4 active", 
+		            "liClass":"nearbyli",
+		            "qtask":"附近的店",
+		            "searchPerson" : false,
+		            "canSelectPerson" : false
+		        },
+		        "002" : {
+		            "task":"VR_vdst316_query_11", 
+		            "title":"待确认", 
+		            "tabClass":"mui-col-xs-4", 
+		            "liClass":"normalli",
+		            "qtask":"L",
+		            "canSelectPerson" : false
+		        },
+		        "003" : {
+		            "task":"VR_vdst316_query_11", 
+		            "title":"已确认", 
+		            "tabClass":"mui-col-xs-4", 
+		            "liClass":"normalli",
+		            "qtask":"Y",
+		            "canSelectPerson" : false
+		        },
+		    },
+			// 企业-物品回收（管理员）
+			"vdst316hn04" : {
+			    "001" : {
+			        "task":"VR_vdst316_query_13", 
+			        "title":"待确认", 
+			        "tabClass":"mui-col-xs-4 active", 
+			        "liClass":"normalli",
+			        "qtask":"L",
+			        "canSelectPerson" : false
+			    },
+			    "002" : {
+			        "task":"VR_vdst316_query_13", 
+			        "title":"已确认", 
+			        "tabClass":"mui-col-xs-4", 
+			        "liClass":"normalli",
+			        "qtask":"Y",
+			        "canSelectPerson" : false
+			    },
+			    "003" : {
+			        "task":"VR_vdst316_query_13", 
+			        "title":"已审核",
+			        "tabClass": "mui-col-xs-4", 
+			        "liClass":"normalli",
+			        "qtask":"Y",
+			        "searchPerson" : false,
+			        "canSelectPerson" : false
+			    },
+			},
+			// 企业-回收下单（管理员）
+			"vdst316hn05" : {
+			    "001" : {
+			        "task":"VR_vdst316_query_14", 
+			        "title":"待确认", 
+			        "tabClass":"mui-col-xs-6 active", 
+			        "liClass":"normalli",
+			        "qtask":"L",
+			        "canSelectPerson" : false
+			    },
+			    "002" : {
+			        "task":"VR_vdst316_query_14", 
+			        "title":"已确认", 
+			        "tabClass":"mui-col-xs-6", 
+			        "liClass":"normalli",
+			        "qtask":"Y",
+			        "canSelectPerson" : false
+			    }
+			}	
+		}
+		var teamBillCom,teamBillComName,userName,userbillNo,loginCom,loginComName,fbill_no,privileges,fromPage,
+			pageTitle,commonParams,userInfo,system,defaultTask;
+		var oldBack = mui.back;
+		var aPerson = [];
+		
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(plsReady);
+		function plsReady(){
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			userName = self.userName;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			fbill_no = self.fbill_no;
+			privileges = self.privileges;
+			fromPage = self.fromPage;
+			pageTitle = self.pageTitle;
+			commonParams = self.commonParams;
+			userInfo = JSON.parse(VlStore.pGet("user"));
+			system = userInfo.com_linkvd_userCom;
+//		    console.log(JSON.stringify(self))
+		    mui.back = newBack;
+		    
+			document.getElementById("pageTitle").innerHTML = pageTitle+"列表"; 
+			document.getElementById("header").innerHTML = teamBillComName; 
+			mui("#topNavOut").on("tap", "p", function(e) { eaTapNav(e, this)});
+			document.getElementById("searchBtn").addEventListener("tap", eBtnSearch, false);
+			document.addEventListener('backAndReload', function(e) { ecBackAndReload(e) });
+//			document.getElementById("searchBox").addEventListener("tap", eInputSearchDlv, false);
+			renderTab(oInit[commonParams]);
+			if(oInit[commonParams]["001"]["searchPerson"]){
+				findPerson("VR_vdst315_query_21");
+			}
+		}
+		
+		function renderTab(data){
+			var innerHtml = "";
+			for(var k in data){
+				if(data.hasOwnProperty(k)){
+//					innerHtml += '<p class="'+data[k][2]+' top-nav" data-task="'+data[k][0]+'" data-class="'+data[k][3]+'" data-type="'+ k +'">'+data[k][1]+'</p>';
+					innerHtml += '<p class="'+data[k]["tabClass"]+' top-nav" data-task="'+data[k]["task"]+'" data-qtask="'+data[k]["qtask"]+'" data-class="'+data[k]["liClass"]+'" data-type="'+ k +'">'+data[k]["title"]+'</p>';
+				}
+			}
+			document.getElementById("topNavOut").innerHTML = innerHtml;
+		}
+		function newBack(){
+	    	if(fromPage != "vdst315hn01_edit.html"){
+	    		oldBack();
+	    		return;
+	    	}
+	    	var webview = plus.webview.getWebviewById("index-ps.html");
+	    	var childView = plus.webview.getWebviewById("tab-webview-subpage-work.html");
+	    	webview.show();
+	    	childView.show();
+	    }
+		function ecBackAndReload(e){
+			var _data = e.detail,
+				_type = _data.activeType,
+				_str = "#topNavOut p[data-type='" + _type +"']",
+				_self = jQuery(_str);
+				// console.log(_type)
+				// console.log(_self.attr("class"))
+			_self.addClass("active").siblings().removeClass("active");
+			definedCustomEvent(_self[0]);
+		}
+		function eaTapNav(e,self) {
+			document.getElementById("searchBox").value = "";
+			jQuery(self).addClass("active").siblings().removeClass("active");
+			// 
+			var _type = jQuery(self).attr("data-type");
+			var canSelectPerson = oInit[commonParams][_type]["canSelectPerson"];
+			if(canSelectPerson){
+				document.getElementById("searchBox").setAttribute("readonly", "readonly");
+				document.getElementById("searchBox").addEventListener("tap", eInputSearchDlv, false);
+				document.getElementById("clearIcon").addEventListener("tap", eClearInput, false);
+				document.getElementById("clearIcon").style.display = "block";
+			}else{
+				document.getElementById("searchBox").removeEventListener("tap", eInputSearchDlv, false);
+				document.getElementById("searchBox").removeAttribute("readonly");
+				document.getElementById("clearIcon").removeEventListener("tap", eClearInput, false);
+				document.getElementById("clearIcon").style.display = "none";
+			}
+			definedCustomEvent(self);
+		}
+		function definedCustomEvent(self){
+			var search = document.getElementById("searchBox").value;
+			document.getElementById("searchBox").blur();
+			var activeType = self.getAttribute("data-type");
+			// console.log(self.innerHTML);
+			mui.fire(plus.webview.getWebviewById('vdst315hn01_list.html'), 'subpage133list',  {
+				activeType: activeType,
+				activeTask: self.getAttribute("data-task"),
+				activeText: self.innerHTML,
+				activeClass: self.getAttribute("data-class"),
+				activeQtask: self.getAttribute("data-qtask"),
+				activeSearch : search
+			});
+		}
+		function enterSearch(e) {
+			if(e.keyCode == 13) {
+				var self = jQuery("#topNavOut").children(".active")[0];
+				definedCustomEvent(self);
+			}
+		}
+		function eBtnSearch(e){
+			var self = jQuery("#topNavOut").children(".active")[0];
+			definedCustomEvent(self);
+		}
+		function eClearInput(){
+			document.getElementById("searchBox").value = "";
+		}
+		function findPerson(task){
+			var p = {
+				bill_task : task,
+				bill_com : teamBillCom,
+				bill_user : userbillNo,
+				bill_qtask : "待送货",
+				currentPage : 1,
+				pageSize : 30,
+				paramText : "",
+			}
+			VlAjax.post({
+				"port" : "active",
+				"headers" : "json"
+			}, p, sCBFindPerson)
+		}
+		function sCBFindPerson(data){
+			if(data.data.length != 0) {
+				var datas = data.data,
+					i, item, k;
+				for(i = 0; i < datas.length; i++ ){
+					item = datas[i];
+					var obj = {
+						"title" : item["标题业务员"]
+//						"title" : "hahah"
+					};
+					aPerson.push(JSON.parse(JSON.stringify(obj)))
+				}
+			}
+		}
+		function eInputSearchDlv(){ 
+			showActionSheet(aPerson, this); 
+		}
+		function showActionSheet(data, self){
+			if(data.length !== 0 ){
+				plus.nativeUI.actionSheet({
+					title: "选择业务员/配送员",
+					cancel: "取消",
+					buttons: data
+				}, function(e) {
+					if(e.index != -1){
+						var txt = data[(e.index - 1)].title;
+						changePerson(data[(e.index - 1)], self);
+					}
+				});
+			}else{
+				mui.toast("未查询到业务员/配送员~");
+			}
+		}
+		function changePerson(data, self){
+			self.value = data.title;
+			jQuery(".top-nav").eq(0).attr("data-user", data.bno);
+		}
+	</script>
+
+</html>

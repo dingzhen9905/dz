@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/icons-extra.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+
+		<!--三级联动-->
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<style>
+			body {
+				color: #666;
+			}
+			
+			ul,
+			li {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			ul li {
+				list-style: none;
+			}
+			
+			.list_font {
+				min-height: 20px;
+				padding-top:3px;
+				margin-bottom:5px;
+				line-height: 20px;
+				font-size: 14px;
+				color: #000000;
+			}
+			.list_font span{
+				color:gray;
+			}
+			.list_sts {
+				font-size: 14px;
+				line-height: 14px;
+				color: #f0ad4e;
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+			}
+			.mui-input-group:after {
+				background-color: #c8c7cc !important;
+			}
+			.mui-table-view-cell:after{height: 0;}
+			.hide{display:none;}
+			.vl-gray{color: gray;}
+			.vl-dark{color: #000000 !important;}
+			.vl-line{min-height: 20px;margin-top:5px;border-bottom: 1px solid #efeff4;line-height: 20px;}
+			.last-line{border-bottom: none;}
+			
+			.mui-preview-image.mui-fullscreen {
+							position: fixed;
+							z-index: 20;
+							background-color: #000;
+						}
+			 
+						.mui-preview-header .mui-preview-indicator {
+							display: block;
+							line-height: 25px;
+							color: #fff;
+							text-align: center;
+							margin: 15px auto 4;
+							width: 70px;
+							background-color: rgba(0, 0, 0, 0.4);
+							border-radius: 12px;
+							font-size: 16px;
+						}
+						.mui-preview-image {
+							display: none;
+							-webkit-animation-duration: 0.5s;
+							animation-duration: 0.5s;
+							-webkit-animation-fill-mode: both;
+							animation-fill-mode: both;
+						}
+						.mui-preview-image.mui-preview-in {
+							-webkit-animation-name: fadeIn;
+							animation-name: fadeIn;
+						}
+						.mui-preview-image.mui-preview-out {
+							background: none;
+							-webkit-animation-name: fadeOut;
+							animation-name: fadeOut;
+						}
+						.mui-zoom-scroller {
+							position: absolute;
+							display: -webkit-box;
+							display: -webkit-flex;
+							display: flex;
+							-webkit-box-align: center;
+							-webkit-align-items: center;
+							align-items: center;
+							-webkit-box-pack: center;
+							-webkit-justify-content: center;
+							justify-content: center;
+							left: 0;
+							right: 0;
+							bottom: 0;
+							top: 0;
+							width: 100%;
+							height: 100%;
+							margin: 0;
+							-webkit-backface-visibility: hidden;
+						}
+			 
+						.mui-slider .mui-slider-group .mui-slider-item img {
+							width: auto;
+							height: auto;
+							max-width: 100%;
+							max-height: 100%;
+						}
+									@-webkit-keyframes fadeIn {
+										0% {
+											opacity: 0;
+										}
+										100% {
+											opacity: 1;
+										}
+									}
+									@-webkit-keyframes fadeOut {
+										0% {
+											opacity: 1;
+										}
+										100% {
+											opacity: 0;
+										}
+						     }
+			 
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain nodeHeader" id="head" style="height:70px;">
+			<a class="mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<h1 class="mui-title headText" id="header">终端详情</h1>
+			<a class="mui-icon mui-pull-right" style="font-size:16px;display: none;" id="toEdit">修改</a>
+			<a class="mui-icon mui-pull-right" style="font-size:16px;display: none;" id="J_btn_back">收回</a>	
+		</header>
+		<div class="mui-content" style="margin-top:25px !important;">
+			<div class="mui-input-group hide" id="linkvdUsercom" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;">
+				<div class="mui-row">
+					<span class="mui-col-xs-3 vl-gray">标识:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_no" id="bill_no"></span>
+					<br/>
+					<span class="mui-col-xs-3 vl-gray">fbill_no:</span>
+					<!--<span class="mui-col-xs-8" data-field="html.fbill_no" id="fbill_no">ROOT</span>-->
+					<br/>
+					<span class="mui-col-xs-3 vl-gray">制单单位:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_com" id="bill_com"></span>
+					<br/>
+					<span class="mui-col-xs-3 vl-gray">制单人:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_user" id="bill_user"></span>
+					<br/>
+					<span class="mui-col-xs-3 vl-gray">制单时间:</span>
+					<span class="mui-col-xs-8" data-field="html.bill_date" id="bill_date"></span>
+					<br/>
+				</div>
+			</div>
+			<div class="mui-slider-cell  mui-slider-handle " style="background:#fff;padding:10px 20px 3px 15px;">
+				<div class="">
+					<div class="mui-row" style="height: 30px;overflow: hidden;">
+						<div class="mui-col-xs-6" id="bill_name" style="font-size:14px;line-height: 30px;color:#000000;font-weight: bold;"></div>
+						<div class="mui-col-xs-4" id="bill_id" style="font-size:14px;line-height: 30px;color:#000000;display: none;"></div>
+					</div>
+					<div class="mui-row" style="border-bottom: 1px dotted #FFEBCD;border-top: 1px dotted #FFEBCD;padding:5px 0;overflow: hidden;">
+						<div class="mui-col-xs-2 mui-row" style="text-align: left;">
+							<img id="J_img" class="mui-col-xs-11" height="60px" src="" onerror="this.src='../../images/icon/default.png'" data-preview-src=""  style="border-radius: 5px;height: 60px;" />
+						</div>
+						<div class="mui-col-xs-10 mui-row" >
+							<p class="list_font vl-line"><span class="vl-gray mui-col-xs-4">负责人：</span><span class="vl-dark mui-col-xs-8" id="bill_title"></span></p>
+							<p class="list_font vl-line last-line"><span class="vl-gray mui-col-xs-4">电话：</span><span class="vl-dark mui-col-xs-8" id="bill_bid"></span></p>
+						</div>
+					</div>
+					<div class="mui-row ">
+						<p class="list_font vl-line"><span class="vl-gray  mui-col-xs-4">地址：</span><span class="vl-dark mui-col-xs-8" id="bill_context"></span><span id="map"  class="mui-icon mui-icon-location" style="margin-left: 50px;font-size: 18px;">导航</span></p>
+						<p class="list_font vl-line"><span class="vl-gray mui-col-xs-4">片区：</span><span class="vl-dark mui-col-xs-8" id="bill_nspec"></span></p>
+						<p class="list_font vl-line"><span class="vl-gray mui-col-xs-4">业务员：</span><span class="vl-dark mui-col-xs-8" id="bill_nunit"></span></p>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group groupInfo" style="padding:10px 15px;">
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">所在地区：</span><span class="mui-col-xs-8 spn" id="linkbd_linkprov"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">所在街道：</span><span class="mui-col-xs-8 spn" id="linkbd_linkstreet"></span>
+				</div>
+				<!--
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">地区位置：</span><span class="mui-col-xs-8 spn" id="linkbd_lngposition"></span>
+				</div>
+			    -->	
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">经纬度：</span><span class="mui-col-xs-4 spn" id="bill_ipaddr"></span><span class="mui-col-xs-4 spn" id="bill_gpsaddr"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;">
+					<span class="mui-col-xs-4 spn">详细地址：</span><span class="mui-col-xs-8 spn" id="linkvd_corraddr"></span>
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;height: 28px;line-height: 20px;">
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_channel_type">
+						<span class="mui-col-xs-7 vl-gray">终端类型：</span>
+						<span class="mui-col-xs-5" id="col_channel_type"></span>
+					</div>
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_channel_subs">
+						<span class="mui-col-xs-7 vl-gray">终端类别：</span>
+						<span class="mui-col-xs-5" id="col_channel_subs"></span>
+					</div>	
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;height: 28px;line-height: 20px;">
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_business">
+						<span class="mui-col-xs-7 vl-gray">是否营业：</span>
+						<span class="mui-col-xs-5" id="col_business"></span>
+					</div>
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_terminal_type">
+						<span class="mui-col-xs-7 vl-gray">终端级别：</span>
+						<span class="mui-col-xs-5" id="col_terminal_type"></span>
+					</div>	
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #efeff4;height: 30px;line-height: 30px;">
+					<div class="mui-col-xs-6 mui-row lastItem" data-id="col_chain_flag">
+						<span class="mui-col-xs-7 vl-gray">是否连锁：</span>
+						<span class="mui-col-xs-5" id="col_chain_flag"></span>
+					</div>
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_shopping_cart">
+						<span class="mui-col-xs-7 vl-gray">购物车：</span>
+						<span class="mui-col-xs-5" id="col_shopping_cart"></span>
+					</div>
+				
+				</div>
+				<div class="mui-row" style="height: 30px;line-height: 30px;border-bottom:1px solid #efeff4">
+					<div class="mui-col-xs-6 mui-row lastItem" data-id="col_online_shopping">
+						<span class="mui-col-xs-7 vl-gray">网购平台：</span>
+						<span class="mui-col-xs-5" id="col_online_shopping"></span>
+					</div>
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_space_qty">
+						<span class="mui-col-xs-7 vl-gray">停车位数量：</span>
+						<span class="mui-col-xs-5" id="col_space_qty"></span>
+					</div>
+				</div>
+				<div class="mui-row" style="height: 30px;line-height: 30px;border-bottom:1px solid #efeff4">
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_monopoly">
+						<span class="mui-col-xs-7 vl-gray">销售类型：</span>
+						<span class="mui-col-xs-5" id="col_monopoly"></span>
+					</div>
+		
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_masses">
+						<span class="mui-col-xs-7 vl-gray">社区群：</span>
+						<span class="mui-col-xs-5" id="col_masses"></span>
+					</div>
+					
+				</div>
+				<div class="mui-row" style="height: 30px;line-height: 30px;border-bottom:1px solid #efeff4">
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_operat_area">
+						<span class="mui-col-xs-7 vl-gray">营业面积/m2：</span>
+						<span class="mui-col-xs-5" id="col_operat_area"></span>
+					</div>
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_shortest_distance">
+						<span class="mui-col-xs-7 vl-gray">最近小区距离：</span>
+						<span class="mui-col-xs-5" id="col_shortest_distance"></span>
+					</div>
+				</div>
+				<div class="mui-row" style="height: 30px;line-height: 30px;border-bottom:1px solid #efeff4">
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_cash_desk">
+						<span class="mui-col-xs-7 vl-gray">收银台通道：</span>
+						<span class="mui-col-xs-5" id="col_cash_desk"></span>
+					</div>
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_shelves_qty">
+						<span class="mui-col-xs-7 vl-gray">货架数量：</span>
+						<span class="mui-col-xs-5" id="col_shelves_qty"></span>
+					</div>
+				</div>
+				<div class="mui-row" style="height: 30px;line-height: 30px;border-bottom:1px solid #efeff4">
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_beer_pilehead">
+						<span class="mui-col-xs-7 vl-gray">啤酒堆头：</span>
+						<span class="mui-col-xs-5" id="col_beer_pilehead"></span>
+					</div>
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_person_qty">
+						<span class="mui-col-xs-7 vl-gray">员工数量：</span>
+						<span class="mui-col-xs-5" id="col_person_qty"></span>
+					</div>
+				</div>
+				<div class="mui-row" style="height: 30px;line-height: 30px;border-bottom:1px solid #efeff4">
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_consumer_group">
+						<span class="mui-col-xs-7 vl-gray">所处区域及其周边：</span>
+						<span class="mui-col-xs-5" id="col_consumer_group"></span>
+					</div>
+					<div class="mui-col-xs-6  mui-row lastItem" data-id="col_chain_qty" style="display: none;">
+						<span class="mui-col-xs-7 vl-gray">连锁店数量：</span>
+						<span class="mui-col-xs-5" id="col_chain_qty"></span>
+					</div>
+				</div>
+			   <div class="mui-row" style="border-bottom:1px solid #efeff4;">
+			   	<span class="mui-col-xs-4 spn">是否销售以下产品：</span><span class="mui-col-xs-8 spn" id="col_sale_product"></span>
+			   </div>
+				<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+					<div class="mui-row" style="">
+						<span class="mui-col-xs-3" style="color:#ACACB4;">备注：</span>
+						<span class="mui-col-xs-8" id="bill_atta"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/mui.zoom.js"></script>
+	<script src="../../js/mui.previewimage.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var detailInfo = {};
+		var teamBillCom;
+		var teamBillComName;
+		var fbill_no;
+		var loginCom;
+		var loginComName;
+		var userbillNo;
+		var userName;
+		var privileges;
+		var fromPage;
+		var bill_user;
+		var getElem = function(el){return document.getElementById(el);};
+		var oBtnEdit = getElem('toEdit');
+		var oBtnBack = getElem('J_btn_back');
+		var oBtnGoBack = getElem('goBack'); 
+		mui.plusReady(function() {
+			// TODO 1. 页面上的字段========================
+			var normalData ={
+				h : {
+					bill_no 	:"",
+					fbill_no 	:"",				
+					bill_user 	:"",
+					bill_com 	:"",
+					bill_coppo 	:"",
+					bill_oppo   : "",
+					bill_context :"",
+					bill_ipaddr :"",
+					bill_gpsaddr:"",
+					bill_nspec:"",
+					bill_unit: "",
+					bill_remark:"",
+					bill_id 	:"",
+					bill_name 	:"",
+					bill_title  : "",
+					bill_bid  : "",
+					bill_nunit : "",
+				},
+				 v : {
+				},
+				c : {}
+			}
+			var oText ={
+				h : {
+					linkbd_linkstreet	: "",
+					col_terminal_type : "",
+					col_chain_flag : "",
+					col_shopping_cart : "",
+					col_online_shopping : "",
+					col_business : "",
+					col_chain_qty : "",
+					col_monopoly : "",
+					col_channel_type: "",
+					col_operat_area : "",
+					col_shortest_distance : "",
+					col_cash_desk : "",
+					col_shelves_qty : "",
+					col_beer_pilehead : "",
+					col_person_qty : "",
+					col_space_qty : "",
+					col_consumer_group : "",
+					col_masses : "",
+					linkbd_linkprov : "",
+					col_channel_subs : "",
+					linkvd_corraddr : "",
+					col_sale_product : "",
+				},
+				v : {
+				},
+				c : {		
+				}
+			}
+			// TODO 2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			teamBillCom 	= self.teamBillCom; // 1.管理单位代码
+			teamBillComName = self.teamBillComName; // 2.管理单位名称
+			fbill_no 		= self.fbill_no; // 3.fbill_no是
+			loginCom 		= self.loginCom; // 4.登录单位代码
+			loginComName 	= self.loginComName; // 5.登录单位名称
+			userbillNo 		= self.userbillNo; // 6.登录人的代码
+			userName 		= self.userName; // 7.登录人的姓名
+			privileges 		= self.privileges; // 8.当前的权限是 
+			fromPage 		= self.fromPage; // 9.从哪个页面来	
+			bill_ipaddr     = self.bill_ipaddr // 10.经度
+			bill_gpsaddr    = self.bill_gpsaddr //11.纬度
+		    pageTitle       = self.pageTitle 
+
+			if(fromPage.indexOf('list') > -1) {
+				detailInfo = self.detailInfo;
+			}else if(fromPage.indexOf('edit') > -1) {
+				detailInfo = self.rqsData;
+			}
+			// console.log(JSON.stringify(detailInfo))
+			// console.log(detailInfo['内容']['312代码'])
+			findData(detailInfo)
+			function findData(){
+				var p = {
+					name		: "vdvc312",
+					bill_task	: "L,S,Y",
+					bill_no		: detailInfo['内容']['312代码'], 
+					fbill_no 	: "ROOT",
+					bill_com	: teamBillCom, 
+					// bill_user 	: userbillNo,
+					currentPage	: 1,
+					pageSize	: 1,
+					paramText	: "",
+				}
+	//			 console.log(JSON.stringify(p))
+				VlAjax.post({"port":"find","headers":"json",}, p, sCBFind)
+			}
+			
+		 
+			function sCBFind(data){
+//				console.log(JSON.stringify(data))
+				// console.log(JSON.stringify(data.page))
+				if(data.data.length !== 0){
+					VlEdit.setValue(data.data[0], normalData, oText);
+					jQuery("#J_img").attr("src",VlAjax.getImgPathmen(data.data[0].bill_oppo))
+//					billstate(data.data[0].bill_task);
+					document.getElementById("bill_atta").innerHTML=[data.data[0]["bill_remark"]]
+				}
+			}
+			
+
+					
+			var oStatus = {"L":"待送审","S":'待审核',"Y":"已审核"};
+			
+			
+			document.getElementById("map").addEventListener("tap",mapditu,false);
+			function mapditu(){
+				window.location.href = 'http://api.map.baidu.com/direction?origin=latlng:'+bill_gpsaddr+','+bill_ipaddr+'|name:我的位置&destination='+ detailInfo.addr +'&mode=driving&region=中国&output=html&src=webapp.baidu.openAPIdemo'
+			}
+			// 点击返回按钮
+			oBtnGoBack.addEventListener("tap", eGoBack, false);
+			oBtnEdit.addEventListener("tap", eToEdit, false);
+			oBtnBack.addEventListener("tap", eBtnBack, false);
+			function eBtnBack(){
+				mui.confirm("确认要收回此单据吗？", "收回确认", ["收回", "取消"], function(e) {
+					if(e.index == 0) { // 是
+						rqsBack();
+					} 
+				});
+			}
+			function rqsBack(){
+				var _date = new Date();
+				var _param = {
+					bill_task :	"b_back",
+					bill_no   : getElem('bill_no').innerHTML,
+					bill_com  : teamBillCom,
+					bill_user : userbillNo,
+					bill_date : VlDate.get(_date,"_ymdhms"),
+				}
+				CRUDajax(_param,'../login.html',callback);
+			}
+			function callback() {
+				oBtnBack.style.display = 'none';
+				oBtnEdit.style.display = 'block';
+				detailInfo.bill_task = 'L';
+				getElem('bill_task').innerHTML = '待送审';
+			}
+			function billstate(task){
+				if(task == "L"){
+					oBtnEdit.style.display = 'block';
+					oBtnBack.style.display = 'none';
+				} else {
+					oBtnEdit.style.display = 'none';
+					oBtnBack.style.display = 'block';
+				}
+			}
+			// event
+			function eToEdit(){
+				var billUser = detailInfo.bill_user;
+				var privileges = vlUtils.getStorage("newPrivileges");
+				if(billUser == userbillNo || privileges == "ROOT") {
+					var ws = plus.webview.getWebviewById("vrsa312_edit.html");
+					if(!vlUtils.isnull(ws)){
+						plus.webview.close(ws);
+					}
+					mui.openWindow({
+						url: 'vrsa312_edit.html',
+						id: "vrsa312_edit.html",
+						createNew: true,
+						extras: {
+							teamBillCom		: teamBillCom, // 1.管理单位代码 	// 不变 
+							teamBillComName	: teamBillComName, // 2.管理单位名称	// 不变 
+							fbill_no		: fbill_no, // 3.fbill_no是		// 不变
+							loginCom		: loginCom, // 4.登录单位代码
+							loginComName	: loginComName, // 5.登录单位名称
+							userbillNo		: userbillNo, // 6.登录人的代码
+							userName		: userName, // 7.登录人的姓名
+							privileges		: privileges, // 8.当前的权限是
+							fromPage		: "vrsa312_node.html", // 9.从哪个页面来
+							detailInfo		: detailInfo,//10.整条数据
+							hadSave 		: true, //11.N为修改,
+							flagNew 		: "N"
+						},
+					    waiting:{
+							autoShow:true,//自动显示等待框，默认为true
+							title:'正在打开页面...',//等待对话框上显示的提示内容
+						}
+					})
+				} else {
+					mui.toast("仅制单人或管理员有此权限！");
+				}
+			
+			}
+			//
+			function eGoBack() {
+				var oldBack = mui.back;
+				mui.back = function() {
+					if(pageTitle == "终端信息"){
+						var webview = plus.webview.getWebviewById('vrsa312xx_plist.html');
+					}else{
+						var webview = plus.webview.getWebviewById('vrsa312_plist.html');
+					}
+					webview.show();
+				}
+				mui.back();
+			}
+		});// plusReady
+		   mui.previewImage();
+	</script>
+
+</html>

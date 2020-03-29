@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>终端维护（新建）</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			
+			.mui-input-row.lastInput:after{
+				height:0;
+			}
+			.hide{
+				display: none;
+			}
+			.vl-required:before{
+				content: "*";
+				color:crimson;
+			}
+			.auto-fill {
+				padding:1px;
+				padding-left:5px;
+				color: #242424;
+				font-size: 14px;
+				line-height: 14px;
+				height: 14px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			.auto-fill-title{color: gray;}
+			.vl-gray{color: gray;}
+			/**/
+			.mui-radio.mui-left label, .mui-checkbox.mui-left label{
+				margin-top:5px;
+				padding-left: 40px !important;
+				padding-right: 0px !important;
+			}
+			input[type="radio"],input[type="checkbox"] {
+				top: 12px !important;
+			}
+			.mui-radio input[type='radio']:before, .mui-checkbox input[type='checkbox']:before{
+				font-size: 18px !important;
+			}
+			.default-info{padding:10px auto;}
+			.default-info .mui-row{padding:0;margin: 0;}
+		</style>
+	</head>
+
+	<body  style="height: 100%;">
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head" style="height: 75px;">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p id="pageTitle">编辑终端</p>
+				<h1 id="header" ></h1>	
+			</div>
+		</header>
+		<div class="mui-content" style="padding-top:75px;margin-top:5px;margin-bottom:30px;">
+			<div class="mui-input-group default-info hide" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;">
+				<div class="mui-row hide">
+					<div class="mui-row hide">
+						<span class="mui-col-xs-3 vl-gray">标识:</span>
+						<span class="mui-col-xs-8 " data-field="html.bill_no" id="bill_no" style="color:gray;"></span>
+					</div>
+					<div class="mui-row ">
+						<span class="mui-col-xs-3 vl-gray">制单单位:</span>
+						<span class="mui-col-xs-8 " data-field="html.bill_com" id="bill_com" style="color:gray;"></span>
+					</div>
+					<div class="mui-row ">
+						<span class="mui-col-xs-3 vl-gray">制单人代码:</span>
+						<span class="mui-col-xs-8 " data-field="html.bill_user" id="bill_user" style="color:gray;"></span>
+					</div>
+					<div class="mui-row ">
+						<span class="mui-col-xs-3 vl-gray">制单人:</span>
+						<span class="mui-col-xs-8 " data-field="html.bill_nunit" id="bill_nunit" style="color:gray;"></span>
+					</div>
+					<div class="mui-row ">
+						<span class="mui-col-xs-3 vl-gray">制单时间:</span>
+						<span class="mui-col-xs-8 " data-field="html.bill_date" id="bill_date" style="color:gray;"></span>
+					</div>
+				</div>
+				<div class="mui-row" >
+					<div class="mui-row hide">
+						<span class="mui-col-xs-3 vl-gray">片区代码:</span>
+						<span class="mui-col-xs-8 " id="fbill_no"></span>
+					</div>
+					<div class="mui-row">
+						<span class="mui-col-xs-3 vl-gray">片区:</span>
+						<span class="mui-col-xs-8 " id="bill_nspec"></span>
+					</div>
+					<div class="mui-row hide">
+						<span class="mui-col-xs-3 vl-gray">供货商代码:</span>
+						<span class="mui-col-xs-8 " id="bill_coppo"></span>
+					</div>
+					<div class="mui-row">
+						<span class="mui-col-xs-3 vl-gray">供货商:</span>
+						<span class="mui-col-xs-8 "></span>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;display: flex;">
+				<div id="J_pics_box" class="mui-col-xs-1" data-title="门头照" data-src="" data-hadsave="false" data-haveimg="false" style="width: 100px;height: 100px;">
+					<p class="pic-title" style="margin-left: 7px;">门头照</p>
+					<img src="" onerror="this.src='../../images/icon/plus.png'" style="width: 60px;height: 60px;margin: 0;"/>				
+				</div>
+				<div class="mui-col-xs-9" style="margin: 20px 0 0 0;">
+					<div class="mui-input-row">
+						<label class="vl-required">终端代码</label>
+						<input id="bill_id" type="text" class="red-border requiredInput" readonly="readonly" placeholder="录入终端代码" required="required">
+					</div>
+					<div class="mui-input-row">
+						<label class="vl-required">终端名称</label>
+						<input id="bill_name" type="text" class="mui-input-clear red-border requiredInput" placeholder="录入终端名称" required="required" >
+					</div>
+				</div>
+				<div id="worklocus" class="mui-col-xs-2" style="margin-top: 30px;display: none;">
+					<button>修改<br />名称</button>
+				</div>
+			</div>
+			
+				<div class="mui-input-group mui-row" id="aboutFlow" style="position: relative;min-height: 70px;padding:5px 18px 5px 18px;margin:5px 0;font-size: 14px;">
+					<div class="mui-col-xs-10">
+						<div class="vl-gray">当前地址：</div>
+						<div class="" id="bill_context" style="font-size:14px;"></div>
+						<!--<div class="mui-row" style="margin: 0;padding:0;height:40px;overflow:hidden;">
+						</div>-->
+						<div class="mui-row hide" style="margin: 0;padding:0;height: 20px;">
+							<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+								<span class="mui-col-xs-4 vl-gray">经度：</span>
+								<span class="mui-col-xs-8" id="bill_ipaddr"></span>
+							</div>
+							<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+								<span class="mui-col-xs-4 vl-gray">纬度:：</span>
+								<span class="mui-col-xs-8" id="bill_gpsaddr"></span>
+							</div>
+						</div>
+					</div>
+					<div class="mui-col-xs-2 hide" id="reLocate">
+						<button>重新<br />定位</button>
+					</div>
+				</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div class="mui-input-row">
+					<label class="vl-required">负责人</label>
+					<input id="linkvd_linkuser" data-vfield="bill_title" type="text" class="vl-field mui-input-clear requiredInput" placeholder="录入负责人姓名">
+				</div>
+				<div class="mui-input-row">
+					<label class="vl-required">电话</label>
+ 					<input id="linkbd_linktel" data-vfield="bill_bid" type="number" class="vl-field mui-input-clear requiredInput" placeholder="录入负责人电话" required="required">
+				</div>
+				<div class="mui-input-row lastInput">
+					<label class="vl-required">经销商选择</label>
+					<input id="bill_spec" data-vfield="bill_spec" readonly="readonly" type="text" class="vl-field mui-input-clear requiredInput" style="font-size: 12px;width: 45%;float: left;" required="required">
+					<button type="button" class="mui-btn mui-btn-primary mui-btn-outlined" id="dealer" style="padding:3px;margin-top:10px;color: #007AFF;font-size: 12px;float: right;width: 20%;line-height: 15px;display: none;">更换经销商</button>
+				</div>
+			</div>
+			
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div style="border-bottom:1px solid #E3E3E3;">
+					<div class="mui-row" style="">
+						<span class="mui-col-xs-10 vl-required">选择渠道类型及其渠道类别：</span>
+						<button type="button" class="mui-col-xs-2 mui-btn mui-btn-primary mui-btn-outlined" id= "showPicker" style="padding:3px;margin:0;color: #007AFF;font-size: 12px;">选择</button>
+					</div>
+					<div class="mui-row " style="padding:10px 0 0 0;margin:0 0 0 16px;border-top:1px dashed #E3E3E3;">
+						<p class="auto-fill mui-col-xs-4 auto-fill-title">> 渠道类型：</p><p id="col_channel_type" class="auto-fill mui-col-xs-8"></p>
+						<p class="auto-fill mui-col-xs-4 auto-fill-title">> 渠道类别：</p><p id="col_channel_subs" class="auto-fill mui-col-xs-8"></p>
+					</div>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left vl-required" style="padding:11px 0 11px 13px;">区域类型</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>城区</label>
+						<input name="col_area_type" type="radio" value="城区">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>乡镇</label>
+						<input name="col_area_type" type="radio" value="乡镇">
+					</div>
+				</div>	
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left" style="padding:11px 0 11px 13px;">终端类别</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>A</label>
+						<input name="col_terminal_type" type="radio" value="A" >
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>B</label>
+						<input name="col_terminal_type" type="radio" value="B">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>C</label>
+						<input name="col_terminal_type" type="radio" value="C">
+					</div>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left vl-required" style="padding:11px 0 11px 13px;">专销类型</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>专卖</label>
+						<input name="col_monopoly" type="radio" value="专卖" >
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>共场</label>
+						<input name="col_monopoly" type="radio" value="共场">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>空白</label>
+						<input name="col_monopoly" type="radio" value="空白">
+					</div>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left vl-required" style="padding:11px 0 11px 13px;">经营状况</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>营业</label>
+						<input name="col_business" type="radio" value="营业" checked="checked">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>暂停业</label>
+						<input name="col_business" type="radio" value="暂停业">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>关闭</label>
+						<input name="col_business" type="radio" value="关闭">
+					</div>
+				</div>
+				<div class="mui-input-row lastInput" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left vl-required" style="padding:11px 0 11px 13px;">合作状态</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>未合作</label>
+						<input name="col_cooperation" type="radio" value="未合作" >
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>有意向</label>
+						<input name="col_cooperation" type="radio" value="有意向">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>已合作</label>
+						<input name="col_cooperation" type="radio" value="已合作">
+					</div>
+				</div>
+				<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+					<div class="mui-row" style="">
+						<span id="yijian" class="mui-col-xs-3" style="color:#ACACB4;">备注：</span>
+						<input type="text" class="mui-col-xs-8" style="font-size: 13px;" id="bill_attachment"/>
+					</div>
+				</div>
+			</div>
+			<div class="mui-row" style="padding:5px 18px 5px 10px;background: #fff;">
+				<div class="mui-row" style="margin: 0;overflow: hidden;">
+					<div class="mui-col-xs-1"></div>
+					<button class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-10" id="saveBtn" style="padding:3px 5px;"> 送 审 </button>
+					<div class="mui-col-xs-1"></div>
+				</div>
+			</div>
+		</div>
+		
+		<!--经销商更改提示框-->
+		<div id="work"   style="display: none; width: 100%;background: #000000; background: rgba(0, 0, 0, 0.5);z-index: 10000;height: 100%;position: fixed;top: 0;">
+		  <div style="display: flex;justify-content: center;align-items:center ;width: 100%;height: 100%;">		
+			<div style="font-size: 13px;width: 300px;background: #FFFFFF;padding: 5px;">
+				<p style="color: #000000;">
+				 <span class="fontstyle">终端名称:</span>
+				 <span id="uname" class="fontstyle"></span>
+				</p> 
+				<p style="color: #000000;">
+				 <span  class="fontstyle">原经销商:</span>
+				 <span id="uwork" class="fontstyle"></span>
+				</p> 
+				<p style="color: #000000;">
+				 <span  class="fontstyle">新经销商:</span>
+				 <input type="text" id="workdate" placeholder="点击选择经销商"  readonly="readonly" style="margin: 0;padding: 0;width: 200px;height: 30px;"/>
+				</p> 
+				<p style="color: #000000;">
+					<span style="float: left; margin: 15px 0 10px 10px;" id="shit" class="fontstyle">取消</span>
+					<span style="float: right;margin: 15px 10px 10px 0;" id="yeah" class="fontstyle">确定</span>
+				</p>
+			</div>
+		   </div>		
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FQCQkNvWb9g4FnFXN3IGieSwQgLOR2PU&services=&t=20171004185957"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/mui.poppicker.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = null;
+		var hasSave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		var deptname = "";
+		var bill_task = "";
+		var mainInfo = {};
+		var detailArr = null;
+		var nflag = "新增";
+		var MDInfo = {
+			"values":{
+				"main":{},
+				"detail":[]
+			}
+		}
+		var terminal = {
+			"经销商" : "vdvc20100_20170801_0101v101",
+			"终端" : "vdvc20100_20170801_0101v102",
+		}
+		var oPageTitle = {
+			"true" : "修改终端信息",
+			"false" : "新增终端"
+		}
+		var getElem = function(el){return document.getElementById(el);};
+		var oBtnEdit = getElem('toEdit');
+		var vc312Init = {
+				bstatus : {	"L" : "待送审","S" : "待审核","Y" : "已审核","YF": "已失效","new":"录入中"},
+				isNew : {
+					"true" : {
+						"btask":"d_new",
+						"bno" : VlTools.getBno('vdvc312'),
+						"bstatus" : "new",
+						"setValue" : false
+					},
+					"false" : {
+						"btask":"d_save",
+						"bno" 		: "",
+						"bstatus" 	: "",
+						"setValue" : true
+					}
+				},
+			}
+		var normalData ={
+			h : {
+				bill_no 	:"",
+				fbill_no 	:"",
+				bill_date 	:"",				
+				bill_user 	:"",
+				bill_com 	:"",
+				bill_coppo 	:"",
+				bill_context :"",
+				bill_ipaddr :"",
+				bill_gpsaddr:"",
+				bill_nspec:"",
+				bill_nunit:"",
+				bill_remark:"",
+			},
+			 v : {
+			 	bill_id 	:"",
+			 	bill_name 	:"",
+				bill_spec 	:"",
+			},
+			c : {}
+		}
+		var oText ={
+			h : {
+				col_channel_type : "",
+				col_channel_subs : "",
+			},
+			v : {
+				linkvd_linkuser : "",
+				linkbd_linktel : "",
+			},
+			c : {
+				col_terminal_type : "",
+				col_monopoly :"",
+				col_business :"",
+				col_cooperation :"",
+				col_area_type : "",
+			}
+		}
+		mui.plusReady(function() {
+			mobile =plus.os.name;	//Apple（或iOS）/null/Android 获取当前设备信息
+			// TODO 2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录人的代码
+			loginComName 	= self.loginComName;	// 5.登录人的名称
+			userbillNo 		= self.userbillNo;		// 6.登录单位代码
+			userName 		= self.userName;		// 7.登录单位名称
+			userRole 		= self.userRole;		// 7.登录单位名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			// 其他
+			hasSave = self.hasSave;   
+			deptname = self.deptname;
+			//console.log(JSON.stringify(self))
+			// console.log("1s"+hasSave)
+			if(hasSave) {  
+				detailInfo = self.detailInfo;
+//					console.log(JSON.stringify(detailInfo))
+                //修改id="J_pics_box"
+				nflag =  typeof self.nflag === "undefined" ? nflag : self.nflag ;
+				hasSave = true; 
+				document.getElementById("reLocate").style.display = "block";
+				document.getElementById("worklocus").style.display = "block";
+				document.getElementById("dealer").style.display = "block";
+				// VlEdit.setValue(detailInfo,normalData,oText);
+				findfillData(detailInfo);
+			}else{
+				//新增			
+				document.getElementById("reLocate").style.display = "none";
+				VlTools.getLocate(sCBgetLocate, eCBgetLocate);				
+				document.getElementById("bill_spec").addEventListener("tap",Dept)
+				findDept();
+			}
+			getElem("header").innerHTML = teamBillComName;
+			getElem("pageTitle").innerHTML = oPageTitle[hasSave];
+			bill_task = "d_new";
+			document.getElementById("bill_date").innerHTML = VlDate.get(new Date(), "_ymdhms");
+			document.getElementById("bill_no").innerHTML = VlTools.getBno("vdvc312");
+			document.getElementById("bill_user").innerHTML = userbillNo;
+			document.getElementById("bill_nunit").innerHTML = userName;
+			document.getElementById("bill_com").innerHTML = teamBillCom;
+
+			document.getElementById('showPicker').addEventListener('tap', eShowPicker, false);
+			document.getElementById("saveBtn").addEventListener("tap",bSendBtn); 
+			document.getElementById("reLocate").addEventListener('tap', eReLocate, false);
+			document.getElementById("worklocus").addEventListener("tap", worklocus, false);
+			document.getElementById("dealer").addEventListener("tap",agentss)
+			document.getElementById("workdate").addEventListener("tap", Dept, false);
+			document.getElementById("yeah").addEventListener("tap", yeahwork, false);
+			document.getElementById("shit").addEventListener("tap", function(){
+				document.getElementById("work").style.display = "none"
+			}, false);
+			
+		}); // plusReady
+		function eShowPicker(e){
+			var _p = {
+				bill_task : "VR_mapp101_query_01",
+				bill_com : teamBillCom,
+				bill_user : userbillNo,
+				bill_bflow : "销售渠道",
+				bill_oppo : "vdvc312",
+				currentPage: 1,
+				pageSize: 1,
+				paramText: ""
+			}
+			VlAjax.post({
+				port : "active",
+				headers : "json",
+			},_p,sCBfind)
+			function sCBfind(data) {
+				if(data.data.length !== 0){
+					var picker = VlTools.pickData({
+						data : JSON.parse(data.data[0]['内容选项']),
+						level : 2
+					})
+					picker.show(function(items) {
+						document.getElementById('col_channel_type').innerHTML = items[0].text;
+						document.getElementById('col_channel_subs').innerHTML = items[1].text;
+						// 返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}
+			}
+			
+		}
+		window.addEventListener("vdvc311VRagent01",agents)
+		function agents(event){
+		    bill_name=event.detail.linkName	
+			bill_dept=event.detail.dataRow
+			
+//			console.log(JSON.stringify(bill_dept))
+			if(!hasSave) { 
+				document.getElementById("bill_spec").value=bill_name
+				document.getElementById("bill_coppo").innerHTML=bill_dept
+				findBid()			
+			}else{
+				document.getElementById("workdate").value = bill_name
+				if(bill_specs!= bill_name){
+					var parmes = {
+						bill_task : "VE_vdvc311_update_01",
+						bill_user : userbillNo,
+						bill_coppo : bill_dept,
+						bill_com : teamBillCom,
+						bill_oppo : bill_312oppo,
+						bill_no :  bill_312no
+					}
+//					console.log(JSON.stringify(parmes))
+					VlAjax.post({"port":"sendTask","headers":"json"}, parmes, sCBS);
+				}
+			}
+			
+			
+		}
+		function sCBS(){}
+		function agentss(){
+			document.getElementById("work").style.display = "block"
+			document.getElementById("uwork").innerHTML = document.getElementById("bill_spec").value
+			document.getElementById("uname").innerHTML = document.getElementById("bill_name").innerHTML			
+		}
+		//点击确认修改经销商
+		function yeahwork(){
+		   var query = {
+			   bill_task : "VE_vdvc312_update_07",
+			   bill_no   :  bill_312no,
+			   bill_oppo :  bill_312oppo,
+			   bill_coppo : document.getElementById("bill_coppo").innerHTML,
+			   bill_doppo : bill_dept,
+			   bill_nspec : bill_name,
+		   }
+		    VlAjax.post({"port":"sendTask","headers" : "json"}, query, sCBtask);
+		}
+		//修改名称弹出框
+		function worklocus(){
+			var names = document.getElementById("bill_name").innerHTML
+			mui.prompt(`${names}`,'请输入您修改的新名称','用户名称',['取消','确定'],function(e){
+		
+				if (e.index == 1) {
+					if (e.value == ""){
+					  mui.toast('名称不能为空');
+					  return false;
+					}
+				  var query = {
+					  bill_task : "VE_vdvc101_update_01",
+					  bill_no : detailInfo['参数'],
+					  bill_name : e.value,
+				  }
+//				  console.log(JSON.stringify(query))
+				  VlAjax.post({"port":"sendTask","headers" : "json"}, query, sCBtask);
+				}
+			},'div');
+		}
+		function sCBtask(){
+			  location.reload()
+		}
+		function Dept(){
+				 mui.openWindow({
+					 id :"vdvc311_VRagent.html",
+					 url:"../vlfind/vdvc311_VRagent.html",
+					 createNew: true,
+					 extras: {
+						teamBillCom: teamBillCom,
+						teamBillComName: teamBillComName,
+						userbillNo: userbillNo,
+						loginCom: loginCom,
+						loginComName: loginComName,
+						fromPage: "vdvc312hn_edit.html",	
+					 }
+				 })
+		}
+		function eReLocate(){
+			document.getElementById("bill_context").innerHTML = "";
+			VlTools.getLocate(sCBgetLocate, eCBgetLocate);
+		}
+		function sCBgetLocate(p){
+		  if(plus.os.name ==="Android"){
+			  bill_ipaddr = p.coords.longitude;
+			  bill_gpsaddr = p.coords.latitude;
+			  //
+			  document.getElementById("bill_ipaddr").innerHTML = bill_ipaddr;
+			  document.getElementById("bill_gpsaddr").innerHTML = bill_gpsaddr;
+			  document.getElementById("bill_context").innerHTML = p.addresses;
+		  }else{
+			  var provinces=p.address.province
+			  var citys=p.address.city
+			  var districts=p.address.district
+			  var streets=p.address.street
+			  var titles=provinces+citys+districts+streets
+			  document.getElementById("bill_context").innerHTML = titles;
+			  document.getElementById("bill_ipaddr").innerHTML = p.longitude;
+			  document.getElementById("bill_gpsaddr").innerHTML = p.latitude;
+		  }
+			  
+			
+		}
+		function eCBgetLocate(e){
+			alert(JSON.stringify(e))
+		}
+		// 保存指令
+		function saveBtn(){ 
+			plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+			var checkResults = VlEdit.checkRequired();//验证是否为必填字段  
+			var isMobileOk = VlValid.checkMobile(document.getElementById('linkbd_linktel').value);
+			Imgsrc=jQuery("#J_pics_box").find("img").attr("src")
+			
+			//定位失败 和 渠道类型必选项
+			var map = document.getElementById("bill_context").innerHTML
+			var check = document.getElementById("col_channel_type").innerHTML
+			if(map=="定位失败" || check==""){
+				if(check==""){
+					mui.toast("请选择渠道类型");
+					plus.nativeUI.closeWaiting()
+					return false
+				}else{
+					mui.toast("请重新进入页面进行定位");
+					plus.nativeUI.closeWaiting()
+					return false
+				}
+				
+			}
+			//单选必填项
+			var arr=new Array();
+			    arr[0]=document.getElementsByName("col_area_type");
+			    arr[1]=document.getElementsByName("col_monopoly");
+			    arr[2]=document.getElementsByName("col_business");
+			    arr[3]=document.getElementsByName("col_cooperation");	
+			var res=0			 
+			 for(var i=0;i<arr.length;i++){
+					for(var j=0;j<arr[i].length;j++){
+						if(arr[i][j].checked==true){
+							res++
+						}
+					}		
+			    }
+			if(res<arr.length) {
+			    mui.toast("区域类型,专销类型,经营状况,合作状态为必选项");
+				plus.nativeUI.closeWaiting()
+			    return false;
+			   }
+			if(Imgsrc=="../../images/icon/plus.png"){
+				mui.toast("请拍摄门头照");
+				plus.nativeUI.closeWaiting()
+				return false
+			}
+			if(!checkResults || !isMobileOk){
+				plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+				return false;
+			}
+			
+                
+			rqsData = VlEdit.getValue(normalData,oText); //获取每一个输入框的值的方法   
+			rqsData = getFieldValue(rqsData);
+			rqsData.bill_nflag = nflag;
+			rqsData.bill_unit = "终端";
+			
+			rqsData.bill_text = JSON.parse(rqsData.bill_text);
+			rqsData.bill_text[0]['prod_no'] = terminal[rqsData.bill_unit]
+			rqsData.bill_text = JSON.stringify(rqsData.bill_text);	
+			MDInfo.values.main = VlUtils.deepCopy(rqsData,MDInfo.values.main);
+		    
+			if(hasSave){
+				//修改							
+				rqsData.bill_remark=document.getElementById("bill_attachment").value
+			 	rqsData = VlEdit.compareData(mainInfo, rqsData, false);
+				rqsData.bill_task = "d_save";
+				rqsData.bill_coppo=document.getElementById("bill_coppo").innerHTML
+			}else{
+				//新增
+				rqsData.bill_task = "d_new";
+				rqsData.bill_remark=document.getElementById("bill_attachment").value
+				
+				findBid()		//防止同时操作产生一致的编码
+				rqsData.bill_id=document.getElementById('bill_id').value
+			}
+//			console.log("提交保存："+JSON.stringify(rqsData));
+			VlAjax.post({"port":"sendTask","headers":"json", "async" : false}, rqsData, sCBSave);
+				
+			return true;
+		}
+
+		// 送审指令
+		function bSendBtn(){ 
+			plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+			if(!saveBtn()){
+				return;
+			}		
+			var sendParams = taskParam("VE_vdvc312_update_05");
+			VlAjax.post({"port":"sendTask","headers":"json"}, sendParams, sCBSend);
+		}
+		function sCBimg(){
+			//判断送审前与刚打开页面的图片路径进行对比
+		if(hasSave){	
+			if(Images!=Imgsrc){
+				var load={
+					bill_task : "VR_vdvc312_query_13",
+					bill_no   : rqsData.bill_no,
+				}
+				VlAjax.post({"port":"active","headers":"json", "async" : false}, load, sCBload);
+			}else{
+				return;  
+			}
+		 }else{
+			 var load={
+			 	bill_task : "VR_vdvc312_query_13",
+			 	bill_no   : rqsData.bill_no,
+			 }
+			 VlAjax.post({"port":"active","headers":"json", "async" : false}, load, sCBload);
+		 }
+		}
+		function sCBload(data){
+			var aImgKeys=[]
+			var aImgPaths=[]
+			var oData=eval(data.data)
+			var name=oData[0]["图片图片"]
+			var oImg = jQuery("#J_pics_box").attr("data-src")
+			aImgKeys.push(name)
+			aImgPaths.push(oImg)
+			//图片上传
+		  
+		   VlAjaxImgload.img(aImgKeys, aImgPaths)
+		}
+		function sCBloadimg(data){
+		}
+		function taskParam(task){
+			return {
+				bill_task : task,
+				bill_no   : document.getElementById('bill_no').innerHTML,
+				fbill_no  : document.getElementById('fbill_no').innerHTML,
+				bill_user : userbillNo,
+				bill_com  : teamBillCom,
+				bill_date : VlDate.get(new Date(), "_ymdhms"),
+			}
+		}
+		function sCBSave(){
+				var imag={
+					bill_task : "VE_vdvc101_insert_01",
+					bill_no : rqsData.bill_no,
+					bill_user : rqsData.bill_user,
+				}
+				VlAjax.post({"port":"sendTask","headers":"json", "async" : false}, imag, sCBimg);
+			plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+			hasSave = true;
+			mainInfo = VlUtils.deepCopy(rqsData,mainInfo);
+		}
+		function sCBSend(){
+			plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+			hadSend = true;
+			MDInfo.values.main.bill_task = 'S';
+			VlPage.backToPage("vdvc312hn_plist.html","vdvc312hn_list.html");
+			plus.webview.currentWebview().close();
+		}
+		function findDept(){
+			var p = {
+				bill_task	: "VR_vdvc103_query_01",
+				bill_title	: '', 
+				bill_com	: teamBillCom, 
+				bill_user 	: userbillNo,
+				currentPage	: 1,
+				pageSize	: 1,
+				paramText	: "",
+			}
+			VlAjax.post({"port":"active","headers":"json"}, p, sCBFindDept)
+		}
+		function findBid(){
+			var p = {
+				bill_task	: "VR_vdvc312_query_10",
+				bill_title	: '', 
+				bill_com	: teamBillCom, 
+				bill_user	: userbillNo, 
+				bill_oppo 	: document.getElementById('bill_coppo').innerHTML,
+				currentPage	: 1,
+				pageSize	: 1,
+				paramText	: "",
+			}
+          
+			VlAjax.post({"port":"active","headers":"json",}, p, sCBFindBid)
+		}
+		function sCBFindDept(data){
+			
+			if(data.data.length !== 0){
+				var oData = {};
+				for(var k in data.data[0]) {
+					oData[k.slice(0, 2)] = data.data[0][k];
+				}
+				oData['内容'] = JSON.parse(oData['内容'])
+				document.getElementById('fbill_no').innerHTML = oData['图片'];
+				document.getElementById('bill_nspec').innerHTML = oData['标题'];
+				document.getElementById('bill_coppo').innerHTML = oData['内容']['经销商代码'];
+				document.getElementById('bill_spec').value = oData['内容']['经销商名称'];
+				if(oData['内容']['经销商名称']!=""){
+					findBid()
+				}
+			}
+		}
+		function sCBFindBid(data){
+
+			if(data.data.length !== 0){
+				var oData = data.data[0]
+				document.getElementById('bill_id').value = oData['图片终端编码'] ? oData['图片终端编码'] : "";
+			}
+		}
+		// TODO 6. 拍照
+		document.getElementById("J_pics_box").addEventListener("tap",pa,false)
+		
+		var _oTrueFalse ={"true": true, "false": false};
+		
+		function pa() {
+			var li = this;
+			event.stopPropagation();
+			event.preventDefault();
+			var idx = jQuery(li).index();
+			var haveImg = _oTrueFalse[jQuery(li).attr("data-haveimg")];
+			// haveImg  ? EditPhotos(idx) : takePhoto(idx);
+			haveImg  ? EditPhotos(idx) : callPhotograph(idx);
+		};
+		
+		function EditPhotos(idx) {
+			var a = [{
+				title: "更换"
+			}, {
+				title: "删除"
+			}];
+			plus.nativeUI.actionSheet({
+				cancel: "取消",
+				buttons: a
+			}, function(b) {
+				switch(b.index) {
+					case 0:
+						break;
+					case 1:
+						changePhoto(idx);
+						break;
+					case 2:
+						delPhoto(idx);
+						break;
+					default:
+						break
+				}
+			})
+		}
+		function takePhoto(idx) {
+			var l = $$(".imgs").eq(idx).children("img").length;
+			if(l == 0) {
+				callPhotograph(idx)
+			} else {
+				mui.toast("~已经有照片了~");
+			}
+		}
+		// 唤起相机
+		function callPhotograph(idx) {
+			plus.nativeUI.showWaiting("正在打开相机...");
+			var nvc801bno = VlTools.getBno("vdvc801");
+			//调用相机
+			var cmr = plus.camera.getCamera();
+			//  拍照的大小
+			var aRes = cmr.supportedImageResolutions;
+			var res = aRes[aRes.length - 1]; // 默认取最小的
+			console.log("拍照大小组：" + JSON.stringify(aRes));
+			console.log("拍照设定大小：" + res);
+			var path;
+			if(mobile === "Apple" || mobile === "iOS"){
+				path = "_doc/Vlbfile/" + nvc801bno + ".jpg"; 
+			}else{
+				path = "_doc/Vlbfile/" + nvc801bno;
+			}
+			var captureOpt = {
+				// filter: "none",
+				resolution: res,
+				format: "jpg",
+				filename: path,
+				index : 1
+			}
+			// 获取照片的格式
+			var fmt = cmr.supportedImageFormats[0];
+			
+			cmr.captureImage(
+				function(path) {
+					plus.nativeUI.closeWaiting("正在打开相机...");
+					plus.nativeUI.showWaiting("正在设置图片...");
+					plus.io.resolveLocalFileSystemURL(path, function(entry) {
+						var paths = entry.fullPath;
+						setImg(idx, nvc801bno, paths, path);
+						plus.nativeUI.closeWaiting("正在设置图片...");
+					}, function(e) {
+						plus.nativeUI.closeWaiting("正在设置图片...");
+						alert("设置图片失败" + e.message);  
+					});
+				}, 
+				function(error) {
+					plus.nativeUI.closeWaiting("正在打开相机...");
+				}, 
+				captureOpt
+			);
+		}
+		//解决苹果上传问题关键  //原因 苹果不能去本地路径  安卓可以
+		function setImg(idx, bno, fullPath, cmrPath){
+			var oImgli = jQuery("#J_pics_box").eq(idx),
+				uploadPath = (mobile === "Apple" || mobile === "iOS") ? cmrPath : fullPath;
+			oImgli.find("img").attr("src",fullPath);
+			oImgli.attr("data-haveimg","true");
+			oImgli.attr("data-src", uploadPath);
+			oImgli.attr("data-no", bno);
+		}
+		//点击照片【更换】
+		function changePhoto(idx) {
+			var oImgli = jQuery("#J_pics_box").eq(idx);
+			var datasave = _oTrueFalse[oImgli.attr("data-hadsave")];
+			var datano = oImgli.attr("data-no");
+			var btn = ["确定更换", "取消更换"];
+			mui.confirm('更换后原照片将被删除!', '您确认要更换此照片吗？', btn, function(e) {
+				if(e.index == 0) {
+					if(datasave) {
+						delPhotoData(datano);
+					}
+					callPhotograph(idx);
+				} else {
+					return
+				}
+			})
+		
+		}
+		//点击照片【删除】
+		function delPhoto(idx) {
+			var oImgli = jQuery("#J_pics_box").eq(idx);
+			var del = confirm("您确定要删除此照片？");
+			if(del == true) {
+				var datasave = _oTrueFalse[oImgli.attr("data-hadsave")];
+				var datano = oImgli.attr("data-no");
+				if(datasave) {
+					delPhotoData(datano); // 删掉关联数据
+				}
+				oImgli.find("img").attr("src","../../images/icon/plus.png");
+				oImgli.attr("data-haveimg","false");
+				oImgli.attr("data-hadsave","false");
+				oImgli.attr("data-src", "");
+				oImgli.attr("data-no", "");
+			} else {
+				return;
+			}
+		}
+		//删除照片的ajax
+		function delPhotoData(bno) {
+			var p = {
+				bill_no: bno,
+				bill_task: "d_delete",
+				fbill_no: "ROOT",
+				bill_user: userbillNo,
+				bill_com: teamBillCom,
+				bill_date: VlDate.get(new Date(), "_ymdhms"),
+			}
+			VlAjax({
+				"port" : "sendTask",
+				"headers" : "json"
+			}, p, sCBdelPhotoData)
+		}
+		
+		function sCBdelPhotoData() {mui.toast("图片删除成功~")} // 不可删除
+		
+		
+		function getFieldValue(data) {
+			var oField = document.getElementsByClassName("vl-field");
+			for(var i = 0; i < oField.length; i ++){
+				var _k = oField[i].getAttribute("data-vfield");
+				var _v = oField[i].value;
+				data[_k] = _v;
+			}		
+			return data;
+		}
+		function findfillData(){
+			var p = {
+				name		: "vdvc312",
+				bill_task	: "L,S,Y",
+				bill_no		: detailInfo['内容']['312代码'], 
+				bill_com	: teamBillCom, 
+				// bill_user 	: userbillNo,
+				// bill_user : 'vdvc00100_20190806_a6ec85b4',
+				currentPage	: 1,
+				pageSize	: 1,
+				paramText	: "",
+			}
+			// console.log(JSON.stringify(p))
+			VlAjax.post({"port":"find","headers":"json",}, p, sCBFindfilldata)
+		}
+		function sCBFindfilldata(data){
+			if(data.data.length !== 0){
+				mainInfo = data.data[0];
+				VlEdit.setValue(data.data[0], normalData, oText);
+				var attachment = $$("#bill_name").val()
+				$$("#bill_name").replaceWith("<span id='bill_name' style='display:block;height:40px;padding:10px 15px 10px 0'></span>")
+				$$("#bill_name").html(attachment)
+				bill_312oppo = data.data[0]["bill_oppo"]
+				bill_312no = data.data[0]["bill_no"]
+				var bcontext = data.data[0]['bill_context'],
+					_addr;
+				if(mui.type(bcontext) === 'array'){
+					_addr = bcontext[0]["linkbd_linkprov"] + " " + bcontext[0]["linkbd_linkstreet"] + " " + bcontext[0]["linkvd_corraddr"];
+				}else if(mui.type(bcontext) === 'string' && bcontext.indexOf('{') > -1){
+					bcontext = JSON.parse(bcontext)
+					_addr = bcontext[0]["linkbd_linkprov"] + " " + bcontext[0]["linkbd_linkstreet"] + " " + bcontext[0]["linkvd_corraddr"];
+				}else if(mui.type(bcontext) === 'string' && bcontext.indexOf('{') == -1){
+					_addr = bcontext;
+				}
+				document.getElementById('bill_context').innerHTML = _addr;
+				var pathimg=VlAjax.getImgPathmen(data.data[0]['bill_oppo'])
+				jQuery("#J_pics_box").find("img").attr("src",pathimg)
+				document.getElementById("bill_attachment").value=data.data[0]["bill_remark"]
+				Images=jQuery("#J_pics_box").find("img").attr("src")
+				bill_specs=document.getElementById("bill_spec").value
+			}
+		}
+	</script>
+
+</html>

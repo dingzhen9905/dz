@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>vlerp</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--<metaname="screen-orientation"content="portrait">-->
+		<link rel="stylesheet" type="text/css" href="css/common/mui.css">
+		<link rel="stylesheet" type="text/css" href="css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="css/fonts/iconfont.css" />
+		<style>
+			html,body {background-color: #efeff4;} 
+			.mui-bar-tab {bottom: 0;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:70px;overflow:hidden;">
+			<h1 id="title" class="mui-title" style="color:white;margin-top: -8px;">我的桌面</h1>
+			<a id="selectPeople" style="color:white;background-color:;height:70px;line-height: 40px;float:right;width:40px;font-size: 26px;margin-right: -15px;display:none;">+</a>
+		</header>
+		<nav class="mui-bar mui-bar-tab" style="background:#f1f1f1 !important;">
+			<a id="defaultTab" class="mui-tab-item mui-active" href="tab-webview-subpage-work" id="work">
+				<span class="mui-icon mui-icon-home"><span class="mui-badge" id="workBadge" style="magin:0,padding:0;display: none;"></span></span>
+				<span class="mui-tab-label">我的桌面</span>
+			</a>
+			<a class="mui-tab-item" id="notice" href="index-tabbar-notice">
+				<span class="mui-icon mui-icon-email"><span id="J_all_notice" class="mui-badge" style="display:none;">7</span></span>
+				<span class="mui-tab-label">我的消息</span>
+			</a>
+			<a class="mui-tab-item" href="tab-webview-subpage-perinfo" id="info">
+				<span class="mui-icon mui-icon-contact"></span>
+				<span class="mui-tab-label">基础管理</span>
+			</a>
+			<a class="mui-tab-item" href="tab-webview-subpage-setting" id="seting">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">我的设置</span>
+			</a>
+		</nav>
+
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" src="js/writeJsonFile.js"></script>
+	<script type="text/javascript" src="js/md5.js"></script>
+	<script type="text/javascript" src="js/vlindex.js"></script>
+	<script type="text/javascript" src="js/vl-websocket.js"></script>
+	<script type="text/javascript" src="js/immersed.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init({});
+		var subpages = ['tab-webview-subpage-work.html', 'index-tabbar-notice.html', 'tab-webview-subpage-perinfo.html', 'tab-webview-subpage-setting.html'];
+		var subpage_style = {
+			top: '70px',
+			bottom: '51px'
+		};
+
+		var aniShow = {};
+		
+		mui.plusReady(function() {
+			plus.screen.lockOrientation("portrait-primary");  // 禁止横屏显示
+			// var user = VlStore.pGet('user');
+			var usestro = !VlUtils.isnull(VlStore.pGet("user"));
+			var userNew = JSON.parse(VlStore.pGet("user"));
+			// subpages = (function(sys){
+			// 	var _json =  {
+			// 		"企业" : ['tab-webview-subpage-work.html', 'index-tabbar-notice.html', 'tab-webview-subpage-perinfo.html', 'tab-webview-subpage-setting.html'],
+			// 		"经销商" : ['tab-webview-subpage-work.html', "index-tabbar-notice.html", 'tab-webview-subpage-setting.html'],
+			// 		"终端" : ['tab-webview-subpage-work.html', "index-tabbar-notice.html", 'tab-webview-subpage-setting.html'],
+			// 	}
+			// 	return _json[sys];
+			// })(userNew.com_linkvd_userCom);
+			var oldBack = mui.back;
+			var first = null;
+			mui.back = function() {
+				// 重写
+				plus.runtime.quit();
+				return;
+			}
+			bindEvent();
+			
+			if(usestro) {
+				var bill_user 		= userNew.linkbd_username; 	//用户名
+				var userbillNo 		= userNew.bill_no; 			//用户代码
+				var userName 		= userNew.linkbd_username;	
+				var teamBillComName = userNew.com_bill_comName; // 用户公司
+				var teamBillCom 	= userNew.com_billCom; 		// 用户公司代码
+				var loginComName 	= userNew.com_bill_comName; // 用户公司代码
+				var loginCom 		= userNew.com_billCom; 		// 用户公司代码
+				var teamFBillName 	= userNew.com_fBillName; 	// 用户的部门
+				var privileges 		= userNew.privileges;
+				var userRole 		= userNew.bill_bflow;
+				var billcoppo 		= userNew.bill_coppo;
+
+				// 得到数组
+				var comArr 			= userNew.comArr;
+				var comArr_id 		= userNew.comArr_id;
+				var privilegesArr 	= userNew.privilegesArr;
+				var userRoleArr 	= userNew.userRoleArr;
+				var bcoppoArr 		= userNew.bcoppoArr;
+				// 更换标题
+				var title = document.getElementById("title");
+				title.innerHTML = teamBillComName;
+				//本地存储
+				//把当前的公司名称和公司代码存储到本地
+				VlStore.pSet("newTeamBillCom", teamBillCom);
+				VlStore.pSet("newTeamBillComName", teamBillComName);
+				VlStore.pSet("userbillNo", userbillNo);
+				VlStore.pSet("userName", userName);
+				VlStore.pSet("newLoginCom", loginCom);
+				VlStore.pSet("newLoginComName", loginComName);
+				VlStore.pSet("newPrivileges", privileges);
+				VlStore.pSet("newUserRole",userRole);
+				VlStore.pSet("newBillcoppo",billcoppo);
+				// 若个人有多个单位，登录后切换单位
+				document.getElementById("title").addEventListener("tap", function() {
+					if(comArr.length <= 1) {
+						return;
+					}
+				
+					//var actionbuttons = [{title:"单位1：微联"},{title:"单位2：燕京"}];
+					var actionbuttons = [];
+					for(var i = 0; i <= comArr.length - 1; i++) {
+						actionbuttons.push({
+							"title": comArr[i]
+						});
+					}
+					// 判断有几个公司
+					if(actionbuttons.length != 1) {
+						plus.nativeUI.actionSheet({
+							title: "切换单位",
+							cancel: "取消",
+							buttons: actionbuttons
+						}, function(e) {
+							if((e.index -1) != -1){
+								title.innerHTML = actionbuttons[(e.index - 1)].title;
+								teamBillComName = actionbuttons[(e.index - 1)].title;
+								teamBillCom 	= comArr_id[(e.index - 1)];
+								privileges 		= privilegesArr[(e.index - 1)];
+								userRole 		= userRoleArr[(e.index - 1)];
+								billcoppo 		= bcoppoArr[(e.index - 1)];
+								//把当前的公司名称和公司代码存储到本地
+								VlStore.pSet("newTeamBillCom", teamBillCom);
+								VlStore.pSet("newTeamBillComName", teamBillComName);
+								VlStore.pSet("userbillNo", userbillNo);
+								VlStore.pSet("userName", userName);
+								VlStore.pSet("newLoginCom", teamBillCom);
+								VlStore.pSet("newLoginComName", teamBillComName);
+								VlStore.pSet("newPrivileges", privileges);
+								VlStore.pSet("newUserRole",userRole);
+								VlStore.pSet("newBillcoppo",billcoppo);
+								
+								var userInfo = JSON.parse(VlStore.pGet("user"));
+								userInfo.bill_coppo = VlStore.pGet("newBillcoppo");
+								userInfo.bill_bflow = VlStore.pGet("newUserRole");
+								VlStore.pSet("user", JSON.stringify(userInfo));
+								
+//								plus.webview.getWebviewById("tab-webview-subpage-work").reload();
+								mui.fire(plus.webview.getWebviewById('tab-webview-subpage-work'), 'changeCom', {
+									nowcoppo: VlStore.pGet("newBillcoppo"),
+									nowUserRole: VlStore.pGet("newUserRole")
+								});
+								mui.fire(plus.webview.getWebviewById('tab-webview-subpage-perinfo'), 'changeComP', {
+									nowcoppo: VlStore.pGet("newBillcoppo"),
+									nowUserRole: VlStore.pGet("newUserRole")
+								});
+							}
+						});
+					}
+				})
+			}
+
+
+			var self = plus.webview.currentWebview();
+			for(var i = 0; i < subpages.length; i++) {
+				var temp = {};
+				var targetTabId = subpages[i].slice(0,-5);
+//				var sub = plus.webview.create(subpages[i], subpages[i], subpage_style);
+				var sub = plus.webview.create(subpages[i], targetTabId, subpage_style);
+				if(i > 0) {
+					plus.webview.getWebviewById(targetTabId).hide(true);
+					sub.hide();
+				} else {
+					temp[targetTabId] = "true";
+					mui.extend(aniShow, temp);
+					self.append(sub);
+				}
+			}
+		}); // plusready
+		//当前激活选项
+		var activeTab = subpages[0];
+		var title = document.getElementById("title");
+		//选项卡点击事件
+		mui('.mui-bar-tab').on('tap', 'a', function(e) { eaTabBottomTab(e, this); });
+		window.addEventListener('refreshNoticeNum', function(event){ ecRefreshNoticeNum(event); });
+		function bindEvent(){
+			window.addEventListener('reloadBadge', function(event) { ecReloadBadge(event); });
+			window.addEventListener("openie",function(event){ ecOpenIe(event); });
+		}
+		//自定义事件，模拟点击“首页选项卡”
+		document.addEventListener('gohome', function() {
+			var defaultTab = document.getElementById("defaultTab");
+			//模拟首页点击
+			mui.trigger(defaultTab, 'tap');
+			//切换选项卡高亮
+			var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
+			if(defaultTab !== current) {
+				current.classList.remove('mui-active');
+				defaultTab.classList.add('mui-active');
+			}
+		});
+		function eaTabBottomTab(e, self){
+			title.innerHTML = self.querySelector(".mui-tab-label").innerHTML;
+			var usestro = !VlUtils.isnull(VlStore.pGet("user"));
+			var userNew = JSON.parse(VlStore.pGet("user"));
+			var targetTab = self.getAttribute('href');
+			if(targetTab == activeTab) {
+				return;
+			}
+			if(usestro) {
+				var teamBillComName = VlStore.pGet("newTeamBillComName");
+				title.innerHTML = teamBillComName;
+				jQuery("#selectPeople").css({
+					"display": "none"
+				});
+				// plus.webview.getWebviewById(targetTab).reload();
+			}
+			//显示目标选项卡
+			//若为iOS平台或非首次显示，则直接显示
+			if(mui.os.ios || aniShow[targetTab]) {
+				plus.webview.show(targetTab);
+			} else {
+				//否则，使用fade-in动画，且保存变量
+				var temp = {};
+				temp[targetTab] = "true";
+				mui.extend(aniShow, temp);
+				plus.webview.show(targetTab, "fade-in", 300);
+				plus.webview.getWebviewById(targetTab).reload();
+			}
+			//隐藏当前;
+//			console.log(JSON.stringify(activeTab))
+			plus.webview.hide(activeTab);
+			//更改当前活跃的选项卡
+			activeTab = targetTab;
+//			console.log(JSON.stringify(activeTab))
+			plus.webview.getWebviewById(activeTab).reload();
+			
+		}
+		function ecRefreshNoticeNum(event){
+			var num = event.detail.num;
+			document.getElementById("J_all_notice").style.display = num ? "block" : "none";
+			document.getElementById("J_all_notice").innerHTML = num
+		}
+		function ecReloadBadge(event) {
+			plus.webview.getWebviewById("tab-webview-subpage-work").reload();
+		}
+		function ecOpenIe(event){
+			var urls = event.detail.urls;
+			var ws = plus.webview.currentWebview();
+			var embed=plus.webview.create(urls,'embed',{top:'20px',bottom:'0px'});//创建页面 
+			ws.append(embed); 
+			embed.addEventListener('loaded',function(){ //监听页面，当页面加载完成时
+				plus.nativeUI.closeWaiting(); 
+			},false);
+			embed.addEventListener('loading',function(){//监听页面，当页面加载时 
+				plus.nativeUI.showWaiting('',{style:'black',modal:false,background:'rgba(0,0,0,0)'}); 
+			},false);
+		} 
+	</script>
+
+</html>

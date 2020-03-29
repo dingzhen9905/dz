@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">  
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.min.css">  
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			
+			.list_font {
+				font-size: 10px;
+				line-height: 12px;  
+				/*height: 24px;*/
+				height: 16px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+			}
+			
+			.list_h5 {
+				font-size: 13px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="vdvc312_list" class="mui-content mui-scroll-wrapper" >
+			<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+				<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+			</div>
+			<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+				<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+				<p style="font-size:12px;">正在搜索中......</p>
+			</div>
+			<div id="showError" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-kulian" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">出错啦~</p>
+				<p style="font-size:10px;border-bottom: transparent;">请稍后再试</p>
+			</div>
+			<div class="mui-scroll">
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-bottom:50px;border: transparent;">
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var fromPage = "";
+		var startIndex = 1; // 
+		var pageSize = 10;
+		var search = '';
+		var detailInfo = []; // 用于存储查询到的信息
+		var openlock = false; // 用于区分是首次进入页面还是搜索页面
+		var queryparmas = {}; //查询参数
+		var pager = {};
+		var port = 'Business/allocated',
+		oGuid = {"002":"L,S","004":"Y"},
+		oTask = {"L":"待送审","S":"待审核","Y":"已审核","YF":"已失效"};
+		
+		mui.init({
+			pullRefresh: {
+				container: '#vdvc312_list',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview().parent();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			fbillnoName 	= self.fbillnoName;
+			
+			//	点击返回，返回上一级别列表
+			window.addEventListener('backAndRefreshList', function(event) { ecBackAndRefresh(event) });
+			window.addEventListener('plistRefreshList', function(event) { ecPlistRefreshList(event); });
+			document.addEventListener('lowerDeptRefresh311list', function(event) { ecLowerBack(event); });
+			document.addEventListener('differentStatesRefresh311list', function(event) { ecChangeTab(event); });
+			mui("#contList").on('tap', 'li', function(e) { eaTapLi(e, this); });
+			// 默认查询
+			queryparmas = getParams(oGuid["002"], 'Business/allocated');
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			rqsDataAjax(queryparmas,port, pendingData, '../login.html',true);
+			// 
+			function ecBackAndRefresh(event){
+				document.getElementById("showHint").style.display = "none"; 
+				document.getElementById("searching").style.display = "block";
+				teamBillCom 	= event.detail.teamBillCom;		// 管理单位代码
+				fbill_no 		= event.detail.fbill_no;		// fbill_no是
+				teamBillComName = event.detail.teamBillComName; // 管理单位名称
+				loginCom 		= event.detail.loginCom;	 	// 登录单位代码
+				loginComName 	= event.detail.loginComName;	// 登录单位名称
+				userbillNo 		= event.detail.userbillNo;		// 登录人的代码
+				userName 		= event.detail.userName,		// 登录人的姓名
+				privileges 		= event.detail.privileges,		// 当前的权限是
+				fromPage 		= event.detail.fromPage,		// 从哪个页面来
+				port = 'Business/allocated';
+				queryparmas = {
+					name: 'vdvc312',
+					bill_com: loginCom,
+					fbill_no:fbill_no,
+					bill_task: "Y",
+					currentPage: startIndex,
+					pageSize: pageSize,
+					paramText: search
+				}
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas,port, pendingData, '../login.html',true);
+			}
+			
+			function ecPlistRefreshList(event){
+				fbill_no = event.detail.fbill_no;
+				fbillnoName = event.detail.fbillnoName;
+				port = 'Business/allocated';
+				queryparmas = {
+					name: 'vdvc312',
+					bill_com: loginCom,
+					fbill_no:fbill_no,
+					bill_task: "Y",
+					currentPage: startIndex,
+					pageSize: pageSize,
+					paramText: search
+				}
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas,port, pendingData, '../login.html',true);
+			}
+			// swiper left refresh self
+			
+			function ecLowerBack(event){
+				teamBillCom 	= event.detail.teamBillCom;		// 管理单位代码
+				fbill_no 		= event.detail.fbill_no;		// fbill_no是
+				teamBillComName = event.detail.teamBillComName; // 管理单位名称
+				loginCom 		= event.detail.loginCom;	 	// 登录单位代码
+				loginComName 	= event.detail.loginComName;	// 登录单位名称
+				userbillNo 		= event.detail.userbillNo;		// 登录人的代码
+				userName 		= event.detail.userName,		// 登录人的姓名
+				privileges 		= event.detail.privileges,		// 当前的权限是
+				fromPage 		= event.detail.fromPage,		// 从哪个页面来
+				detailInfo 		= event.detail.detailInfo;
+				port = 'Business/allocated';
+				// query
+				queryparmas = {
+					name		: 'vdvc312',
+					bill_com	: loginCom,
+					fbill_no	: fbill_no,
+					bill_task	: "Y",
+					currentPage	: startIndex,
+					pageSize	: pageSize,
+					paramText	: search
+				}
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas,port, pendingData, '../login.html',true);
+			}
+			
+			function ecChangeTab(event) {
+				var guid 	= event.detail.active;
+					search 	= event.detail.search;
+					port 	= event.detail.port;
+				document.getElementById("contList").innerHTML 	  = '';
+				document.getElementById("showHint").style.display = "none"; 
+				document.getElementById("searching").style.display = "block";
+				/* *
+				 * 判断当前接口
+				 * 'Business/allocated'接口用paramText: search
+				 * 'Find/Ddata/fuzzy'接口用bill_name:search
+				 * */
+				queryparmas = getParams(oGuid[guid], port);
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas,port, pendingData, '../login.html',true);
+			}
+			
+			function eaTapLi(e, self){
+				var li 			= self;
+				//获取id
+				var num 		= li.getAttribute("num");
+				var id 			= li.getAttribute("id");
+				var dataRow 	= li.getAttribute("data-row");
+				var rowObj 		= JSON.parse(dataRow);
+				var teamBillCom = rowObj.bill_com;
+
+				mui.openWindow({
+					id: 'vdvc312_node.html',
+					url: 'vdvc312_node.html',
+					createNew: true,
+					extras: {
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码	// 不变
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变
+						fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+						loginCom 		: loginCom,			// 4.登录单位代码
+						loginComName 	: loginComName,		// 5.登录单位名称
+						userbillNo 		: userbillNo,		// 6.登录人的代码
+						userName 		: userName,			// 7.登录人的姓名
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vdvc312list",	// 9.从哪个页面来
+						detailInfo		: rowObj,
+						fbillnoName		:fbillnoName
+					}
+				});
+			}
+			
+		});  // plusReady
+		//下拉刷新
+		function pulldownRefresh() {
+			mui.toast("加载中...");
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			//
+			queryparmas.currentPage = 1;
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			
+			rqsDataAjax(queryparmas,port, pendingData, '../login.html',true);
+			mui('#vdvc312_list').pullRefresh().endPulldownToRefresh(); 
+		}
+
+		/*上拉加载具体业务实现 */
+		function pullupRefresh() {
+			if(queryparmas.currentPage < pager.totalPage) {
+				queryparmas.currentPage = queryparmas.currentPage + 1;
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				rqsDataAjax(queryparmas,port, pendingData, '../login.html',false);
+				mui('#vdvc312_list').pullRefresh().endPullupToRefresh();
+			} else {
+				plus.nativeUI.toast("~没有更多啦~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdvc312_list').pullRefresh().endPullupToRefresh();
+				return;
+			}
+		}
+		function getParams(task, port){
+			var obj = {
+				name		: 'vdvc312',
+				bill_com	: loginCom,
+				fbill_no	: fbill_no,
+				bill_task	: "Y",
+				currentPage	: 1,
+				pageSize	: pageSize,
+			}
+			if(task !== "Y"){
+				obj.bill_user = userbillNo
+			}
+			if(port = 'Find/Ddata/fuzzy'){
+				obj.bill_name	= search;
+				obj.cc_user		= search;
+			}else{
+				obj.paramText	= search;
+			}
+			return obj;
+		}
+		// 查询AJAX
+		function pendingData(data,type) {
+			pager = data.page[0];
+			var totalRecord = data.page[0]["totalRecord"];
+			mui.fire(plus.webview.currentWebview().parent(), 'sizetoplist', { 
+					totalRecord :totalRecord
+			});
+			document.getElementById("showHint").style.display = "none";
+			var comImgid = vlUtils.uuid('comImg', 4, 10);
+			if(data.data.length != 0) {
+				for(var i = 0; i < data.data.length; i++) {
+					var contList = document.getElementById("contList");
+					datas= data.data;
+					if(type&&i==0){
+						contList.innerHTML = "";
+					}
+					var text = "";
+					var bill_task = oTask[datas[i].bill_task] ? oTask[datas[i].bill_task] : ""
+                    console.log(JSON.stringify(datas[i]))
+					var li = document.createElement("li");
+					li.setAttribute("data-row",JSON.stringify(datas[i]));
+					li.setAttribute("num",i);
+					li.setAttribute("class", "mui-table-view-cell");
+					li.style.padding = "10px";
+					li.style.height = "70px";
+					text += '<div class="mui-slider-cell  mui-slider-handle">';
+					text += '<div class="mui-row">';
+					text += '<div class="mui-col-xs-2 mui-row" style="background:;padding:5px;width:55px;">';
+					text += '<img class="vdvc312 mui-col-xs-12" src="../../images/icon/default.png"  id="' + datas[i].bill_no + '" />';
+					text += '</div>';
+					text += '<div class="mui-col-xs-7 mui-row" style="background:;height:50px;">';
+					text += '<h5 class="list_h5 mui-col-xs-12" style="color:#242424;padding-top:1px;">' + datas[i]["bill_name"] + '</h5>';
+					/*var addrStr = datas[i]["bill_text"][0].linkbd_linkprov+datas[i]["bill_text"][0].linkbd_linkstreet+ datas[i]["bill_text"][0]["linkvd_corraddr"];
+					if(typeof(datas[i].bill_context) == "string" && datas[i].bill_context.slice(0,2)=="[{"){
+						var addrObj = JSON.parse(datas[i].bill_context);
+						addrStr = addrObj[0].linkbd_linkprov +" "+ addrObj[0].linkbd_linkstreet +" "+ addrObj[0].linkvd_corraddr;
+					}else if(typeof(datas[i].bill_context) == "object"){
+						var addrObj = datas[i].bill_context;
+						addrStr = addrObj[0].linkbd_linkprov +" "+ addrObj[0].linkbd_linkstreet +" "+ addrObj[0].linkvd_corraddr;
+					}*/
+					text += '<p class="list_font mui-col-xs-12">' + datas[i]["bill_context"] + '</p>';
+					text += '<p class="list_font mui-col-xs-12">联系人：'+ datas[i]["bill_text"][0]["linkvd_linkuser"] +'('+datas[i]["bill_text"][0]["linkbd_linktel"]+')</p>';
+					text += '</div>';
+					text += '<div class="mui-col-xs-3 mui-row list_three" style="background:;text-align: right;">';
+					text += '<p class="list_fonts mui-col-xs-12" style="float:right;">' + datas[i]["bill_id"] +'</p>';
+					text += '<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px;">' + (datas[i]["bill_date"]).slice(2, 10) + '</p>';
+					text += '<p class="list_sts mui-col-xs-8" style="float:right;margin-top:3px;height: 16px;width:60px;">' + datas[i].bill_unit + '</p>';
+					text += '</div>';
+					text += '</div>';
+					text += '</div>';
+					if(type&&i==0){
+						document.getElementById("searching").style.display = "none";
+					}
+					li.innerHTML = text;
+					contList.appendChild(li);
+					vlUtils.downloadicon(datas[i].bill_text[0].linkvd_linkcom, datas[i].bill_no);
+				}
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("searching").style.display = "none";
+				document.getElementById("showHint").style.display = "block";
+			}
+			plus.nativeUI.closeWaiting();
+		}
+		
+		
+ 	</script>
+
+</html>

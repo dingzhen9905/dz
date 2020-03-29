@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav headerMain plistHeader" id="head">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack"></a>
+			<div class="mui-title plistTitle">
+				<p id="TO">部门管理</p>
+				<h1 id="header"></h1>	
+			</div>
+			<a class="mui-icon mui-icon-plusempty mui-pull-right" id="toEdit" ></a>
+			<div class="mui-row navBar topNavRow" id="topNav">
+				<p class="mui-col-xs-4 topNav active" data-task="Y" data-type="001" >全部部门</p>
+				<p class="mui-col-xs-4 topNav" data-task="L,S" data-type="002">待处理</p>
+				<p class="mui-col-xs-4 topNav" data-task="YF" data-type="004">已失效</p>
+			</div>
+		</header>
+
+		<div class="mui-content"></div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/vlindex.js"></script>
+	<script src="../../js/immersed.js"></script>
+	<script type="text/javascript">
+		//启用双击监听
+		mui.init({
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				url: 'vdvc103hn_list.html',
+				id: 'vdvc103hn_list.html',
+				styles: {
+					top: '110px',
+					bottom: '20px',
+				}
+			}]
+		});
+		var teamBillCom = "",
+			teamBillComName = "",
+			userbillNo = "",
+			userName = "",
+			loginCom = "",
+			loginComName = "",
+			privilege = "",
+			fromPage= "",
+			fbill_no = "",
+			fbill_noName = "",
+			BreadcrumbNav = [],
+			BreadcrumbNavName = [],
+			BreadcrumbNavArr = [],
+			BreadcrumbContextArr = [],
+			ROOTfbillNo = "",
+			detailInfo = null ,
+			deptname = ""; //显示单位的中文名
+		VlPage.scrollToTop("vdvc103hn_list");
+		
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录单位代码
+			loginComName 	= self.loginComName;	// 5.登录单位名称
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			// 其他
+			ROOTfbillNo 	= self.fbill_no;
+			//
+			document.getElementById("header").innerHTML = teamBillComName;
+			document.getElementById("toEdit").addEventListener("tap", eToEdit, false);
+			mui("#topNav").on("tap", "p", function(e) { eaTapNav(e, this) }); 
+			window.addEventListener('lowerDeptRefresh103plist', ecLowerRefresh, false);
+			window.addEventListener('lowerDeptRefresh103list', ecLowerRefresh, false);
+			// 
+			var searchData = {};
+			searchData.teamBillCom 	 	= teamBillCom;		
+			searchData.teamBillComName	= teamBillComName; 	
+			searchData.fbill_no		 	= fbill_no;		
+			searchData.loginCom		 	= loginCom;		
+			searchData.loginComName	 	= loginComName;		
+			searchData.userbillNo		= userbillNo;		
+			searchData.userName		 	= userName;		
+			searchData.privileges		= privileges;		
+			searchData.fromPage		 	= fromPage;		
+			
+			BreadcrumbNavArr.push(searchData);
+			//
+			BreadcrumbNav.push(teamBillCom);		
+			BreadcrumbNavName.push(teamBillComName);
+			if(teamBillComName != loginComName){
+				BreadcrumbContextArr.push(teamBillComName); // context
+			}
+			
+		
+			var oldBack = mui.back;
+			mui.back = function(){
+			  	// 重写
+				if(BreadcrumbNav.length>1){
+					// 读数组，删掉最后一项，用倒数第二项刷新当前页面
+					// 删除数组最后一项
+					BreadcrumbNav.splice(BreadcrumbNav.length-1,1);
+					BreadcrumbNavName.splice(BreadcrumbNavName.length-1,1);
+					BreadcrumbNavArr.splice(BreadcrumbNavArr.length-1,1);
+					BreadcrumbContextArr.splice(BreadcrumbContextArr.length-1,1);
+					// 当前的最后一项赋值给fbill_no,刷新当前页、刷新子页
+					teamBillCom = BreadcrumbNav[BreadcrumbNav.length-1];			
+					teamBillComName = BreadcrumbNavName[BreadcrumbNavName.length-1];
+					
+					fbill_no = BreadcrumbNav[BreadcrumbNav.length-1];	
+					if(fbill_no == loginCom){							
+						fbill_no = "ROOT";
+					}
+					if(BreadcrumbNavArr[BreadcrumbNavArr.length-1].bill_no){
+						mui.fire(plus.webview.getWebviewById('vdvc103hn_node.html'),"backAndRefreshList",{
+							teamBillCom 	: BreadcrumbNavArr[BreadcrumbNavArr.length-1].teamBillCom, 		// 1.管理单位代码	// 每点一次就变为数组中的上一项
+							teamBillComName : BreadcrumbNavArr[BreadcrumbNavArr.length-1].teamBillComName,	// 2.管理单位名称	// 每点一次就变为数组中的上一项
+							fbill_no 			: BreadcrumbNavArr[BreadcrumbNavArr.length-1].fbill_no,			// 3.fbill_no是		// 每点一次就变为数组中的上一项
+							loginCom 		: loginCom,			// 4.登录单位代码
+							loginComName 	: loginComName,		// 5.登录单位名称
+							userbillNo 		: BreadcrumbNavArr[BreadcrumbNavArr.length-1].userbillNo,		// 6.登录人的代码
+							userName 		: BreadcrumbNavArr[BreadcrumbNavArr.length-1].userName,			// 7.登录人的姓名
+							privileges 		: BreadcrumbNavArr[BreadcrumbNavArr.length-1].privileges,		// 8.当前的权限是
+							fromPage 		: "vdvc103plist",	// 9.从哪个页面来
+							bill_no 		: BreadcrumbNavArr[BreadcrumbNavArr.length-1].bill_no
+						})
+						mui.openWindow({
+							id:"vdvc103hn_node.html"
+						})
+						BreadcrumbNavArr.splice(BreadcrumbNavArr.length-1,1);
+					}
+					
+					
+					document.getElementById("header").innerHTML = teamBillComName;	// 0109之前为 deptname
+					jQuery(".topNav:first").addClass("active").siblings().removeClass("active");
+					var childList = plus.webview.getWebviewById('vdvc103hn_list.html');
+					mui.fire(plus.webview.getWebviewById('vdvc103hn_list.html'),"backAndRefreshList",{
+						teamBillCom 	: teamBillCom, 		// 1.管理单位代码	// 每点一次就变为数组中的上一项
+						teamBillComName : teamBillComName,	// 2.管理单位名称	// 每点一次就变为数组中的上一项
+						fbill_no 			: fbill_no,			// 3.fbill_no是		// 每点一次就变为数组中的上一项
+						loginCom 		: loginCom,			// 4.登录单位代码
+						loginComName 	: loginComName,		// 5.登录单位名称
+						userbillNo 		: userbillNo,		// 6.登录人的代码
+						userName 		: userName,			// 7.登录人的姓名
+						privileges 		: privileges,		// 8.当前的权限是
+						fromPage 		: "vdvc103plist",		// 9.从哪个页面来
+					})
+					mui.openWindow({
+						id:"vdvc103hn_list.html"
+					})
+				}
+				if(BreadcrumbNav.length == 1){
+					oldBack();
+					return;
+				}
+			}
+			
+		});
+		function eToEdit() {
+			var contextTxt  = "";
+			if(teamBillComName != loginComName ){
+				if(BreadcrumbContextArr.length > 0){
+					contextTxt = BreadcrumbContextArr[BreadcrumbContextArr.length-1];
+				}
+				contextTxt += ","+teamBillComName;
+			}
+			// 在根部的时候只能
+			if(ROOTfbillNo == fbill_no ){
+				if(privileges == "ROOT"){
+					open103edit()
+				}else{
+					mui.toast("仅管理员有此权限!")
+				}
+			}else if(ROOTfbillNo != fbill_no){
+				open103edit()
+			}
+			function open103edit(){
+				mui.openWindow({
+					url: 'vdvc103hn_edit.html',
+					id: "vdvc103hn_edit.html",
+					createNew: true,
+					extras: {
+						teamBillCom 	: teamBillCom, 	
+						teamBillComName : teamBillComName,	
+						fbill_no 		: fbill_no,			
+						loginCom 		: loginCom,			
+						loginComName 	: loginComName,		
+						userbillNo 		: userbillNo,		
+						userName 		: userName,		
+						privileges 		: privileges,		
+						fromPage 		: fromPage,		
+						deptname		: deptname,
+						flagNew			: "Y",
+						contextTxt		: contextTxt,
+					}
+				})
+			}
+		}
+		function eaTapNav(e, self){
+			jQuery(self).addClass("active").siblings().removeClass("active");
+			mui.fire(plus.webview.getWebviewById('vdvc103hn_list.html'), 'differentStatesRefresh103list', {
+				activeType: self.getAttribute("data-type"),
+				activeTask: self.getAttribute("data-task"),
+			});
+		}
+		function ecLowerRefresh(event){
+//			console.log(JSON.stringify(event.detail))
+			var _detail = event.detail;
+			teamBillCom 	= _detail.teamBillCom;		// 管理单位代码
+			fbill_no 		= _detail.fbill_no;		// fbill_no是
+			teamBillComName = _detail.teamBillComName; // 管理单位名称
+			loginCom 		= _detail.loginCom;	 	// 登录单位代码
+			loginComName 	= _detail.loginComName;	// 登录单位名称
+			userbillNo 		= _detail.userbillNo;		// 登录人的代码
+			userName 		= _detail.userName,		// 登录人的姓名
+			privileges 		= _detail.privileges,		// 当前的权限是
+			fromPage 		= _detail.fromPage,		// 从哪个页面来
+			
+			detailInfo 		= _detail.detailInfo;
+			//
+			deptname = detailInfo.bill_name;
+			VlStore.pSet("deptNames",deptname);
+
+			// 把当前fbill_no和部门名字传入数组中
+			BreadcrumbNav.push(teamBillCom);			// 0109改，之前取fbill_no
+			BreadcrumbNavName.push(teamBillComName);	// 0109改，之前取detailInfo.bill_name
+			if(!VlUtils.isnull(detailInfo.bill_context)){
+				BreadcrumbContextArr.push(detailInfo.bill_context);
+			}
+			//
+			var searchData = {};
+			searchData.teamBillCom 	 	= teamBillCom;		
+			searchData.teamBillComName	= teamBillComName; 	
+			searchData.fbill_no		 	= fbill_no;		
+			searchData.loginCom		 	= loginCom;		
+			searchData.loginComName	 	= loginComName;		
+			searchData.userbillNo		= userbillNo;		
+			searchData.userName		 	= userName;		
+			searchData.privileges		= privileges;		
+			searchData.fromPage		 	= fromPage;	
+			if(fromPage == "vdvc103node"){
+//				searchData.fromPage = "vdvc311list";
+				// 深拷贝一份数组中的最后一项
+				var nodequery = JSON.parse(JSON.stringify(BreadcrumbNavArr[BreadcrumbNavArr.length-1]))
+					nodequery.bill_no			= detailInfo.bill_no;	
+				BreadcrumbNavArr.push(nodequery);
+				// 
+			}
+			
+			BreadcrumbNavArr.push(searchData);
+			//
+			document.getElementById("header").innerHTML = detailInfo.bill_name;
+			jQuery(".topNav:first").addClass("active").siblings().removeClass("active");
+		}
+	</script>
+
+</html>

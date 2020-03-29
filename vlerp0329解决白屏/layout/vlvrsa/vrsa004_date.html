@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>【湖南-企业-拜访查询、拜访审核】</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../../css/common/mui.min.css">
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style type="text/css">
+			header{height: 65px !important;}
+			header a, header h1{color: #FFFFFF !important;}
+			.mui-content{padding-top: 65px !important;}
+			.vrac203-search-terms{position: fixed;z-index: 100000000;width:100%;height:112px;background: #EAEAEA;overflow: hidden;}
+			label{font-size: 12px;color: #6C6C6C;}
+			input{height:30px !important;margin:3px auto !important;padding:2px !important;border:1px solid #5da8fa !important;border-radius:10px !important;font-size: 14px;}
+			input[placeholder] {padding:2px !important;font-size: 14px;color: #000;}
+		
+			.search-terms-txt{padding: 8px 5px;text-align:;}
+			.search-terms-title{padding-left:10px}
+			.hide {display: none;}
+			.order-main-li{margin-bottom:1px;padding:5px 10px !important;background:#fff;border-top:0px solid #E0E0E0;}
+			.order-imgbox{padding:5px;padding-left:0px;box-sizing:border-box;}
+			.order-info-title {padding-top:1px;font-size: 14px;color:#242424;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+			.order-info-leftbox{}
+			.order-info-left {display: -webkit-box;min-height: 14px;margin-bottom:1px;font-size: 12px;line-height: 12px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;}
+			.order-info-rightbox{text-align: right;}
+			.order-info-right {font-size: 12px;line-height: 14px;float: right;margin:1px auto;}
+			.order-price{color:#FF5053;font-size: 14px;}
+			.order-qty{font-size: 16px;color: #000000;}
+			.order-statusbox{text-align:right;padding-right:10px;}
+			.order-status {margin-left:10px;font-size: 10px;line-height: 14px;color: #f0ad4e;border: 1px solid #f0ad4e;border-radius: 2px;text-align: center;}
+			.detail-label{padding:0px 5px 0px 50px !important;}
+			.mui-row:before,
+			.mui-row:after,
+			.mui-table-view-cell:after,
+			.mui-table-view-cell:before{height:0px;}
+			.content-total{border-top:1px dashed #C0C0C0}
+			.vl-list-search-tip{padding:100px;height:300px;text-align: center;}
+			.vl-list-search-tip .icon {color:#353B42;font-size:100px;}
+			.vl-list-search-result{color:#000 !important;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;}
+			.vl-list-search-icon{color:#0062cc;height:100px;line-height: 100px;font-size: 100px;}
+			.list_sts{padding:3px; font-size:12px;}
+			/**/
+			.vl-tab-bar{background: #F0F0F0;}
+			.vl-tab-item{height: 32px;line-height: 30px;color: #242424;text-align: center;}
+			/* .vl-tab-item:hover{background:#EA6D10;color: #FFFFFF;} */
+			.vl-tab-item.active{color: #EA6D10;border-bottom: 2px solid #EA6D10;}
+			#content{margin:0 !important}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id='J_pageTitle'></h1>
+		</header>
+		<div class="mui-content">
+			<!--下拉刷新容器-->
+			<div id="pullrefresh" class="vrac203-search vrac203-search-resluts"style="background:;margin:0;">
+				<div style="position: relative;">
+					<div id="J_noData" class="vl-list-search-tip hide" style="">
+						<span class="icon iconfont icon-wushuju" style=""></span>
+						<p class="vl-list-search-result">未查询到相关的数据</p>
+						<p >可以尝试其他查询</p>
+					</div>
+					<div id="J_searching" class="vl-list-search-tip" style="">
+						<p class="mui-icon mui-icon-search vl-list-search-icon"></p>
+						<p>正在搜索中......</p>
+					</div>
+					<div id="J_showError" class="vl-list-search-tip hide" style="">
+						<span class="icon iconfont icon-kulian" style=""></span>
+						<p class="vl-list-search-result">出错啦~</p>
+						<p >请稍后再试</p>
+					</div>
+				</div>
+				<div class="mui-scroll" id="content" style="margin-top:0">
+					<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed order-main-ul">
+					</ul>
+				</div>
+			</div>
+		
+		<script src="../../js/mui.min.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/md5.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/arttmpl.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/jquery-2.1.0.js" 	type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/vlindex.js" 		type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+		;(function(){	
+			// 初始化mui
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style:'circle',
+						callback: pulldownRefresh
+					}
+				}
+			});
+			var teamBillCom,teamBillComName,
+				userbillNo,userName,userRole,
+				loginCom,loginComName,
+				fbill_no,fbillnoName,
+				fromPage,pageTitle,
+				dataInfo,otherParams,activeQtask
+	
+			mui.plusReady(function(){
+				var self = plus.webview.currentWebview();
+				teamBillCom 	= self.teamBillCom;
+				teamBillComName = self.teamBillComName;
+				userbillNo 		= self.userbillNo;
+				userName 		= self.userName;
+				userRole 		= self.userRole;
+				loginCom 		= self.loginCom;
+				loginComName 	= self.loginComName;
+				pageTitle 	    = self.pageTitle;
+				document.getElementById('J_pageTitle').innerHTML = pageTitle;
+				// console.log((JSON.parse(otherParams))['has-status'])
+				findData();
+				
+			});
+	
+			// 下拉刷新具体业务实现
+			function pulldownRefresh() {
+				document.getElementById("contList").innerHTML = "";
+				document.getElementById("J_searching").style.display = "block";
+				setTimeout(function() {
+					eSearch()
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(true);
+				}, 1500);
+			}
+			function findData(page,type){
+//				 console.log(searchTask)
+				var params = {
+					bill_task	 : "VR_vdvc000_query_01",
+					bill_user	 : userbillNo,
+					bill_com	 : teamBillCom, // 当前单位
+				};
+//				 console.log(JSON.stringify(params));
+				VlAjax.post({
+					"port" : "active",
+					"headers" : "json",
+					"isFirst" : type,
+				}, params, sCBfind)
+			}
+			function sCBfind(data,type) {
+				
+				document.getElementById("J_noData").style.display = "none";
+				var contList = document.getElementById("contList");
+				if(data.data.length != 0) {
+					for(var i = 0; i < data.data.length; i++) {
+						if(type&&i==0){
+							contList.innerHTML="";
+							document.getElementById("J_searching").style.display = "none";
+						}
+						var newdataArr = {};
+						for(var k in data.data[i]) {
+							newdataArr[k.slice(0, 2)] = data.data[i][k];
+						}
+						var li = document.createElement("li");
+						if(newdataArr["CO"].slice(1,2)!="、"){
+							li.style.marginLeft="23px"
+						}	
+						li.style.height="50px"
+						var text = '';
+					    text+='<div class="mui-table-view-cell order-main-li mui-right order-main-li" style="background:#fff;font-size:15px">'+newdataArr["CO"]+'</div>'
+						li.innerHTML = text;				
+						contList.appendChild(li);
+					}
+				} else { // 如果没有长度说明没有数据，提示没有数据
+					document.getElementById("contList").innerHTML = '';
+					document.getElementById("J_searching").style.display = "none";
+					document.getElementById("J_noData").style.display = "block";
+				}
+				plus.nativeUI.closeWaiting();
+			}
+			function eSearch(){
+				document.getElementById("contList").innerHTML = "";
+				document.getElementById("J_searching").style.display = "block";
+				findData()
+			}
+		
+		})();
+		</script>
+	</body>
+
+</html>
