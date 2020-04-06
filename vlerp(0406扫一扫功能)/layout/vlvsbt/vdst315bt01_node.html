@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.topNav {
+				padding: 0;
+			}
+			
+			.topNav p {
+				height: 35px;
+				line-height: 35px;
+			}
+			/*删除*/
+			
+			#sheet1 ul li:after {
+				height: 0;
+			}
+			
+			p.topitem {
+				padding: 0;
+			}
+			#basicTxt p{
+				color:#ACACB4;
+				margin:0;
+				padding:0;
+				font-size: 12px;
+			}
+			#basicTxt p span{
+				color: #000000;
+				width:60%;
+				float:right;
+			}
+			.money{
+				color:crimson;
+			}
+			/*TODO*/
+			.mui-table-view-cell:after,
+			.mui-table-view-cell:before,
+			.mui-table-view:after,
+			.mui-table-view:before{
+				height: 0 !important;
+			}
+			.order-main-li{padding:8px 10px 8px 5px !important;margin-bottom:8px;border-top:1px solid #E0E0E0; box-shadow: 0px 3px 3px #ccc;border-radius: 10px;}
+			/*.order-main-label{padding:0px !important;}*/
+			.main-info{line-height:5px;}
+			.order-main-imgbox{padding:3px;width:auto;margin:0px !important;}
+			ul.order-detail-ul {margin: 0;padding:0;padding-top:10px;background:;overflow: hidden;}
+			.order-detail-li{margin:3px;border:0px dashed #ACACB4;border-radius:10px;box-sizing:border-box;overflow:hidden;}
+			.order-detail-imgbox{width:35px;padding:5px;}
+			.order-imgbox{padding:5px;padding-left:0px;box-sizing:border-box;}
+			img{border-radius: 5px;}
+			
+			.order-info-leftbox{}
+			.order-info-left {display: -webkit-box;height: 14px;margin-bottom:3px;font-size: 12px;line-height: 12px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;}
+			.order-info-rightbox{text-align: right;}
+			.order-info-right {float: right;height: 26px;margin:2px auto;padding:0;font-size: 12px;line-height: 14px;}
+			.order-price{color:#000000;}
+			.order-amt{color:#FF5053;}
+			.order-qty{color: #000000;}
+			.order-statusbox{text-align:right;padding-right:10px;}
+			.order-status {margin-left:10px;font-size: 10px;line-height: 14px;color: #f0ad4e;border: 1px solid #f0ad4e;border-radius: 2px;text-align: center;}
+			.detail-input{display:inline-block;border:none;}
+			.mui-row:before,
+			.mui-row:after,
+			.mui-table-view-cell:after,
+			.mui-table-view-cell:before{
+				height:0px;
+			}
+			.data-row{word-wrap:break-word}
+			.hide{display: none;}
+			.changegray{border: 1px dashed #E0E0E0;border-radius: 5px;}
+			.changegray:hover{background: #C7C7CC;border-radius:5px;color:#fff;}
+			.vl-gray{color: gray;}
+			.vl-red{color: crimson;}
+			.vl-dark{color: #000000 !important;}
+			.vl-line{min-height: 20px;margin-top:5px;border-bottom: 1px solid #efeff4;line-height: 20px;}
+			.vl-footer{position:fixed;bottom:0;width:100%;height: 50px;background: #FFFFFF;line-height: 50px;text-align: center;margin-top:10px;}
+			.last-line{border-bottom: none;}
+			/**/
+			.goods-type-box{position:relative;top:0px;padding:0;padding-right:5px;margin:0;border: 1px dashed #E0E0E0;border-radius: 5px;height:24px;line-height:24px;text-align: right;}
+			.order-selecttype{color: #2187E7;}
+			.saletype{color: #000000;}
+			.saletype:hover{background: #C7C7CC;border-radius:5px;color:#fff;}
+			/**/
+			.mui-numbox {width:125px;height: 30px;padding: 0 30px;}
+			.mui-numbox button {width: 30px !important; line-height: 14px !important;}
+			/**/
+			.goods-title {padding-top:1px;font-size: 14px;color:#242424;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+			.goods-table{background:;border: 1px dashed #E0E0E0;border-radius: 5px;text-align: center;}
+			.goods-table-title{background:#F0F0F0;line-height: 24px;}
+			.goods-table-row{line-height: 30px;}
+			.goods-table-rightline{border-right: 1px dashed #E0E0E0;}
+			.goods-table-bottomline{border-bottom: 1px dashed #E0E0E0;}
+			
+			.mui-preview-image.mui-fullscreen {
+							position: fixed;
+							z-index: 20;
+							background-color: #000;
+						}
+			 
+						.mui-preview-header .mui-preview-indicator {
+							display: block;
+							line-height: 25px;
+							color: #fff;
+							text-align: center;
+							margin: 15px auto 4;
+							width: 70px;
+							background-color: rgba(0, 0, 0, 0.4);
+							border-radius: 12px;
+							font-size: 16px;
+						}
+						.mui-preview-image {
+							display: none;
+							-webkit-animation-duration: 0.5s;
+							animation-duration: 0.5s;
+							-webkit-animation-fill-mode: both;
+							animation-fill-mode: both;
+						}
+						.mui-preview-image.mui-preview-in {
+							-webkit-animation-name: fadeIn;
+							animation-name: fadeIn;
+						}
+						.mui-preview-image.mui-preview-out {
+							background: none;
+							-webkit-animation-name: fadeOut;
+							animation-name: fadeOut;
+						}
+						.mui-zoom-scroller {
+							position: absolute;
+							display: -webkit-box;
+							display: -webkit-flex;
+							display: flex;
+							-webkit-box-align: center;
+							-webkit-align-items: center;
+							align-items: center;
+							-webkit-box-pack: center;
+							-webkit-justify-content: center;
+							justify-content: center;
+							left: 0;
+							right: 0;
+							bottom: 0;
+							top: 0;
+							width: 100%;
+							height: 100%;
+							margin: 0;
+							-webkit-backface-visibility: hidden;
+						}
+			 
+						.mui-slider .mui-slider-group .mui-slider-item img {
+							width: auto;
+							height: auto;
+							max-width: 100%;
+							max-height: 100%;
+						}
+									@-webkit-keyframes fadeIn {
+										0% {
+											opacity: 0;
+										}
+										100% {
+											opacity: 1;
+										}
+									}
+									@-webkit-keyframes fadeOut {
+										0% {
+											opacity: 1;
+										}
+										100% {
+											opacity: 0;
+										}
+						     }
+		</style>
+	</head>
+	<body>
+	    <header class="mui-bar mui-bar-nav  headerMain nodeHeader" id='head' style="height: 75px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="goBack" ></a>
+			<h1 class="mui-title headText" id="header">单据详情</h1>
+		</header> 
+	   	<div class="mui-content" style="padding-top:75px;margin-top:0px;margin-bottom:30px;">
+			<div class="mui-input-group hide"style="padding:5px 18px 5px 18px;margin:5px auto;">
+				<div id="basicTxt">
+					<div style="border-bottom:1px solid #20B2AA;">
+						<p>单据标识(bill_no):		<span id="bill_no"></span></p>
+						<p>fbill_no:			<span id="fbill_no">ROOT</span></p>
+						<p>订单号(bill_bno):		<span id="bill_bno"></span></p>
+						<p>出库单号(bill_doppo):	<span id="bill_doppo"></span></p>
+						<p>制单人(bill_user):		<span id="bill_user"></span></p>
+						<p>制单单位(bill_com):		<span id="bill_com"></span></p>
+						<!--<p>制单时间(bill_date):	<span id="bill_date"></span></p>-->
+						<p>制单时间(bill_ndate):	<span id="bill_ndate"></span></p>
+						<p>配送类型(bill_bflow):	<span id="bill_bflow">协议配送</span></p>
+					</div>
+					<div id="">
+						<p>购方代码(bill_oppo):	<span id="bill_oppo"></span></p>
+						<p>供应商(bill_coppo):	<span id="bill_coppo"></span></p>
+						<p>配送员(bill_nuser):	<span id="bill_nuser"></span></p>
+					</div>
+				</div>
+			</div>
+			<div class="mui-slider-cell  mui-slider-handle " style="background:#fff;padding:3px 20px 0px 15px;margin-bottom: 3px;">
+				<div class="mui-row" style="height: 30px;overflow: hidden;">
+					<div class="mui-col-xs-1"><a class="mui-icon mui-icon-home" style="font-size:22px;margin:0;padding:0;margin-top:3px;"></a></div>
+					<div class="mui-col-xs-8" id="bill_name" style="font-size:14px;line-height: 30px;color:#000000;font-weight: bold;"></div>
+				</div>
+				<div class="mui-row" style="margin-bottom: 3px;border-bottom: 1px dashed #007AFF;border-top: 1px solid #007AFF;padding:5px 0;overflow: hidden;">
+					<div class="mui-col-xs-2 mui-row" style="text-align: left;">
+						<img id="J_img" class="mui-col-xs-11" src="" onerror="this.src='../../images/icon/default.png'" data-preview-src=""  style="border-radius: 5px;" />
+					</div>
+					<div class="mui-col-xs-10 mui-row" >
+						<p class="list_font vl-line last-line">
+							<a class="mui-icon mui-icon-phone" style="font-size:16px;margin:0;padding:0;"></a>
+							<span class="vl-dark mui-col-xs-12" id="linkvd_termcontact"></span>
+						</p>
+						<p class="list_font vl-line last-line">
+							<a class="mui-icon mui-icon-location" style="font-size:16px;margin:0;padding:0;"></a>
+							<span class="vl-dark mui-col-xs-12" id="linkvd_termaddr"></span>
+						</p>
+					</div>
+				</div>
+				<div class="mui-row ">
+					<p class="list_font vl-line ">
+						<span class="vl-gray mui-col-xs-4">经销商：</span>
+						<span class="vl-dark mui-col-xs-8" id="bill_title"></span>
+					</p>
+					<p class="list_font vl-line last-line">
+						<span class="vl-gray mui-col-xs-4">制单时间：</span>
+						<span class="vl-dark mui-col-xs-8" id="bill_date"></span>
+					</p>
+				</div>
+			</div>
+			<div class="mui-input-group hide" id="selectDlv" style="padding:5px 18px 5px 10px;margin-bottom:5px;height: 40px;line-height: 30px;">
+				<div class="mui-row">
+					<span class="mui-col-xs-3 spn">
+						<a class="mui-icon mui-icon-person" style="font-size:22px;margin:0;padding:0;"></a>
+						<span>配送员：</span>
+					</span>
+ 					<span class="mui-col-xs-8 spn" id="bill_nuserName"></span>
+ 					<span class="mui-icon mui-icon-arrowright mui-col-xs-1" id="" style="float:right;color:#007AFF;"></span>
+				</div>
+			</div>
+			<div style="overflow: hidden;background:#fff;padding:5px 10px;margin-bottom:70px;">
+				<div class="mui-row" style="margin:5px;background:#fff;border-bottom: 1px dashed #007AFF;font-size:14px;line-height:24px;overflow: hidden;">
+					<div class="mui-col-xs-12 mui-row">
+						<div class="mui-col-xs-6 vl-gray" style="border-bottom: 1px dashed #C0C0C0;">物品列表</div>
+						<div class="mui-col-xs-6" style="border-bottom: 1px dashed #C0C0C0;">合计：<span id="node_nqty" class="vl-red">0</span>件</div>
+					</div>
+					<div class=" mui-row">
+						<div class="mui-col-xs-6 mui-pull-right">金额：<span id="node_amt" class="">0</span>元</div>
+						<div class="mui-col-xs-6 mui-pull-right" id="namtbox">实收：<span id="node_namt" class="vl-red">0</span>元</div>
+					</div>
+				</div>
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="border-radius:10px;"></ul>
+				<div class="mui-row gift-goods" id="J_list_goods"></div>
+				<script id="J_temp_goods" type="text/template"></script>
+			</div>
+			<div class="mui-row" style="margin: 10px 0;overflow: hidden;">
+				<div class="mui-col-xs-1"></div>
+				<div class="mui-col-xs-4"></div>
+				<div class="mui-col-xs-2"></div>
+				<button class="mui-btn mui-btn-yellow mui-btn-outlined mui-col-xs-4 hide" id="J_btn_back" style="font-size: 16px;">收回</button>
+				<div class="mui-col-xs-1"></div>
+			</div>
+		</div>
+	   
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	
+	<script src="../../js/mui.zoom.js"></script>
+	<script src="../../js/mui.previewimage.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">  
+		var oMain,aDetail,
+			aSelected = {},
+			oSelected = {};
+		var detailInfo="";
+		var oldBack = mui.back;
+        mui.plusReady(plsReady);  
+        var oNormal = {
+			h : {
+				bill_no 	:"",	
+				bill_bno 	:"",	
+				fbill_no	:"",
+				bill_name 	:"",	
+				bill_oppo 	:"",	
+				bill_coppo 	:"",	
+				bill_doppo  :"",
+				bill_bflow 	:"",	
+				node_amt 	:"",	
+				node_nqty 	:"",	
+				bill_user 	:"",	
+				bill_nuser 	:"",	
+				bill_com 	:"",	
+				bill_date 	:"",
+				bill_ndate 	:"",
+				bill_nuser  :"",
+				bill_title  :"",
+				node_namt 	:"",
+			},
+			v : {
+			},
+			c : {}
+		}
+        var oTask = {
+        	"vdst315hn01" : {// 经销商-配送管理（配送员）
+        		"bill" : "vdst315",
+        		"namtType" : "block",
+        		"pageTitle" : "配送单详情",
+        		"btnBackTask" :"VE_vdst315_update_04", 
+        		"btnBackText" :"收回", 
+        		"btnBackDisplay" :"block", 
+        	},
+			"vdst315hn02" : {// 企业-配送管理（业务员）
+        		"bill" : "vdst315",
+        		"namtType" : "block",
+        		"pageTitle" : "配送单详情",
+        		"btnBackTask" :"VE_vdst315_update_04",
+        		"btnBackText" :"收回", 
+        		"btnBackDisplay" :"block",
+        	},
+			"vdst315hn03" : {// 企业-业务下单（业务员）
+        		"bill" : "vdst315",
+        		"namtType" : "none",
+        		"pageTitle" : "采购订单详情",
+        		"btnBackTask" :"", 
+        		"btnBackText" :"", 
+        		"btnBackDisplay" :"none", 
+        	},
+			"vdst315hn04" : {// 企业-业务下单（管理员）
+				"bill" : "vdst315",
+				"namtType" : "none",
+				"pageTitle" : "业务下单详情",
+				"btnBackTask" :"", 
+				"btnBackText" :"", 
+				"btnBackDisplay" :"none", 
+			},
+			"vdst315hn05" : {// 企业-物品配送（管理员）
+				"bill" : "vdst315",
+				"namtType" : "none",
+				"pageTitle" : "物品配送详情",
+				"btnBackTask" :"", 
+				"btnBackText" :"", 
+				"btnBackDisplay" :"none", 
+			},
+			"vdst316hn01" : {// 经销商-物品回收（配送员）
+        		"bill" : "vdst316",
+        		"namtType" : "none",
+        		"pageTitle" : "回收单详情",
+        		"btnBackTask" :"VE_vdst316_update_02", 
+        		"btnBackText" :"收回", 
+        		"btnBackDisplay" :"block", 
+        	},
+			"vdst316hn02" : {// 企业-物品回收（业务员）
+        		"bill" : "vdst316",
+        		"namtType" : "none",
+        		"pageTitle" : "回收单详情",
+        		"btnBackTask" :"VE_vdst316_update_02", 
+        		"btnBackText" :"收回", 
+        		"btnBackDisplay" :"block", 
+	        },
+	        "vdst316hn03" : {// 企业-回收下单（业务员）
+        		"bill" : "vdst316",
+        		"namtType" : "none",
+        		"pageTitle" : "回收下单详情",
+        		"btnBackTask" :"VE_vdst316_update_02", 
+        		"btnBackText" :"", 
+        		"btnBackDisplay" :"none", 
+        	},
+			"vdst316hn04" : {// 企业-物品回收（管理员）
+				"bill" : "vdst316",
+				"namtType" : "none",
+				"pageTitle" : "物品回收详情",
+				"btnBackTask" :"VE_vdst316_update_02", 
+				"btnBackText" :"", 
+				"btnBackDisplay" :"none", 
+			},
+			"vdst316hn05" : {// 企业-回收下单（管理员）
+				"bill" : "vdst316",
+				"namtType" : "none",
+				"pageTitle" : "回收下单详情",
+				"btnBackTask" :"VE_vdst316_update_02", 
+				"btnBackText" :"", 
+				"btnBackDisplay" :"none", 
+			}
+		};
+		var oText = {
+			h : {"bill_nuserName":"",},v : {},c : {}
+		}
+		var teamBillCom,teamBillComName,userbillNo,loginCom,loginComName,userName,detailInfo,commonParams,activeText,activeType;
+        function plsReady() {
+        	var self = plus.webview.currentWebview();
+			teamBillCom = self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo = self.userbillNo;
+			loginCom = self.loginCom;
+			loginComName = self.loginComName;
+			userName = self.userName;
+			detailInfo = self.detailInfo;
+			commonParams = self.commonParams;
+			activeText = self.activeText;
+			activeType = self.activeType;
+			// console.log(commonParams)
+			document.getElementById('namtbox').style.display = oTask[commonParams]['namtType'];
+			document.getElementById('header').innerHTML = oTask[commonParams]['pageTitle'];
+			if(activeText !== "已审核"){
+				document.getElementById("J_btn_back").innerHTML = oTask[commonParams]['btnBackText'];
+				document.getElementById("J_btn_back").style.display = oTask[commonParams]['btnBackDisplay'];
+			}
+			
+			mui.back = newBack;
+			findData(detailInfo["内容"]['单号']);
+			//
+			document.getElementById("J_btn_back").addEventListener("tap", eBtnBack, false);
+        }
+        function newBack() {
+			// console.log("返回啦ppppp")
+			// var webview = plus.webview.getWebviewById('vdst315bt01_plist.html');
+			// var subview = plus.webview.getWebviewById('vdst315bt01_list.html');
+			// webview.show();
+			// webview.reload();
+			// subview.reload();
+			var pageId = "vdst315bt01_plist.html";
+			mui.fire(plus.webview.getWebviewById(pageId),'backAndReload',{
+				activeType : activeType
+			});
+			mui.openWindow({
+				id:pageId,
+			});
+			oldBack();
+		}
+        function findData(bno) {
+        	var findMDdata = {
+				name : oTask[commonParams]['bill'],
+				bill_no : bno,
+//				bill_no : "vdst31500_20190818_2016B89U",
+				bill_task : "L,S,Y",
+				currentPage	: 1,
+				pageSize	: 1,
+				paramText	: ''
+			}
+			VlAjax.post({"port" : "detail","headers" : "json","isFirst" : true}, findMDdata, sCBfindMDdata);
+        }
+        function sCBfindMDdata(data){
+			oMain = data.data[0].values.main;
+			oMain.bill_task = "d_save";
+			VlEdit.setValue(oMain, oNormal, oText);
+			jQuery("#J_img").attr("src",VlAjax.getImgPathmen(oMain.bill_oppo))
+			document.getElementById("linkvd_termaddr").innerHTML = oMain.bill_context.split(",")[0];
+			document.getElementById("linkvd_termcontact").innerHTML = oMain.bill_context.split(",")[1];
+			// 处理明细-正品赠品
+			aDetail = data.data[0].values.detail;
+			for(var i = 0; i < aDetail.length; i++){
+				aDetail[i].bill_task = "d_save";
+				selectedOrCancel(aDetail[i])
+			}
+			renderGoodsList(oSelected, false);
+		}
+        function eBtnBack(){
+			rqsfun(oTask[commonParams]['btnBackTask'], sCBback);
+		}
+        function rqsfun(task, sCB){
+			var p = { 
+				name		: "msvr",
+				bill_task	: task,				// 结账指令   	
+				bill_no		: oMain.bill_no,	// 要结哪个仓库的账
+				bill_com	: oMain.bill_com,	// 操作人单位
+				bill_user	: oMain.bill_user,	// 操作人代码
+				bill_date	: VlDate.get(new Date(), "_ymdhms"),	// 当前时间
+			};
+//			console.log("收回》"+JSON.stringify(p))
+			VlAjax.post({
+				"port":"sendTask",
+				"headers":"json",
+			},p,sCB);
+		}
+		function sCBback(){
+			mui.back();
+//			VlPage.backToPage("vdst315bt01_plist.html","vdst315bt01_list.html");
+		}
+		function selectedOrCancel(item){
+			if(item.bill_no === item.bill_title) {
+				if(typeof aSelected[item.bill_no] === 'undefined'){
+					aSelected[item.bill_no] = [];
+					oSelected[item.bill_no] = [item,[]];
+				}else{
+					oSelected[item.bill_no][0] = item;
+				}
+			}else {
+				aSelected[item.bill_title] = typeof aSelected[item.bill_title] === 'undefined' ? [] : aSelected[item.bill_title];
+				oSelected[item.bill_title] = typeof oSelected[item.bill_title] === 'undefined' ? ["",[]] : oSelected[item.bill_title];
+				
+				aSelected[item.bill_title][0] = item.bill_no;
+				oSelected[item.bill_title][1][0] = item;
+			}
+		}
+		function renderGoodsList(data) {
+			var txt = '';
+			var oNqty = document.getElementById('node_nqty'),
+				nNqty = Number(oNqty.innerHTML),
+				oAmt = document.getElementById('node_amt'),
+				nAmt = Number(oAmt.innerHTML);
+			for(var k in data){
+				if(data.hasOwnProperty(k)){
+					var _giftGoods = data[k][1],
+						len = _giftGoods.length,
+						_buyGoods = renderAdapter(data[k][0], "正品", len),
+						i,item;
+					txt += salableTemp(JSON.parse(JSON.stringify(_buyGoods)));
+					//
+					nNqty += 1;
+					nAmt += _buyGoods.liLeftT;
+					//
+					mui(".mui-numbox").numbox()
+//					VlAjax.dlIcon(_buyGoods.liImgName, _buyGoods.liImgId, VlTools.setImg);
+					for(i = 0; i < len; i++ ){
+						item = renderAdapter(JSON.parse(JSON.stringify(_giftGoods[i])), "赠品");
+						txt += giftTemp(item)
+						//
+						nNqty += item.liRightT;
+						//
+//						VlAjax.dlIcon(item.liImgName, item.liImgId, VlTools.setImgs);
+					}
+					txt += '</ul></li>';
+					
+					if(arguments[1] && arguments[1] === true){
+						oNqty.innerHTML = nNqty;
+						oAmt.innerHTML = nAmt.toFixed(2);
+					}
+				}
+			}
+			var contList = document.getElementById("contList");
+			contList.innerHTML += txt;
+		}
+		
+		
+		function renderAdapter(obj,type, num){
+			var liclass;
+			if(type == "销售"){
+				liclass = num == 0 ? "" : "hide";
+			}else{
+				liclass = obj.node_qty == 0 ? "hide" : ""
+			}
+			return {
+				"liclass" 	: liclass,
+				"rowdata"	: JSON.stringify(obj),
+				"liImgId" 	: obj.bill_no,
+				"liImgName" : obj.bill_nspec,
+				"liImgSrc"  : VlAjax.getImgPath(obj.bill_nspec),
+				"liTitle" 	: obj.bill_name,
+				"liDate"  	: "",
+				"liLeftT" 	: obj.node_price,
+				"liLeftM" 	: obj.node_amt,
+				"liLeftB" 	: obj.bill_context,
+				"liRightT" 	: obj.node_qty,
+				"liRightM" 	: obj.bill_bflow,
+				"liRightB" 	: "",
+			}
+		}
+		function salableTemp (item) {
+			var li = '';
+			li = `<li class="mui-table-view-cell order-main-li `+item.liImgId+`" data-no=`+item.liImgId+`>
+						<div class="data-row hide">`+item.rowdata+`</div>
+						<div class="mui-row main-info">
+							<div class="mui-col-xs-2 mui-row" style="text-align: left;">
+								<img class="mui-col-xs-11" src="`+item.liImgSrc+`" onerror="this.src='../../images/icon/default.png'" id=`+item.liImgId+` style="border-radius: 5px;" />
+							</div>
+							<div class="mui-col-xs-10">
+								<div class="mui-row">
+									<div class="mui-col-xs-12 mui-row order-info-leftbox" style="background:;">
+										<h5 class="goods-title mui-col-xs-8">`+item.liTitle+`</h5>
+										<p class="mui-col-xs-4 goods-type-box">
+											<span class="order-type saletype">`+item.liRightM+`</span>
+											<span class="order-selecttype saletype hide"><span class="selected-type"  data-iniprice=`+item.liLeftT+` data-oldprice=`+item.liLeftT+`>选择类型</span><a class="mui-icon mui-icon-compose"></a></span>
+										</p>
+									</div>
+									<div class="mui-col-xs-12 mui-row goods-table">
+										<div class="mui-col-xs-12 mui-row goods-table-title goods-table-bottomline" >
+											<div class="mui-col-xs-6 goods-table-rightline" >数量</div>
+											<div class="mui-col-xs-2 goods-table-rightline" >单价</div>
+											<div class="mui-col-xs-4" >金额</div>
+										</div>
+										<div class="mui-col-xs-12 mui-row goods-table-row" >
+											<div class="mui-col-xs-6 goods-table-rightline order-price">`+item.liRightT+`</div>
+											<div class="mui-col-xs-2 goods-table-rightline order-price">`+item.liLeftT+`</div>
+											<div class="mui-col-xs-4 order-amt" data-oldamt=`+item.liLeftM+`>`+item.liLeftM+`</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<ul class="order-detail-ul mui-table-view mui-table-view-striped mui-table-view-condensed">
+					</li>`;
+            return li;
+		}
+		function giftTemp(item){
+			var txt = `<li class="`+ item.liclass+` order-detail-li mui-input-row mui-checkbox mui-left `+item.liImgId+`" data-no=`+item.liImgId+`>
+				<div class="data-row hide">`+item.rowdata+`</div>
+				<div class="mui-row">
+					<div class="mui-col-xs-2">
+						<img class="mui-col-xs-11" src="`+item.liImgSrc+`" onerror="this.src='../../images/icon/default.png'" id=`+item.liImgId+` />
+					</div>
+					<div class="mui-col-xs-10">
+						<div class="mui-row">
+							<div class="mui-col-xs-12 mui-row order-info-leftbox">
+								<h5 class="goods-title mui-col-xs-8">`+item.liTitle+`</h5>
+								<p class="mui-col-xs-4 goods-type-box">
+									<span class="order-type saletype `+item.liclass2+`">促销配送</span>
+								</p>
+							</div>
+							<div class="mui-col-xs-12 mui-row goods-table">
+								<div class="mui-col-xs-12 mui-row goods-table-title goods-table-bottomline" >
+									<div class="mui-col-xs-6 goods-table-rightline" >数量</div>
+									<div class="mui-col-xs-2 goods-table-rightline" >单价</div>
+									<div class="mui-col-xs-4" >金额</div>
+								</div>
+								<div class="mui-col-xs-12 mui-row goods-table-row" >
+								<div class="mui-col-xs-6 goods-table-rightline order-price">`+item.liRightT+`</div>
+									<div class="mui-col-xs-2 goods-table-rightline order-price">0</div>
+									<div class="mui-col-xs-4 order-amt" data-oldamt=`+item.liLeftM+`>0</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>`;
+			return txt;
+		}
+		  mui.previewImage();
+    </script>  
+</html>

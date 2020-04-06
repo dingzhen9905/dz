@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.list_font {
+				font-size: 10px;
+				line-height: 14px;
+				min-height: 16px;
+			}
+			
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+			}
+			
+			.list_h5 {
+				font-size: 13px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.mui-pull-top-pocket {
+				border: transparent;
+			}
+			
+			.mui-table-view:after,.mui-table-view:before,.mui-table-view-cell:after  {
+				height: 0 !important;
+			}
+			.list_sts {
+				margin-top:3px;
+				padding:0 5px;
+				font-size:10px;
+				line-height: 14px;
+			}
+			#contList li.select {
+				padding:6px;
+				height:70px;
+				background: #fff;
+				margin-bottom: 3px;
+			}
+			input[type="checkbox"]:before {
+				font-size: 20px !important;
+			}
+			.hide{display: none;}
+			.vl-list-search-tip{padding:100px;height:300px;text-align: center;}
+			.vl-list-search-tip .icon {color:#353B42;font-size:100px;}
+			.vl-list-search-result{color:#000 !important;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;}
+			.vl-list-search-icon{color:#0062cc;height:100px;line-height: 100px;font-size: 100px;}
+			.content-total{background: #EAEAEA;border-top:1px dashed #C0C0C0;}
+			.search-terms-txt{padding: 8px 5px;font-size: 14px;}
+			
+			.vrac203-search-terms{position: fixed;z-index: 100000000;width:100%;height:105px;background: #EAEAEA;overflow: hidden;}
+			label{font-size: 12px;color: #6C6C6C;}
+			input{height:30px !important;margin:3px auto !important;padding:2px !important;border:1px solid #5da8fa !important;border-radius:10px !important;font-size: 14px;}
+			input[placeholder] {padding:2px !important;font-size: 14px;color: #000;}
+					
+			/* .search-terms-txt{padding: 8px 5px;font-size: 14px;} */
+			.search-terms-title{padding-left:10px}
+			
+		</style>
+	</head>
+
+	<body>
+		<div id="vdsa402hn_list" class="mui-content mui-scroll-wrapper">
+			<div class="mui-row" id="J_pickdate">
+				<div class="search-terms-txt mui-col-xs-2">时间段:</div>
+				<div class="search-terms-depts mui-col-xs-4">
+						<input id="J_bdate" type="date" class="requiredInput search-date" placeholder="">
+				</div>
+				<div class="search-terms-txt mui-col-xs-1">至:</div>
+				<div class="search-terms-clients mui-col-xs-4">
+						<input id="J_edate" type="date" class="requiredInput search-date" placeholder="">
+				</div>
+				<div class="search-terms-txt mui-col-xs-1"></div>
+			</div>
+			<div class="mui-input-group" id="J_location" style="padding:5px 18px 5px 18px;margin:5px 0;position: relative;font-size: 10px;height: 70px;">
+				<div class="mui-row" style="margin: 0;padding:0;height:40px;overflow:hidden;">
+					<span class="mui-col-xs-2" style="color:#ACACB4;">当前地址:</span>
+					<span class="mui-col-xs-10" id="bill_title" style="font-size:12px;"></span>
+				</div>
+				<div class="mui-row" style="margin: 0;padding:0;height: 20px;">
+					<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+						<span class="mui-col-xs-3" style="color:#ACACB4;">经度:</span>
+						<span class="mui-col-xs-8" id="bill_ipaddr"></span>
+					</div>
+					<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+						<span class="mui-col-xs-3" style="color:#ACACB4;">纬度:</span>
+						<span class="mui-col-xs-8" id="bill_gpsaddr"></span>
+					</div>
+				</div>
+			</div>
+			<div class="mui-row content-total hide" id="J_total"> 
+				<div class="search-terms-txt mui-col-xs-1"></div>
+	   			<div class="search-terms-txt mui-col-xs-4">拜访终端数：</div>
+	   			<div class="search-terms-txt mui-col-xs-4" id="totalContent"></div>
+	   			<div class="search-terms-txt mui-col-xs-1">(个)</div>
+	   		</div>
+	   		<div class="vl-list-tipbox" style="position: relative;">
+				<div id="showHint" class="vl-list-search-tip hide" style="">
+					<span class="icon iconfont icon-wushuju" style=""></span>
+					<p class="vl-list-search-result">未查询到相关的数据</p>
+					<p >可以尝试其他查询</p>
+				</div>
+				<div id="searching" class="vl-list-search-tip" style="">
+					<p class="mui-icon mui-icon-search vl-list-search-icon"></p>
+					<p>正在搜索中......</p>
+				</div>
+				<div id="showError" class="vl-list-search-tip hide" style="">
+					<span class="icon iconfont icon-kulian" style=""></span>
+					<p class="vl-list-search-result">出错啦~</p>
+					<p >请稍后再试</p>
+				</div>
+			</div>
+			<div class="mui-scroll" style="padding-top:0px;width: 100%;overflow: hidden;">
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-bottom:50px;background: #EAEAEA;margin-top:-10px">
+				</ul>
+			</div>
+		</div>
+		<script type="text/template" id="listTmpl">
+			<li class="mui-table-view-cell <%=liclass%>" style="margin-bottom: 3px;background: #fff;overflow: hidden;height: 85px;">
+				<div class="data-row hide"><%=rowdata%></div>
+				<% if(canDel){ %>
+					<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>
+				<% } %>
+				<div class="mui-row  mui-slider-cell  mui-slider-handle">
+					<div class="mui-row mainfulltxt mui-col-xs-9" >
+						<div class="mui-col-xs-4 mui-row" style="padding:5px;width: 68px;">
+							<img class="vdfa332 mui-col-xs-12" style="border-radius: 3px;height:60px"  src="<%=liImgSrc%>" onerror="this.src='../../images/defult/vdvc101.png'" />
+						</div>
+						<div class="mui-col-xs-8 mui-row" style="min-height:50px;">
+							<h5 class="list_h5 mui-col-xs-12 mftbillname" style="color:#242424;padding-top:1px;"><%=liTitle%></h5>
+							<p class="list_font mui-col-xs-12 mft"><%=liLeftM%></p>
+							<p class="list_font mui-col-xs-12 mft"><%=liLeftB%></p>
+						</div>						
+					</div>
+					<div class="mui-row mui-col-xs-3" >	
+						<div class="mui-col-xs-12 mui-row list_three" style="text-align: right;">
+							<p class="list_fonts mui-col-xs-12"><%=liRightT%></p>
+							<p class="list_fonts mui-col-xs-12 money"><span class="price mftbillamt"><%=liRightM%></span></p>
+							<p class="list_fonts mui-col-xs-12"><%=liRightB%></p>
+						</div>
+					</div>	
+					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed detailist" style="display:none;overflow: hidden;">
+					</ul>
+				</div>
+			</li>
+		</script>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FQCQkNvWb9g4FnFXN3IGieSwQgLOR2PU&services=&t=20171004185957"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/arttmpl.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vdsa402hn_list',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					height: 210,
+					contentnomore: '没有更多数据了',
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		var startIndex = 1;
+		var pageSize = 10;
+		var search = "";
+		var detailInfo = [];
+		var queryparmas = {}; //查询参数
+		var openlock = false; // 用于区分是首次进入页面还是搜索页面
+		var pager = {};
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var port = 'active'; 
+		var activeType = '001',
+			activeTask = 'VR_vdvc312_query_19',
+			activePort = 'active',
+			activeQtask = "附近的店",
+			activeText = "附近的店",
+			activeCanDel = false,
+			activeBflow = "",
+			activeShowTotal ,
+			activeShowLocate,
+			activeShowDate,
+			activeClass,
+			bill_ipaddr = 0,
+			bill_gpsaddr = 0,
+			otherParams;
+		var oInit = {
+			"vdsa40201": {
+				"port" : "active",
+				"type" : "001",
+				"task" : "VR_vdvc312_query_19",
+				"qtask" : "附近的店",
+				"bflow"	: "",
+				"needLocate" : true,
+				"total" : "none",
+				"locate" : "block",
+				"datepick" : "none",
+				"liclass" : "toedit"
+				
+			},
+			"vdsa40202": {
+				"port" : "active",
+				"type" : "001",
+				"task" : "VR_vdvc312_query_11",
+				"qtask" : "附近的店",
+				"bflow"	: "",
+				"needLocate" : true,
+				"total" : "none",
+				"locate" : "block",
+				"datepick" : "none",
+				"liclass" : "toedit"
+			},
+			"vdsa40203": {
+				"port" : "active",
+				"type" : "001",
+				"task" : "VR_vdsa402_query_06",
+				"qtask" : "L",
+				"txt"	: "待确认",
+				"bflow"	: "业务员拜访",
+				"needLocate" : false,
+				"total" : "none",
+				"locate" : "none",
+				"datepick" : "block",
+				"liclass" : "tonode"
+			},
+			"vdsa40204": {
+				"port" : "active",
+				"type" : "001",
+				"task" : "VR_vdsa402_query_06",
+				"qtask" : "L",
+				"txt" : "待确认",
+				"bflow"	: "主管检查",
+				"needLocate" : false,
+				"total" : "none",
+				"locate" : "none",
+				"datepick" : "block",
+				"liclass" : "tonode"
+			},
+			"vdsa40205": {
+				"port" : "active",
+				"type" : "001",
+				"task" : "VR_vdvc312_query_15",
+				"qtask" : "附近的店",
+				"bflow"	: "市场检查",
+				"needLocate" : true,
+				"total" : "none",
+				"locate" : "block",
+				"datepick" : "none",
+				"liclass" : "toedit"
+			},
+			"vdsa40206": {
+				"port" : "active",
+				"type" : "001",
+				"task" : "VR_vdsa402_query_06",
+				"qtask" : "L",
+				"txt" : "待确认",
+				"bflow"	: "市场检查",
+				"needLocate" : false,
+				"total" : "none",
+				"locate" : "none",
+				"datepick" : "block",
+				"liclass" : "tonode"
+			},
+		}
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview().parent();
+			teamBillCom 	= self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			loginCom 		= self.loginCom;
+			loginComName 	= self.loginComName;
+			userbillNo 		= self.userbillNo;		// 6.登录人的代码
+			userName 		= self.userName;		// 7.登录人的姓名
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			fbillnoName 	= self.fbillnoName;
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			commonParams 		= self.commonParams;		// 3.fbill_no是
+			otherParams 	= self.otherParams;
+			pageTitle = self.pageTitle
+//			console.log(JSON.stringify(self))
+			activeTask = oInit[commonParams]["task"];
+			activePort = oInit[commonParams]["port"];
+			activeText = oInit[commonParams]['txt'];
+			activeQtask = oInit[commonParams]['qtask'];
+			activeBflow = oInit[commonParams]['bflow'];
+			activeShowTotal 	= oInit[commonParams]['total'];
+			activeShowLocate 	= oInit[commonParams]['locate'];
+			activeShowDate 	= oInit[commonParams]['datepick'];
+			activeClass 	= oInit[commonParams]['liclass'];
+			//
+			
+			var _today = VlDate.get(new Date(), "_ymd");
+			document.getElementById('J_bdate').value = _today;
+			document.getElementById('J_edate').value = _today;
+			//
+			document.getElementById("J_pickdate").style.display = activeShowDate;
+			document.getElementById("J_location").style.display = activeShowLocate;
+			// 切换片区
+			window.addEventListener('plist_in_list', function(event) { ecChangeDept(event); }) 
+			document.addEventListener('differentStatesRefresh311list', function(event) { ecChangeTab(event); });
+			mui("#contList").on('tap', '.toedit', function(e) { eaTapToEdit(e, this)});
+			jQuery("#contList").on('tap', '.mui-btn-red', function(e) { eaDelGoods(e, this); });
+			mui("#contList").on('tap', '.tonode', function(e) { eaTapToNode(e, this); });
+			mui("#J_pickdate").on('change', '.search-date', function(e) { eaChangeDate(this) });
+			
+			if(oInit[commonParams]['needLocate']){	
+				VlTools.getLocate(sCBgetLocate, eCBgetLocate);
+			}else{
+				queryparmas = getParams(activeTask);
+				VlAjax.post({
+					"port":activePort,
+					"headers":"json",
+					"isFirst" : true,
+				}, queryparmas, sCBfind);
+			}
+
+		
+		})
+		function scB(data,type){
+			//console.log(JSON.stringify(data))
+		}
+		function eaDelGoods(e, self){
+			e.stopPropagation();
+			var li = jQuery(self).parents("li");
+			var rowObj = JSON.parse(li.find(".data-row").html());	
+			// 
+			mui.confirm('确认删除该商品？', '删除确认', ["确认","取消"], function(e) {
+				if (e.index == 0) {
+					delData(rowObj);
+					li.remove();
+				} else {
+					setTimeout(function() {
+						mui.swipeoutClose(li);
+					}, 0);
+				}
+			});
+		}
+		function eaChangeDate(self){
+			// _p = findData();
+			// VlAjax.post({"port" : "active","headers" : "json","isFirst" : true}, _p, sCBfind);
+			queryparmas = getParams(activeTask);
+			VlAjax.post({
+				"port":activePort,
+				"headers":"json",
+				"isFirst" : true,
+			}, queryparmas, sCBfind);
+		}
+		function delData(data){
+			var p = { 
+				name		: "vdsa402",
+				bill_task	: "d_delete",	
+				bill_no		: data["bill_no"],
+				fbill_no	: data["fbill_no"],	
+				bill_com	: teamBillCom,	
+				bill_user	: userbillNo,	
+				bill_date	: VlDate.get(new Date(), "_ymdhms"),
+			};
+			VlAjax.post({
+				"port":"sendTask",
+				"headers":"json",
+			},p,sCBDel);
+		}
+		function sCBDel() {}
+		// 送审指令
+		function bSendBtn(){ 
+			plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+			var sendParams = taskParam("b_send");
+			if(!saveBtn()){
+				return;
+			}
+			VlAjax.post({
+				"port":"sendTask",
+				"headers":"json",
+			}, sendParams, sCBSend);
+		}
+		function sCBSend(){
+			plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+			
+		}
+		function delSuccess(){
+			successFun("vdsa402hn_plist.html","vdsa402hn_list.html");
+		}
+		//下拉刷新
+		function pulldownRefresh() {
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			//
+			queryparmas.currentPage = 1;
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			
+			VlAjax.post({
+				"port":activePort,
+				"headers":"json",
+				"isFirst" : true,
+			}, queryparmas, sCBfind);
+//			rqsDataAjax(queryparmas,activePort, sCBfind, '../login.html',true);
+			
+			mui('#vdsa402hn_list').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+		}
+
+		/*上拉加载具体业务实现 */
+		function pullupRefresh() {
+			if(queryparmas.currentPage < pager.totalPage) {
+				queryparmas.currentPage = queryparmas.currentPage + 1;
+				
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				
+				VlAjax.post({
+					"port":activePort,
+					"headers":"json",
+					"isFirst" : false,
+				}, queryparmas, sCBfind);
+//				rqsDataAjax(queryparmas,activePort, sCBfind, '../login.html',false);
+				
+				mui('#vdsa402hn_list').pullRefresh().endPullupToRefresh();
+			} else {
+				plus.nativeUI.toast("~没有更多了~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdsa402hn_list').pullRefresh().endPullupToRefresh();
+				return;
+			}
+		}
+		//
+		/*function sCBgetLocate(p){
+			document.getElementById("bill_title").innerHTML = p.addresses;
+			document.getElementById("bill_ipaddr").innerHTML = p.coords.longitude;
+			document.getElementById("bill_gpsaddr").innerHTML = p.coords.latitude;
+			document.getElementById("bill_title").setAttribute("data-location", JSON.stringify(p));
+			bill_context =p.addresses
+			bill_ipaddr = p.coords.longitude;
+			bill_gpsaddr = p.coords.latitude;
+			//进入页面默认查询
+//			console.log(JSON.stringify(p))
+			queryparmas = getParams(activeTask);
+//			console.log(JSON.stringify(queryparmas))
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			VlAjax.post({
+				"port":activePort,
+				"headers":"json",
+				"isFirst" : true,
+			}, queryparmas, sCBfind);
+			var aa={
+				bill_task  : "VE_vdsa301_insert_01",
+				bill_no    : userbillNo,
+				bill_com   : loginCom,
+				bill_bflow : pageTitle,
+				bill_context :bill_context,
+				bill_ipaddr : bill_ipaddr,
+				bill_gpsaddr :bill_gpsaddr,
+			}
+			if(bill_context!=null){				
+				VlAjax.post({"port":"sendTask","headers":"json"},aa,scB)
+			}else{
+				return
+			}
+		}*/
+		
+		 function sCBgetLocate(p){
+              if(plus.os.name ==="Android"){
+				  document.getElementById("bill_title").innerHTML = p.addresses;
+				  document.getElementById("bill_ipaddr").innerHTML = p.coords.longitude;
+				  document.getElementById("bill_gpsaddr").innerHTML = p.coords.latitude;
+				  document.getElementById("bill_title").setAttribute("data-location", JSON.stringify(p));
+				  bill_context =p.addresses
+				  bill_ipaddr = p.coords.longitude;
+				  bill_gpsaddr = p.coords.latitude;			  
+			  }else{
+				  var provinces=p.address.province
+				  var citys=p.address.city
+				  var districts=p.address.district
+				  var streets=p.address.street
+				  var titles=provinces+citys+districts+streets
+				  document.getElementById("bill_title").innerHTML = titles;
+				  document.getElementById("bill_ipaddr").innerHTML = p.longitude;
+				  document.getElementById("bill_gpsaddr").innerHTML = p.latitude;
+				  document.getElementById("bill_title").setAttribute("data-location", JSON.stringify(p));
+				  bill_context =titles
+				  bill_ipaddr = p.longitude;
+				  bill_gpsaddr = p.latitude;
+			  }     
+					//进入页面默认查询
+		//			console.log(JSON.stringify(p))
+					queryparmas = getParams(activeTask);
+		//			console.log(JSON.stringify(queryparmas))
+					plus.nativeUI.showWaiting("正在查询数据..."); 
+					VlAjax.post({
+						"port":activePort,
+						"headers":"json",
+						"isFirst" : true,
+					}, queryparmas, sCBfind);
+					var aa={
+						bill_task  : "VE_vdsa301_insert_01",
+						bill_no    : userbillNo,
+						bill_com   : loginCom,
+						bill_bflow : pageTitle,
+						bill_context :bill_context,
+						bill_ipaddr : bill_ipaddr,
+						bill_gpsaddr :bill_gpsaddr,
+					}
+					if(bill_context!=null){				
+						VlAjax.post({"port":"sendTask","headers":"json"},aa,scB)
+					}else{
+						return
+					}
+				}
+				
+		function eCBgetLocate(e){
+			document.getElementById("bill_title").innerHTML = e;
+		}
+		function getParams(task) {
+			var _date = getBEDate();
+			if(!!!_date)return;
+			var  _p = {
+				name		: 'vdsa402',
+				bill_task	: task,		// 指令
+				bill_com	: loginCom,	// 单位
+				bill_qtask	: activeQtask,	
+				bill_context: activeText,	
+				bill_bflow : activeBflow,	
+				bill_unit	: bill_ipaddr,	// 经度
+				bill_nunit	: bill_gpsaddr,	// 纬度
+				bill_user	: userbillNo,
+				bill_bdate	 : _date.bdate,
+				bill_edate	 : _date.edate,
+				bill_title	: search,
+				currentPage	: 1,
+				pageSize	: pageSize,
+				paramText	: search
+			}
+//			console.log(JSON.stringify(_p))
+			return _p
+		}
+		function getBEDate() {
+			var bdate = document.getElementById("J_bdate").value,
+				edate = document.getElementById("J_edate").value;
+			if(bdate == "" || edate == ""){
+				mui.toast("请先选择时间段~")
+				return false;
+			}
+			return {
+				bdate : bdate + " 00:00:00",
+				edate : edate + " 23:59:59",
+			}
+		}
+		var _json = {"L": "待送审", "S": "待审核", "Y": "已审核"}
+		var _oContent = {
+			"供应商代码": "",
+			"供应商名称": "",
+			"负责人": "",
+			"电话": "",
+			"厂编": "",
+			"姓名":"",
+			"经度":"",
+			"纬度":"",
+			"离店时间":"",
+			"终端代码":"",
+		};
+		var oAddr = [{
+			"linkvd_corraddr": "",
+			"linkbd_linkprov": "",
+			"linkbd_linkstreet": "",
+			"linkbd_lngposition": ""
+		}]
+		function formatData(data){
+			var _data = {};
+			for(var k in data) {
+				_data[k.slice(0, 2)] = data[k];
+			}
+			return _data;
+		}
+		function dataAdapter(data) {
+				
+			var oData = VlProcess.sliceKeys(data),
+		     _content = oData['内容'] = (oData['内容'].indexOf('{') > -1) ? JSON.parse(oData['内容']) : _oContent;
+			var _addr;
+			if(oData['指令'].indexOf('{') > -1){
+				_addr = JSON.parse(oData['指令']);
+			}else if(typeof oData['指令'] === "string" && oData['指令'].length > 0){
+				oAddr[0]["linkvd_corraddr"] = oData['指令'];
+				_addr = oAddr;
+			}else{
+				_addr = oAddr;
+			}
+			oData.addr = _addr[0]['linkbd_linkprov'] + " " + _addr[0]['linkbd_linkstreet'] + " " + _addr[0]['linkvd_corraddr'];
+			
+			if(oInit[commonParams]['needLocate'] && activeType === "001"){
+				return {
+					"liclass"   : "toedit",
+					"rowdata" 	: JSON.stringify(oData),
+					"liTitle" 	: oData['标题'],
+					"liDate" 	: (oData["日期"]).slice(5, 16),
+					"liImgSrc"  : VlAjax.getImgPathmen(oData["图片"]),
+					
+					"liLeftM" 	: oData.addr,
+					"liLeftB" 	:  "",
+					
+					"liRightT" 	: _content["厂编"] ,
+					"liRightM" 	: oData['数量'] + "m",
+					"liRightB" 	: "",
+					"canDel"	: activeCanDel
+				}
+			}else{
+				return {
+					"rowdata" 	: JSON.stringify(oData),
+					"liclass" 	: "tonode",
+					"liTitle" 	: oData["标题"],
+					"liDate" 	: oData["日期"].slice(5,16),
+					"liImgSrc"  : VlAjax.getImgPathmen(oData["内容"]["终端代码"]),
+					
+					"liLeftM" 	: oData.addr, // oData["指令"],
+					"liLeftB" 	: oData["图片"],
+					
+					"liRightT" 	: oData["日期"].slice(5,16),
+					"liRightM" 	: "",
+					"liRightB" 	: "",
+					"canDel"	: activeCanDel
+				}
+			}
+	    }
+		function sCBfind(data,type) {
+			pager = mui.type(data.page) === 'array' ? data.page[0] : data.page;
+			document.getElementById("totalContent").innerHTML = pager.totalRecord;
+			document.getElementById("showHint").style.display = "none";
+			var contList = document.getElementById("contList");
+			if(data.data.length != 0) {
+				var text = '';
+				var html = '';
+				for(var i = 0; i < data.data.length; i++) {
+					var _rowd = dataAdapter(data.data[i])
+					var source = document.getElementById('listTmpl').innerHTML;
+		            var render = template.compile(source);
+		            html += render(_rowd);
+					if(type&&i==0){
+						contList.innerHTML = "";
+						document.getElementById("searching").style.display = "none";
+					}
+				}
+				jQuery("#contList").append(html);
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				mui.toast("未查询到数据~");
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("searching").style.display = "none";
+				document.getElementById("showHint").style.display = "block";
+			}
+			plus.nativeUI.closeWaiting();
+		}
+		
+			function ecChangeTab(event) {
+				activeType 	= event.detail.activeType;
+				activeTask 	= event.detail.activeTask;
+				activePort 	= event.detail.activePort;
+				activeQtask 	= event.detail.activeQtask;
+				activeText 	= event.detail.activeText;
+				activeBflow 	= event.detail.activeBflow;
+				activeShowTotal 	= event.detail.activeShowTotal;
+				activeShowLocate 	= event.detail.activeShowLocate;
+				activeShowDate 	= event.detail.activeShowDate;
+				activeClass 	= event.detail.activeClass;
+				activeCanDel 	= event.detail.activeCanDel;
+				
+				search 		= event.detail.activeSearch;
+				document.getElementById("J_total").style.display = activeShowTotal;
+				document.getElementById("J_location").style.display = activeShowLocate;
+				document.getElementById("J_pickdate").style.display = activeShowDate;
+				document.getElementById("contList").innerHTML 	= '';
+				document.getElementById("showHint").style.display = "none"; 
+				document.getElementById("searching").style.display = "block";
+
+				queryparmas = getParams(activeTask);
+//				console.log(JSON.stringify(queryparmas))
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				VlAjax.post({
+					"port":activePort,
+					"headers":"json",
+					"isFirst" : true,
+				}, queryparmas, sCBfind);
+				
+			}
+			function ecChangeDept(event){
+				fbill_no = event.detail.fbill_no;
+				fbillnoName = event.detail.fbillnoName;
+				activeType = '001';
+				activeTask = 'VR_vdvc312_query_19';
+				queryparmas = getParams(activeTask);
+
+				plus.nativeUI.showWaiting("正在查询数据..."); 
+				VlAjax.post({
+					"port":activePort,
+					"headers":"json",
+					"isFirst" : true,
+				}, queryparmas, sCBfind);
+			}
+			function eaTapToEdit(e, self){
+				var li = self;
+				//获取id
+				var dataRow = jQuery(li).find(".data-row").html();
+				var dataRow = JSON.parse(dataRow);
+				var ws = plus.webview.getWebviewById("vdsa402hn_edit.html");
+				if(!VlUtils.isnull(ws)){
+					plus.webview.close(ws);
+				}
+
+				if(pageTitle=="市场检查"){
+					mui.openWindow({
+						id: 'vdsa403hn_edit.html',
+						url: 'vdsa403hn_edit.html',
+						createNew: true,
+						extras: {
+							teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 不变 
+							teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变 
+							fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+							loginCom 		: loginCom,			// 4.登录单位代码
+							loginComName 	: loginComName,		// 5.登录单位名称
+							userbillNo 		: userbillNo,		// 6.登录人的代码
+							userName 		: userName,			// 7.登录人的姓名
+							privileges 		: privileges,		// 8.当前的权限是
+							fromPage 		: "vdsa402hn_list.html",	// 9.从哪个页面来
+							clientInfo 		: dataRow,
+							hadSave 		: false,
+							commonParams 	: commonParams,
+							activeType		: activeType,
+							bill_ipaddr     : bill_ipaddr,
+							bill_gpsaddr    : bill_gpsaddr,
+						}
+					});
+				}else{
+					mui.openWindow({
+						id: 'vdsa402hn_edit.html',
+						url: 'vdsa402hn_edit.html',
+						createNew: true,
+						extras: {
+							teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 不变 
+							teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变 
+							fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+							loginCom 		: loginCom,			// 4.登录单位代码
+							loginComName 	: loginComName,		// 5.登录单位名称
+							userbillNo 		: userbillNo,		// 6.登录人的代码
+							userName 		: userName,			// 7.登录人的姓名
+							privileges 		: privileges,		// 8.当前的权限是
+							fromPage 		: "vdsa402hn_list.html",	// 9.从哪个页面来
+							clientInfo 		: dataRow,
+							hadSave 		: false,
+							commonParams 	: commonParams,
+							activeType		: activeType,
+						}
+					});
+				}
+			
+			}
+
+			function eaTapToNode(e, self) {
+				var li = self;
+				//获取id
+				var dataRow = jQuery(li).find(".data-row").html(),
+					dataRow = JSON.parse(dataRow),
+					_role = VlStore.pGet("newUserRole"),
+					ws = plus.webview.getWebviewById("vdsa402hn_node.html");
+				if(!VlUtils.isnull(ws)){
+					plus.webview.close(ws);
+				}
+				if(pageTitle=="市场检查"){
+					mui.openWindow({
+						url: 'vdsa403hn_node.html',
+						id: 'vdsa403hn_node.html',
+						createNew: true,
+						extras: {
+							teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 不变 
+							teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变 
+							fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+							loginCom 		: loginCom,			// 4.登录单位代码
+							loginComName 	: loginComName,		// 5.登录单位名称
+							userbillNo 		: userbillNo,		// 6.登录人的代码
+							userName 		: userName,			// 7.登录人的姓名
+							privileges 		: privileges,		// 8.当前的权限是
+							fromPage 		: "vdsa402hn_list.html",	// 9.从哪个页面来
+							detailInfo 		: dataRow,
+							otherParams 	: otherParams,
+							commonParams 	: commonParams,
+							activeQtask		: _role === "管理员" ? "Y" : activeQtask,
+						}
+					});
+				}else{
+					mui.openWindow({
+						url: 'vdsa402hn_node.html',
+						id: 'vdsa402hn_node.html',
+						createNew: true,
+						extras: {
+							teamBillCom 	: teamBillCom, 		// 1.管理单位代码 	// 不变 
+							teamBillComName : teamBillComName,	// 2.管理单位名称	// 不变 
+							fbill_no 		: fbill_no,			// 3.fbill_no是		// 不变
+							loginCom 		: loginCom,			// 4.登录单位代码
+							loginComName 	: loginComName,		// 5.登录单位名称
+							userbillNo 		: userbillNo,		// 6.登录人的代码
+							userName 		: userName,			// 7.登录人的姓名
+							privileges 		: privileges,		// 8.当前的权限是
+							fromPage 		: "vdsa402hn_list.html",	// 9.从哪个页面来
+							detailInfo 		: dataRow,
+							otherParams 	: otherParams,
+							commonParams 	: commonParams,
+							activeQtask		: _role === "管理员" ? "Y" : activeQtask,
+						}
+					});
+				}
+				
+			
+			}
+	</script>
+
+</html>

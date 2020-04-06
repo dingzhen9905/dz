@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			header{padding-left:0 !important;}
+			.top-nav-row p{
+				height: 30px;/*ios-34px | andriod-3px TODO*/
+				padding: 0;margin: 0;
+				color: #353b42;
+				text-align: center;line-height: 30px;
+			}
+			.top-nav-row p.active{
+				border-bottom: 2px solid #ea6d10;
+				box-sizing: border-box;
+				color: #ea6d10;
+			}
+			#searchBox {
+				margin-left: 5px;
+				border-radius: 10px;
+			}
+			.list_font {
+				display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;
+				height: 16px;
+				margin-bottom:1px;
+				font-size: 10px;
+				line-height: 12px;
+				overflow: hidden;
+			}
+			.list_fonts {
+				margin-bottom:1px;
+				font-size: 12px;
+				line-height: 14px;
+			}
+			.list_h5 {
+				display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;
+				font-size: 13px;
+				overflow: hidden;
+				
+			}
+			.list_sts {
+				border: 1px solid #f0ad4e;border-radius: 2px;
+				font-size: 12px;color: #f0ad4e;
+				text-align: center;line-height: 14px;
+			}
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: 100px;
+			}
+			#searchBtn {
+				position: relative;top: 4px;
+				padding: 6px 8px;margin-left: 5px;
+			}
+			.mui-table-view:after,.mui-table-view:before {
+				height: 0 !important;
+			}
+			.chosen{
+				background: blanchedalmond !important;
+				border-radius: 3px;
+			}
+			.chosen h5{color: #999 !important; }
+			/**/
+			.order-main-li{margin-bottom:8px;border-top:1px solid #E0E0E0; box-shadow: 3px 3px 3px #ccc}
+			ul.order-detail-ul {margin: 0;padding:0;background:#f6f6f6;overflow: hidden;}
+			.order-detail-li{margin:3px;border:1px dashed #ACACB4;border-radius:10px;box-sizing:border-box;overflow:hidden;}
+			.order-detail-imgbox{width:35px;padding:5px;}
+			.order-imgbox{padding:5px;padding-left:0px;box-sizing:border-box;}
+			.order-info-title {padding-top:1px;font-size: 13px;color:#242424;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+			.order-info-leftbox{}
+			.order-info-left {display: -webkit-box;height: 14px;margin-bottom:1px;font-size: 10px;line-height: 12px;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;}
+			.order-info-rightbox{text-align: right;}
+			.order-info-right {font-size: 12px;line-height: 14px;float: right;margin:1px auto;}
+			.order-price{color:#FF5053;font-size: 14px;}
+			.order-qty{font-size: 16px;color: #000000;}
+			.order-statusbox{text-align:right;padding-right:10px;}
+			.order-status {margin-left:10px;font-size: 10px;line-height: 14px;color: #f0ad4e;border: 1px solid #f0ad4e;border-radius: 2px;text-align: center;}
+			.detail-label{padding:0px 5px 0px 50px !important;}
+			.mui-row:before,
+			.mui-row:after,
+			.mui-table-view-cell:after,
+			.mui-table-view-cell:before{
+				height:0px;
+			}
+			input{
+				top: 10px !important;
+			}
+			.detail-input:before{font-size: 20px !important;}
+			.hide{display: none;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="head" style="height:70px;border-bottom:0.5px solid #C0C0C0;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:white;"></a>
+			<h1 class="mui-title" id="header" style="color:white;background-color:;font-weight:normal;right: 60px;">选择物品</h1>
+			<a class="mui-pull-right" id="save" style="color:white;background-color:;padding-top:12px;font-size: 18px;">确认</a>
+			<div class="mui-row" style="position: fixed;top:70px;width:100%; background-color:#efeff4;z-index:1000000;">
+				<div class="mui-row">
+					<div class="mui-col-xs-10">
+						<div class="mui-input-row mui-search">
+							<input type="search" id="searchBox" class="mui-input-clear" onkeyup="enterSearch(event)" placeholder="" style='margin-bottom:5px;'>
+						</div>
+					</div>
+					<div class=" mui-col-xs-2">
+						<button type="button" id="searchBtn" class="mui-btn">搜索</button>
+					</div>
+				</div>
+			</div>
+		</header>
+		
+		<div id="vdst315_findClient" class="mui-content mui-content mui-scroll-wrapper" style="padding-top: 112px;">
+			<div class="mui-scroll">
+				<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:none;">
+					<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+					<p style="font-size:12px;">正在搜索中......</p>
+				</div>
+				<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+					<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+					<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+					<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+				</div>
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed" style="margin-bottom:50px;border: transparent;">
+				</ul>
+			</div>
+		</div>
+		<script type="text/template" id="buyGoodsTmpl">
+			<li class="order-main-li mui-input-row mui-checkbox" data-load=false data-show=false data-no="<%=bill_no%>">
+				<div class="data-mrow hide"><%=rowdata%></div>
+				<div class="main-info" style="line-height:5px;">
+					<label style="padding:5px 58px 5px 5px;">
+						<div class="mui-row">
+							<div class="mui-col-xs-2 mui-row" style="padding:2px;width:35px;height:75px;">
+								<img class="vdvc312 mui-col-xs-12" src="<%=liImgSrc%>"  onerror="this.src='../../images/icon/default.png'" style="border-raduis:5px;height:75px;" />
+							</div>
+							<div class="mui-col-xs-7 mui-row">
+								<h5 class="list_h5 mui-col-xs-12" style="color:#242424;padding-top:1px;"><%=liTitle%></h5>
+								<p class="list_font mui-col-xs-12"><%=liLeftM%></p>
+							</div>
+							<div class="mui-col-xs-3 mui-row list_three" style="text-align: right;">
+								<p class="list_fonts mui-col-xs-12" style="float:right;"><%=liRightT%></p>
+								<p class="list_fonts mui-col-xs-12" style="float:right;"><%=liRightM%></p>
+							</div>
+						</div>
+					</label>
+					<input name="main" class="main-input" type="checkbox" />
+				</div>
+				<ul class="order-detail-ul mui-table-view mui-table-view-striped mui-table-view-condensed hide"></ul>
+
+			</li>
+		</script>
+		<script type="text/template" id="giftGoodsTmpl">
+			<li class="order-detail-li mui-input-row mui-checkbox mui-left" data-no="<%=bill_no%>" data-fno="<%=fno%>"  data-check=false  >
+				<div class="data-drow hide"><%=rowdata%></div>
+				<label class="detail-label">
+					<div class="mui-row">
+						<div class="mui-col-xs-2 order-detail-imgbox">
+							<img class="vdfa332 mui-col-xs-12" src="<%=liImgSrc%>" onerror="this.src='../../images/icon/default.png'" />
+						</div>
+						<div class="mui-col-xs-6 mui-row">
+							<h5 class="order-info-title mui-col-xs-12"><%=liLeftM%></h5>
+							<p class="order-info-left mui-col-xs-12"><%=liLeftM%></p>
+						</div>
+						<div class="mui-col-xs-4 mui-row order-info-rightbox">
+							<p class="order-info-right mui-col-xs-12"><%=liRightM%></p>
+							<p class="order-info-right mui-col-xs-12"><span class="order-price "></span> </p>
+						</div>
+					</div>
+				</label>
+				<input name="detail" class="detail-input" type="checkbox" />
+			</li>
+		</script>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/arttmpl.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vdst315_findClient',
+				down: {
+					style:'circle',
+					callback: pulldownRefresh
+				},
+				up: {
+					auto:false,
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		var teamBillCom,teamBillComName,userbillNo,loginCom,loginComName,bill,
+			choice,other,serialNum,
+			fromPage,backPageId,
+			search = '商品',
+			activeType = "001",
+			activeTask = "VR_vdsa210_query_03";
+			pageSize = 10,
+			fbill_no = "ROOT",
+			detailInfo = {},
+			queryparmas = {},
+			pager = {},
+			aSelected = {},
+			oSelected = {},
+			_oTrueFalse ={"true": true, "false": false};
+		// 进入页面插件加载完成拉去数据
+		mui.plusReady(function() {
+			//接收传过来的参数
+			var self = plus.webview.currentWebview();
+			teamBillCom 	= self.teamBillCom;
+			teamBillComName = self.teamBillComName;
+			userbillNo 		= self.userbillNo;
+			loginCom 		= self.loginCom;
+			loginComName 	= self.loginComName;
+			choice 			= self.choice;
+			choice 			= "single";
+			fromPage 		= self.fromPage;
+			fbill_no 		= self.fbill_no;
+			other			= self.other;	
+			search 		= self.goodsType;
+			bill		= self.bill;
+			activeTask = other;
+			findData({"task" : activeTask,"search" : search,"page" : 1,"type":true});
+		}) // plusReady
+		
+		mui("#J_topNav").on("tap", "p", function(e) { eaTopNav(this)});
+//		mui("#contList").on('tap', '.main-info', function(e) { eaMli(this) });
+//		mui("#contList").on('tap', '.order-detail-li', function(e) {eaDli(this)});
+		mui('#contList').on('change', 'input.main-input', function(e) {eaMchange(this)});
+		mui('#contList').on('change', 'input.detail-input', function(e) {eaDchange(this)});
+		document.getElementById("save").addEventListener("tap", eBtnSave, false);
+		document.getElementById("searchBtn").addEventListener("tap", eBtnSearch, false);
+		
+		function pulldownRefresh() {
+			mui.toast("加载中...");
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			findData({"task" : activeTask,"search" : search,"page" : 1,"type":true});
+			mui('#vdst315_findClient').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+		}
+		function pullupRefresh() {
+			if(queryparmas.currentPage < pager.totalPage) {
+				var _page = queryparmas.currentPage + 1;
+				findData({"task" : activeTask,"search" : search,"page" : _page,"type":false});
+				mui('#vdst315_findClient').pullRefresh().endPullupToRefresh();
+			} else {
+				plus.nativeUI.toast("~没有更多啦~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vdst315_findClient').pullRefresh().endPullupToRefresh();
+				return;
+			}
+		}
+		
+		function eBtnSave() {
+			//触发详情页面的newsId事件
+			mui.fire(plus.webview.getWebviewById(fromPage), 'vdst315findGoods', {
+				teamBillCom		: teamBillCom,
+				uteamBillComName: teamBillComName,
+				serbillNo		: userbillNo,
+				loginCom		: loginCom,
+				loginComName	: loginComName,
+				oSelected		: oSelected,
+				other			: other,
+			});
+
+			//打开详情页面          
+			mui.openWindow({
+				id: fromPage
+			});
+		}
+		function eBtnSearch() {
+			document.getElementById("showHint").style.display = "none";
+			var search = document.getElementById("searchBox").value;
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			findData({"task" : activeTask,"search" : search,"page" : 1,"type":true});
+		}
+		function enterSearch(e) {
+			if(e.keyCode == 13) eBtnSearch();
+		}
+		function eaTopNav(self){
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			
+			jQuery(self).addClass("active").siblings().removeClass("active");
+			
+			activeType = self.getAttribute("data-type");
+			activeTask = self.getAttribute("data-task");
+			
+			if (activeType !== "003") findData({"task" : activeTask,"search" : '',"page" : 1,"type":true});
+		}
+		function eaMchange(self){
+			var li = self.parentNode.parentNode,
+				num = jQuery(li).index(),
+				dataRow = JSON.parse(jQuery(li).find('.data-mrow').eq(0).html()),
+				isshow = li.getAttribute("data-show"),
+				hasload = li.getAttribute("data-load"),
+				detailUl = jQuery(li).find(".order-detail-ul");
+			li.setAttribute("data-show",!_oTrueFalse[isshow]);
+			isshow = !_oTrueFalse[isshow];
+			isshow ? detailUl.removeClass('hide') : detailUl.addClass('hide');
+			
+			// 把数据推到数组中去
+			selectedOrCancel(isshow,dataRow);
+			if(!_oTrueFalse[hasload]){
+				detailparmas = {
+					name: 'msvr',
+					bill_com: teamBillCom,
+					bill_oppo: teamBillCom,
+					bill_task	: "VR_vdsa212_query_01",
+					bill_no 	: dataRow["指令"],
+					currentPage: 1,
+					pageSize: 30,
+					paramText: "",
+					bill_user: userbillNo
+				}
+				VlAjax.post({
+					"port" : "active",
+					"headers" : "json",
+					"isFirst" : true
+				}, detailparmas, sCBfindDetail);
+				function sCBfindDetail(data,type){
+					li.setAttribute("data-load","true");
+					detaillist(num,data,dataRow["bill_no"]);
+				}
+			}
+			
+		}
+		function eaDchange(self){
+			var li = self.parentNode,
+				num = jQuery(self).index(),
+				dataRow = JSON.parse(jQuery(li).find('.data-drow').eq(0).html()),
+				isChecked = li.getAttribute("data-check");
+				li.setAttribute("data-check",!_oTrueFalse[isChecked]);
+				isChecked = !_oTrueFalse[isChecked],
+				sbilings = jQuery(li).siblings().find('input');
+				
+				jQuery(li).siblings().find('input').attr('checked', false);
+				selectedOrCancel(isChecked,dataRow);
+				eBtnSave();
+		}
+		function selectedOrCancel(isSelected,data){
+			if(choice == "multiple") {}
+			if(choice == "single") {}
+			
+			if(isSelected) { 
+				if(data.bill_bflow === '正品') {
+					aSelected[data.bill_no] = [];
+					oSelected[data.bill_no] = [data,[]];
+				}else {
+					aSelected[data.fbill_no] = typeof aSelected[data.fbill_no] === 'undefined' ? [] : aSelected[data.fbill_no];
+					oSelected[data.fbill_no] = typeof oSelected[data.fbill_no] === 'undefined' ? ["",[]] : oSelected[data.fbill_no];
+					aSelected[data.fbill_no][0] = data.bill_no;
+					oSelected[data.fbill_no][1][0] = data;
+				}
+			} else {
+				if(data.bill_bflow == "正品"){
+					delete aSelected[data.bill_no];
+					delete oSelected[data.bill_no];
+				}else{
+					var _aIdx = aSelected[data.fbill_no].indexOf(data.bill_no);
+					aSelected[data.fbill_no].splice(_aIdx,1) ;
+					oSelected[data.fbill_no][1].splice(_aIdx,1);
+				}
+			}
+		}
+		function findData(opt){
+			queryparmas = { // 默认我的客户001
+				name: 'msvr',
+				bill_com	: teamBillCom,
+				bill_user	: userbillNo,
+				bill_task	: opt.task, 
+				bill_title  : opt.search,
+//				bill_bflow  : "促销品",
+				currentPage	: opt.page,
+				pageSize	: pageSize,
+				paramText	: ''
+			}
+			// console.log(JSON.stringify(queryparmas))
+			var ajaxSet = {
+				"port" : "active",
+				"headers" : "json",
+				"isFirst" : opt.type
+			}
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			VlAjax.post(ajaxSet, queryparmas, sCBfindData)
+		}
+		function sCBfindData(data, type) {
+			pager = data.page;
+			document.getElementById("showHint").style.display = "none";
+			var comImgid = VlTools.uuid('comImg', 4, 10);
+			var contList = document.getElementById("contList");
+			if(data.data.length != 0) {
+				var html = "";
+				for(var i = 0; i < data.data.length; i++) {
+					
+					var _rowd = st315findAdapter(data.data[i], "正品");
+					var source = document.getElementById('buyGoodsTmpl').innerHTML;
+		            var render = template.compile(source);
+		            html += render(_rowd);
+		            if(type&&i==0){
+		            	contList.innerHTML = '';
+		            	document.getElementById("searching").style.display = "none";
+		            }
+				}
+				jQuery("#contList").append(html);
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				mui.toast("未查询到数据~")
+				document.getElementById("contList").innerHTML = '';
+				document.getElementById("searching").style.display = "none";
+				document.getElementById("showHint").style.display = "block";
+			}
+			plus.nativeUI.closeWaiting();
+		}
+		var _oContent = {
+			"规格型号": "",
+			"条码": "",
+			"供应商名称": "",
+			"供应商代码": "",
+			"政策标识": "",
+			"生产厂商名称": "",
+			"生产厂商代码": "",
+			"单位": "",
+			"开始日期": "",
+			"截止日期": "",
+			"商品名称": "",
+		}
+		function st315findAdapter(data, type, fno){
+			
+        	var oData = {};
+			for(var k in data) {
+				oData[k.slice(0, 2)] = data[k];
+			}
+        	var _content = oData['内容'] = (oData['内容'].indexOf('{') > -1) ? JSON.parse(oData['内容']) : _oContent;
+        	oData.bill_no = VlTools.getBno(bill);
+        	oData.bill_bflow = type;
+			
+			if(type == "正品"){
+				oData.bno = _content["政策标识"];
+				return {
+					"rowdata" 	: JSON.stringify(oData),
+					"liTitle" 	: oData["标题"],
+					"liDate" 	: "",
+					"liStatus" 	: "",
+					"liImgName" : oData["金额"],
+					"liImgSrc" : VlAjax.getImgPath(oData["金额"]),
+					
+					"liLeftM" 	: _content['规格型号'],
+					"liLeftB" 	: "",
+					
+					"liRightT" 	: oData["金额"],
+					"liRightM" 	: "",
+					"liRightB" 	: "",
+				}
+			}else{
+				oData.fbill_no = fno;
+				return {
+					"rowdata" 	: JSON.stringify(oData),
+					"liImgSrc" : VlAjax.getImgPath(oData["指令"]),
+					"liTitle" : _content["商品名称"],
+					"liLeftM" : (oData["参数"]+'-买'+parseFloat(oData["金额"])+'赠'+parseFloat(oData['数量'])),
+					"liRightM" : oData["指令"],
+				}
+			}
+	    }
+		function detaillist(liclass,data,fno){
+			var detailList = jQuery(".order-detail-ul").eq(liclass);
+			if(data.data.length != 0) {
+				mui.toast("搜索完成，正在加载...");
+				var text = '';
+				
+				for(var i = 0; i < data.data.length; i++) {
+					var _rowd = st315findAdapter(data.data[i], "赠品", fno);
+					var source = document.getElementById('giftGoodsTmpl').innerHTML;
+		            var render = template.compile(source);
+		            text += render(_rowd);
+				}
+				detailList.append(text);
+			} else { // 如果没有长度说明没有数据，提示没有数据
+				eBtnSave();
+//				mui.toast("未查询到数据~");
+				detailList.html("");
+			}
+		}
+	</script>
+
+</html>

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/common/mui.min.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			ul li {
+				list-style: none;
+			}
+			
+			.list_font {
+				font-size: 10px;
+				line-height: 12px;
+				height: 12px;
+				display: -webkit-box;
+				margin-bottom: 5px;
+				padding: 0px;
+				/*-webkit-box-orient: vertical;*/
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			
+			.list_fonts {
+				font-size: 12px;
+				line-height: 14px;
+			}
+			
+			.list_h5 {
+				font-size: 13px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			
+			.list_sts {
+				font-size: 12px;
+				line-height: 14px;
+				color: #f0ad4e;
+				/*border:1px solid #dd524d;*/
+				border: 1px solid #f0ad4e;
+				border-radius: 2px;
+				text-align: center;
+				/*background-color: pink;*/
+			}
+			
+			.mui-pull-top-pocket {
+				border: transparent;
+			}
+			
+			.mui-table-view:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view:before {
+				height: 0 !important;
+			}
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			body {
+				font-size: 16px;
+			}
+			
+			ul#contList {
+				width: 100%;
+				background: #efeff4;
+			}
+			
+			ul#contList li {
+				margin-bottom: 10px;
+			}
+			.hide{display: none;}
+		</style>
+	</head>
+
+	<body>
+		
+		<div id="vrsa312_list" class="mui-content mui-scroll-wrapper">
+			<div class="mui-input-group" id="J_location" style="padding:5px 18px 5px 18px;margin:5px 0;position: relative;font-size: 10px;height: 70px;">
+				<div class="mui-row" style="margin: 0;padding:0;height:40px;overflow:hidden;">
+					<span class="mui-col-xs-2" style="color:#ACACB4;">当前地址:</span>
+					<span class="mui-col-xs-10" id="bill_title" style="font-size:12px;"></span>
+				</div>
+				<div class="mui-row" style="margin: 0;padding:0;height: 20px;">
+					<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+						<span class="mui-col-xs-3" style="color:#ACACB4;">经度:</span>
+						<span class="mui-col-xs-8" id="bill_ipaddr"></span>
+					</div>
+					<div class="mui-col-xs-6 mui-row" style="margin:0;padding:0;">
+						<span class="mui-col-xs-3" style="color:#ACACB4;">纬度:</span>
+						<span class="mui-col-xs-8" id="bill_gpsaddr"></span>
+					</div>
+				</div>
+			</div>
+			<div id="showHint" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-wushuju" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">未查询到相关的数据</p>
+				<p style="font-size:10px;border-bottom: transparent;">可以尝试其他查询</p>
+			</div>
+			<div id="searching" class="mui-h5" style="padding:100px;height:300px;text-align: center;display:block;">
+				<p class="mui-icon mui-icon-search" id="" style=";color:#0062cc;height:100px;line-height: 100px;font-size: 100px;"></p>
+				<p style="font-size:12px;">正在搜索中......</p>
+			</div>
+			
+			<div id="showError" class="mui-h5" style="padding:100px;height:300px;display:;text-align: center;background: ;display:none;border: transparent;background: ;">
+				<span class="icon iconfont icon-kulian" style="color:;font-size:100px;"></span>
+				<p style="color:#000000;margin-top:10px;margin-bottom:0;border-bottom: transparent;padding-bottom:0;">出错啦~</p>
+				<p style="font-size:10px;border-bottom: transparent;">请稍后再试</p>
+			</div>
+			<div class="mui-scroll">
+				<ul id="contList" class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+				</ul>
+			</div>
+		</div>
+		<script type="text/template" id="listTmpl">
+			<li id="colorred" class="mui-table-view-cell" style="height:90px;margin-bottom:3px;padding:10px;background:#fff;">
+			<div class="data-row hide"><%=rowdata%></div>
+			<div class="mui-slider-cell mui-slider-handle">
+				<div class="mui-row">
+					<div class="mui-row mui-col-xs-10 <%=liclass%>">
+						<div class="mui-col-xs-3 mui-row" style="padding:5px;width:68px;">
+							<img id="J_img" class="vdst316 mui-col-xs-12" style="width: 100%;height: 60px;border-radius: 3px" src="<%=liImgSrc%>" onerror="this.src='../../images/defult/vdvc101.png'"/>
+						</div>
+						<div class="mui-col-xs-9 mui-row" style="height:50px;">
+							<h5 class="list_h5 mui-col-xs-12" style="color:#242424;padding-top:3px;"><%=liTitle%></h5>
+							<p class="list_font mui-col-xs-12"><%=liLeftT%></p> 
+							<% if(!canModify) { %>
+							<p class="list_font mui-col-xs-12"  style="margin-left: 30px;"><%=liStatus%></p>
+							<% } %>
+							<% if(canModify) { %>
+							<span style="font-size: 10px;">距离:<%=liRightT%>米</span>
+							<span style="font-size: 10px; margin-left: 20px;"><span id="opdoor" style="font-size: 10px;color:<%=liRightB%> ;" ><%=liRightM%></span></span>
+							<% } %>
+						</div> 
+					</div>
+					<div class="mui-col-xs-2 mui-row list_three" style="text-align: right;">
+						<% if(canModify) { %>
+							<p class="list_fonts mui-col-xs-12" style="float:right;"><button class="mui-btn vl-modify">修改</button></p>
+						<% } %>
+						<p class="list_fonts mui-col-xs-12" style="float:right;margin-top:3px; width: 100px ;"><%=liDate%></p>
+					</div>
+				</div>
+			</div>
+			</li>
+		</script>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FQCQkNvWb9g4FnFXN3IGieSwQgLOR2PU&services=&t=20171004185957"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/arttmpl.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#vrsa312_list',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					height: 200,
+					contentnomore: '没有更多数据了',
+					offset: '10px',
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+
+		var startIndex = 1; // 
+		var pageSize = 20;
+		var search = '';
+		var detailInfo = {}; // 用于存储查询到的信息
+		var fbill_no = "ROOT";
+		var queryparmas = {}; //查询参数
+		var pager = {};
+		var bill_task = " ";
+		var bill_user = " ";
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var activeType="001",
+			activeTask="VR_vdvc312_query_14",
+			activeQtask="Y",
+			activeClass = "all",
+			activeCanModify= false;
+			oInit = {
+				"vrsa31203" : {
+					"task":"VR_vdvc312_query_14",
+					"canModify" : true
+				},
+				"vrsa31204" : {
+					"task":"VR_vdvc312_query_24",
+					"canModify" : false
+				},
+			}
+		mui.plusReady(function() {
+			//	返回上级
+			window.addEventListener('backAndRefreshList', function(event) { ecBackAndRefresh(event)})
+
+			//监听plist页面点击导航拉取不同状态的数据
+			document.addEventListener('differentStatesRefresh210list', function(event) { ecTopNave(event) }); // 切换结束
+			
+			// 接收传过来的参数
+			var self = plus.webview.currentWebview().parent();
+			// 基本参数(必要)
+			teamBillCom = self.teamBillCom; 
+			teamBillComName = self.teamBillComName; 
+			fbill_no = self.fbill_no; 
+			loginCom = self.loginCom; 
+			loginComName = self.loginComName; 
+			userbillNo = self.userbillNo; 
+			userName = self.userName; 
+			privileges = self.privileges; 
+			fromPage = self.fromPage; 
+			commonParams = self.commonParams;
+			pageTitle = self.pageTitle
+			activeTask=oInit[commonParams]['task'];
+			activeCanModify= oInit[commonParams]['canModify'];
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+//			console.log(JSON.stringify(self))
+			VlTools.getLocate(sCBgetLocate, eCBgetLocate);
+
+			
+			//点击查看详情/修改信息
+			mui("#contList").on('tap', 'li .all', function(e) { eaLiAll(this) });
+			mui("#contList").on('tap', 'li .send', function(e) { eaLiSend(this) });
+			mui('#contList').on('tap', 'li .vl-modify', function(e) { eaModify(e, this) });	  
+					
+		});
+
+		//下拉刷新
+		function pulldownRefresh() {
+			
+			mui.toast("加载中...");
+			document.getElementById("contList").innerHTML = "";
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			//
+			queryparmas.currentPage = 1;
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			VlAjax.post({"port":"active","headers":"json", "isFirst" :true}, queryparmas, sCBFind)
+			mui('#vrsa312_list').pullRefresh().endPulldownToRefresh(); //下拉完成后可以再次执行下拉刷新
+		}
+		function scB(data,type){
+			//console.log(JSON.stringify(data))
+		}
+		function pullupRefresh() {			
+			if(queryparmas.currentPage < pager.totalPage) {
+				queryparmas.currentPage = queryparmas.currentPage + 1;
+				queryparmas.pageSize = pageSize;
+			} else {
+				plus.nativeUI.toast("~没有更多啦~", {
+					'verticalAlign': "middle"
+				});
+				mui('#vrsa312_list').pullRefresh().endPullupToRefresh();
+				return;
+			}
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			VlAjax.post({"port":"active","headers":"json", "isFirst" :false}, queryparmas, sCBFind)
+			mui('#vrsa312_list').pullRefresh().endPullupToRefresh();
+		}
+		function sCBFind(data,type) {
+//			console.log(JSON.stringify(data.data))
+			if(data.code == 0) {
+				var datas = data.data;
+				pager = mui.type(data.page) === 'array' ? data.page[0] : data.page;
+				var totalRecord = pager["totalRecord"];
+				mui.fire(plus.webview.currentWebview().parent(), 'sizetoplist', {
+						totalRecord :totalRecord
+				});
+				if(datas.length != 0) {
+					var text = " ";
+					var html = "";
+					var contList = document.getElementById("contList");
+					for(var i = 0; i < datas.length; i++) {
+						var _rowd = dataAdapter(data.data[i])
+						var source = document.getElementById('listTmpl').innerHTML;
+			            var render = template.compile(source);
+			            html += render(_rowd);
+						if(type&&i==0){
+							contList.innerHTML = "";
+							document.getElementById("searching").style.display = "none";
+						}
+					}
+					jQuery("#contList").append(html);
+					var li=jQuery("#colorred")
+				} else {
+					document.getElementById("contList").innerHTML = "";
+					document.getElementById("searching").style.display = "none";
+					document.getElementById("showHint").style.display = "block";
+				}
+			}	
+			plus.nativeUI.closeWaiting();
+		}
+		var _oContent = {
+			"地址": "",
+			"负责人": "",
+			"电话": "",
+			"312代码":"",
+		}
+		var _oAddr = {
+			"linkbd_linkprov":"",
+			"linkbd_linkstreet": "",
+			"linkvd_corraddr":"",
+			"linkbd_lngposition":""
+		}
+		function dataAdapter(data){	
+			var oData = {};
+			for(var k in data) {
+				oData[k.slice(0, 2)] = data[k];
+			}
+			var _c = oData['内容'] = oData['内容'].indexOf('{') > -1 ? JSON.parse(oData['内容']) : _oContent;
+			var bcontext = oData['指令'],
+				_addr;
+			if(mui.type(bcontext) === 'array'){
+				_addr = bcontext[0]["linkbd_linkprov"] + " " + bcontext[0]["linkbd_linkstreet"] + " " + bcontext[0]["linkvd_corraddr"];
+			}else if(mui.type(bcontext) === 'string' && bcontext.indexOf('{') > -1){
+				bcontext = oData['指令'] = JSON.parse(bcontext)
+				_addr = bcontext[0]["linkbd_linkprov"] + " " + bcontext[0]["linkbd_linkstreet"] + " " + bcontext[0]["linkvd_corraddr"];
+			}else if(mui.type(bcontext) === 'string' && bcontext.indexOf('{') == -1){
+				_addr = bcontext;
+			}
+//			var _addr = oData['指令']= (oData['指令'].indexOf('{') > -1) ? JSON.parse(oData['指令'])[0] : _oAddr;
+//	        oData.addr = oData['指令']["linkbd_linkprov"] + " " + oData['指令']["linkbd_linkstreet"] + " " + oData['指令']["linkvd_corraddr"];
+	        oData.addr = _addr;
+	        var row = JSON.stringify(oData);
+			var result=oData["内容"]["营业状态"]
+			var _btncolor = {
+				"关闭" : "red",
+				"营业" : "green"	
+			}
+//			console.log(JSON.stringify(oData))
+			return {
+				// "liclass"   : activeType == "002" ? "send" : "all",
+				"liclass"   : activeClass,
+				"rowdata" 	: row,
+				"liTitle" 	: oData["标题"],
+				"liDate" 	: (oData["日期"]).slice(5, 16),
+				"liStatus" 	: _c["详细地址"],
+				"liImgId" 	: _c['312代码'],
+				"liImgName" : oData['参数'],
+				"liImgSrc"  : VlAjax.getImgPathmen(oData["参数"])+"?t="+Math.random(),
+				"canModify" : activeCanModify,
+				
+				"liLeftT" 	: ("地址："+ oData.addr),
+				"liLeftM" 	: "",
+				"liLeftB" 	: "",
+				
+				"liRightT" 	: oData["数量"],
+				"liRightM" 	: oData["内容"]["终端类型"],  //
+				"liRightB" 	: _btncolor[result],
+			}
+			
+		}
+		function listTemplate(item){}
+		function getParams(task,port){
+		  if(activeTask=="VR_vdvc312_query_24"){	
+			var res = {
+				bill_task	: activeTask,
+				bill_qtask	: activeQtask,
+				bill_title	: search, 
+				bill_com	: loginCom, 
+				bill_user 	: userbillNo,
+				currentPage	: startIndex,
+				bill_unit : bill_ipaddr,
+				bill_nunit: bill_gpsaddr,
+				pageSize	: pageSize,
+				bill_bdate  : bill_bdate,
+				bill_edate  : bill_edate,
+				bill_bflow  : bill_bflow
+			};
+		  }else{
+			 var res = {
+			 	bill_task	: activeTask,
+			 	bill_qtask	: activeQtask,
+			 	bill_title	: search, 
+			 	bill_com	: loginCom, 
+			 	bill_user 	: userbillNo,
+			 	currentPage	: startIndex,
+			 	bill_unit : bill_ipaddr,
+			 	bill_nunit: bill_gpsaddr,
+			 	pageSize	: pageSize,
+			 };
+		  }
+		  
+			return res;
+		}
+		function ecBackAndRefresh(e){
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			teamBillCom = e.detail.teamBillCom; // 管理单位代码
+			fbill_no 	= e.detail.fbill_no; // fbill_no是
+			teamBillComName = e.detail.teamBillComName; // 管理单位名称
+			loginCom 	= e.detail.loginCom; // 登录单位代码
+			loginComName = e.detail.loginComName; // 登录单位名称
+			userbillNo 	= e.detail.userbillNo; // 登录人的代码
+			userName 	= e.detail.userName, // 登录人的姓名
+			privileges 	= e.detail.privileges, // 当前的权限是
+			fromPage 	= e.detail.fromPage, // 从哪个页面来 
+			
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			queryparmas = getParams(activeQtask);
+			VlAjax.post({"port":"active","headers":"json", "isFirst" :true}, queryparmas, sCBFind)
+		}
+		function ecTopNave(e){
+			activeTask = e.detail.activeTask;
+			activeQtask = e.detail.activeQtask;
+			activeType = e.detail.activeType;
+			activeClass = e.detail.activeClass;
+			activeCanModify = e.detail.activeCanModify;
+			search = e.detail.search;
+			bill_bdate = e.detail.bill_bdate
+			bill_edate = e.detail.bill_edate
+			bill_bflow = e.detail.bill_bflow
+			document.getElementById("showHint").style.display = "none";
+			document.getElementById("searching").style.display = "block";
+			document.getElementById("contList").innerHTML = '';
+
+			queryparmas = getParams(activeQtask);
+			plus.nativeUI.showWaiting("正在查询数据..."); 
+			VlAjax.post({"port":"active","headers":"json", "isFirst" :true}, queryparmas, sCBFind)
+		}
+		function eaLiAll(self){
+			var li = jQuery(self).parents("li");;
+			var dataRow = li.find(".data-row").eq(0).html();
+			var rowObj = JSON.parse(dataRow);
+			var footstyle = rowObj["内容"]["终端类型"]
+			if(footstyle == "餐饮"){
+				mui.openWindow({
+					id: 'vrsa312cy_node.html',
+					url: 'vrsa312cy_node.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom, 	
+						teamBillComName: teamBillComName, 	
+						fbill_no: fbill_no, 		
+						loginCom: loginCom, 
+						loginComName: loginComName, 
+						userbillNo: userbillNo, 
+						userName: userName, 
+						privileges: privileges, 
+						fromPage: "vrsa312_list.html", 
+						detailInfo: rowObj,
+						hasSave : true,
+						bill_ipaddr:bill_ipaddr,
+						bill_gpsaddr :bill_gpsaddr,
+						pageTitle : pageTitle,
+					}
+				});
+			}else{
+				mui.openWindow({
+					id: 'vrsa312_node.html',
+					url: 'vrsa312_node.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom, 	
+						teamBillComName: teamBillComName, 	
+						fbill_no: fbill_no, 		
+						loginCom: loginCom, 
+						loginComName: loginComName, 
+						userbillNo: userbillNo, 
+						userName: userName, 
+						privileges: privileges, 
+						fromPage: "vrsa312_list.html", 
+						detailInfo: rowObj,
+						hasSave : true,
+						bill_ipaddr:bill_ipaddr,
+						bill_gpsaddr :bill_gpsaddr,
+						pageTitle : pageTitle,
+					}
+				});
+			}
+			
+		}
+		function sCBgetLocate(p){
+		 if(plus.os.name ==="Android"){
+			 document.getElementById("bill_title").innerHTML = p.addresses;
+			 document.getElementById("bill_ipaddr").innerHTML = p.coords.longitude;
+			 document.getElementById("bill_gpsaddr").innerHTML = p.coords.latitude;
+			 document.getElementById("bill_title").setAttribute("data-location", JSON.stringify(p));
+			 bill_ipaddr = p.coords.longitude;
+			 bill_gpsaddr = p.coords.latitude;
+			 bill_context =p.addresses
+		 }else{
+			 var provinces=p.address.province
+			 var citys=p.address.city
+			 var districts=p.address.district
+			 var streets=p.address.street
+			 var titles=provinces+citys+districts+streets
+			 document.getElementById("bill_title").innerHTML = titles;
+			 document.getElementById("bill_ipaddr").innerHTML = p.longitude;
+			 document.getElementById("bill_gpsaddr").innerHTML = p.latitude;
+			 document.getElementById("bill_title").setAttribute("data-location", JSON.stringify(p));
+			 bill_context =titles
+			 bill_ipaddr = p.longitude;
+			 bill_gpsaddr = p.latitude;
+		 }		
+			//进入页面默认查询			
+			if(activeTask=="VR_vdvc312_query_24"){
+				bill_bdate = VlDate.get(new Date(), "_ymd") + " 00:00:00";
+				bill_edate = VlDate.get(new Date(), "_ymd") + " 23:59:59";
+				queryparmas = {
+					bill_task	: activeTask,
+					bill_qtask	: activeQtask,
+					bill_title	: search, 
+					bill_com	: loginCom, 
+					bill_user 	: userbillNo,
+					currentPage	: startIndex,
+					bill_unit : bill_ipaddr,
+					bill_nunit: bill_gpsaddr,
+					pageSize	: pageSize,
+					bill_bdate  : bill_bdate,
+					bill_edate  : bill_edate,
+					bill_bflow  : "零售",
+				};
+			}else{
+				queryparmas = getParams(activeTask);
+			}
+			VlAjax.post({"port":"active","headers":"json", "isFirst" :true}, queryparmas, sCBFind);
+			var query ={
+				bill_task  : "VR_vdvc312_query_17",
+				bill_com : queryparmas.bill_com,
+				bill_user : queryparmas.bill_user
+			}
+//			console.log(JSON.stringify(query))
+			VlAjax.post({"port":"active","headers":"json", "isFirst" :true}, query, sCBmath);
+			var aa={
+				bill_task  : "VE_vdsa301_insert_01",
+				bill_no    : userbillNo,
+				bill_com   : loginCom,
+				bill_bflow : pageTitle,
+				bill_context :bill_context,
+				bill_ipaddr : bill_ipaddr,
+				bill_gpsaddr :bill_gpsaddr,
+			}
+			
+			if(bill_context!=null){				
+				//console.log(JSON.stringify(aa))
+				VlAjax.post({"port":"sendTask","headers":"json"},aa,scB)
+			}else{
+				 return
+			}
+		}
+		function sCBmath(data){
+			var maths=data.data[0]["数量数量"]
+			mui.fire(plus.webview.currentWebview().parent(), 'sizetoplistmathfj', {
+					maths :maths
+			});
+		}
+		function getBEDate() {
+			var bdate = document.getElementById("J_bdate").value,
+				edate = document.getElementById("J_edate").value;
+			if(bdate == "" || edate == ""){
+				mui.toast("请先选择时间段~")
+				return false;
+			}
+			return {
+				bdate : bdate + " 00:00:00",
+				edate : edate + " 23:59:59",
+			}
+		}
+		function eCBgetLocate(e){
+			document.getElementById("bill_title").innerHTML = e;
+		}
+		function eaLiSend(self) {
+			var li = jQuery(self).parents("li");;
+			var dataRow = li.find(".data-row").eq(0).html();
+			var rowObj = JSON.parse(dataRow);
+			var footstyle = rowObj["内容"]["终端类型"]
+			if(footstyle == "餐饮"){
+				mui.openWindow({
+					id: 'vrsa312cy_edit.html',
+					url: 'vrsa312cy_edit.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom, 	
+						teamBillComName: teamBillComName, 	
+						fbill_no: fbill_no, 		
+						loginCom: loginCom, 
+						loginComName: loginComName, 
+						userbillNo: userbillNo, 
+						userName: userName, 
+						privileges: privileges, 
+						fromPage: "vrsa312_list.html", 
+						detailInfo: rowObj,
+						hasSave : true,
+					}
+				});
+			}else{
+				mui.openWindow({
+					id: 'vrsa312_edit.html',
+					url: 'vrsa312_edit.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom, 	
+						teamBillComName: teamBillComName, 	
+						fbill_no: fbill_no, 		
+						loginCom: loginCom, 
+						loginComName: loginComName, 
+						userbillNo: userbillNo, 
+						userName: userName, 
+						privileges: privileges, 
+						fromPage: "vrsa312_list.html", 
+						detailInfo: rowObj,
+						hasSave : true,
+					}
+				});
+			}			
+		}
+		function eaModify(e,self){
+//			VlEvent.stop(e);
+//			VlEvent.prevent(e);
+			window.event ? window.event.cancelBubble = true : e.stopPropagation();
+			e.preventBubble ? e.preventDefault() : window.event.returnValue == false;
+			var li = jQuery(self).parents("li");
+			var dataRow = li.find(".data-row").eq(0).html();
+			var rowObj = JSON.parse(dataRow);
+			var footstyle = rowObj["内容"]["终端类型"]
+			if(footstyle == "餐饮"){
+				mui.openWindow({
+					id: 'vrsa312cy_edit.html',
+					url: 'vrsa312cy_edit.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom, 	
+						teamBillComName: teamBillComName, 	
+						fbill_no: fbill_no, 		
+						loginCom: loginCom, 
+						loginComName: loginComName, 
+						userbillNo: userbillNo, 
+						userName: userName, 
+						privileges: privileges, 
+						fromPage: "vrsa312_list.html", 
+						detailInfo: rowObj,
+						hasSave : true,
+						nflag : "修改",
+					}
+				});
+			}else{
+				mui.openWindow({
+					id: 'vrsa312_edit.html',
+					url: 'vrsa312_edit.html',
+					createNew: true,
+					extras: {
+						teamBillCom: teamBillCom, 	
+						teamBillComName: teamBillComName, 	
+						fbill_no: fbill_no, 		
+						loginCom: loginCom, 
+						loginComName: loginComName, 
+						userbillNo: userbillNo, 
+						userName: userName, 
+						privileges: privileges, 
+						fromPage: "vrsa312_list.html", 
+						detailInfo: rowObj,
+						hasSave : true,
+						nflag : "修改",
+					}
+				});
+			}
+			
+		}
+		
+	</script>
+
+</html>

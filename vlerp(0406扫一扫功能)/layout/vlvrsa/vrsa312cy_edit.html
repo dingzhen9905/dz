@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>终端维护（新建）</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/app.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common/mui.poppicker.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
+		<style>
+			form {
+				margin: 5px 0;
+			}
+			.mui-row{
+				padding:8px;
+			}
+			
+			.mui-input-row.lastInput:after{
+				height:0;
+			}
+			.hide{
+				display: none;
+			}
+			.vl-required:before{
+				content: "*";
+				color:crimson;
+			}
+			.auto-fill {
+				padding:1px;
+				padding-left:5px;
+				color: #242424;
+				font-size: 12px;
+				line-height: 14px;
+				height: 14px;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+			.auto-fill-title{color: gray;}
+			.vl-gray{color: gray;}
+			/**/
+			.mui-radio.mui-left label, .mui-checkbox.mui-left label{
+				margin-top:5px;
+				padding-left: 40px !important;
+				padding-right: 0px !important;
+			}
+			input[type="radio"],input[type="checkbox"] {
+				top: 12px !important;
+			}
+			.mui-radio input[type='radio']:before, .mui-checkbox input[type='checkbox']:before{
+				font-size: 18px !important;
+			}
+			.default-info{padding:10px auto;}
+			.default-info .mui-row{padding:0;margin: 0;}
+			select{
+					opacity: 0;
+			}
+			
+			.search_replace{
+					position: absolute;
+          }
+		 .btn{
+			display: inline-block;
+			border-radius: 50%;
+			border: 2px solid grey;
+			width: 20px;
+			height: 20px;
+			background: #EEEEEE;
+		  }
+		  .bsn{
+			background: #18B4ED
+		  }
+		  .dels{
+			background: gray
+		  }
+		</style>
+	</head>
+
+	<body style="height: 100%;">
+		<header class="mui-bar mui-bar-nav headerMain editHeader" id="head" style="height: 75px;">
+			<a class="mui-action-back mui-pull-left" id="goBack">返回</a>
+			<div class="mui-title plistTitle" >
+				<p id="pageTitle">编辑终端</p>
+				<h1 id="header" ></h1>	
+			</div>
+		</header>
+		<div class="mui-content" style="padding-top:75px;margin-top:5px;margin-bottom:30px;">
+			<div class="mui-input-group default-info hide" style="padding:5px 18px 5px 18px;margin-bottom:5px;position: relative;">
+				<div class="mui-row hide">
+					<div class="mui-row hide">
+						<span class="mui-col-xs-3 vl-gray">标识:</span>
+						<span class="mui-col-xs-8 " data-field="html.bill_no" id="bill_no" style="color:gray;"></span>
+					</div>
+					<div class="mui-row ">
+						<span class="mui-col-xs-3 vl-gray">制单单位:</span>
+						<span class="mui-col-xs-8 " data-field="html.bill_com" id="bill_com" style="color:gray;"></span>
+					</div>
+					<div class="mui-row ">
+						<span class="mui-col-xs-3 vl-gray">制单人代码:</span>
+						<span class="mui-col-xs-8 " data-field="html.bill_user" id="bill_user" style="color:gray;"></span>
+					</div>
+					<div class="mui-row ">
+						<span class="mui-col-xs-3 vl-gray">制单人:</span>
+						<span class="mui-col-xs-8 " data-field="html.bill_nunit" id="bill_nunit" style="color:gray;"></span>
+					</div>
+					<div class="mui-row ">
+						<span class="mui-col-xs-3 vl-gray">制单时间:</span>
+						<span class="mui-col-xs-8 " data-field="html.bill_date" id="bill_date" style="color:gray;"></span>
+					</div>
+				</div>
+				<div class="mui-row" >
+					<div class="mui-row hide">
+						<span class="mui-col-xs-3 vl-gray">片区代码:</span>
+						<span class="mui-col-xs-8 " id="fbill_no"></span>
+					</div>
+					<div class="mui-row hide">
+						<span class="mui-col-xs-3 vl-gray">供货商代码:</span>
+						<span class="mui-col-xs-8 " id="bill_coppo"></span>
+					</div>
+					<div class="mui-row">
+						<span class="mui-col-xs-3 vl-gray">供货商:</span>
+						<span class="mui-col-xs-8 "></span>
+					</div>
+				</div>
+			</div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;display: flex;">
+				<div id="J_pics_box" class="mui-col-xs-1" data-title="门头照" data-src="" data-hadsave="false" data-haveimg="false" style="width: 100px;height: 100px;">
+					<p class="pic-title" style="margin-left: 7px;">门头照</p>
+					<img src="" onerror="this.src='../../images/icon/plus.png'" style="width: 60px;height: 60px;margin: 0;"/>
+					<span id="bill_oppo" style="display: none;"></span>
+				</div>
+				<div class="mui-col-xs-9" style="margin: 20px 0 0 0;">
+					<div class="mui-input-row">
+						<label class="">终端代码</label>
+						<input id="bill_id" type="text" class="red-border" placeholder="录入终端代码" required="required">
+					</div>
+					<div class="mui-input-row">
+						<label class="vl-required">终端名称</label>
+						<input id="bill_name" type="text" class="mui-input-clear red-border requiredInput" placeholder="录入终端名称" required="required" >
+					</div>
+				</div>
+				<div id="worklocus" class="mui-col-xs-2" style="margin-top: 30px;display: none;">
+					<button>修改<br />名称</button>
+				</div>
+			</div>
+            
+		    <div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+		    	<div id="J_threeLevelAddr" class="threelevel-addr">
+		    		<div id="mui-row threelevel-pickbox">
+		    			<div class="mui-input-row mui-col-xs-12" >
+		    				<label class="">所在地区</label>
+		    				<input id="linkbd_linkprov" type="text" class="mui-input-clear threelevel-prov" placeholder="点击选择所在地区" readonly="true" value="">
+		    			</div>
+		    			<a class="mui-icon mui-icon-arrowright threelevel-icon"></a>
+		    		</div>
+		    		<div class="mui-row threelevel-item">
+		    			<span class=" mui-col-xs-4">所在街道：</span>
+		    			<span class=" mui-col-xs-8 threelevel-street" id="linkbd_linkstreet"></span>
+		    		</div>					
+		    		<div class="mui-row threelevel-item hide">
+		    			<span class=" mui-col-xs-4">地区位置：</span>
+		    			<span class=" mui-col-xs-8 threelevel-lal" id="linkbd_lngposition"></span>
+		    		</div>
+		    	</div>
+				<div class="mui-input-row ">
+					<label style="padding-left: 18px;" class="vl-required">详细地址</label>
+					<input id="linkvd_corraddr" type="text" class="mui-input-clear requiredInput" placeholder="录入详细街道、楼牌号等">
+				</div>
+				<div class="mui-row" style="border-bottom:1px solid #E3E3E3;display: flex;">
+					<label class="mui-col-xs-3" style="margin-left: 4px;padding-left: 3px;">经纬度</label>
+					<span class="mui-col-xs-3" style="margin-left: 22px;" id="bill_ipaddr"></span>
+					<span class="mui-col-xs-3" id="bill_gpsaddr"></span>
+					<button class="mui-col-xs-2 hide" id="reLocate" style="padding:3px;margin:0;color: #007AFF;font-size: 12px;">重新定位</button>					
+				</div>
+				<div class="mui-input-row lastInput">
+					<label style="padding-left: 14px;">定位地址</label>
+					<span id="bill_context"></span>
+				</div>
+		    </div>
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				
+				<div class="mui-input-row">
+					<label class="">负责人姓名</label>
+					<input id="bill_title" data-vfield="bill_title" type="text" class="vl-field mui-input-clear" placeholder="录入负责人姓名">
+				</div>
+				<div class="mui-input-row">
+					<label class="">负责人电话</label>
+ 					<input id="bill_bid" data-vfield="bill_bid" type="number" class="vl-field mui-input-clear" placeholder="手机号或者加区号的电话号码，11位" required="required">
+				</div>
+				<div class="mui-input-row lastInput">
+					<label class="">所在片区</label>
+					<input id="bill_nspec" data-vfield="bill_nspec" readonly="readonly" type="text" class="vl-field mui-input-clear" style="font-size: 12px;" required="required">
+					<a class="mui-icon mui-icon-arrowright threelevel-icon"></a>
+				</div>
+			</div>
+			
+			
+			<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+				<div style="border-bottom:1px solid #E3E3E3;">
+					<div class="mui-row" style="">
+						<span class="mui-col-xs-10">终端类型</span>
+					</div>
+					<div class="mui-row " style="padding:10px 0 0 0;margin:0 0 0 16px;border-top:1px dashed #E3E3E3;">
+						<p class="auto-fill mui-col-xs-4 auto-fill-title">> 终端类型：</p><p id="col_channel_type" class="auto-fill mui-col-xs-8">餐饮</p>
+					</div>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left" style="padding:11px 0 11px 13px;">是否营业</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>是</label>
+						<input name="col_business" checked  type="radio" value="是">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>否</label>
+						<input name="col_business"  type="radio" value="否">
+					</div>
+				</div>	
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left" style="padding:11px 0 11px 15px;">终端级别</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-2">
+						<label>A</label>
+						<input name="col_terminal_type" type="radio" value="A" >
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-2">
+						<label>B</label>
+						<input name="col_terminal_type" type="radio" value="B">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-2">
+						<label>C</label>
+						<input name="col_terminal_type" type="radio" value="C">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-2">
+						<label>D</label>
+						<input name="col_terminal_type" type="radio" value="D">
+					</div>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left" style="padding:11px 0 11px 15px;">是否连锁</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>是</label>
+						<input name="col_chain_flag" type="radio" value="是">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>否</label>
+						<input name="col_chain_flag" type="radio" value="否">
+					</div>
+				</div>	
+				<div class="mui-input-row">
+					<label class="">连锁店数量</label>
+					<input id="col_chain_qty" type="number" class="mui-input-clear check inport" placeholder="录入连锁店数量">
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left" style="padding:11px 0 11px 15px;">营业执照</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>有</label>
+						<input name="col_business_licen" type="radio" value="有">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>无</label>
+						<input name="col_business_licen" type="radio" value="无">
+					</div>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">投入类型</label>
+						<input 	type="text" 
+								class="mui-input-clear j-pick-data check" 						
+								id="col_invest_type" 						
+								readonly="readonly" 						
+								placeholder="选择投入类型" 						
+								required="required"						
+								data-title = "投入类型"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "投入类型"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">销售类型</label>
+						<input 	type="text" 
+								class="mui-input-clear j-pick-data check" 						
+								id="col_monopoly" 						
+								readonly="readonly" 						
+								placeholder="选择销售类型" 						
+								required="required"						
+								data-title = "餐饮销售类型"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "餐饮销售类型"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">菜系</label>
+						<input 	type="text" 
+								class="mui-input-clear j-pick-data check" 						
+								id="col_cooking_style" 						
+								readonly="readonly" 						
+								placeholder="选择菜系" 						
+								required="required"						
+								data-title = "菜系"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "菜系"></a>
+				</div>
+                <div class="mui-input-row" style="height: auto;">
+                	<div class="mui-input-row ">
+                		<label class="">营业面积/m2</label>
+                		<input 	type="text" 						
+                				class="mui-input-clear j-pick-data check" 						
+                				id="col_operat_area" 						
+                				readonly="readonly" 						
+                				placeholder="选择营业面积" 						
+                				required="required"						
+                				data-title = "餐饮营业面积"						
+                		/>
+                		<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+                	</div>
+                    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "餐饮营业面积"></a>
+                </div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">终端位置</label>
+						<input 	type="text" 						
+								class="mui-input-clear j-pick-data check" 						
+								id="col_consumer_group" 						
+								readonly="readonly" 						
+								placeholder="选择终端位置" 						
+								required="required"						
+								data-title = "终端位置"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "终端位置"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">人均消费</label>
+						<input 	type="text" 						
+								class="mui-input-clear j-pick-data check" 						
+								id="col_per_capita" 						
+								readonly="readonly" 						
+								placeholder="选择人均消费" 						
+								required="required"						
+								data-title = "人均消费"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "人均消费"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">包房数量</label>
+						<input 	type="text" 						
+								class="mui-input-clear j-pick-data check" 						
+								id="col_viproom_qty" 						
+								readonly="readonly" 						
+								placeholder="选择包房数量" 						
+								required="required"						
+								data-title = "包房数量"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "包房数量"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">堂食散桌数量</label>
+						<input 	type="text" 						
+								class="mui-input-clear j-pick-data check" 						
+								id="col_hall_qty" 						
+								readonly="readonly" 						
+								placeholder="选择堂食散桌数量" 						
+								required="required"						
+								data-title = "堂食散桌数量"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "堂食散桌数量"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-4 mui-pull-left" style="padding:11px 0 11px 15px;">是否有宴会厅</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>是</label>
+						<input name="col_banquet_hall" type="radio" value="是">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>否</label>
+						<input name="col_banquet_hall" type="radio" value="否">
+					</div>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-4 mui-pull-left" style="padding:11px 0 11px 15px;">是否有室外排挡</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>是</label>
+						<input name="col_out_gear" type="radio" value="是">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>否</label>
+						<input name="col_out_gear" type="radio" value="否">
+					</div>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">是否摆啤酒堆头</label>
+						<input 	type="text" 						
+								class="mui-input-clear j-pick-data check" 						
+								id="col_beer_pilehead" 						
+								readonly="readonly" 						
+								placeholder="选择是否摆啤酒堆头" 						
+								required="required"						
+								data-title = "是否摆啤酒堆头"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "是否摆啤酒堆头"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">燕京展柜</label>
+						<input 	type="text" 						
+								class="mui-input-clear j-pick-data check" 						
+								id="col_yj_box" 						
+								readonly="readonly" 						
+								placeholder="选择燕京展柜" 						
+								required="required"						
+								data-title = "燕京展柜"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "燕京展柜"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">非燕京展柜</label>
+						<input 	type="text" 						
+								class="mui-input-clear j-pick-data check" 						
+								id="col_noyj_box" 						
+								readonly="readonly" 						
+								placeholder="选择非燕京展柜" 						
+								required="required"						
+								data-title = "非燕京展柜"
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "非燕京展柜"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">服务员数量</label>
+						<input 	type="text" 						
+								class="mui-input-clear j-pick-data check" 						
+								id="col_person_qty" 						
+								readonly="readonly" 						
+								placeholder="选择服务员数量" 						
+								required="required"						
+								data-title = "服务员数量"
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "服务员数量"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">停车位数量</label>
+						<input 	type="text" 						
+								class="mui-input-clear j-pick-data check" 						
+								id="col_space_qty" 						
+								readonly="readonly" 						
+								placeholder="选择停车位数量" 						
+								required="required"						
+								data-title = "停车位数量"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "停车位数量"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">火爆指数</label>
+						<input 	type="text" 						
+								class="mui-input-clear j-pick-data check" 						
+								id="col_fiery" 						
+								readonly="readonly" 						
+								placeholder="选择火爆指数" 						
+								required="required"						
+								data-title = "火爆指数"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "火爆指数"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-input-row ">
+						<label class="">每周啤酒耗量</label>
+						<input 	type="text" 						
+								class="mui-input-clear j-pick-data check" 						
+								id="col_week_consume" 						
+								readonly="readonly" 						
+								placeholder="选择每周啤酒耗量" 						
+								required="required"						
+								data-title = "每周啤酒耗量"						
+						/>
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+				    <a class="mui-icon mui-icon-arrowright threelevel-icon j-pick-data" data-title = "每周啤酒耗量"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-4 mui-pull-left" style="padding:11px 0 11px 15px;">外卖平台</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>有</label>
+						<input name="col_online_shopping" type="radio" value="有">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>无</label>
+						<input name="col_online_shopping" type="radio" value="无">
+					</div>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-4 mui-pull-left" style="padding:11px 0 11px 15px;">燕京是否上平台</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>是</label>
+						<input name="col_yj_online" type="radio" value="是">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>否</label>
+						<input name="col_yj_online" type="radio" value="否">
+					</div>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-4 mui-pull-left" style="padding:11px 0 11px 15px;">啤酒是否免费</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>是</label>
+						<input name="col_beer_free" type="radio" value="是">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>否</label>
+						<input name="col_beer_free" type="radio" value="否">
+					</div>
+				</div>
+				<div class="mui-input-row clickthis" style="height: auto;"  >
+					<div class="mui-input-row " data-row= "餐饮销售产品">
+						<label>燕京产品</label>
+						<span id="col_sale_product" class="search_replace"></span>
+					    
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+					<a class="mui-icon mui-icon-arrowright threelevel-icon"></a>
+				</div>
+				<div class="mui-input-row clickthis" style="height: auto;"  >
+					<div class="mui-input-row " data-row= "雪花产品">
+						<label>雪花产品</label>
+						<span id="col_snowflake" class="search_replace"></span>
+					    
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+					<a class="mui-icon mui-icon-arrowright threelevel-icon"></a>
+				</div>
+				<div class="mui-input-row clickthis" style="height: auto;"  >
+					<div class="mui-input-row " data-row= "青岛产品">
+						<label>青岛产品</label>
+						<span id="col_qingdao" class="search_replace"></span>
+					    
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+					<a class="mui-icon mui-icon-arrowright threelevel-icon"></a>
+				</div>
+				<div class="mui-input-row clickthis" style="height: auto;"  >
+					<div class="mui-input-row " data-row= "百威产品">
+						<label>百威产品</label>
+						<span id="col_baiwei" class="search_replace"></span>
+					    
+						<!-- <input id="bill_bflow" type="text" class="mui-input-clear requiredInput j-pick-data" readonly="readonly" placeholder="选择客户类型" required="required"> -->
+					</div>
+					<a class="mui-icon mui-icon-arrowright threelevel-icon"></a>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left" style="padding:11px 0 11px 15px;">乌苏</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>有</label>
+						<input name="col_wusu" type="radio" value="有">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>无</label>
+						<input name="col_wusu" type="radio" value="无">
+					</div>
+				</div>
+				<div class="mui-input-row" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left" style="padding:11px 0 11px 15px;">泰山</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>有</label>
+						<input name="col_taishan" type="radio" value="有">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>无</label>
+						<input name="col_taishan" type="radio" value="无">
+					</div>
+				</div>
+				<div class="mui-input-row lastInput" style="height: auto;">
+					<div class="mui-col-xs-3 mui-pull-left" style="padding:11px 0 11px 15px;">竞品扎啤</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>有</label>
+						<input name="col_compet_beer" type="radio" value="有">
+					</div>
+					<div class=" mui-pull-left mui-radio mui-left mui-col-xs-3">
+						<label>无</label>
+						<input name="col_compet_beer" type="radio" value="无">
+					</div>
+				</div>
+				<div class="mui-input-group" style="padding:5px 18px 5px 18px;margin-bottom:5px;">
+					<div class="mui-row" style="">
+						<span id="yijian" class="mui-col-xs-3" style="color:#ACACB4;">备注：</span>
+						<input type="text" class="mui-col-xs-8" style="font-size: 13px;" id="bill_atta"/>
+					</div>
+				</div>
+			</div>
+			<div class="mui-row" style="padding:5px 18px 5px 10px;background: #fff;">
+				<div class="mui-row" style="margin: 0;overflow: hidden;">
+					<div class="mui-col-xs-1"></div>
+					<button class="mui-btn mui-btn-primary mui-btn-outlined mui-col-xs-10" id="saveBtn" style="padding:3px 5px;"> 保 存 </button>
+					<div class="mui-col-xs-1"></div>
+				</div>
+			</div>		
+		</div>
+		
+			
+		
+		<div id="work"  style="display: none; width: 100%;background: #000000; background: rgba(0, 0, 0, 0.5);z-index: 10000;height: 100%;position: fixed;top: 0;">
+		  <div style="display: flex;justify-content: center;align-items:center ;width: 100%;height: 100%;">	
+		   <div style="font-size: 13px;width: 300px;background: #FFFFFF;padding: 5px;">
+				<ul id="col_sale" style="list-style:none;padding: 0;">
+				
+				</ul>
+				<p>
+					<span style="float: left; margin: 15px 0 10px 10px;" id="shit" class="fontstyle">取消</span>
+					<span style="float: right;margin: 15px 10px 10px 0;" id="yeah" class="fontstyle">确定</span>
+				</p>
+		   </div>
+		  </div>			   
+		</div>
+	</body>
+	<!--出库扫码-->
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FQCQkNvWb9g4FnFXN3IGieSwQgLOR2PU&services=&t=20171004185957"></script>
+	<script src="../../js/md5.js"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/mui.poppicker.js"></script>
+	<script src="../../js/vlindex.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/immersed.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/vldata/data-city-3.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/vledit/pick-addr.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		mui.init({});
+		var $$ = jQuery.noConflict();
+		var teamBillCom = "";
+		var teamBillComName = "";
+		var date = new Date();
+		var userbillNo = "";
+		var loginCom = "";
+		var loginComName = "";
+		var flagNew = "";
+		var onlyCode = "";
+		var fbill_no = "";
+		var detailInfo = null;
+		var hasSave = false; // 用于判断是否保存过 
+		var rqsData = "";
+		var deptname = "";
+		var bill_task = "";
+		var mainInfo = {};
+		var detailArr = null;
+		var nflag = "新增";
+		var ID = "";
+		var MDInfo = {
+			"values":{
+				"main":{},
+				"detail":[]
+			}
+		}
+		var terminal = {
+			"经销商" : "vdvc20100_20170801_0101v101",
+			"终端" : "vdvc20100_20170801_0101v102",
+		}
+		var oPageTitle = {
+			"true" : "修改终端信息",
+			"false" : "新增终端"
+		}
+		var getElem = function(el){return document.getElementById(el);};
+		var oBtnEdit = getElem('toEdit');
+		var vc312Init = {
+				bstatus : {	"L" : "待送审","S" : "待审核","Y" : "已审核","YF": "已失效","new":"录入中"},
+				isNew : {
+					"true" : {
+						"btask":"d_new",
+						"bno" : VlTools.getBno('vdvc312'),
+						"bstatus" : "new",
+						"setValue" : false
+					},
+					"false" : {
+						"btask":"d_save",
+						"bno" 		: "",
+						"bstatus" 	: "",
+						"setValue" : true
+					}
+				},
+			}
+		var normalData ={
+			h : {
+				bill_no 	:"",
+				fbill_no 	:"",				
+				bill_user 	:"",
+				bill_com 	:"",
+				bill_coppo 	:"",
+				bill_oppo   : "",
+				bill_context :"",
+				bill_ipaddr :"",
+				bill_gpsaddr:"",				
+				bill_unit: "",
+				bill_remark:"",
+				bill_nunit : "",
+				bill_gpsaddr:"",
+			},
+			 v : {
+			 	bill_id 	:"",
+			 	bill_name 	:"",
+				bill_title  : "",
+				bill_bid  : "",
+				bill_nspec:"",
+			},
+			c : {}
+		}
+		var oText ={
+			h : {
+				linkbd_linkstreet	: "",
+				linkbd_lngposition	: "",
+				col_sale_product : "",
+				col_snowflake : "",
+				col_qingdao : "",
+				col_baiwei : "",
+				col_channel_type : "",
+			},
+			v : {
+				col_chain_qty : "",
+				linkbd_linkprov : "",
+				linkvd_corraddr : "",
+				col_invest_type : "",
+				col_monopoly : "",
+				col_cooking_style : "",
+				col_operat_area : "",
+				col_consumer_group : "",
+				col_per_capita : "",
+				col_viproom_qty : "",
+				col_hall_qty : "",
+				col_beer_pilehead: "",
+				col_yj_box: "",
+				col_noyj_box: "",
+				col_person_qty: "",
+				col_space_qty : "",
+				col_fiery : "",
+				col_week_consume : "",
+			},
+			c : {
+				col_terminal_type : "",  
+				col_chain_flag : "",
+                col_business_licen :"",
+				col_banquet_hall :"",
+				col_out_gear :"",
+				col_online_shopping :"",
+				col_yj_online :"",
+				col_beer_free :"",
+				col_wusu :"",
+				col_taishan :"",
+				col_compet_beer :"",
+				col_business : "",
+			}
+		}
+		mui.plusReady(function() {
+			mobile =plus.os.name;	//Apple（或iOS）/null/Android 获取当前设备信息
+			// TODO 2. 接收传过来的参数=============================
+			var self = plus.webview.currentWebview();
+			// 基本参数(必要)
+			teamBillCom 	= self.teamBillCom; 	// 1.管理单位代码
+			teamBillComName = self.teamBillComName;	// 2.管理单位名称
+			fbill_no 		= self.fbill_no;		// 3.fbill_no是
+			loginCom 		= self.loginCom;		// 4.登录人的代码
+			loginComName 	= self.loginComName;	// 5.登录人的名称
+			userbillNo 		= self.userbillNo;		// 6.登录单位代码
+			userName 		= self.userName;		// 7.登录单位名称
+			userRole 		= self.userRole;		// 7.登录单位名称
+			privileges 		= self.privileges;		// 8.当前的权限是
+			fromPage 		= self.fromPage;		// 9.从哪个页面来
+			// 其他
+			hasSave = self.hasSave;   
+			deptname = self.deptname;
+			//console.log(JSON.stringify(self))
+			// console.log("1s"+hasSave)
+			
+			if(hasSave) {  
+				detailInfo = self.detailInfo;
+//					console.log(JSON.stringify(detailInfo))
+                //修改id="J_pics_box"
+				nflag =  typeof self.nflag === "undefined" ? nflag : self.nflag ;
+				hasSave = true; 
+				document.getElementById("worklocus").style.display = "block";
+				document.getElementById("reLocate").style.display = "block";
+				// VlEdit.setValue(detailInfo,normalData,oText);
+
+			}else{
+				//新增			
+				VlTools.getLocate(sCBgetLocate, eCBgetLocate);
+				document.getElementById("reLocate").style.display = "none";
+				findDept();
+			}
+			checkboxs()//多选小构件获取值
+			eShowPicker()  //小构件查询
+			getElem("header").innerHTML = teamBillComName;
+			getElem("pageTitle").innerHTML = oPageTitle[hasSave];
+			bill_task = "d_new";
+			document.getElementById("bill_date").innerHTML = VlDate.get(new Date(), "_ymdhms");
+			document.getElementById("bill_no").innerHTML = VlTools.getBno("vdvc312");
+			document.getElementById("bill_user").innerHTML = userbillNo;
+			document.getElementById("bill_nunit").innerHTML = userName;
+			document.getElementById("bill_com").innerHTML = teamBillCom;
+
+			
+			document.getElementById("saveBtn").addEventListener("tap",bSendBtn); //bSendBtn
+			document.getElementById("worklocus").addEventListener("tap", worklocus, false);
+			document.getElementById("bill_nspec").addEventListener("tap",agent);
+			document.getElementById("reLocate").addEventListener('tap', eReLocate, false);
+			document.getElementById("yeah").addEventListener("tap", changebox, false);
+			document.querySelectorAll(".clickthis").forEach(event=>{
+				//window.event.cancelBubble = true
+				event.addEventListener('tap',function(e){ kkk(e,this) },false)
+			})
+			document.getElementById("shit").addEventListener("tap", function(){
+				$$("#col_sale>li>span").each(function(){
+					$$(this).removeClass("bsn")
+				})
+				let compute = document.getElementById(ID).innerHTML
+				if(compute){
+					compute.split(",").forEach(function (value) {
+						$$("#col_sale>li").each(function(){
+							if(value == $$(this).attr("data-row")){
+								$$(this).find("span").addClass("bsn")
+							}
+						})
+					})
+				}
+				document.getElementById("work").style.display = "none"
+			}, false);
+			mui(".mui-input-group").on("tap", ".j-pick-data", function (e){ eaPickData(e, this) });
+
+           	
+		}); // plusReady
+		//点确定产品
+		function changebox() {			 
+			 let arr = serchbox()
+             $$("#"+ID).html(arr.toString()) 	
+		    document.getElementById("work").style.display = "none"
+		}
+		//确认处理函数
+		function serchbox(){
+			let arr=[]
+			let arrTo = $$(".bsn")
+			for(var i=0; i<arrTo.length;i++){	
+			 let arrSo = $$(arrTo[i])
+			 arr.push(arrSo.parent().attr("data-row"))				
+			}
+			return arr
+		}
+		function kkk(e,self){
+			window.event ? window.event.cancelBubble = true : e.stopPropagation();
+			e.preventBubble ? e.preventDefault() : window.event.returnValue == false;
+			document.getElementById("work").style.display = "block"
+//			console.log(self)
+			ID = self.children[0].children[1].id			
+			var paremsa = self.children[0].getAttribute("data-row")
+			var ppp = parems[paremsa]
+			var contList = document.getElementById("col_sale")
+			var text = '';	
+			for(var i = 0;i < ppp.length; i++){
+				var checkboxs = ppp[i]["title"]
+				text +="<li style='font-size:15px;height:40px;' data-row="+checkboxs+">"+checkboxs+"<span class='btn' style='float:right'></span></li>"				
+			}
+			contList.innerHTML=text
+			document.querySelectorAll("#col_sale>li").forEach(val=>{
+			   val.addEventListener("tap",function(e){
+			     checkbox(this)
+			   } )
+			 })
+			 if(hasSave){
+				 var selectX = document.getElementById(ID).innerHTML
+				 console.log(selectX)
+				 if(selectX){
+				 	selectX.split(",").forEach(function (value) {
+				 		$$("#col_sale>li").each(function(){
+				 			if(value == $$(this).attr("data-row")){
+				 				$$(this).find("span").addClass("bsn")
+				 			}
+				 		})
+				 	})
+				 }
+				 if(selectX=="均无"){	
+				    	$$("#col_sale").children("li:last-child").siblings().find("span").addClass("dels")
+				 } 
+			 }	
+		}
+		function eShowPicker(){
+			var _p = {
+				bill_task : "VR_mapp101_query_01",
+				bill_com : teamBillCom,
+				bill_user : userbillNo,
+				bill_bflow : "客户管理",
+				bill_oppo : "vdvc312",
+				currentPage: 1,
+				pageSize: 1,
+				paramText: ""
+			}
+			VlAjax.post({
+				port : "active",
+				headers : "json",
+			},_p,sCBfind)	
+		}
+		function sCBfind(data) {
+			if(data.data.length !== 0){
+				pickSheet =  JSON.parse(data.data[0]['内容选项'])
+			}
+		}
+		//多选小构件取值
+		function checkboxs(){
+			var _p = {
+				bill_task : "VR_mapp101_query_01",
+				bill_com : teamBillCom,
+				bill_user : userbillNo,
+				bill_bflow : "客户管理",
+				bill_oppo : "vdvc312",
+				currentPage: 1,
+				pageSize: 1,
+				paramText: ""
+			}
+			VlAjax.post({
+				port : "active",
+				headers : "json",
+			},_p,checkboxend)
+		}
+		function checkboxend(data) {
+				  parems = JSON.parse(data.data[0]['内容选项'])
+				  if(hasSave){
+				  	findfillData(detailInfo);
+				  }
+		}
+        function checkbox(e){
+		    let li=$$(e)
+			 if(li.html().slice(0,2)=="均无"){
+			   li.siblings().find("span").addClass("dels")
+			   if(li.find("span").hasClass("bsn")){
+				li.siblings().find("span").removeClass("dels")				
+			   }
+			   li.siblings().find("span").removeClass("bsn")
+			 }
+			 if(!(li.find("span").hasClass("dels"))){
+			  li.find("span").toggleClass("bsn")
+			 }
+		}
+		function eReLocate(){
+			document.getElementById("bill_context").innerHTML = "";
+			VlTools.getLocate(sCBgetLocate, eCBgetLocate);
+		}
+		function eaPickData(e, self){
+				var self = $$(self)
+				if(self.hasClass("mui-icon")){
+					self = self.prev().find("input")
+				}
+				var _title = self.attr("data-title"),
+					_data = pickSheet[_title];
+				if(_data){
+					plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: _data
+					}, function(e) {
+						if(e.index != -1){
+							self.val(_data[(e.index - 1)].title)
+						}
+					});
+				}else{
+					alert("请联系管理员相应增加类型。")
+				}
+		}
+		//修改名称弹出框
+		function worklocus(){
+			var names = document.getElementById("bill_name").innerHTML
+			mui.prompt(`${names}`,'请输入您修改的新名称','用户名称',['取消','确定'],function(e){
+		
+				if (e.index == 1) {
+					if (e.value == ""){
+					  mui.toast('名称不能为空');
+					  return false;
+					}
+				  var query = {
+					  bill_task : "VE_vdvc101_update_01",
+					  bill_no : detailInfo['参数'],
+					  bill_name : e.value,
+				  }
+//				  console.log(JSON.stringify(query))
+				  VlAjax.post({"port":"sendTask","headers" : "json"}, query, sCBtask);
+				}
+			},'div');
+		}
+		function sCBtask(){
+			  location.reload()
+		}
+		window.addEventListener("vdvc311VRdept01",agents)
+		function agents(event){
+			    var bill_name=event.detail.linkName
+			    var bill_dept=event.detail.dataRow
+//			      console.log(JSON.stringify(bill_name))
+//			      console.log(JSON.stringify(bill_dept))
+			    document.getElementById("bill_nspec").value=bill_name
+			    document.getElementById("fbill_no").innerHTML=bill_dept
+		}
+		function agent(){
+				 mui.openWindow({
+					 id :"vdvc311_VRdept.html",
+					 url:"../vlfind/vdvc311_VRdept.html",
+					 createNew: true,
+					 extras: {
+						teamBillCom: teamBillCom,
+						teamBillComName: teamBillComName,
+						userbillNo: userbillNo,
+						loginCom: loginCom,
+						loginComName: loginComName,
+						fromPage: "vrsa312cy_edit.html",	
+						billtask: "VR_vdvc103_query_01",
+						billuser : userbillNo,
+					 }
+				 })
+		}
+		function sCBgetLocate(p){
+		  if(plus.os.name ==="Android"){
+			  bill_ipaddr = p.coords.longitude;
+			  bill_gpsaddr = p.coords.latitude;
+			  //
+			  document.getElementById("bill_ipaddr").innerHTML = bill_ipaddr;
+			  document.getElementById("bill_gpsaddr").innerHTML = bill_gpsaddr;
+			  document.getElementById("bill_context").innerHTML = p.addresses;
+		  }else{
+			  var provinces=p.address.province
+			  var citys=p.address.city
+			  var districts=p.address.district
+			  var streets=p.address.street
+			  var titles=provinces+citys+districts+streets
+			  document.getElementById("bill_context").innerHTML = titles;
+			  document.getElementById("bill_ipaddr").innerHTML = p.longitude;
+			  document.getElementById("bill_gpsaddr").innerHTML = p.latitude;
+		  }
+			  
+			
+		}
+		function eCBgetLocate(e){
+			alert(JSON.stringify(e))
+		}
+		// 保存指令
+		function saveBtn(){ 			
+			plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+			/*  门头照控制
+			Imgsrc=jQuery("#J_pics_box").find("img").attr("src")
+			if(Imgsrc=="../../images/icon/plus.png"){
+				mui.toast("请拍摄门头照");
+				plus.nativeUI.closeWaiting()
+				return false
+			}  */
+			
+			/* KA卖场控制
+			var checkes = document.getElementById("col_channel_subs").innerHTML 
+			if(checkes == "KA卖场"){
+				var inhtml = mui(".inport").length;
+				for(var i = 0; i < inhtml; i++) {
+					    $$(".inport")[i].classList.remove("requiredInput")
+						
+				}
+			}*/
+			/*  是否营业控制
+			var arr = $$("input[name='col_business']:checked").val();
+			if(arr == "否"){
+				var InputLens = mui(".check").length;
+				for(var i = 0; i < InputLens; i++) {
+					    $$(".check")[i].classList.remove("requiredInput")
+				}
+			}else{
+				//单选必填项
+				var arr=new Array();
+				    arr[0]=document.getElementsByName("col_terminal_type");
+				    arr[1]=document.getElementsByName("col_chain_flag");
+				    arr[2]=document.getElementsByName("col_shopping_cart");
+				    arr[3]=document.getElementsByName("col_online_shopping");	
+				var res=0			 
+				 for(var i=0;i<arr.length;i++){
+						for(var j=0;j<arr[i].length;j++){
+							if(arr[i][j].checked==true){
+								res++
+							}
+						}		
+				    }
+				if(res<arr.length) {
+				    mui.toast("终端级别,是否连锁,购物车,网购平台为必选项");
+					plus.nativeUI.closeWaiting()
+				    return false;
+				   }
+			}*/
+			var checkResults = VlEdit.checkRequired();//验证是否为必填字段  
+			var checkphone = document.getElementById('bill_bid').value
+			
+			if(checkphone != ""){
+				var isMobileOk = checkMobile(document.getElementById('bill_bid').value);
+				if(!checkResults || !isMobileOk){
+					plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+					return false;
+				}
+			}
+			if(!checkResults){
+				plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+				return false;
+			}
+			
+  
+			rqsData = VlEdit.getValue(normalData,oText); //获取每一个输入框的值的方法   
+			rqsData = getFieldValue(rqsData);
+			rqsData.bill_nflag = nflag;
+			rqsData.bill_unit = "终端";
+			
+			rqsData.bill_text = JSON.parse(rqsData.bill_text);
+			rqsData.bill_text[0]['prod_no'] = terminal[rqsData.bill_unit]
+			rqsData.bill_text = JSON.stringify(rqsData.bill_text);	
+			MDInfo.values.main = VlUtils.deepCopy(rqsData,MDInfo.values.main);
+		    MDInfo.values.main.bill_task="Y"
+			if(hasSave){
+				//修改
+				rqsData.bill_remark=document.getElementById("bill_atta").value
+			 	rqsData = VlEdit.compareData(mainInfo, rqsData, false);
+				rqsData.bill_task = "d_save";
+				rqsData.bill_coppo=document.getElementById("bill_coppo").innerHTML
+				rqsData.bill_context=document.getElementById("bill_context").innerHTML
+			}else{
+				//新增
+				rqsData.bill_task = "d_new";
+				rqsData.bill_remark=document.getElementById("bill_atta").value
+				rqsData.bill_id=document.getElementById('bill_id').value
+				
+			}
+			VlAjax.post({"port":"sendTask","headers":"json", "async" : false}, rqsData, sCBSave,eCBSave,Ech);
+		    
+			return true;
+		}
+		//北京手机号限制处理
+		function checkMobile(str){
+			var reg1 = /^1\d{10}$/,
+				reg2 = /^[A-Za-z0-9]{4}$/,
+				reg3 = /^[A-Za-z0-9]{5}$/,
+				reg4 = /^0\d{10}$/,
+				res = reg1.test(str) || reg2.test(str) || reg3.test(str) || reg4.test(str);
+			if (res) {
+				return true;
+			} else {
+			    mui.toast("录入负责人手机号或者加区号的电话号码，必须为11位");
+			    return false;
+			}
+		}
+        function eCBSave(data){
+		}
+		function Ech(data){
+            
+			ECBcode = data.error_description
+			mui.toast(ECBcode)
+		}
+		// 送审指令
+		function bSendBtn(){
+			plus.nativeUI.showWaiting();//这里是开始显示原生等待框
+			if(!saveBtn()){
+				return;
+			}			
+			plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+			hadSend = true;
+			//	console.log(JSON.stringify(MDInfo))
+			if(ECBcode  == ""){
+				VlPage.backToPage("vrsa312_plist.html","vrsa312_list.html");
+				plus.webview.currentWebview().close();
+			}
+			
+		}
+		function sCBimg(data){
+			//判断送审前与刚打开页面的图片路径进行对比
+			Imgsrc=jQuery("#J_pics_box").find("img").attr("src")
+			if(Imgsrc=="../../images/icon/plus.png"){
+			    return
+			}else{
+				if(hasSave){
+					if(Images!=Imgsrc){
+						var load={
+							bill_task : "VR_vdvc312_query_13",
+							bill_no   : rqsData.bill_no,
+						}
+						VlAjax.post({"port":"active","headers":"json", "async" : false}, load, sCBload);
+					}else{
+						return;  
+					}
+				 }else{
+					 var load={
+						bill_task : "VR_vdvc312_query_13",
+						bill_no   : rqsData.bill_no,
+					 }
+					 VlAjax.post({"port":"active","headers":"json", "async" : false}, load, sCBload);
+				 }
+			}		
+		}
+		function sCBload(data){
+			var aImgKeys=[]
+			var aImgPaths=[]
+			var oData=eval(data.data)
+			var name=oData[0]["图片图片"]
+			var oImg = jQuery("#J_pics_box").attr("data-src")
+			aImgKeys.push(name)
+			aImgPaths.push(oImg)
+			//图片上传
+		   VlAjaxImgload.img(aImgKeys, aImgPaths)
+		}
+		function sCBloadimg(data){
+		}
+		function sCBSave(data){
+			    ECBcode=""  //判断客户是否已存在变量
+				var imag={
+					bill_task : "VE_vdvc101_insert_01",
+					bill_no : rqsData.bill_no,
+					bill_user : rqsData.bill_user,
+				}
+				VlAjax.post({"port":"sendTask","headers":"json", "async" : false}, imag, sCBimg);
+			plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+			hasSave = true;
+			mainInfo = VlUtils.deepCopy(rqsData,mainInfo);
+		}
+
+		function findDept(){
+			var p = {
+				bill_task	: "VR_vdvc103_query_01",
+				bill_title	: '', 
+				bill_com	: teamBillCom, 
+				bill_user 	: userbillNo,
+			}
+//			console.log(JSON.stringify(p))
+			VlAjax.post({"port":"active","headers":"json"}, p, sCBFindDept)
+		}
+
+		function sCBFindDept(data){
+			if(data.data.length !== 0){
+				var oData = {};
+				for(var k in data.data[0]) {
+					oData[k.slice(0, 2)] = data.data[0][k];
+				}
+				oData['内容'] = JSON.parse(oData['内容'])
+				document.getElementById('fbill_no').innerHTML = oData['图片'];
+				document.getElementById('bill_nspec').value = oData['标题'];
+			}
+		}
+        
+		// TODO 6. 拍照
+		document.getElementById("J_pics_box").addEventListener("tap",pa,false)
+		
+		var _oTrueFalse ={"true": true, "false": false};
+		
+		function pa() {
+			var li = this;
+			event.stopPropagation();
+			event.preventDefault();
+			var idx = jQuery(li).index();
+			var haveImg = _oTrueFalse[jQuery(li).attr("data-haveimg")];
+			// haveImg  ? EditPhotos(idx) : takePhoto(idx);
+			haveImg  ? EditPhotos(idx) : callPhotograph(idx);
+		};
+		
+		function EditPhotos(idx) {
+			var a = [{
+				title: "更换"
+			}, {
+				title: "删除"
+			}];
+			plus.nativeUI.actionSheet({
+				cancel: "取消",
+				buttons: a
+			}, function(b) {
+				switch(b.index) {
+					case 0:
+						break;
+					case 1:
+						changePhoto(idx);
+						break;
+					case 2:
+						delPhoto(idx);
+						break;
+					default:
+						break
+				}
+			})
+		}
+		function takePhoto(idx) {
+			var l = $$(".imgs").eq(idx).children("img").length;
+			if(l == 0) {
+				callPhotograph(idx)
+			} else {
+				mui.toast("~已经有照片了~");
+			}
+		}
+		// 唤起相机
+		function callPhotograph(idx) {
+			plus.nativeUI.showWaiting("正在打开相机...");
+			var nvc801bno = VlTools.getBno("vdvc801");
+			//调用相机
+			var cmr = plus.camera.getCamera();
+			//  拍照的大小
+			var aRes = cmr.supportedImageResolutions;
+			var res = aRes[aRes.length - 1]; // 默认取最小的
+			console.log("拍照大小组：" + JSON.stringify(aRes));
+			console.log("拍照设定大小：" + res);
+			var path;
+			if(mobile === "Apple" || mobile === "iOS"){
+				path = "_doc/Vlbfile/" + nvc801bno + ".jpg"; 
+			}else{
+				path = "_doc/Vlbfile/" + nvc801bno;
+			}
+			var captureOpt = {
+				// filter: "none",
+				resolution: res,
+				format: "jpg",
+				filename: path,
+				index : 1
+			}
+			// 获取照片的格式
+			var fmt = cmr.supportedImageFormats[0];
+			
+			cmr.captureImage(
+				function(path) {
+					plus.nativeUI.closeWaiting("正在打开相机...");
+					plus.nativeUI.showWaiting("正在设置图片...");
+					plus.io.resolveLocalFileSystemURL(path, function(entry) {
+						var paths = entry.fullPath;
+						setImg(idx, nvc801bno, paths, path);
+						plus.nativeUI.closeWaiting("正在设置图片...");
+					}, function(e) {
+						plus.nativeUI.closeWaiting("正在设置图片...");
+						alert("设置图片失败" + e.message);  
+					});
+				}, 
+				function(error) {
+					plus.nativeUI.closeWaiting("正在打开相机...");
+				
+				}, 
+				captureOpt
+			);
+		}
+		//解决苹果上传问题关键  //原因 苹果不能去本地路径  安卓可以
+		function setImg(idx, bno, fullPath, cmrPath){
+			var oImgli = jQuery("#J_pics_box").eq(idx),
+				uploadPath = (mobile === "Apple" || mobile === "iOS") ? cmrPath : fullPath;
+			oImgli.find("img").attr("src",fullPath);
+			oImgli.attr("data-haveimg","true");
+			oImgli.attr("data-src", uploadPath);
+			oImgli.attr("data-no", bno);
+		}
+		//点击照片【更换】
+		function changePhoto(idx) {
+			var oImgli = jQuery("#J_pics_box").eq(idx);
+			var datasave = _oTrueFalse[oImgli.attr("data-hadsave")];
+			var datano = oImgli.attr("data-no");
+			var btn = ["确定更换", "取消更换"];
+			mui.confirm('更换后原照片将被删除!', '您确认要更换此照片吗？', btn, function(e) {
+				if(e.index == 0) {
+					if(datasave) {
+						delPhotoData(datano);
+					}
+					callPhotograph(idx);
+				} else {
+					return
+				}
+			})
+		
+		}
+		//点击照片【删除】
+		function delPhoto(idx) {
+			var oImgli = jQuery("#J_pics_box").eq(idx);
+			var del = confirm("您确定要删除此照片？");
+			if(del == true) {
+				var datasave = _oTrueFalse[oImgli.attr("data-hadsave")];
+				var datano = oImgli.attr("data-no");
+				if(datasave) {
+					delPhotoData(datano); // 删掉关联数据
+				}
+				oImgli.find("img").attr("src","../../images/icon/plus.png");
+				oImgli.attr("data-haveimg","false");
+				oImgli.attr("data-hadsave","false");
+				oImgli.attr("data-src", "");
+				oImgli.attr("data-no", "");
+			} else {
+				return;
+			}
+		}
+		//删除照片的ajax
+		function delPhotoData(bno) {
+			var p = {
+				bill_no: bno,
+				bill_task: "d_delete",
+				fbill_no: "ROOT",
+				bill_user: userbillNo,
+				bill_com: teamBillCom,
+				bill_date: VlDate.get(new Date(), "_ymdhms"),
+			}
+			VlAjax({
+				"port" : "sendTask",
+				"headers" : "json"
+			}, p, sCBdelPhotoData)
+		}
+		
+		function sCBdelPhotoData() {mui.toast("图片删除成功~")} // 不可删除
+		
+		
+		function getFieldValue(data) {
+			var oField = document.getElementsByClassName("vl-field");
+			for(var i = 0; i < oField.length; i ++){
+				var _k = oField[i].getAttribute("data-vfield");
+				var _v = oField[i].value;
+				data[_k] = _v;
+			}		
+			return data;
+		}
+		function findfillData(){
+			var p = {
+				name		: "vdvc312",
+				bill_task	: "L,S,Y",
+				bill_no		: detailInfo['内容']['312代码'], 
+				bill_com	: teamBillCom, 
+				// bill_user 	: userbillNo,
+				// bill_user : 'vdvc00100_20190806_a6ec85b4',
+				currentPage	: 1,
+				pageSize	: 1,
+				paramText	: "",
+			}
+			VlAjax.post({"port":"find","headers":"json",}, p, sCBFindfilldata)
+		}
+		function sCBFindfilldata(data){
+			if(data.data.length !== 0){
+				mainInfo = data.data[0];
+				VlEdit.setValue(data.data[0], normalData, oText);
+				var attachment = $$("#bill_name").val()
+				$$("#bill_name").replaceWith("<span id='bill_name' style='display:block;height:40px;padding:10px 15px 10px 0'></span>")
+				$$("#bill_name").html(attachment)
+				bill_312oppo = data.data[0]["bill_oppo"]
+				bill_312no = data.data[0]["bill_no"]
+				var bcontext = data.data[0]['bill_context'],
+				_addr;					
+				if(mui.type(bcontext) === 'array'){
+					_addr = bcontext[0]["linkbd_linkprov"] + " " + bcontext[0]["linkbd_linkstreet"] + " " + bcontext[0]["linkvd_corraddr"];
+				}else if(mui.type(bcontext) === 'string' && bcontext.indexOf('{') > -1){
+					bcontext = JSON.parse(bcontext)
+					_addr = bcontext[0]["linkbd_linkprov"] + " " + bcontext[0]["linkbd_linkstreet"] + " " + bcontext[0]["linkvd_corraddr"];
+				}else if(mui.type(bcontext) === 'string' && bcontext.indexOf('{') == -1){
+					_addr = bcontext;
+				}
+				document.getElementById('bill_context').innerHTML = _addr;
+				var pathimg=VlAjax.getImgPathmen(data.data[0]['bill_oppo'])
+				jQuery("#J_pics_box").find("img").attr("src",pathimg)
+				document.getElementById("bill_atta").value=data.data[0]["bill_remark"]
+				Images=jQuery("#J_pics_box").find("img").attr("src")
+			}
+		}
+	</script>
+
+</html>
